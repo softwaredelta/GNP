@@ -4,6 +4,7 @@ extends: [
   'plugin:import/recommended',
   'plugin:@typescript-eslint/recommended',
   'eslint-config-.prettierrc',
+  "plugin:react-hooks/recommended",
 ]
 settings: {
     react: {
@@ -32,6 +33,12 @@ rules: {
       "messages": {
         "whenFailedToMatch": "Couldn't find 'Copyright notice', are you sure you added it?"
       }
+    }
+  ],
+  "react-hooks/rules-of-hooks": "error",
+  "react-hooks/exhaustive-deps": [
+    "warn", {
+      "additionalHooks": "(useRecoilCallback|useRecoilTransaction_UNSTABLE)"
     }
   ]
 }
