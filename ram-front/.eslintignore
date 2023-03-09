@@ -1,6 +1,6 @@
 node_modules/
 dist/
-.prettierrc.js
+.prettierrc
 .eslintrc
 env.d.ts
 vite.config.ts
