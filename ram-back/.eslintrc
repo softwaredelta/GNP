@@ -1,0 +1,43 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "browser": true,
+    "es2020": true,
+    "node": true
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "import",
+    "notice"
+  ],
+  "extends": [
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error"
+    ],
+    "import/extensions": [
+      "error",
+      "never"
+    ],
+    "notice/notice": [
+      "error",
+      {
+        "mustMatch": "\\(c\\) Delta Software [0-9]{0,4}, rights reserved.",
+        "template": "// (c) Delta Software <%= YEAR %>, rights reserved.\n\n",
+        "messages": {
+          "whenFailedToMatch": "Couldn't find 'Copyright notice', are you sure you added it?"
+        }
+      }
+    ]
+  }
+}
