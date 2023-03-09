@@ -1,16 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/imgs/react.svg'
+// (c) Delta Software 2023, rights reserved.
+
+import { useState } from "react";
+import reactLogo from "./assets/imgs/react.svg";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <div className="App bg-sky-500">
       <div>
-        <a href="https://vitejs.dev" target="_blank">
+        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
           <img src="/vite.svg" className="logo" alt="Vite logo" />
         </a>
-        <a href="https://reactjs.org" target="_blank">
+        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
@@ -26,11 +28,11 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-        <p className="text-3xl font-bold underline hover:underline-offset-4">
-            Hello world!
-        </p>
+      <p className="text-3xl font-bold underline hover:underline-offset-4">
+        Hello world!
+      </p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

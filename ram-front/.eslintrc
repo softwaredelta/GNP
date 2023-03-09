@@ -1,44 +1,67 @@
-extends: [
-  'eslint:recommended',
-  'plugin:react/recommended',
-  'plugin:import/recommended',
-  'plugin:@typescript-eslint/recommended',
-  'eslint-config-.prettierrc',
-  "plugin:react-hooks/recommended",
-]
-settings: {
-    react: {
-        version: 'detect',
-    },
-    'import/resolver': {
-        node: {
-            paths: ['src'],
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        },
-    },
-}
-
-rules: {
-  "prettier/prettier": [
-    "error",
-    {
-      endOfLine: "auto"
-    }
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "./tsconfig.json",
+    "EXPERIMENTAL_useSourceOfProjectReferenceRedirect": true
+  },
+  "env": {
+    "browser": true,
+    "es2020": true,
+    "node": true
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "notice",
+    "react-hooks",
+    "prettier"
   ],
-  "notice/notice": [
-    "error",
-    {
-      "mustMatch": "\\(c\\) Delta Software [0-9]{0,4}, rights reserved.",
-      "template": "// (c) Delta Software <%= YEAR %>, rights reserved.\n\n",
-      "messages": {
-        "whenFailedToMatch": "Couldn't find 'Copyright notice', are you sure you added it?"
+  "extends": [
+    "airbnb-typescript/base",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:import/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": [ "src" ],
+        "extensions": [ ".js", ".jsx", ".ts", ".tsx" ]
       }
     }
-  ],
-  "react-hooks/rules-of-hooks": "error",
-  "react-hooks/exhaustive-deps": [
-    "warn", {
-      "additionalHooks": "(useRecoilCallback|useRecoilTransaction_UNSTABLE)"
-    }
-  ]
+  },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "notice/notice": [
+      "error",
+      {
+        "mustMatch": "\\(c\\) Delta Software [0-9]{0,4}, rights reserved.",
+        "template": "// (c) Delta Software <%= YEAR %>, rights reserved.\n\n",
+        "messages": {
+          "whenFailedToMatch": "Couldn't find 'Copyright notice', are you sure you added it?"
+        }
+      }
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": [
+      "warn", {
+        "additionalHooks": "(useRecoilCallback|useRecoilTransaction_UNSTABLE)"
+      }
+    ],
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
+  }
 }
