@@ -4,3 +4,4 @@ dist/
 .eslintrc
 env.d.ts
 vite.config.ts
+.sonarcloud.properties
