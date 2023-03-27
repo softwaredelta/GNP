@@ -29,7 +29,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
       <p className="text-3xl font-bold underline hover:underline-offset-4">
-        Hello world!
+        New Hello world!
       </p>
     </div>
   );
