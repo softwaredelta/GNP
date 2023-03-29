@@ -1,0 +1,866 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: |
+  This template describes an aws infrastructure for RAM.
+
+  This template is based on the simplified CDN model, where
+  cloudfront is not used and instead the static site gets
+  served by EB directly.
+
+  The template includes:
+  - A CodePipeline to build and deploy the application directly.
+  - A dedicated S3 bucekt for build artifacts.
+  - A lambda to automatically clear buckets on app teardown.
+  - EB load-balancing configuration options.
+  - Proxy configuration, with static site and api sharing the same
+    server.
+
+  TODO:
+  - domain record set hard coded for us-east1 load balancers
+  - WIP
+    - load balancer setup lambda
+    - resource execution failed
+    - how to see logs ?
+
+Parameters:
+  ConnectionArn:
+    Type: String
+    Description: The ARN of the CodeStar Connection to GitHub
+  RepositoryName:
+    Type: String
+    Description: The name of the GitHub repository / "user/repo"
+    Default: softwaredelta/GNP
+  BranchName:
+    Type: String
+    Description: The name of the GitHub branch to deploy
+    Default: main
+  DetectChanges:
+    Type: String
+    Description: Whether to detect changes in the GitHub repository
+    Default: "true"
+    AllowedValues:
+      - "true"
+      - "false"
+
+  ApplicationInstanceTypes:
+    Type: String
+    Description: |
+      The instance types for the Elastic Beanstalk application.
+      You can specify multiple instance types separated by commas.
+      See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#AvailableInstanceTypes
+    Default: t2.micro,t3.micro
+  MinInstances:
+    Type: String
+    Description: The minimum number of instances for the Elastic Beanstalk application
+    Default: "1"
+  MaxInstances:
+    Type: String
+    Description: The maximum number of instances for the Elastic Beanstalk application
+    Default: "1"
+
+  BuildCompute:
+    Type: String
+    Description: The compute type for the CodeBuild project
+    Default: BUILD_GENERAL1_SMALL
+    AllowedValues:
+      - BUILD_GENERAL1_SMALL
+      - BUILD_GENERAL1_MEDIUM
+      - BUILD_GENERAL1_LARGE
+
+  DBAllocatedStorage:
+    Type: String
+    Description: The allocated storage for the RDS instance
+    Default: "5"
+  DBInstanceClass:
+    Type: String
+    Description: The instance class for the RDS instance
+    Default: db.t3.micro
+  DBPassword:
+    Type: String
+    Description: The password for the RDS instance
+    NoEcho: true
+
+  HostedZone:
+    Type: String
+    Description: The hosted zone for the domain, if hosted on Route53 (example.com)
+    Default: ""
+  DomainName:
+    Type: String
+    Description: The full domain name for the application, should match hosted zone if used (ram.example.com)
+
+Conditions:
+  HasHostedZone: !Not [!Equals [!Ref HostedZone, ""]]
+
+Resources:
+  #############################################################################
+  # ELASTIC BEANSTALK APPLICATION
+
+  ApplicationBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::AccountId}-${AWS::StackName}-appdata
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  ApplicationBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ApplicationBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Deny
+            Principal:
+              AWS: "*"
+            Action: "*"
+            Resource: !Sub arn:aws:s3:::${ApplicationBucket}/*
+            Condition:
+              Bool:
+                "aws:SecureTransport": false
+
+  ApplicationBucketPreDeletion:
+    Type: Custom::BucketPreDeletion
+    Properties:
+      ServiceToken: !GetAtt EmptyBucketLambda.Arn
+      BucketName: !Ref ApplicationBucket
+
+  Application:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      ApplicationName: !Sub ${AWS::AccountId}-${AWS::StackName}-backend
+
+  Environment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      EnvironmentName: !Sub ${AWS::AccountId}-${AWS::StackName}-backend-env
+      ApplicationName: !Ref Application
+      SolutionStackName: "64bit Amazon Linux 2 v5.7.0 running Node.js 16"
+      CNAMEPrefix: !Sub ${AWS::AccountId}-${AWS::StackName}
+      OptionSettings:
+        - Namespace: aws:ec2:instances
+          OptionName: InstanceTypes
+          Value: !Ref ApplicationInstanceTypes
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: IamInstanceProfile
+          Value: !Ref InstanceProfile
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: ServiceRole
+          Value: !Ref ServiceRole
+
+        # autoscaling
+        - Namespace: aws:autoscaling:asg
+          OptionName: MinSize
+          Value: !Ref MinInstances
+        - Namespace: aws:autoscaling:asg
+          OptionName: MaxSize
+          Value: !Ref MaxInstances
+
+        # load balancing
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: EnvironmentType
+          Value: LoadBalanced
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: LoadBalancerType
+          Value: application
+        - Namespace: aws:elbv2:listener:443
+          OptionName: ListenerEnabled
+          Value: "true"
+        - Namespace: aws:elbv2:listener:443
+          OptionName: Protocol
+          Value: HTTPS
+        - Namespace: aws:elbv2:listener:443
+          OptionName: SSLCertificateArns
+          Value: !Ref Certificate
+
+        - Namespace: aws:elasticbeanstalk:environment:proxy:staticfiles
+          OptionName: /site
+          Value: /public
+        - Namespace: aws:elasticbeanstalk:application
+          OptionName: Application Healthcheck URL
+          Value: /api
+
+        # Backend environment
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: PORT
+          Value: "8080"
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: API_PORT
+          Value: "8080"
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: NODE_ENV
+          Value: aws
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: API_PREFIX
+          Value: /api
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: APP_URL
+          Value: !Sub https://${DomainName}/site/
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: S3_BUCKET_NAME
+          Value: !Sub ${AWS::AccountId}-${AWS::StackName}-appdata
+
+        # Database config
+        - Namespace: aws:rds:dbinstance
+          OptionName: DBAllocatedStorage
+          Value: !Ref DBAllocatedStorage
+        - Namespace: aws:rds:dbinstance
+          OptionName: DBEngine
+          Value: postgres
+        - Namespace: aws:rds:dbinstance
+          OptionName: DBEngineVersion
+          Value: "15.2"
+        - Namespace: aws:rds:dbinstance
+          OptionName: DBInstanceClass
+          Value: !Ref DBInstanceClass
+        - Namespace: aws:rds:dbinstance
+          OptionName: HasCoupledDatabase
+          Value: "true"
+        - Namespace: aws:rds:dbinstance
+          OptionName: DBPassword
+          Value: !Ref DBPassword
+
+  #############################################################################
+  # ALB SETUP
+  # ------------
+  # Note: CloudFormation really doesn't have an eassy way of setting up a listener
+  # redirect, so that HTTP @ 80 is redirected to HTTPS @ 443.
+  # The workaround here is to make a lambda function for a custom resource that
+  # modifies the default listener to redirect to HTTPS.
+  #
+  # We also configure the ALB health check URL since it is also not configurable
+  # from the EB options
+
+  LoadBalancerSetup:
+    Type: Custom::LoadBalancerSetup
+    Properties:
+      ServiceToken: !GetAtt LoadBalancerSetupLambda.Arn
+      EnvironmentName: !Ref Environment
+      HealthCheckPath: !Sub /api/health
+
+  LoadBalancerSetupLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import json, boto3, logging
+          import cfnresponse
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+
+          eb = boto3.client('elasticbeanstalk')
+          elbv2 = boto3.client('elbv2')
+
+          def lambda_handler(event, context):
+              logger.info("Received event: " + json.dumps(event, indent=2))
+
+              if event['RequestType'] not in ['Create', 'Update']:
+                  logger.info("nothing to do for {}".format(event['RequestType']))
+                  sendResponseCfn(event, context, cfnresponse.SUCCESS)
+                  return
+
+              try:
+                  eb_env_name = event['ResourceProperties']['EnvironmentName']
+                  health_check_path = event['ResourceProperties']['HealthCheckPath']
+                  logger.info("configuring load balancer for environment: {}".format(eb_env_name))
+
+                  eb_resources = eb.describe_environment_resources(
+                      EnvironmentName=eb_env_name
+                  )
+                  alb_arn = eb_resources['EnvironmentResources']['LoadBalancers'][0]['Name']
+                  logger.info("found application load balancer: {}".format(alb_arn))
+
+                  target_group_arn = elbv2.describe_target_groups(
+                      LoadBalancerArn=alb_arn
+                  )['TargetGroups'][0]['TargetGroupArn']
+                  logger.info("found target group: {}".format(target_group_arn))
+
+                  listeners = elbv2.describe_listeners(
+                      LoadBalancerArn=alb_arn
+                  )['Listeners']
+                  http_listener_arn = [l['ListenerArn'] for l in listeners if l['Port'] == 80][0]
+                  logger.info("found HTTP listener: {}".format(http_listener_arn))
+
+                  logger.info("setting HTTP listener redirect to HTTPS")
+                  elbv2.modify_listener(
+                      ListenerArn=http_listener_arn,
+                      DefaultActions=[
+                          {
+                              'Type': 'redirect',
+                              'RedirectConfig': {
+                                  'Protocol': 'HTTPS',
+                                  'Port': '443',
+                                  'Host': '#{host}',
+                                  'Path': '/#{path}',
+                                  'Query': '#{query}',
+                                  'StatusCode': 'HTTP_301'
+                              }
+                          }
+                      ]
+                  )
+
+                  logger.info("setting target group health check path")
+                  elbv2.modify_target_group(
+                      TargetGroupArn=target_group_arn,
+                      HealthCheckPath=health_check_path
+                  )
+
+                  sendResponseCfn(event, context, cfnresponse.SUCCESS)
+              except Exception as e:
+                  logger.error("Exception: {}".format(e))
+                  sendResponseCfn(event, context, cfnresponse.FAILED)
+
+          def sendResponseCfn(event, context, responseStatus):
+              responseData = {}
+              responseData['Data'] = {}
+              cfnresponse.send(event, context, responseStatus, responseData, "CustomResourcePhysicalID")
+
+      Handler: "index.lambda_handler"
+      Runtime: python3.7
+      MemorySize: 128
+      Timeout: 10
+      Role: !GetAtt LoadBalancerSetupLambdaRole.Arn
+
+  LoadBalancerSetupLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: CloudWatchLogs
+                Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+              - Sid: AllowServiceActions
+                Effect: Allow
+                Action:
+                  - elasticbeanstalk:DescribeEnvironmentResources
+                  - cloudformation:DescribeStacks
+                  - cloudformation:ListStackResources
+                  - autoscaling:DescribeAutoScalingGroups
+                  - elasticloadbalancing:DescribeListeners
+                  - elasticloadbalancing:ModifyListener
+                  - elasticloadbalancing:DescribeTargetGroups
+                  - elasticloadbalancing:ModifyTargetGroup
+                Resource: "*"
+
+  #############################################################################
+  # DOMAIN AND TLS
+
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      ValidationMethod: DNS
+
+  DomainRecord:
+    Type: AWS::Route53::RecordSet
+    Condition: HasHostedZone
+    Properties:
+      HostedZoneName: !Sub ${HostedZone}.
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt Environment.EndpointURL
+        HostedZoneId: Z35SXDOTRQ7X7K
+
+  #############################################################################
+  # ELASTIC BEANSTALK ROLES
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Sub ${AWS::AccountId}-${AWS::StackName}-eb-instance-profile
+      Roles:
+        - !Ref InstanceRole
+
+  InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::AccountId}-${AWS::StackName}-eb-instance-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: ElasticBeanstalkPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: AppdataBucketAccess
+                Action:
+                  - s3:*
+                Effect: Allow
+                Resource:
+                  - !Sub arn:aws:s3:::${ApplicationBucket}
+              - Sid: ElasticBeanstalkBucketAccess
+                Action:
+                  - s3:Get*
+                  - s3:List*
+                  - s3:PutObject
+                Effect: Allow
+                Resource:
+                  - arn:aws:s3:::elasticbeanstalk-*
+                  - arn:aws:s3:::elasticbeanstalk-*/*
+              - Sid: XRayAccess
+                Action:
+                  - xray:PutTraceSegments
+                  - xray:PutTelemetryRecords
+                  - xray:GetSamplingRules
+                  - xray:GetSamplingTargets
+                  - xray:GetSamplingStatisticSummaries
+                Effect: Allow
+                Resource: "*"
+              - Sid: CloudWatchLogsAccess
+                Action:
+                  - logs:PutLogEvents
+                  - logs:CreateLogStream
+                  - logs:DescribeLogStreams
+                  - logs:DescribeLogGroups
+                Effect: Allow
+                Resource:
+                  - arn:aws:logs:*:*:log-group:/aws/elasticbeanstalk*
+              - Sid: ElasticBeanstalkHealthAccess
+                Action:
+                  - elasticbeanstalk:PutInstanceStatistics
+                Effect: Allow
+                Resource:
+                  - arn:aws:elasticbeanstalk:*:*:application/*
+                  - arn:aws:elasticbeanstalk:*:*:environment/*
+
+  ServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::AccountId}-${AWS::StackName}-eb-service-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - elasticbeanstalk.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: ElasticBeanstalkPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: AllowCloudformationReadOperationsOnElasticBeanstalkStacks
+                Effect: Allow
+                Action:
+                  - cloudformation:DescribeStackResource
+                  - cloudformation:DescribeStackResources
+                  - cloudformation:DescribeStacks
+                Resource:
+                  - arn:aws:cloudformation:*:*:stack/awseb-*
+                  - arn:aws:cloudformation:*:*:stack/eb-*
+              - Sid: AllowOperations
+                Effect: Allow
+                Action:
+                  - autoscaling:DescribeAutoScalingGroups
+                  - autoscaling:DescribeAutoScalingInstances
+                  - autoscaling:DescribeNotificationConfigurations
+                  - autoscaling:DescribeScalingActivities
+                  - autoscaling:PutNotificationConfiguration
+                  - ec2:DescribeInstanceStatus
+                  - ec2:AssociateAddress
+                  - ec2:DescribeAddresses
+                  - ec2:DescribeInstances
+                  - ec2:DescribeSecurityGroups
+                  - elasticloadbalancing:DescribeInstanceHealth
+                  - elasticloadbalancing:DescribeLoadBalancers
+                  - elasticloadbalancing:DescribeTargetHealth
+                  - elasticloadbalancing:DescribeTargetGroups
+                  - lambda:GetFunction
+                  - sqs:GetQueueAttributes
+                  - sqs:GetQueueUrl
+                  - sns:Publish
+                Resource:
+                  - "*"
+              - Sid: AllowOperationsOnHealthStreamingLogs
+                Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                  - logs:DeleteLogGroup
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:log-group:/aws/elasticbeanstalk/*
+
+  #############################################################################
+  # CODE PIPELINE
+
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::AccountId}-${AWS::StackName}-artifacts
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  ArtifactBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ArtifactBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Deny
+            Principal:
+              AWS: "*"
+            Action: "*"
+            Resource: !Sub arn:aws:s3:::${ArtifactBucket}/*
+            Condition:
+              Bool:
+                "aws:SecureTransport": false
+
+  ArtifactBucketPreDeletion:
+    Type: Custom::BucketPreDeletion
+    Properties:
+      ServiceToken: !GetAtt EmptyBucketLambda.Arn
+      BucketName: !Ref ArtifactBucket
+
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: !Sub ${AWS::AccountId}-${AWS::StackName}-pipeline
+      RoleArn: !GetAtt PipelineRole.Arn
+      RestartExecutionOnUpdate: true
+      ArtifactStore:
+        Location: !Ref ArtifactBucket
+        Type: S3
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: GitHubSource
+              InputArtifacts: []
+              OutputArtifacts:
+                - Name: SourceArtifact
+              RunOrder: 1
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: CodeStarSourceConnection
+                Version: "1"
+              Configuration:
+                ConnectionArn: !Ref ConnectionArn
+                FullRepositoryId: !Ref RepositoryName
+                BranchName: !Ref BranchName
+                DetectChanges: !Ref DetectChanges
+                OutputArtifactFormat: CODE_ZIP
+        - Name: Build
+          Actions:
+            - Name: Build
+              InputArtifacts:
+                - Name: SourceArtifact
+              OutputArtifacts:
+                - Name: ElasticBeanstalkArtifact
+              RunOrder: 1
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName: !Ref BuildProject
+                EnvironmentVariables: !Sub '[{"name":"VITE_API_URL","value":"https://${DomainName}/api","type":"PLAINTEXT"},{"name":"BASE_URL","value":"/site","type":"PLAINTEXT"}]'
+        - Name: Deploy
+          Actions:
+            - Name: DeployElasticBeanstalk
+              InputArtifacts:
+                - Name: ElasticBeanstalkArtifact
+              OutputArtifacts: []
+              RunOrder: 1
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: ElasticBeanstalk
+                Version: "1"
+              Configuration:
+                ApplicationName: !Ref Application
+                EnvironmentName: !Ref Environment
+
+  BuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub ${AWS::AccountId}-${AWS::StackName}-build
+      ConcurrentBuildLimit: 1
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: ram-infra/buildspec.yml
+      Environment:
+        ComputeType: !Ref BuildCompute
+        Image: aws/codebuild/standard:6.0
+        Type: LINUX_CONTAINER
+      ServiceRole: !GetAtt BuildRole.Arn
+      Artifacts:
+        Type: CODEPIPELINE
+
+  BuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::AccountId}-${AWS::StackName}-build-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: CodeBuildPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Resource:
+                  - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${AWS::AccountId}-${AWS::StackName}-build
+                  - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${AWS::AccountId}-${AWS::StackName}-build:*
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+              - Effect: Allow
+                Resource:
+                  - !Sub arn:aws:s3:::${ArtifactBucket}
+                  - !Sub arn:aws:s3:::${ArtifactBucket}/*
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:GetObjectVersion
+                  - s3:GetBucketAcl
+                  - s3:GetBucketLocation
+              - Effect: Allow
+                Action:
+                  - codebuild:CreateReportGroup
+                  - codebuild:CreateReport
+                  - codebuild:UpdateReport
+                  - codebuild:BatchPutTestCases
+                  - codebuild:BatchPutCodeCoverages
+                Resource:
+                  - !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/${AWS::AccountId}-${AWS::StackName}-build-*
+
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::AccountId}-${AWS::StackName}-pipeline-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: CodePipelinePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - iam:PassRole
+                Resource: "*"
+                Effect: Allow
+                Condition:
+                  StringEqualsIfExists:
+                    iam:PassedToService:
+                      - cloudformation.amazonaws.com
+                      - elasticbeanstalk.amazonaws.com
+                      - ec2.amazonaws.com
+                      - ecs-tasks.amazonaws.com
+              - Action:
+                  - codecommit:CancelUploadArchive
+                  - codecommit:GetBranch
+                  - codecommit:GetCommit
+                  - codecommit:GetRepository
+                  - codecommit:GetUploadArchiveStatus
+                  - codecommit:UploadArchive
+                Resource: "*"
+                Effect: Allow
+              - Action:
+                  - codedeploy:CreateDeployment
+                  - codedeploy:GetApplication
+                  - codedeploy:GetApplicationRevision
+                  - codedeploy:GetDeployment
+                  - codedeploy:GetDeploymentConfig
+                  - codedeploy:RegisterApplicationRevision
+                Resource: "*"
+                Effect: Allow
+              - Action:
+                  - codestar-connections:UseConnection
+                Resource: "*"
+                Effect: Allow
+              - Action:
+                  - elasticbeanstalk:*
+                  - ec2:*
+                  - elasticloadbalancing:*
+                  - autoscaling:*
+                  - cloudwatch:*
+                  - s3:*
+                  - sns:*
+                  - cloudformation:*
+                  - rds:*
+                  - sqs:*
+                  - ecs:*
+                Resource: "*"
+                Effect: Allow
+              - Action:
+                  - lambda:InvokeFunction
+                  - lambda:ListFunctions
+                Resource: "*"
+                Effect: Allow
+              - Action:
+                  - opsworks:CreateDeployment
+                  - opsworks:DescribeApps
+                  - opsworks:DescribeCommands
+                  - opsworks:DescribeDeployments
+                  - opsworks:DescribeInstances
+                  - opsworks:DescribeStacks
+                  - opsworks:UpdateApp
+                  - opsworks:UpdateStack
+                Resource: "*"
+                Effect: Allow
+              - Action:
+                  - cloudformation:CreateStack
+                  - cloudformation:DeleteStack
+                  - cloudformation:DescribeStacks
+                  - cloudformation:UpdateStack
+                  - cloudformation:CreateChangeSet
+                  - cloudformation:DeleteChangeSet
+                  - cloudformation:DescribeChangeSet
+                  - cloudformation:ExecuteChangeSet
+                  - cloudformation:SetStackPolicy
+                  - cloudformation:ValidateTemplate
+                Resource: "*"
+                Effect: Allow
+              - Action:
+                  - codebuild:BatchGetBuilds
+                  - codebuild:StartBuild
+                  - codebuild:BatchGetBuildBatches
+                  - codebuild:StartBuildBatch
+                Resource: "*"
+                Effect: Allow
+              - Effect: Allow
+                Action:
+                  - devicefarm:ListProjects
+                  - devicefarm:ListDevicePools
+                  - devicefarm:GetRun
+                  - devicefarm:GetUpload
+                  - devicefarm:CreateUpload
+                  - devicefarm:ScheduleRun
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - servicecatalog:ListProvisioningArtifacts
+                  - servicecatalog:CreateProvisioningArtifact
+                  - servicecatalog:DescribeProvisioningArtifact
+                  - servicecatalog:DeleteProvisioningArtifact
+                  - servicecatalog:UpdateProduct
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - cloudformation:ValidateTemplate
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - ecr:DescribeImages
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - states:DescribeExecution
+                  - states:DescribeStateMachine
+                  - states:StartExecution
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - appconfig:StartDeployment
+                  - appconfig:StopDeployment
+                  - appconfig:GetDeployment
+                Resource: "*"
+
+  #############################################################################
+  # BUCKET EMPTY LAMBDA
+
+  EmptyBucketLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: !Sub |
+          import json, boto3, logging
+          import cfnresponse
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+
+          def lambda_handler(event, context):
+              logger.info("event: {}".format(event))
+              try:
+                  bucket = event['ResourceProperties']['BucketName']
+                  logger.info("bucket: {}, event['RequestType']: {}".format(bucket,event['RequestType']))
+                  if event['RequestType'] == 'Delete':
+                      s3 = boto3.resource('s3')
+                      bucket = s3.Bucket(bucket)
+                      for obj in bucket.objects.filter():
+                          s3.Object(bucket.name, obj.key).delete()
+
+                  sendResponseCfn(event, context, cfnresponse.SUCCESS)
+              except Exception as e:
+                  logger.info("Exception: {}".format(e))
+                  sendResponseCfn(event, context, cfnresponse.FAILED)
+
+          def sendResponseCfn(event, context, responseStatus):
+              responseData = {}
+              responseData['Data'] = {}
+              cfnresponse.send(event, context, responseStatus, responseData, "CustomResourcePhysicalID")
+
+      Handler: "index.lambda_handler"
+      Runtime: python3.7
+      MemorySize: 128
+      Timeout: 10
+      Role: !GetAtt EmptyBucketLambdaRole.Arn
+
+  EmptyBucketLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource: "*"

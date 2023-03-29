@@ -1,0 +1,10 @@
+{
+    "eslint.workingDirectories": [
+        {
+            "directory": "ram-front"
+        },
+        {
+            "directory": "ram-back"
+        }
+    ]
+}
