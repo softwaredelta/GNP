@@ -1,34 +1,37 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { useState } from "react";
-import reactLogo from "./assets/imgs/react.svg";
-
-function App(): JSX.Element {
-  const [count, setCount] = useState<number>(0);
+function App() {
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   return (
-    <div className="App bg-sky-500">
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((x) => x + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <p className="text-3xl font-bold underline hover:underline-offset-4">
-        New Hello world!
-      </p>
+    <div className="flex flex-col gap-4">
+      <button
+        onClick={() => {
+          fetch(apiUrl)
+            .then((res) => res.text())
+            .then((text) => alert(`Api says ${text}`));
+        }}
+      >
+        click me!
+      </button>
+      <button
+        onClick={() => {
+          fetch(`${apiUrl}/time`)
+            .then((res) => res.json())
+            .then(({ now }) => alert(now));
+        }}
+      >
+        get the time!
+      </button>
+      <button
+        onClick={() => {
+          fetch(`${apiUrl}/objects`)
+            .then((res) => res.json())
+            .then((json) => alert(JSON.stringify(json)));
+        }}
+      >
+        get bucket object list!
+      </button>
     </div>
   );
 }

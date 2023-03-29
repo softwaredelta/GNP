@@ -1,0 +1,33 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+      - cd $CODEBUILD_SRC_DIR/ram-back && yarn
+      - cd $CODEBUILD_SRC_DIR/ram-front && yarn
+    finally:
+      - echo Finished install phase...
+  build:
+    commands:
+      - echo Entered the build phase...
+      - cd $CODEBUILD_SRC_DIR/ram-back && yarn build
+      - cd $CODEBUILD_SRC_DIR/ram-front && yarn build
+    finally:
+      - echo Finished build phase...
+  post_build:
+    commands:
+      - echo Creating build artifact...
+      - mkdir -p $CODEBUILD_SRC_DIR/build
+      - cp -r $CODEBUILD_SRC_DIR/ram-back/* $CODEBUILD_SRC_DIR/build
+      - cp -r $CODEBUILD_SRC_DIR/ram-front/dist $CODEBUILD_SRC_DIR/build/public
+
+artifacts:
+  base-directory: build
+  files:
+    - "**/*"
+
+cache:
+  paths:
+    - "/ram-back/node_modules/**/*"
+    - "/ram-front/node_modules/**/*"
