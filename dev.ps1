@@ -8,7 +8,7 @@ try {
     docker build -f ram-infra/Dockerfile -t ram:local --target local .
     docker container rm -f ram-local
     docker run -d `
-	    --name ram-local `
+        --name ram-local `
         -p 5432:5432 `
         -p 9000:9000 `
         -p 9001:9001 `
@@ -22,9 +22,9 @@ try {
         yarn dev
     } -ArgumentList $ScriptDirectory
 
-    Start-Job -Name RamBackend -ScriptBlock{
+    Start-Job -Name RamBackend -ScriptBlock {
         param ( $path )
-	    Set-Location -Path "$path\ram-back"
+        Set-Location -Path "$path\ram-back"
         yarn
         yarn start:dev
     } -ArgumentList $ScriptDirectory
