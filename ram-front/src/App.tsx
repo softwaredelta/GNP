@@ -3,8 +3,8 @@
 import { useState } from "react";
 import reactLogo from "./assets/imgs/react.svg";
 
-function App() {
-  const [count, setCount] = useState(0);
+function App(): JSX.Element {
+  const [count, setCount] = useState<number>(0);
 
   return (
     <div className="App bg-sky-500">
