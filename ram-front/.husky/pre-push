@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+cd ./ram-front && yarn lint:fix && yarn format && yarn test
+
+Exit 1
