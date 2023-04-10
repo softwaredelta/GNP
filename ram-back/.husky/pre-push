@@ -3,4 +3,4 @@
 
 cd ./ram-back && yarn lint:fix && yarn format && yarn test
 
-exit 1
+Exit 1
