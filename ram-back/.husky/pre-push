@@ -2,5 +2,3 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 cd ./ram-back && yarn lint:fix && yarn format && yarn test
-
-exit 1
