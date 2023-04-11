@@ -2,7 +2,7 @@
 
 import { BucketItem } from "minio";
 import { getS3Client } from "./arch/s3-client";
-import { getDbClient } from "./arch/db-client";
+import { getDataSource } from "./arch/db-client";
 import { Router } from "express";
 
 export const router = Router();
@@ -17,11 +17,9 @@ router.get("/health", (_req, res) => {
 
 // demonstrates connection with DB
 router.get("/time", async (_req, res) => {
-  const client = getDbClient();
-  client.connect();
-  const data = await client.query("SELECT NOW()");
-  client.end();
-  res.json(data.rows[0]);
+  const ds = await getDataSource();
+  const data = await ds.query("SELECT NOW()");
+  res.json(data[0]);
 });
 
 // demonstrates connection with S3
