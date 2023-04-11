@@ -177,30 +177,66 @@ _TODO_
 
 # Pruebas de Arquitectura
 
+Las pruebas de arquitectura a continuación se realizaron para confirmar una
+infraestructura funcional, con conexión adecuada entre los distintos
+componentes.
+
+El proceso es el siguiente, para cada configuración, se despliega el
+ambiente. Se confirma que el sitio sea accesible, y que por medio de la
+funcionalidad mínima implementada, éste pueda conectarse al backend.
+Por medio del backend, se confirma la función de la base de datos y
+de S3 por medio de endpoints de prueba.
+
+Para el ambiente de producción en AWS, también se prueba la carga que
+el sistema soporta. Por medio de [Locust.IO](https://locust.io/),
+se prueba la cantidad de usuarios y requests que soporta el sistema,
+realizando una variedad de requests al frontend, backend, base de datos
+y S3.
+
 ## Ambiente Local
 
-Ejecuta el script `.\dev.ps1`, el código de la rama `infra` contiene un
-mínimo de código para conectar frontend, backend y base de datos.
-
-Presiona los botones para confirmar que hay una conexión con la base
-de datos y el backend.
+Se ejecutó un ambiente local por medio del script `.\dev`. Se confirmó
+que todas las conexiones son válidas y funcionales.
 
 ## Ambiente remoto
 
-Realiza un despliegue a Fly.IO. Confirma que los botones del sitio
-despliegan información del backend. Tanto base de datos como minio
-devuelve la información.
+Se desplegó un ambiente remoto por medio de fly.io utilizando la plantilla.
+Se confirmó que todas las conexiones son válidas y funcionales.
 
 ## AWS / Producción
 
-Queremos asegurarnos que se para la arquitectura propuesta, se satisfacen
-_todos_ los requerimientos de rendimiento y resistencia.
+Se desplegó un ambiente AWS por medio de la plantilla de CloudFormation.
+El stack desplegado utilizó el mismo repositorio sin ajustes manuales.
+Se confirmó que todos los componentes se conectan correctamente.
 
-- [ ] Tiempos de carga de sitio
-- [ ] Tiempos de respuesta de API
-- [ ] Tiempos de respuesta de DB
-- [ ] Utilización de memoria correcta
-- [ ] Autoscaling configurado correctamente
+**Pruebas de carga:**
 
-**Notas:**
-1. Usar https://locust.io/ ?
+Se utilizo locust para simular una carga de usuarios generando diversas
+requests a la aplicación. La especificación de las pruebas está en el
+archivo `./ram-infra/locustfile.py`.
+
+Cada usuario simula una request del indice del sitio, una request
+sencilla a la API, así como requets a la API que a su vez se comunican
+con la base de datos y S3.
+
+Primero corremos `locust`
+```sh
+> cd ram-infra
+> locust
+```
+y accedemos a la [interfaz](http://localhost:8089). Utilizaremos un máximo de
+300 usuarios, con un spawn rate de 4 usuarios por segundo.
+
+La prueba se realizó con un despliegue con la siguiente configuración:
+```
+EC2 instances: t3.micro
+Instances: 1-2
+Auto-Scaling: default
+DB EC2 instance: db.t3.micro
+```
+
+El reporte de la prueba está [aquí](./ram-infra/locust_report.html):
+```
+Max RPS: ~250
+Sub-second response time (95th percentil): ~160 users
+```
