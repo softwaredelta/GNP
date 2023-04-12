@@ -4,8 +4,10 @@
  */
 
 import { DataSource } from "typeorm";
+import { UserEnt } from "../entities/user.entity";
 
 let dataSource: DataSource | null = null;
+const entities = [UserEnt];
 
 export async function getDataSource(): Promise<DataSource> {
   if (dataSource) {
@@ -21,6 +23,7 @@ export async function getDataSource(): Promise<DataSource> {
       database: process.env.PGDATABASE,
       username: process.env.PGUSER,
       password: process.env.PGPASSWORD,
+      entities,
     });
 
     await dataSource
@@ -42,6 +45,7 @@ export async function getDataSource(): Promise<DataSource> {
       ssl: {
         rejectUnauthorized: false,
       },
+      entities,
     });
 
     await dataSource
