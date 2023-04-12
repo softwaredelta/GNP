@@ -3,22 +3,24 @@
 import { getDataSource } from "../arch/db-client";
 import { UserEnt } from "../entities/user.entity";
 import { getS3Api } from "../arch/s3-client";
+import { createUser } from "../app/user";
 
 describe("Architecture", () => {
   it("Should have db connection", async () => {
     const db = await getDataSource();
-    const created = await db.manager.save(
-      UserEnt,
-      { email: "mail", id: "1", password: "pass" },
-      {},
-    );
+    await createUser({
+      id: "1",
+      email: "test@delta.tec.mx",
+      password: "test-password",
+    });
     const found = await db.manager.findOne(UserEnt, {
       where: {
         id: "1",
       },
       select: ["id", "email", "password"],
     });
-    expect(found).toMatchObject(created);
+    expect(found).toHaveProperty("id", "1");
+    expect(found).toHaveProperty("email", "test@delta.tec.mx");
   });
 
   it("Should have s3 connection", async () => {

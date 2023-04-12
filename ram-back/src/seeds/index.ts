@@ -7,10 +7,14 @@ import { createUser } from "../app/user";
  */
 
 export async function loadSeeds() {
-  // USERS
-  await createUser({
-    email: "test@delta.tec.mx",
-    password: "test-password",
-    id: "test-user",
-  });
+  try {
+    // USERS
+    await createUser({
+      email: "test@delta.tec.mx",
+      password: "test-password",
+      id: "test-user",
+    });
+  } catch (e) {
+    console.error(e);
+  }
 }
