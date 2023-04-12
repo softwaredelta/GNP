@@ -1,9 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { render } from "@testing-library/react";
-import App from "../App";
+import { add } from "../lib/math";
 
-test("Renders main page correctly", () => {
-  render(<App />);
-  expect(true).toBeTruthy();
+// Frontend tests _are not_ meant to test the backend!
+// Instead we should test pure components to make sure they
+// render correctly and that they handle user input correctly.
+// We can also test logic or functionality that does not depend
+// on any connections.
+
+test("Math function works correctly", () => {
+  expect(add(1, 2)).toBe(3);
 });

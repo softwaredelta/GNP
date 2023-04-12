@@ -1,37 +1,34 @@
 // (c) Delta Software 2023, rights reserved.
 
+import { useRecoilValue } from "recoil";
+import { databaseTimeSelector } from "./state/api.state";
+import { Suspense, useState } from "react";
+
+function DatabaseTimeDisplay() {
+  const time = useRecoilValue(databaseTimeSelector);
+
+  return <span className="text-center">{time}</span>;
+}
+
 function App() {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const [showTime, setShowTime] = useState(false);
 
   return (
     <div className="flex flex-col gap-4">
       <button
         onClick={() => {
-          fetch(apiUrl)
-            .then((res) => res.text())
-            .then((text) => alert(`Api says ${text}`));
+          setShowTime(!showTime);
         }}
       >
-        click me!
+        {showTime ? "Hide" : "Show"} time
       </button>
-      <button
-        onClick={() => {
-          fetch(`${apiUrl}/time`)
-            .then((res) => res.json())
-            .then(({ now }) => alert(now));
-        }}
-      >
-        get the time!
-      </button>
-      <button
-        onClick={() => {
-          fetch(`${apiUrl}/objects`)
-            .then((res) => res.json())
-            .then((json) => alert(JSON.stringify(json)));
-        }}
-      >
-        get bucket object list!
-      </button>
+      {showTime && (
+        <Suspense
+          fallback={<span className="text-center">loading time...</span>}
+        >
+          <DatabaseTimeDisplay />
+        </Suspense>
+      )}
     </div>
   );
 }
