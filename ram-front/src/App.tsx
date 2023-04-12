@@ -3,6 +3,7 @@
 import { useRecoilValue } from "recoil";
 import { databaseTimeSelector } from "./state/api.state";
 import { Suspense, useState } from "react";
+import { Button } from "./components/button";
 
 function DatabaseTimeDisplay() {
   const time = useRecoilValue(databaseTimeSelector);
@@ -15,13 +16,15 @@ function App() {
 
   return (
     <div className="flex flex-col gap-4">
-      <button
+      <Button
+        variant={showTime ? Button.Secondary : Button.Primary}
+        className="font-bold"
         onClick={() => {
           setShowTime(!showTime);
         }}
       >
         {showTime ? "Hide" : "Show"} time
-      </button>
+      </Button>
       {showTime && (
         <Suspense
           fallback={<span className="text-center">loading time...</span>}
