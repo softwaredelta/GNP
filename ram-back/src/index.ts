@@ -1,11 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
+import "reflect-metadata";
 import path from "path";
 import express, { Application } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import * as dotenv from "dotenv";
 import { router } from "./routes";
+import { getDataSource } from "./arch/db-client";
 
 // for local development, we use the env file
 if (!process.env.NODE_ENV) {
@@ -28,6 +30,13 @@ app.use((req, res) => {
 });
 
 const port = process.env.API_PORT || 8080;
-app.listen(port, (): void => {
+app.listen(port, async () => {
+  // make sure db connection is initialized
+  const ds = await getDataSource();
+  if (process.env.NODE_ENV !== "aws") {
+    // outside of production we always force sync
+    console.warn("Forcing database sync (not in production)");
+    ds.synchronize(true);
+  }
   console.log("Server listening on port " + port);
 });
