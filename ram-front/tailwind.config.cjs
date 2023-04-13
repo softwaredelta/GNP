@@ -20,6 +20,12 @@ module.exports = {
     "bg-gnp-gray-ligth",
     "bg-gnp-burly-wood",
     "bg-gnp-navajo-white",
+    "fill-gnp-primary-blue",
+    "fill-gnp-darker-blue",
+    "fill-gnp-primary-orange",
+    "fill-gnp-darker-orange",
+    "text-gnp-primary-orange",
+    "text-gnp-darker-orange",
   ],
 
   theme: {

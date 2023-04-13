@@ -15,5 +15,5 @@
 }
 
 .input-primary {
-  @apply rounded-lg border-2 border-gnp-primary-blue shadow-lg pl-3 h-12 mb-8;
+  @apply rounded-lg border-2 border-gnp-primary-blue shadow-lg pl-3 h-12 mb-8 text-base;
 }
