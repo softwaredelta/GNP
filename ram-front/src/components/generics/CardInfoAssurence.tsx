@@ -6,7 +6,7 @@ import { NumericFormat } from "react-number-format";
 export interface ICardInfoAssuranceProps {
   typeAssurance: string;
   total: number;
-  color?: string;
+  color: string;
 }
 
 function CardInfoAssurence({
