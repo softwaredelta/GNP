@@ -26,6 +26,7 @@ module.exports = {
     "fill-gnp-darker-orange",
     "text-gnp-primary-orange",
     "text-gnp-darker-orange",
+    "text-gnp-primary-blue",
   ],
 
   theme: {
