@@ -16,7 +16,7 @@ export default function Card({
   return (
     <div className="bg-gnp-white rounded-lg shadow-lg w-full grid grid-rows-2 grid-cols-1 overflow-hidden">
       <div className="w-full relative">
-        <img src={image} className=" w-full object-cover" />
+        <img src={image} className="h-full object-cover" />
         <div
           className={`absolute top-0 left-0 w-full h-full bg-gnp-${color} bg-opacity-30`}
         ></div>
