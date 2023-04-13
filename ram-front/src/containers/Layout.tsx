@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 import Wrapper from "./Wrapper";
 import CardInfoAssurence from "../components/generics/CardInfoAssurence";
 import Card from "../components/generics/Card";
@@ -42,8 +44,8 @@ function Layout({}: Props) {
               <CardInfoTopFive />
             </Card>
           </div>
-          <div className=" w-7/12 py-10"> 
-            <CarouselCard/>  
+          <div className=" w-7/12 py-10">
+            <CarouselCard />
           </div>
         </div>
       </Wrapper>
