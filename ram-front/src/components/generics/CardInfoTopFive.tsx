@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 export default function CardInfoTopFive() {
   return (
     <div className="mt-3 h-full w-full items-center justify-center rounded rounded-xl bg-gnp-white">
