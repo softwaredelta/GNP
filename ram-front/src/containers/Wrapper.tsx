@@ -8,9 +8,7 @@ const Wrapper = ({ children }: any): JSX.Element => {
   return (
     <main className="h-screen overflow-y-auto">
       <NavBar />
-      <div className="container mx-auto grid text-gnp">
-        <h1 className="text-4xl text-gnp-primary-blue">Hola Amigos</h1>
-      </div>
+      {children}
       <Foot />
     </main>
   );

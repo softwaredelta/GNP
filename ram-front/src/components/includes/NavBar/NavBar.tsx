@@ -48,9 +48,7 @@ function NavBar() {
         <Navbar.Link
           href="/"
           className="text-lg ml-2 active:bg-amber-500"
-          active={{
-            exact: true,
-          }}
+          active={true}
         >
           Home
         </Navbar.Link>
