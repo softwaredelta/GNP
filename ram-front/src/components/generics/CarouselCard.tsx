@@ -7,9 +7,9 @@ import Card from "./Card";
 
 import { IoPawSharp } from "react-icons/io5";
 
-type Props = {};
 
-const CarouselCard = (props: Props) => {
+
+const CarouselCard = () => {
   return (
     <div className="h-full">
       <Carousel>
