@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 import React from "react";
 import { Footer } from "flowbite-react";
 
