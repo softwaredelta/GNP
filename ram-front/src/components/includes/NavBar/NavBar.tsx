@@ -2,7 +2,6 @@
 
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
-
 import LogoRAM from "../../../assets/imgs/Ram_LogoInv.png";
 
 function NavBar() {
@@ -52,11 +51,11 @@ function NavBar() {
         >
           Home
         </Navbar.Link>
-        <Navbar.Link href="/navbars" className="text-lg  mx-8 ">
+        <Navbar.Link href="/navbars" className="text-lg  mx-8 text-gray-900 ">
           Grupos
         </Navbar.Link>
 
-        <div className="text-lg mx-8">
+        <div className="text-lg mx-8 text-gray-900">
           <Dropdown label="Ventas" size="xl" inline={true}>
             <Dropdown.Item>Datos Generales</Dropdown.Item>
             <Dropdown.Item>Agregar Venta</Dropdown.Item>
@@ -64,10 +63,10 @@ function NavBar() {
           </Dropdown>
         </div>
 
-        <Navbar.Link href="/prospectos" className="text-lg  mx-8">
+        <Navbar.Link href="/prospectos" className="text-lg mx-8 text-gray-900">
           Prospectos
         </Navbar.Link>
-        <div className="text-lg mx-8">
+        <div className="text-lg mx-8 text-gray-900">
           <Dropdown label="Metas" size="xl" inline={true}>
             <Dropdown.Item>Mis metas</Dropdown.Item>
             <Dropdown.Item>Agregar Metas</Dropdown.Item>
