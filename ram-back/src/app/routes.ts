@@ -1,10 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { BucketItem } from "minio";
-import { getS3Client } from "./arch/s3-client";
-import { getDataSource } from "./arch/db-client";
+import { getS3Client } from "../arch/s3-client";
+import { getDataSource } from "../arch/db-client";
 import { Router } from "express";
-import { UserEnt } from "./entities/user.entity";
+import { UserEnt } from "../entities/user.entity";
 
 export const router = Router();
 
