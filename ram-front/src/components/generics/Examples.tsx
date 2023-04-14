@@ -1,7 +1,8 @@
+// (c) Delta Software 2023, rights reserved.
+
 import Card from "./Card";
 import CardInfoAssurence from "./CardInfoAssurence";
 import CardInfoTopFive from "./CardInfoTopFive";
-import CarouselCard from "./CarouselCard";
 import ProgressBar from "./ProgressBar";
 
 import { BsHouses } from "react-icons/bs";
@@ -88,7 +89,7 @@ export default function Examples() {
       <div className=" w-7/12 py-10">
         <button className="floating-button">Hola</button>
       </div>
-      <div className=" w-7/12 py-10">{/* <CarouselCard /> */}</div>
+      <div className=" w-7/12 py-10"></div>
     </div>
   );
 }

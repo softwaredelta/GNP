@@ -1,5 +1,4 @@
-import React from "react";
-import { Progress } from "flowbite-react";
+// (c) Delta Software 2023, rights reserved.
 
 export interface IProgressBarProps {
   progress: number;
@@ -16,7 +15,6 @@ export default function ProgressBar({
   color,
   txColor,
 }: IProgressBarProps): JSX.Element {
-
   return (
     <div>
       <div className={`text-xs font-semibold text-${color}`}>{textLabel}</div>
