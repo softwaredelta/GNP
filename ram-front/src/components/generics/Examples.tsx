@@ -13,6 +13,7 @@ export default function Examples() {
       <div className=" w-7/12 py-10">
         <ProgressBar
           progress={30}
+          textLabel="Ya tienen título las progress bar"
           color="gnp-primary-blue"
           bgColor="gnp-light-blue"
           txColor="white"
