@@ -15,7 +15,7 @@ describe("Architecture", () => {
     );
     const found = await db.manager.findOne(UserEnt, {
       where: {
-        id: "1",
+        id: "0",
       },
       select: ["id", "email"],
     });
