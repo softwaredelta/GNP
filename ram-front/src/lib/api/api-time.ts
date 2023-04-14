@@ -31,8 +31,9 @@ export const apiTime$ = selector<ApiTime>({
       };
     }
 
-    const { now } = (await fetch(`${apiBase}/time`).then((r) =>
-      r.json(),
+    const { now } = (await fetch(`${apiBase}/time`).then(
+      (r) => r.json(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     )) as any;
 
     return {

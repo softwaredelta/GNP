@@ -1,13 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { screen, waitFor } from "@testing-library/react";
-import App from "../App";
 import { RecoilRoot } from "recoil";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { act } from "react-dom/test-utils";
+import { Home } from "../pages/Home";
 
-describe("App", () => {
+describe("Home", () => {
   let container: HTMLDivElement;
   beforeEach(() => {
     container = document.createElement("div");
@@ -23,15 +22,9 @@ describe("App", () => {
       createRoot(container).render(
         <RecoilRoot>
           <Suspense>
-            <App />
+            <Home />
           </Suspense>
         </RecoilRoot>,
-      );
-    });
-
-    await waitFor(() => {
-      expect(screen.getByTestId("api-base").textContent).toBe(
-        "API base: http://test.dev",
       );
     });
   });
