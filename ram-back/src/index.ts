@@ -33,10 +33,5 @@ const port = process.env.API_PORT || 8080;
 app.listen(port, async () => {
   // make sure db connection is initialized
   const ds = await getDataSource();
-  if (process.env.NODE_ENV !== "aws") {
-    // outside of production we always force sync
-    console.warn("Forcing database sync (not in production)");
-    ds.synchronize(true);
-  }
   console.log("Server listening on port " + port);
 });
