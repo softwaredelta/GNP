@@ -15,6 +15,8 @@
 
 import * as Minio from "minio";
 import { fromInstanceMetadata } from "@aws-sdk/credential-providers";
+import { UploadedObjectInfo } from "minio";
+import { Readable } from "stream";
 
 // config variable, store client and bucket name
 export interface S3Config {
@@ -62,12 +64,60 @@ async function makeMinioClient(
   return { client, bucket };
 }
 
+function makeTestS3Client(): S3Config {
+  const objects = new Map<string, Buffer>();
+  const client = new Object() as Minio.Client;
+
+  // TODO:
+  // - add options to fail on certain conditions
+  // - add options to return certain data
+  client.putObject = async function putObject(
+    bucketName: string,
+    objectName: string,
+    _stream: string | Readable | Buffer,
+  ): Promise<UploadedObjectInfo> {
+    if (typeof _stream === "string") {
+      objects.set(objectName, Buffer.from(_stream));
+    } else if (_stream instanceof Buffer) {
+      objects.set(objectName, _stream);
+    } else {
+      const buf = [];
+      for await (const chunk of _stream) {
+        buf.push(chunk);
+      }
+      objects.set(objectName, Buffer.concat(buf));
+    }
+    return new Object() as UploadedObjectInfo;
+  };
+
+  client.getObject = async function getObject(
+    bucketName: string,
+    objectName: string,
+  ): Promise<Readable> {
+    if (!objects.has(objectName)) {
+      throw new Error("Object not found");
+    }
+
+    const stream = new Readable();
+    stream.push(objects.get(objectName));
+    stream.push(null);
+    return stream;
+  };
+
+  return {
+    client,
+    bucket: "test-bucket",
+  };
+}
+
 export async function getS3Client(): Promise<S3Config> {
   if (s3Config) {
     return s3Config;
   }
 
-  if (process.env.NODE_ENV === "aws") {
+  if (process.env.NODE_ENV === "test") {
+    s3Config = makeTestS3Client();
+  } else if (process.env.NODE_ENV === "aws") {
     s3Config = await makeAwsS3Client();
   } else if (process.env.NODE_ENV === "remote") {
     s3Config = await makeMinioClient(
