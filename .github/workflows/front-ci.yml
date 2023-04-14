@@ -28,7 +28,12 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd ./ram-front
-    - run: yarn install
-    - run: yarn lint
-    - run: yarn test
+    - name: Install
+      working-directory: ./ram-front
+      run: yarn install
+    - name: Lint
+      working-directory: ./ram-front
+      run: yarn lint
+    - name: Test
+      working-directory: ./ram-front
+      run: yarn test
