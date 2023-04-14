@@ -30,6 +30,27 @@ export async function getDataSource(): Promise<DataSource> {
       .initialize()
       .then(() => console.info("Using local/remote DataSource connection"));
 
+    console.warn("Forcing database sync (docker)");
+    await dataSource.synchronize(true);
+
+    return dataSource;
+  }
+
+  if (process.env.NODE_ENV === "test") {
+    // test uses a local in-memory database
+    dataSource = new DataSource({
+      type: "sqlite",
+      database: ":memory:",
+      dropSchema: true,
+      entities,
+    });
+
+    await dataSource
+      .initialize()
+      .then(() => console.info("Using test DataSource connection"));
+
+    await dataSource.synchronize(true);
+
     return dataSource;
   }
 
