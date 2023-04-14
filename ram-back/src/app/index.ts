@@ -13,7 +13,7 @@ import { getDataSource } from "../arch/db-client";
 if (!process.env.NODE_ENV) {
   console.info("Using local .env.development file");
   dotenv.config({
-    path: path.resolve(__dirname, "../../.env.development"),
+    path: path.resolve(__dirname, "../../../.env.development"),
   });
 }
 
