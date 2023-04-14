@@ -5,7 +5,7 @@ export interface IProgressBarProps {
   textLabel?: string;
   bgColor?: string;
   color?: string;
-  txColor: string;
+  txColor?: string;
 }
 
 export default function ProgressBar({
