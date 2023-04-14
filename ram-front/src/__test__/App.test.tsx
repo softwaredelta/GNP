@@ -1,13 +1,38 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { add } from "../lib/math";
+import { screen, waitFor } from "@testing-library/react";
+import App from "../App";
+import { RecoilRoot } from "recoil";
+import { Suspense } from "react";
+import { createRoot } from "react-dom/client";
+import { act } from "react-dom/test-utils";
 
-// Frontend tests _are not_ meant to test the backend!
-// Instead we should test pure components to make sure they
-// render correctly and that they handle user input correctly.
-// We can also test logic or functionality that does not depend
-// on any connections.
+describe("App", () => {
+  let container: HTMLDivElement;
+  beforeEach(() => {
+    container = document.createElement("div");
+    document.body.appendChild(container);
+  });
+  afterEach(() => {
+    document.body.removeChild(container);
+    container.remove();
+  });
 
-test("Math function works correctly", () => {
-  expect(add(1, 2)).toBe(3);
+  it("renders api url", async () => {
+    act(() => {
+      createRoot(container).render(
+        <RecoilRoot>
+          <Suspense>
+            <App />
+          </Suspense>
+        </RecoilRoot>,
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("api-base").textContent).toBe(
+        "API base: http://test.dev",
+      );
+    });
+  });
 });
