@@ -3,12 +3,11 @@
 import Wrapper from "./Wrapper";
 import Examples from "../components/generics/Examples";
 
-
 function Layout() {
   return (
     <>
       <Wrapper>
-        <Examples/>
+        <Examples />
       </Wrapper>
     </>
   );
