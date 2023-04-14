@@ -1,6 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
 
-import "reflect-metadata";
 import { getDataSource } from "../arch/db-client";
 import { UserEnt } from "../entities/user.entity";
 import { getS3Client } from "../arch/s3-client";
