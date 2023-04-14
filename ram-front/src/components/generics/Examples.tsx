@@ -4,6 +4,7 @@ import Card from "./Card";
 import CardInfoAssurence from "./CardInfoAssurence";
 import CardInfoTopFive from "./CardInfoTopFive";
 import ProgressBar from "./ProgressBar";
+import PageTitle from "./PageTitle";
 
 import { BsHouses } from "react-icons/bs";
 import { IoPawSharp } from "react-icons/io5";
@@ -26,6 +27,9 @@ export default function Examples() {
           bgColor="gnp-light-orange"
           txColor="white"
         />
+      </div>
+      <div className=" w-7/12 py-10">
+        <PageTitle text="Título de página" />
       </div>
       <div className="w-40">
         <button className="btn-primary">Botón primario</button>
