@@ -2,7 +2,6 @@
 
 import { Footer } from "flowbite-react";
 import wavesRAM from "../../../assets/imgs/wavesRAM.png";
-
 function Foot() {
   return (
     <Footer container={false}>

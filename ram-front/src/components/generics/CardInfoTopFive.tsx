@@ -25,7 +25,7 @@ export default function CardInfoTopFive({
       </h2>
       <div className="mt-2 mx-auto flex flex-col items-center justify-center text-sm w-10/12">
         {top.map((item, index) => (
-          <div className="flex justify-between w-full">
+          <div key={index} className="flex justify-between w-full">
             <div className={`font-bold text-gnp-${color}`}>{index + 1}.-</div>
             <div>{item.name}</div>
             <div className={`font-bold text-gnp-${color}`}>
