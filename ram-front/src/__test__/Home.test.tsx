@@ -1,10 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { RecoilRoot } from "recoil";
-import { Suspense } from "react";
-import { createRoot } from "react-dom/client";
-import { act } from "react-dom/test-utils";
+import { testRender } from "./fixture";
 import { Home } from "../pages/Home";
+import { screen, waitFor } from "@testing-library/react";
+import { auth$ } from "../lib/auth/auth";
 
 describe("Home", () => {
   let container: HTMLDivElement;
@@ -17,15 +16,15 @@ describe("Home", () => {
     container.remove();
   });
 
-  it("renders api url", async () => {
-    act(() => {
-      createRoot(container).render(
-        <RecoilRoot>
-          <Suspense>
-            <Home />
-          </Suspense>
-        </RecoilRoot>,
-      );
+  describe("when authenticated", () => {
+    it("renders correctly", () => {
+      testRender(container, <Home />, (state) => {
+        state.set(auth$, { username: "test", accessToken: "test" });
+      });
+
+      waitFor(() => {
+        expect(screen.getByText("Home")).toBeInTheDocument();
+      });
     });
   });
 });
