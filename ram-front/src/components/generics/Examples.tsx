@@ -11,7 +11,7 @@ import { IoPawSharp } from "react-icons/io5";
 
 export default function Examples() {
   return (
-    <div className="w-full min-h-[50vh] grid grid-cols-3 place-items-center py-20">
+    <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center py-20">
       <div className=" w-7/12 py-10">
         <ProgressBar
           progress={30}
@@ -84,8 +84,13 @@ export default function Examples() {
       <div className=" w-7/12 py-10">
         <button className="floating-button">Hola</button>
       </div>
-      <div className="col-span-3 w-10/12 mx-auto">
-        <DeliveryCard color="blue" /> 
+      <div className="md:col-span-3 ">
+        <DeliveryCard
+          color="blue"
+          nameDelivery="Nombre de la entrega"
+          status="Sin enviar"
+          image="https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg"
+        />
       </div>
     </div>
   );
