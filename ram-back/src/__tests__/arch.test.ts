@@ -9,14 +9,14 @@ describe("Architecture", () => {
     const db = await getDataSource();
     const created = await db.manager.save(
       UserEnt,
-      { email: "mail", id: "1" },
+      { email: "mail", id: "1", password: "pass" },
       {},
     );
     const found = await db.manager.findOne(UserEnt, {
       where: {
         id: "1",
       },
-      select: ["id", "email"],
+      select: ["id", "email", "password"],
     });
     expect(found).toMatchObject(created);
   });
