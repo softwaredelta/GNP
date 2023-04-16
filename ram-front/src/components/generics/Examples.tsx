@@ -8,10 +8,11 @@ import ProgressBar from "./ProgressBar";
 
 import { BsHouses } from "react-icons/bs";
 import { IoPawSharp } from "react-icons/io5";
+import DropZone from "./DropZone";
 
 export default function Examples() {
   return (
-    <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center py-20">
+    <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center gap-10 py-20">
       <div className=" w-7/12 py-10">
         <ProgressBar
           progress={30}
@@ -58,23 +59,23 @@ export default function Examples() {
             top={[
               {
                 name: "Alfonso Cuarón",
-                amount: 200000,
+                amount: 20000,
               },
               {
                 name: "Alfonso Cuarón",
-                amount: 200000,
+                amount: 20000,
               },
               {
                 name: "Alfonso Cuarón",
-                amount: 200000,
+                amount: 20000,
               },
               {
                 name: "Alfonso Cuarón",
-                amount: 200000,
+                amount: 20000,
               },
               {
                 name: "Alfonso Cuarón",
-                amount: 200000,
+                amount: 20000,
               },
             ]}
           />
@@ -91,6 +92,9 @@ export default function Examples() {
           status="Sin enviar"
           image="https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg"
         />
+      </div>
+      <div className="w-10/12">
+        <DropZone />
       </div>
     </div>
   );
