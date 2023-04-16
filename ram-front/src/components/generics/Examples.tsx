@@ -11,8 +11,12 @@ import CardInfoGroup from "./cards/info/CardInfoGroup";
 import { BsHouses } from "react-icons/bs";
 import { RiPencilFill } from "react-icons/ri";
 import { IoPawSharp } from "react-icons/io5";
+import Modal from "./Modal";
+import useModal from "../../hooks/useModal";
 
 export default function Examples() {
+  const { isOpen, toggleModal } = useModal();
+
   return (
     <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center gap-10 py-20">
       <div className=" w-7/12 py-10">
@@ -119,6 +123,30 @@ export default function Examples() {
             />
           </Card>
         </button>
+      </div>
+      <div>
+        <button className="btn-secondary" onClick={toggleModal}>
+          {" "}
+          Abrir modal
+        </button>
+        {isOpen && (
+          <Modal closeModal={toggleModal}>
+            <div>
+              <h1 className="text-2xl font-bold text-center">Hola mundo</h1>
+              <p className="text-center">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Quisquam, quod.
+              </p>
+              <div>
+                <h3 className="font-bold text-center py-5">Miren un gatito:</h3>
+              </div>
+              <img
+                src="https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg"
+                alt="un gatito"
+              />
+            </div>
+          </Modal>
+        )}
       </div>
     </div>
   );
