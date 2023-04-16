@@ -3,7 +3,7 @@ import { NumericFormat } from "react-number-format";
 
 export interface CardInfoTopFiveProps {
   typeAssurance: string;
-  color: string;
+  color: "blue" | "orange";
   top: {
     name: string;
     amount: number;
@@ -15,6 +15,10 @@ export default function CardInfoTopFive({
   color,
   top,
 }: CardInfoTopFiveProps): JSX.Element {
+  const colorOptions = {
+    blue: "text-gnp-blue-500",
+    orange: "text-gnp-orange-500",
+  };
   return (
     <div className="mt-3 h-full w-full items-center justify-center rounded rounded-xl bg-gnp-white">
       <h1 className=" text-center text-2xl font-bold text-black">
@@ -26,9 +30,11 @@ export default function CardInfoTopFive({
       <div className="mt-2 mx-auto flex flex-col items-center justify-center text-sm w-10/12">
         {top.map((item, index) => (
           <div key={index} className="flex justify-between w-full">
-            <div className={`font-bold text-gnp-${color}`}>{index + 1}.-</div>
+            <div className={`font-bold ${colorOptions[color]}`}>
+              {index + 1}.-
+            </div>
             <div>{item.name}</div>
-            <div className={`font-bold text-gnp-${color}`}>
+            <div className={`font-bold ${colorOptions[color]}`}>
               <NumericFormat
                 value={item.amount}
                 displayType={"text"}

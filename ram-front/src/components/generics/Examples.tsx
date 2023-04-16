@@ -1,10 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 
 import Card from "./cards/base/Card";
+import DeliveryCard from "./cards/DeliveryCard";
 import CardInfoAssurence from "./cards/info/CardInfoAssurence";
 import CardInfoTopFive from "./cards/info/CardInfoTopFive";
 import ProgressBar from "./ProgressBar";
-// import PageTitle from "./PageTitle";
 
 import { BsHouses } from "react-icons/bs";
 import { IoPawSharp } from "react-icons/io5";
@@ -16,20 +16,10 @@ export default function Examples() {
         <ProgressBar
           progress={30}
           textLabel="Ya tienen título las progress bar"
-          color="gnp-primary-blue"
-          bgColor="gnp-light-blue"
-          txColor="white"
+          color="orange"
         />
 
-        <ProgressBar
-          progress={80}
-          color="gnp-primary-orange"
-          bgColor="gnp-light-orange"
-          txColor="white"
-        />
-      </div>
-      <div className=" w-7/12 py-10">
-        {/* <PageTitle text="Título de página" /> */}
+        <ProgressBar progress={80} color="blue" />
       </div>
       <div className="w-40">
         <button className="btn-primary">Botón primario</button>
@@ -46,12 +36,12 @@ export default function Examples() {
       <div className="col-start-1 w-7/12 py-10">
         <Card
           image="https://imgs.search.brave.com/muR0HGm76B6gbdiwyaBULBApAqvAdlWv2aHFAsQYVUw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvNTA4/OTUyOC5qcGc"
-          color="primary-orange"
+          color="orange"
           icon={<BsHouses color="white" size={30} />}
         >
           <CardInfoAssurence
             typeAssurance="Seguro de hogar"
-            color="primary-orange"
+            color="orange"
             total={2000000}
           />
         </Card>
@@ -59,12 +49,12 @@ export default function Examples() {
       <div className=" w-8/12 py-10">
         <Card
           image="https://animals.sandiegozoo.org/sites/default/files/2020-08/black-footed.jpg"
-          color="primary-blue"
+          color="blue"
           icon={<IoPawSharp color="white" size={30} />}
         >
           <CardInfoTopFive
             typeAssurance="Seguro de mascotas"
-            color="primary-blue"
+            color="blue"
             top={[
               {
                 name: "Alfonso Cuarón",
@@ -90,10 +80,13 @@ export default function Examples() {
           />
         </Card>
       </div>
+
       <div className=" w-7/12 py-10">
         <button className="floating-button">Hola</button>
       </div>
-      <div className=" w-7/12 py-10"></div>
+      <div className="col-span-3 w-10/12 mx-auto">
+        <DeliveryCard color="blue" /> 
+      </div>
     </div>
   );
 }
