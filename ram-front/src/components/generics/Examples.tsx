@@ -5,11 +5,12 @@ import DeliveryCard from "./cards/DeliveryCard";
 import CardInfoAssurence from "./cards/info/CardInfoAssurence";
 import CardInfoTopFive from "./cards/info/CardInfoTopFive";
 import ProgressBar from "./ProgressBar";
-
-import { BsHouses } from "react-icons/bs";
-import { IoPawSharp } from "react-icons/io5";
 import DropZone from "./DropZone";
 import CardInfoGroup from "./cards/info/CardInfoGroup";
+
+import { BsHouses } from "react-icons/bs";
+import { RiPencilFill } from "react-icons/ri";
+import { IoPawSharp } from "react-icons/io5";
 
 export default function Examples() {
   return (
@@ -83,8 +84,13 @@ export default function Examples() {
         </Card>
       </div>
 
-      <div className=" w-7/12 py-10">
-        <button className="floating-button">Hola</button>
+      <div className=" w-full grid grid-cols-2 gap-10 p-12">
+        <button className="floating-button-primary">
+          {<RiPencilFill size={50} />}
+        </button>
+        <button className="floating-button-secondary">
+          {<RiPencilFill size={50} />}
+        </button>
       </div>
       <div className="md:col-span-3 ">
         <DeliveryCard

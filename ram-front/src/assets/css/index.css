@@ -18,6 +18,9 @@
   @apply rounded-lg border-2 border-gnp-blue-500 shadow-lg pl-3 h-12 mb-8 text-base;
 }
 
-.floating-button {
-  @apply w-[50%] bg-gnp-blue-500 text-white rounded-full shadow-lg hover:scale-105 hover:bg-gnp-blue-700 transition duration-300 ease-in-out active:scale-95;
+.floating-button-primary {
+  @apply w-full aspect-square flex items-center justify-center bg-gnp-blue-500 text-white rounded-full shadow-lg hover:scale-105 hover:bg-gnp-blue-700 transition duration-300 ease-in-out active:scale-95;
+}
+.floating-button-secondary {
+  @apply w-full aspect-square flex items-center justify-center bg-gnp-orange-500 text-white rounded-full shadow-lg hover:scale-105 hover:bg-gnp-orange-700 transition duration-300 ease-in-out active:scale-95;
 }
