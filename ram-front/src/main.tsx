@@ -7,6 +7,7 @@ import { RecoilRoot } from "recoil";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { InfraTest } from "./pages/InfraTest";
+import Examples from "./components/generics/Examples";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/infra" element={<InfraTest />} />
+            <Route path="/components" element={<Examples />} />
             <Route path="*" element={<h1>404</h1>} />
           </Routes>
         </BrowserRouter>
