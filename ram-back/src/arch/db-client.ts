@@ -35,6 +35,12 @@ export async function getDataSource(): Promise<DataSource> {
     );
     await dataSource.synchronize(true);
 
+    // On local development we want to initialize seeds
+    if (!process.env.NODE_ENV) {
+      console.warn("Loading seeds...");
+      await loadSeeds();
+    }
+
     return dataSource;
   }
 
