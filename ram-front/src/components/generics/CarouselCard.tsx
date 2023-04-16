@@ -1,8 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Carousel } from "flowbite-react";
-import CardInfoTopFive from "./CardInfoTopFive";
-import Card from "./Card";
+import CardInfoTopFive from "./cards/info/CardInfoTopFive";
+import Card from "./cards/base/Card";
 
 import { IoPawSharp } from "react-icons/io5";
 
