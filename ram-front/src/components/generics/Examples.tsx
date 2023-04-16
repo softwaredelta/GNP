@@ -1,8 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
-import Card from "./Card";
-import CardInfoAssurence from "./CardInfoAssurence";
-import CardInfoTopFive from "./CardInfoTopFive";
+import Card from "./cards/base/Card";
+import CardInfoAssurence from "./cards/info/CardInfoAssurence";
+import CardInfoTopFive from "./cards/info/CardInfoTopFive";
 import ProgressBar from "./ProgressBar";
 // import PageTitle from "./PageTitle";
 

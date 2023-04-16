@@ -2,9 +2,9 @@
 
 export interface ICardProps {
   children: React.ReactNode;
-  image?: string;
+  image: string;
   icon?: React.ReactNode;
-  color?: string;
+  color: string;
 }
 
 export default function Card({
@@ -20,11 +20,13 @@ export default function Card({
         <div
           className={`absolute top-0 left-0 w-full h-full bg-gnp-${color} bg-opacity-30`}
         ></div>
-        <div
-          className={`absolute bottom-0 left-0 right-0 mx-auto translate-y-7 w-14 h-14 flex items-center  rounded-full bg-gnp-${color} bg-opacity-80 justify-center`}
-        >
-          {icon}
-        </div>
+        {icon && (
+          <div
+            className={`absolute bottom-0 left-0 right-0 mx-auto translate-y-7 w-14 h-14 flex items-center  rounded-full bg-${color}  justify-center`}
+          >
+            {icon}
+          </div>
+        )}
       </div>
       <div className="bg-gnp-white p-4 w-full">{children}</div>
     </div>
