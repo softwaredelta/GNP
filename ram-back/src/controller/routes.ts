@@ -4,7 +4,7 @@ import { BucketItem } from "minio";
 import { getS3Client } from "../arch/s3-client";
 import { getDataSource } from "../arch/db-client";
 import { Router } from "express";
-import { UserEnt } from "../entities/user.entity";
+import { authRouter } from "./user";
 
 export const router = Router();
 
@@ -32,16 +32,4 @@ router.get("/objects", async (_req, res) => {
   objects.on("end", () => res.json(d));
 });
 
-router.post("/user", async (req, res) => {
-  const ds = await getDataSource();
-  const { email } = req.body;
-  const id = Math.random().toString(36).substring(7);
-  const user = await ds.manager.save(UserEnt, { id, email });
-  res.json(user);
-});
-
-router.get("/user", async (req, res) => {
-  const ds = await getDataSource();
-  const users = await ds.manager.find(UserEnt);
-  res.json(users);
-});
+router.use("/user", authRouter);

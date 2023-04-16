@@ -5,6 +5,7 @@
 
 import { DataSource } from "typeorm";
 import { UserEnt } from "../entities/user.entity";
+import { loadSeeds } from "../seeds";
 
 let dataSource: DataSource | null = null;
 const entities = [UserEnt];
@@ -32,6 +33,12 @@ export async function getDataSource(): Promise<DataSource> {
 
     console.warn("Forcing database sync (docker)");
     await dataSource.synchronize(true);
+
+    // On local development we want to initialize seeds
+    if (!process.env.NODE_ENV) {
+      console.warn("Loading seeds...");
+      await loadSeeds();
+    }
 
     return dataSource;
   }
