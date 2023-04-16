@@ -12,12 +12,12 @@ const CarouselCard = () => {
       <Carousel>
         <Card
           image="https://imgs.search.brave.com/muR0HGm76B6gbdiwyaBULBApAqvAdlWv2aHFAsQYVUw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvNTA4/OTUyOC5qcGc"
-          color="primary-blue"
+          color="blue"
           icon={<IoPawSharp color="white" size={30} />}
         >
           <CardInfoTopFive
             typeAssurance="Seguro de mascotas"
-            color="primary-blue"
+            color="blue"
             top={[
               {
                 name: "Alfonso Cuarón",
@@ -32,12 +32,12 @@ const CarouselCard = () => {
         </Card>
         <Card
           image="https://imgs.search.brave.com/muR0HGm76B6gbdiwyaBULBApAqvAdlWv2aHFAsQYVUw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvNTA4/OTUyOC5qcGc"
-          color="primary-orange"
+          color="orange"
           icon={<IoPawSharp color="white" size={30} />}
         >
           <CardInfoTopFive
             typeAssurance="Seguro de mascotas"
-            color="primary-blue"
+            color="blue"
             top={[
               {
                 name: "Alfonso Cuarón",
@@ -52,12 +52,12 @@ const CarouselCard = () => {
         </Card>
         <Card
           image="https://imgs.search.brave.com/muR0HGm76B6gbdiwyaBULBApAqvAdlWv2aHFAsQYVUw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvNTA4/OTUyOC5qcGc"
-          color="light-orange"
+          color="orange"
           icon={<IoPawSharp color="white" size={30} />}
         >
           <CardInfoTopFive
             typeAssurance="Seguro de mascotas"
-            color="primary-blue"
+            color="blue"
             top={[
               {
                 name: "Alfonso Cuarón",
