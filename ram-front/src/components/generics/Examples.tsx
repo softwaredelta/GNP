@@ -9,6 +9,7 @@ import ProgressBar from "./ProgressBar";
 import { BsHouses } from "react-icons/bs";
 import { IoPawSharp } from "react-icons/io5";
 import DropZone from "./DropZone";
+import CardInfoGroup from "./cards/info/CardInfoGroup";
 
 export default function Examples() {
   return (
@@ -34,7 +35,7 @@ export default function Examples() {
       <div className="w-40">
         <button className="btn-disabled">Hola amigos</button>
       </div>
-      <div className="col-start-1 w-7/12 py-10">
+      <div className="col-start-1 w-8/12 py-10">
         <Card
           image="https://imgs.search.brave.com/muR0HGm76B6gbdiwyaBULBApAqvAdlWv2aHFAsQYVUw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvNTA4/OTUyOC5qcGc"
           color="orange"
@@ -95,6 +96,23 @@ export default function Examples() {
       </div>
       <div className="w-10/12">
         <DropZone />
+      </div>
+      <div className="w-7/12">
+        <button
+          className="hover:scale-105 transition-all ease-in-out active:scale-95 cursor-pointer"
+          onClick={() => alert("Redireccionando al grupo ...")}
+        >
+          <Card
+            color="blue"
+            image="https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg"
+          >
+            <CardInfoGroup
+              color="blue"
+              nameGroup="Los novinos chidos"
+              progress={50}
+            />
+          </Card>
+        </button>
       </div>
     </div>
   );
