@@ -1,15 +1,20 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { atom, selectorFamily } from "recoil";
-import { isTest$ } from "./api-base";
+import { apiBase$, isTest$ } from "./api-base";
 import { createContext, useContext } from "react";
 
-const IS_MOCK = true;
+export interface Authentication {
+  accessToken: string;
+  accessTokenExpiresAt: string;
+  refreshToken: string;
+  refreshTokenExpiresAt: string;
+  username: string;
+  userRole: string;
+}
 
-export interface AuthenticationState {
-  auth: null | {
-    accessToken: string;
-  };
+export interface AuthenticationError {
+  message: string;
 }
 
 export interface AuthenticationParams {
@@ -18,17 +23,31 @@ export interface AuthenticationParams {
 }
 
 export interface AuthenticationApi {
-  state: AuthenticationState;
+  auth: Authentication | null;
+  authError: AuthenticationError | null;
   isAuthenticated: boolean;
+  hasError: boolean;
   authenticate: (params: AuthenticationParams) => void;
   logout: () => void;
+  refresh: () => void;
 }
 
-export const authenticationState$ = atom<AuthenticationState>({
-  key: "authenticationState",
-  default: {
-    auth: null,
-  },
+export const AuthenticationContext = createContext({} as AuthenticationApi);
+
+export const useAuthentication = () => {
+  return useContext(AuthenticationContext);
+};
+
+// implementation
+
+const authentication$ = atom<Authentication | null>({
+  key: "authentication",
+  default: null,
+});
+
+const authenticationError$ = atom<AuthenticationError | null>({
+  key: "authenticationError",
+  default: null,
 });
 
 export const authenticationApi$ = selectorFamily<
@@ -39,40 +58,52 @@ export const authenticationApi$ = selectorFamily<
   get:
     ({ hash }) =>
     ({ get, getCallback }): AuthenticationApi => {
-      const state = get(authenticationState$);
-      const isAuthenticated = !!state.auth;
+      const auth = get(authentication$);
+      const authError = get(authenticationError$);
+      const apiBase = get(apiBase$);
       const isTest = get(isTest$);
 
       const authenticate = getCallback(
         ({ set }) =>
           ({ username, password }: AuthenticationParams) => {
-            if (isTest || IS_MOCK) {
-              set(authenticationState$, {
-                auth: {
-                  accessToken: `${username}:${password}`,
-                },
+            if (isTest) {
+              if (username !== password) {
+                set(authenticationError$, {
+                  message: "Invalid username or password",
+                });
+                return;
+              }
+
+              set(authentication$, {
+                accessToken: "accessToken",
+                accessTokenExpiresAt: "accessTokenExpiresAt",
+                refreshToken: "refreshToken",
+                refreshTokenExpiresAt: "refreshTokenExpiresAt",
+                username: "username",
+                userRole: "userRole",
               });
+              set(authenticationError$, null);
+
+              return;
             }
+
+            throw new Error("Not implemented");
           },
       );
 
       const logout = getCallback(({ set }) => () => {
-        set(authenticationState$, {
-          auth: null,
-        });
+        set(authentication$, null);
+        set(authenticationError$, null);
       });
 
       return {
-        state,
-        isAuthenticated,
+        auth,
+        authError,
+        isAuthenticated: auth !== null,
+        hasError: authError !== null,
         authenticate,
         logout,
+        refresh: () => {},
       };
     },
 });
-
-export const AuthenticationContext = createContext({} as AuthenticationApi);
-
-export const useAuthentication = () => {
-  return useContext(AuthenticationContext);
-};

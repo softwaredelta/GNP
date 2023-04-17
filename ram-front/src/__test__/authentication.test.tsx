@@ -56,5 +56,29 @@ describe("authentication", () => {
         expect(test.authentication.isAuthenticated).toBe(true);
       });
     });
+
+    it("handles bad credentials", async () => {
+      const test = new RenderTest("authentication-2", <AppRouter />, root);
+      await test.start();
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/login");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(false);
+      });
+
+      act(() => {
+        test.authentication.authenticate({
+          username: "test",
+          password: "error",
+        });
+      });
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/login");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(false);
+      });
+    });
   });
 });
