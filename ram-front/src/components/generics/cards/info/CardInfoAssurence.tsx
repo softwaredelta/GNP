@@ -30,10 +30,10 @@ function CardInfoAssurence({
       <div className="flex items-center justify-center mt-3">
         <FaWallet
           size={25}
-          className={`${colorOptions[color]["icon"]} mt-2 mr-4`}
+          className={`${colorOptions[color].icon} mt-2 mr-4`}
         />
         <h3
-          className={`text-center mt-2 font-bold text-lg ${colorOptions[color]["text"]}`}
+          className={`text-center mt-2 font-bold text-lg ${colorOptions[color].text}`}
         >
           <NumericFormat
             value={total}

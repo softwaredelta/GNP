@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 import { useState } from "react";
 
 export interface UseModalReturn {
@@ -5,9 +7,7 @@ export interface UseModalReturn {
   toggleModal: () => void;
 }
 
-export default function useModal(
-  initialState: boolean = false,
-): UseModalReturn {
+export default function useModal(initialState = false): UseModalReturn {
   const [isOpen, setIsOpen] = useState(initialState);
 
   const toggleModal = () => {
