@@ -3,6 +3,7 @@
 import {
   atom,
   selectorFamily,
+  useRecoilState,
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
@@ -88,9 +89,10 @@ export const authenticationApi$ = selectorFamily<
 
               set(authentication$, {
                 accessToken: "accessToken",
-                accessTokenExpiresAt: 0,
+                accessTokenExpiresAt: new Date().getTime() + 60 * 1000,
                 refreshToken: "refreshToken",
-                refreshTokenExpiresAt: 0,
+                refreshTokenExpiresAt:
+                  new Date().getTime() + 24 * 60 * 60 * 1000,
                 username: "username",
                 userRole: "userRole",
               });
@@ -143,6 +145,7 @@ export const authenticationApi$ = selectorFamily<
             set(authentication$, {
               ...auth,
               accessToken: "refreshedAccessToken",
+              accessTokenExpiresAt: new Date().getTime() + 60 * 1000,
             });
           }
 
@@ -181,6 +184,7 @@ export const authenticationApi$ = selectorFamily<
       const logout = getCallback(({ set }) => () => {
         set(authentication$, null);
         set(authenticationError$, null);
+        localStorage.removeItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
       });
 
       return {
@@ -197,9 +201,10 @@ export const authenticationApi$ = selectorFamily<
 
 export function AuthenticationHanler() {
   const isTest = useRecoilValue(isTest$);
-  const setAuthentication = useSetRecoilState(authentication$);
+  const [authentication, setAuthentication] = useRecoilState(authentication$);
   const setAuthenticationError = useSetRecoilState(authenticationError$);
   const [isInitialized, setIsInitialized] = useState(false);
+  const { refresh } = useAuthentication();
 
   useEffect(() => {
     if (isInitialized) return;
@@ -232,6 +237,26 @@ export function AuthenticationHanler() {
 
     setIsInitialized(true);
   }, [isInitialized, isTest, setAuthentication, setAuthenticationError]);
+
+  useEffect(() => {
+    if (!authentication) return;
+
+    const { accessTokenExpiresAt } = authentication;
+    if (accessTokenExpiresAt < Date.now()) return;
+    const timeForRefresh = accessTokenExpiresAt - Date.now();
+    if (timeForRefresh <= 0) {
+      refresh();
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      refresh();
+    }, timeForRefresh);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [authentication, , refresh]);
 
   return <></>;
 }
