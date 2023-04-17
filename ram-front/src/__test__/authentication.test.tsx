@@ -81,4 +81,40 @@ describe("authentication", () => {
       });
     });
   });
+
+  describe("when user is authenticated", () => {
+    it("handles logout correctly", async () => {
+      const test = new RenderTest("authentication-3", <AppRouter />, root);
+      await test.start();
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/login");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(false);
+      });
+
+      act(() => {
+        test.authentication.authenticate({
+          username: "test",
+          password: "test",
+        });
+      });
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(true);
+      });
+
+      act(() => {
+        test.authentication.logout();
+      });
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/login");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(false);
+      });
+    });
+  });
 });
