@@ -5,7 +5,7 @@ ENV TZ=America/Mexico_City
 ENV LANG=en_US.UTF-8
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y
+    apt-get install -y \
         --no-install-recommends \
         curl \
         wget \
