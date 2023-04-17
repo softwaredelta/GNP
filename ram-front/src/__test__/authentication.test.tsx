@@ -4,6 +4,7 @@ import { Root, createRoot } from "react-dom/client";
 import { act, waitFor } from "@testing-library/react";
 import { AppRouter } from "../pages";
 import { RenderTest } from "./fixtures";
+import { LOCAL_STORAGE_REFRESK_TOKEN_KEY } from "../lib/api/api-auth";
 
 describe("authentication", () => {
   let container: HTMLDivElement;
@@ -114,6 +115,29 @@ describe("authentication", () => {
         expect(document.location.pathname).toBe("/login");
         expect(test.authentication).not.toBeNull();
         expect(test.authentication.isAuthenticated).toBe(false);
+      });
+    });
+  });
+
+  describe("when local storage has refresh token", () => {
+    beforeEach(() => {
+      localStorage.clear();
+    });
+
+    it("authenticates with valid token", async () => {
+      localStorage.setItem(
+        LOCAL_STORAGE_REFRESK_TOKEN_KEY,
+        "valid-refresh-token",
+      );
+
+      const test = new RenderTest("authentication-4", <AppRouter />, root);
+      await test.start();
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(true);
+        expect(test.authentication.hasError).toBe(false);
       });
     });
   });

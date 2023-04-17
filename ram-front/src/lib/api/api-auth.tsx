@@ -1,14 +1,21 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { atom, selectorFamily } from "recoil";
+import {
+  atom,
+  selectorFamily,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+
+export const LOCAL_STORAGE_REFRESK_TOKEN_KEY = "refreshToken";
 
 export interface Authentication {
   accessToken: string;
-  accessTokenExpiresAt: string;
+  accessTokenExpiresAt: number;
   refreshToken: string;
-  refreshTokenExpiresAt: string;
+  refreshTokenExpiresAt: number;
   username: string;
   userRole: string;
 }
@@ -76,9 +83,9 @@ export const authenticationApi$ = selectorFamily<
 
               set(authentication$, {
                 accessToken: "accessToken",
-                accessTokenExpiresAt: "accessTokenExpiresAt",
+                accessTokenExpiresAt: 0,
                 refreshToken: "refreshToken",
-                refreshTokenExpiresAt: "refreshTokenExpiresAt",
+                refreshTokenExpiresAt: 0,
                 username: "username",
                 userRole: "userRole",
               });
@@ -107,3 +114,45 @@ export const authenticationApi$ = selectorFamily<
       };
     },
 });
+
+export function AuthenticationHanler() {
+  const isTest = useRecoilValue(isTest$);
+  const setAuthentication = useSetRecoilState(authentication$);
+  const setAuthenticationError = useSetRecoilState(authenticationError$);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    if (isInitialized) return;
+
+    (async () => {
+      const refreshToken = localStorage.getItem(
+        LOCAL_STORAGE_REFRESK_TOKEN_KEY,
+      );
+      if (!refreshToken) return;
+
+      if (isTest) {
+        if (refreshToken === "valid-refresh-token") {
+          setAuthentication({
+            accessToken: "accessToken",
+            accessTokenExpiresAt: 3600,
+            refreshToken: "refreshToken",
+            refreshTokenExpiresAt: 3600,
+            username: "username",
+            userRole: "userRole",
+          });
+        } else {
+          setAuthenticationError({
+            message: "Invalid refresh token",
+          });
+        }
+
+        return;
+      }
+      throw new Error("Not implemented");
+    })();
+
+    setIsInitialized(true);
+  }, [isInitialized, isTest, setAuthentication, setAuthenticationError]);
+
+  return <></>;
+}

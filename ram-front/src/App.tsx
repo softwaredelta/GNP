@@ -5,6 +5,7 @@ import { RecoilRoot } from "recoil";
 import { BrowserRouter } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import { ApiProvider } from "./lib/api";
+import { AuthenticationHanler } from "./lib/api/api-auth";
 
 export function App({
   hash,
@@ -26,7 +27,10 @@ export function App({
       >
         <RecoilRoot>
           <BrowserRouter>
-            <ApiProvider hash={hash}>{children}</ApiProvider>
+            <ApiProvider hash={hash}>
+              <AuthenticationHanler />
+              {children}
+            </ApiProvider>
           </BrowserRouter>
         </RecoilRoot>
       </ErrorBoundary>
