@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 import React, { useState, ChangeEvent } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
