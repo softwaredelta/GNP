@@ -4,6 +4,7 @@ import { Root } from "react-dom/client";
 import { BehaviorSubject } from "rxjs";
 import { AuthenticationApi, useAuthentication } from "../lib/api/api-auth";
 import { useEffect } from "react";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { act, waitFor } from "@testing-library/react";
 import { App } from "../App";
 

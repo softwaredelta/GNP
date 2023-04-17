@@ -11,6 +11,7 @@ export function AppRouter() {
 
   return (
     <Routes>
+      <Route path="/infra" element={<InfraTest />} />
       {isAuthenticated ? (
         <>
           <Route path="/" element={<Home />} />

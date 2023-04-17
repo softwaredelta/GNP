@@ -67,7 +67,7 @@ export const authenticationApi$ = selectorFamily<
 >({
   key: "authenticationApi",
   get:
-    ({ hash }) =>
+    () =>
     ({ get, getCallback }): AuthenticationApi => {
       const auth = get(authentication$);
       const authError = get(authenticationError$);
@@ -256,7 +256,7 @@ export function AuthenticationHanler() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [authentication, , refresh]);
+  }, [authentication, refresh]);
 
   return <></>;
 }
