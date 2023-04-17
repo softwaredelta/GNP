@@ -140,5 +140,25 @@ describe("authentication", () => {
         expect(test.authentication.hasError).toBe(false);
       });
     });
+
+    it("clears expired refresh tokens", async () => {
+      localStorage.setItem(
+        LOCAL_STORAGE_REFRESK_TOKEN_KEY,
+        "invalid-refresh-token",
+      );
+
+      const test = new RenderTest("authentication-5", <AppRouter />, root);
+      await test.start();
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/login");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(false);
+        expect(test.authentication.hasError).toBe(false);
+        expect(
+          localStorage.getItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY),
+        ).toBeNull();
+      });
+    });
   });
 });

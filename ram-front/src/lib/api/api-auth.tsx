@@ -141,9 +141,8 @@ export function AuthenticationHanler() {
             userRole: "userRole",
           });
         } else {
-          setAuthenticationError({
-            message: "Invalid refresh token",
-          });
+          setAuthentication(null);
+          localStorage.removeItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
         }
 
         return;
