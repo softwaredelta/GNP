@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 import { ReactNode, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { AiOutlineClose } from "react-icons/ai";

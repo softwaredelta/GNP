@@ -25,15 +25,15 @@ export default function ProgressBar({
   };
   return (
     <div>
-      <div className={`text-xs font-semibold  ${colorOptions[color]["label"]}`}>
+      <div className={`text-xs font-semibold  ${colorOptions[color].label}`}>
         {textLabel}
       </div>
       <div
-        className={`rounded-full w-full  bg-opacity-50 ${colorOptions[color]["back"]}`}
+        className={`rounded-full w-full  bg-opacity-50 ${colorOptions[color].back}`}
       >
         <div
           style={{ width: `${progress}%` }}
-          className={`text-xs font-bold text-white ${colorOptions[color]["progress"]} text-center p-0.5 rounded-full`}
+          className={`text-xs font-bold text-white ${colorOptions[color].progress} text-center p-0.5 rounded-full`}
         >
           {progress}%
         </div>
