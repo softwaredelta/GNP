@@ -10,6 +10,9 @@ import { apiBase$, isTest$ } from "./api-base";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export const LOCAL_STORAGE_REFRESK_TOKEN_KEY = "refreshToken";
+const DISABLE_FETCH = true; // set to true when backend is ready
+const AUTHENTICATE_ENDPOINT = "auth/authenticate";
+const REFRESH_ENDPOINT = "auth/refresh";
 
 export interface Authentication {
   accessToken: string;
@@ -67,13 +70,15 @@ export const authenticationApi$ = selectorFamily<
     ({ get, getCallback }): AuthenticationApi => {
       const auth = get(authentication$);
       const authError = get(authenticationError$);
+      const isAuthenticated = auth !== null;
+      const hasError = authError !== null;
       const apiBase = get(apiBase$);
       const isTest = get(isTest$);
 
       const authenticate = getCallback(
         ({ set }) =>
           ({ username, password }: AuthenticationParams) => {
-            if (isTest) {
+            if (isTest || DISABLE_FETCH) {
               if (username !== password) {
                 set(authenticationError$, {
                   message: "Invalid username or password",
@@ -94,9 +99,84 @@ export const authenticationApi$ = selectorFamily<
               return;
             }
 
-            throw new Error("Not implemented");
+            (async () => {
+              const response = await fetch(
+                `${apiBase}/${AUTHENTICATE_ENDPOINT}`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    username,
+                    password,
+                  }),
+                },
+              );
+              const result = await response.json();
+              if (response.ok) {
+                set(authentication$, result);
+                set(authenticationError$, null);
+              } else {
+                set(authentication$, null);
+                set(authenticationError$, result);
+              }
+            })();
           },
       );
+
+      const refresh = getCallback(({ set }) => () => {
+        if (!isAuthenticated) {
+          console.error("Cannot refresh token when not authenticated");
+          return;
+        }
+
+        const { refreshToken, refreshTokenExpiresAt } = auth;
+
+        console.log("refreshing token", refreshToken, refreshTokenExpiresAt);
+
+        if (isTest || DISABLE_FETCH) {
+          if (refreshToken !== "refreshToken") {
+            set(authentication$, null);
+            set(authenticationError$, null);
+          } else {
+            set(authentication$, {
+              ...auth,
+              accessToken: "refreshedAccessToken",
+            });
+          }
+
+          return;
+        }
+
+        (async () => {
+          if (refreshTokenExpiresAt < Date.now()) {
+            console.error("Cannot refresh token when expired");
+
+            set(authentication$, null);
+            set(authenticationError$, null);
+            return;
+          }
+
+          const response = await fetch(`${apiBase}/${REFRESH_ENDPOINT}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              refreshToken,
+            }),
+          });
+          const result = await response.json();
+          if (response.ok) {
+            set(authentication$, result);
+            set(authenticationError$, null);
+          } else {
+            set(authentication$, null);
+            set(authenticationError$, result);
+          }
+        })();
+      });
 
       const logout = getCallback(({ set }) => () => {
         set(authentication$, null);
@@ -106,11 +186,11 @@ export const authenticationApi$ = selectorFamily<
       return {
         auth,
         authError,
-        isAuthenticated: auth !== null,
-        hasError: authError !== null,
+        isAuthenticated,
+        hasError,
         authenticate,
         logout,
-        refresh: () => {},
+        refresh,
       };
     },
 });

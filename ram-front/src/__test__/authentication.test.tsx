@@ -161,4 +161,43 @@ describe("authentication", () => {
       });
     });
   });
+
+  describe("when authenticated and app attempts to refresh token", () => {
+    it("refreshes token on success", async () => {
+      const test = new RenderTest("authentication-6", <AppRouter />, root);
+      await test.start();
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/login");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(false);
+      });
+
+      act(() => {
+        test.authentication.authenticate({
+          username: "test",
+          password: "test",
+        });
+      });
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(true);
+      });
+
+      const oldAccessToken = test.authentication.auth?.accessToken;
+
+      act(() => {
+        test.authentication.refresh();
+      });
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(true);
+        expect(test.authentication.auth?.accessToken).not.toBe(oldAccessToken);
+      });
+    });
+  });
 });
