@@ -115,7 +115,10 @@ export async function getS3Client(): Promise<S3Config> {
     return s3Config;
   }
 
-  if (process.env.NODE_ENV === "test") {
+  if (!process.env.NODE_ENV) {
+    console.warn("Local environment, using mocked S3");
+    s3Config = makeTestS3Client();
+  } else if (process.env.NODE_ENV === "test") {
     s3Config = makeTestS3Client();
   } else if (process.env.NODE_ENV === "aws") {
     s3Config = await makeAwsS3Client();
@@ -125,8 +128,6 @@ export async function getS3Client(): Promise<S3Config> {
       process.env.MINIO_ROOT_PASSWORD || "",
       "appdata",
     );
-  } else if (!process.env.NODE_ENV) {
-    s3Config = await makeMinioClient("root", "rootroot", "appdata");
   } else {
     throw new Error("Unknown environment");
   }

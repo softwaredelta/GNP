@@ -15,8 +15,8 @@ export async function getDataSource(): Promise<DataSource> {
     return dataSource;
   }
 
-  if (!process.env.NODE_ENV || process.env.NODE_ENV === "remote") {
-    // local and remote architectures use PG env variables directly
+  if (process.env.NODE_ENV === "remote") {
+    // remote architectures use PG env variables directly over docker
     dataSource = new DataSource({
       type: "postgres",
       host: process.env.PGHOST,
@@ -29,22 +29,18 @@ export async function getDataSource(): Promise<DataSource> {
 
     await dataSource
       .initialize()
-      .then(() => console.info("Using local/remote DataSource connection"));
+      .then(() => console.info("Using remote docker DataSource connection"));
 
-    console.warn("Forcing database sync (docker)");
+    console.warn(
+      "This is a staging environment, forcing a database sync (docker)",
+    );
     await dataSource.synchronize(true);
-
-    // On local development we want to initialize seeds
-    if (!process.env.NODE_ENV) {
-      console.warn("Loading seeds...");
-      await loadSeeds();
-    }
 
     return dataSource;
   }
 
-  if (process.env.NODE_ENV === "test") {
-    // test uses a local in-memory database
+  if (process.env.NODE_ENV === "test" || !process.env.NODE_ENV) {
+    // test and local uses a local in-memory database
     dataSource = new DataSource({
       type: "sqlite",
       database: ":memory:",
@@ -52,11 +48,15 @@ export async function getDataSource(): Promise<DataSource> {
       entities,
     });
 
-    await dataSource
-      .initialize()
-      .then(() => console.info("Using test DataSource connection"));
+    await dataSource.initialize();
 
     await dataSource.synchronize(true);
+
+    if (!process.env.NODE_ENV) {
+      // on local development we want to initialize the database with some data
+      console.warn("Loading seeds for local development...");
+      await loadSeeds();
+    }
 
     return dataSource;
   }
