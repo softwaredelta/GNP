@@ -6,14 +6,22 @@ Remove-Job -Name RamBackend -Force -ErrorAction SilentlyContinue
 
 try {
     docker build -f ram-infra/Dockerfile -t ram:local --target local .
-    docker container rm -f ram-local
+    if ($LASTEXITCODE -ne 0) {
+        throw "Docker build failed"
+    }
+
+    docker container rm -f ram-local | Out-Null
+
     docker run -d `
         --name ram-local `
         -p 5432:5432 `
         -p 9000:9000 `
         -p 9001:9001 `
         --env PGPASSWORD=password `
-        ram:local 
+        ram:local
+    if ($LASTEXITCODE -ne 0) {
+        throw "Docker run failed"
+    }
 
     Start-Job -Name RamFrontend -ScriptBlock {
         param ( $path )
@@ -35,7 +43,7 @@ try {
     Receive-Job -Name RamBackend -Wait
 }
 catch {
-
+    throw $_
 }
 finally {
     Remove-Job -Name RamFrontend -Force -ErrorAction SilentlyContinue
