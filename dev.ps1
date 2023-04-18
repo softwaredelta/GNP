@@ -25,7 +25,7 @@ try {
     Receive-Job -Name RamBackend -Wait
 }
 catch {
-
+    throw $_
 }
 finally {
     Remove-Job -Name RamFrontend -Force -ErrorAction SilentlyContinue
