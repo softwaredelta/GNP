@@ -54,63 +54,63 @@ const INITIAL_STATE = [
     poliza: 789012,
     insuranceType: "Hogar",
     state: "Aceptado",
-},
-{
+  },
+  {
     clientName: "David Kim",
     monto: 10000,
     date: new Date("2023-04-02"),
     poliza: 789013,
     insuranceType: "Hogar",
     state: "En proceso",
-},
-{
+  },
+  {
     clientName: "Anna Chen",
     monto: 5000,
     date: new Date("2023-03-15"),
     poliza: 789014,
     insuranceType: "Hogar",
     state: "Rechazado",
-},
-{
+  },
+  {
     clientName: "Jason Huang",
     monto: 15000,
     date: new Date("2023-04-05"),
     poliza: 789015,
     insuranceType: "Hogar",
     state: "Aceptado",
-},
-{
+  },
+  {
     clientName: "Eric Liu",
     monto: 8000,
     date: new Date("2023-03-20"),
     poliza: 789016,
     insuranceType: "Hogar",
     state: "Sin revisar",
-},
-{
-  clientName: "Emily Brown",
-  monto: 4500,
-  date: new Date("2023-03-10"),
-  poliza: 567893,
-  insuranceType: "Auto",
-  state: "Sin revisar",
-},
-{
-  clientName: "David Rodriguez",
-  monto: 3000,
-  date: new Date("2023-04-01"),
-  poliza: 567894,
-  insuranceType: "Auto",
-  state: "Aceptado",
-}
+  },
+  {
+    clientName: "Emily Brown",
+    monto: 4500,
+    date: new Date("2023-03-10"),
+    poliza: 567893,
+    insuranceType: "Auto",
+    state: "Sin revisar",
+  },
+  {
+    clientName: "David Rodriguez",
+    monto: 3000,
+    date: new Date("2023-04-01"),
+    poliza: 567894,
+    insuranceType: "Auto",
+    state: "Aceptado",
+  },
 ];
 
 type Props = {
   indexStart: number;
   indexEnd: number;
-}
+};
 
-export const SalesTable = (props:Props) => {
+export const SalesTable = (props: Props) => {
   interface Sale {
     clientName: string;
     monto: number;
