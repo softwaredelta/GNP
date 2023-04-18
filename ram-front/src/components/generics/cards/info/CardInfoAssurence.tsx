@@ -10,13 +10,13 @@ export interface ICardInfoAssuranceProps {
 }
 
 function CardInfoAssurence({
-  typeAssurance,
-  total,
-  color,
-}: ICardInfoAssuranceProps): JSX.Element {
+                             typeAssurance,
+                             total,
+                             color
+                           }: ICardInfoAssuranceProps): JSX.Element {
   const colorOptions = {
     blue: { icon: "fill-gnp-blue-500", text: "text-gnp-blue-500" },
-    orange: { icon: "fill-gnp-orange-500", text: "text-gnp-orange-500" },
+    orange: { icon: "fill-gnp-orange-500", text: "text-gnp-orange-500" }
   };
 
   return (
