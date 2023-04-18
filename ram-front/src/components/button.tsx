@@ -22,7 +22,7 @@ export interface Props
 }
 
 const variants = {
-  primary: "bg-gnp-primary-blue text-white border-none",
+  primary: "bg-blue-400 text-white border-none",
   secondary: "bg-gnp-primary-orange text-white border-1 border-gray-400",
 };
 
