@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Navigate, Route, Routes } from "react-router-dom";
-import { InfraTest } from "./InfraTest";
+import { InfraPage } from "./InfraTest";
 import { Home } from "./Home";
 import { useAuthentication } from "../lib/api/api-auth";
 import { Login } from "./Login";
@@ -12,9 +12,8 @@ export function AppRouter() {
 
   return (
     <Routes>
-      <Route path="/infra" element={<InfraTest />} />
+      <Route path="/infra" element={<InfraPage />} />
       <Route path="/components" element={<Examples />} />
-      <Route path="/infra" element={<InfraTest />} />
       {isAuthenticated ? (
         <>
           <Route path="/" element={<Home />} />

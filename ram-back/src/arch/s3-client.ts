@@ -19,7 +19,7 @@ import { UploadedObjectInfo } from "minio";
 import { Readable } from "stream";
 
 // config variable, store client and bucket name
-export interface S3Config {
+interface S3Config {
   bucket: string;
   client: Minio.Client;
 }
@@ -104,13 +104,33 @@ function makeTestS3Client(): S3Config {
     return stream;
   };
 
+  client.listObjects = function listObjects(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    bucketName: string,
+  ): Minio.BucketStream<Minio.BucketItem> {
+    const stream = new Readable();
+    objects.forEach((_, key) => {
+      stream.push({ name: key });
+    });
+
+    stream.push(null);
+    return stream;
+  };
+
+  client.removeObject = async function removeObject(
+    bucketName: string,
+    objectName: string,
+  ): Promise<void> {
+    objects.delete(objectName);
+  };
+
   return {
     client,
     bucket: "test-bucket",
   };
 }
 
-export async function getS3Client(): Promise<S3Config> {
+async function getS3Client(): Promise<S3Config> {
   if (s3Config) {
     return s3Config;
   }
@@ -133,4 +153,63 @@ export async function getS3Client(): Promise<S3Config> {
   }
 
   return s3Config;
+}
+
+// Needs the followinng s3 methods
+// - putObject
+// - getObject
+// - listObjects
+// - removeObject
+export interface S3Api {
+  putObject(objectName: string, data: string | Buffer): Promise<void>;
+  getObject(objectName: string): Promise<Readable>;
+  listObjects(): Promise<string[]>;
+  hasObject(objectName: string): Promise<boolean>;
+  removeObject(objectName: string): Promise<void>;
+}
+
+let s3Api: S3Api | null = null;
+
+export async function getS3Api() {
+  if (s3Api) {
+    return s3Api;
+  }
+
+  const { client, bucket } = await getS3Client();
+
+  async function putObject(objectName: string, data: string | Buffer) {
+    await client.putObject(bucket, objectName, data);
+  }
+
+  async function getObject(objectName: string) {
+    return client.getObject(bucket, objectName);
+  }
+
+  async function listObjects() {
+    const objects = [];
+    const objectsStream = await client.listObjects(bucket);
+    for await (const object of objectsStream) {
+      objects.push(object.name);
+    }
+    return objects;
+  }
+
+  async function hasObject(objectName: string) {
+    const objects = await listObjects();
+    return objects.includes(objectName);
+  }
+
+  async function removeObject(objectName: string) {
+    await client.removeObject(bucket, objectName);
+  }
+
+  s3Api = Object.freeze({
+    putObject,
+    getObject,
+    listObjects,
+    hasObject,
+    removeObject,
+  });
+
+  return s3Api;
 }

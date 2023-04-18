@@ -2,7 +2,7 @@
 
 import { getDataSource } from "../arch/db-client";
 import { UserEnt } from "../entities/user.entity";
-import { getS3Client } from "../arch/s3-client";
+import { getS3Api } from "../arch/s3-client";
 
 describe("Architecture", () => {
   it("Should have db connection", async () => {
@@ -22,9 +22,9 @@ describe("Architecture", () => {
   });
 
   it("Should have s3 connection", async () => {
-    const s3 = await getS3Client();
-    await s3.client.putObject(s3.bucket, "test", "hello");
-    const download = await s3.client.getObject(s3.bucket, "test");
+    const s3 = await getS3Api();
+    await s3.putObject("test", "hello");
+    const download = await s3.getObject("test");
     const buf = [];
     for await (const chunk of download) {
       buf.push(chunk);
