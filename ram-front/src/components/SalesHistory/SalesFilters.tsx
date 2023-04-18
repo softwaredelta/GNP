@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Label, TextInput } from "flowbite-react";
-import { Button } from "../button";
 
 export const SalesFilters = () => {
   return (
