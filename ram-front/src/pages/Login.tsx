@@ -1,10 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 
-import LoginForm from "../components/auth/LoginForm";
+import { LoginScreen } from "../components/auth/Login";
 import { useAuthentication } from "../lib/api/api-auth";
 
 export function Login() {
   const { authenticate } = useAuthentication();
 
-  return <LoginForm onLogin={authenticate}></LoginForm>;
+  return <LoginScreen onLogin={authenticate}></LoginScreen>;
 }
