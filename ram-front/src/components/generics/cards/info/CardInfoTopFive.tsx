@@ -20,7 +20,7 @@ export default function CardInfoTopFive({
     orange: "text-gnp-orange-500",
   };
   return (
-    <div className="mt-3 h-full w-full items-center justify-center rounded rounded-xl bg-gnp-white">
+    <div className="mt-3 h-full w-full items-center justify-center rounded-xl bg-gnp-white">
       <h1 className=" text-center text-2xl font-bold text-black">
         {typeAssurance}
       </h1>
