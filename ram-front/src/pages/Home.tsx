@@ -8,16 +8,33 @@ export function Home() {
   return (
     <div>
       <h1>Home</h1>
-      <a href="/infra" className="underline text-red-500 hover:text-red-800">
-        infra test
-      </a>
-      <button
-        onClick={() => {
-          logout();
-        }}
-      >
-        Logout
-      </button>
+      <ul>
+        <li>
+          <a
+            href="/infra"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            infra test
+          </a>
+        </li>
+        <li>
+          <a
+            href="/components"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            components
+          </a>
+        </li>
+        <li>
+          <button
+            onClick={() => {
+              logout();
+            }}
+          >
+            Logout
+          </button>
+        </li>
+      </ul>
     </div>
   );
 }
