@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+
 import { Table } from "flowbite-react";
 import { FaTrash } from "react-icons/fa";
 
@@ -19,7 +19,7 @@ const INITIAL_STATE = [
     clientName: "Kenny Vercamer",
     monto: 1000,
     date: new Date("2021-01-01"),
-    poliza: 123456,
+    poliza: 123457,
     insuranceType: "Mascotas",
     state: "Rechazado",
   },
@@ -27,7 +27,7 @@ const INITIAL_STATE = [
     clientName: "Karen López",
     monto: 14200,
     date: new Date("2022-01-01"),
-    poliza: 123456,
+    poliza: 123458,
     insuranceType: "Vida",
     state: "Aceptado",
   },
@@ -35,7 +35,7 @@ const INITIAL_STATE = [
     clientName: "Mónica Ayala",
     monto: 10000,
     date: new Date("2023-05-01"),
-    poliza: 123456,
+    poliza: 123459,
     insuranceType: "Gastos Médicos",
     state: "Sin revisar",
   },
@@ -43,7 +43,7 @@ const INITIAL_STATE = [
     clientName: "Renato Ramírez",
     monto: 5000,
     date: new Date("2021-05-10"),
-    poliza: 123456,
+    poliza: 123450,
     insuranceType: "Vida",
     state: "Aceptado",
   },
@@ -81,7 +81,10 @@ export const SalesTable = () => {
         <Table.Body className="divide-y">
           {sales.map((sale) => {
             return (
-              <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+              <Table.Row
+                key={sale.poliza}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {sale.clientName}
                 </Table.Cell>
