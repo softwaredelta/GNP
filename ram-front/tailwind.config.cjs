@@ -6,47 +6,44 @@ module.exports = {
     "./node_modules/flowbite/**/*.js",
     "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
-  safelist: [
-    "bg-gnp-cream",
-    "bg-gnp-brown",
-    "bg-gnp-white",
-    "bg-gnp-light-blue",
-    "bg-gnp-primary-blue",
-    "bg-gnp-darker-blue",
-    "bg-gnp-light-orange",
-    "bg-gnp-primary-orange",
-    "bg-gnp-darker-orange",
-    "bg-gnp-gray-black",
-    "bg-gnp-gray-ligth",
-    "bg-gnp-burly-wood",
-    "bg-gnp-navajo-white",
-    "fill-gnp-primary-blue",
-    "fill-gnp-darker-blue",
-    "fill-gnp-primary-orange",
-    "fill-gnp-darker-orange",
-    "text-gnp-primary-orange",
-    "text-gnp-darker-orange",
-    "text-gnp-primary-blue",
-  ],
 
   theme: {
     extend: {
       colors: {
         gnp: {
+          blue: {
+            50: "#e2e7ec",
+            100: "#b6c3d0",
+            200: "#859bb1",
+            300: "#547392",
+            400: "#2f557a",
+            500: "#0a3763",
+            600: "#09315b",
+            700: "#072a51",
+            800: "#052347",
+            900: "#031635",
+          },
+
+          orange: {
+            50: "#ffede5",
+            100: "#fed3be",
+            200: "#feb692",
+            300: "#fd9866",
+            400: "#fc8246",
+            500: "#fc6c25",
+            600: "#fc6421",
+            700: "#fb591b",
+            800: "#fb4f16",
+            900: "#fa3d0d",
+          },
+
           cream: "#e6dcd1",
           brown: "#7e4e3a",
           white: "#e9e9e9",
 
-          "light-blue": "#579dc3",
-          "primary-blue": "#012e71",
-          "darker-blue": "#012356",
-
-          "light-orange": "#be7743",
-          "primary-orange": "#fb6f24",
-          "darker-orange": "#e15104",
-
           "gray-black": "#878584",
           "gray-ligth": "#bcbcbc",
+
           "burly-wood": "#ba8c70",
           "navajo-white": "#d0a97e",
         },

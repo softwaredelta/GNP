@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { InfraTest } from "./pages/InfraTest";
 import { SalesHistory } from "./pages/SalesHistory";
+import Examples from "./components/generics/Examples";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route path="/" element={<Home />} />
             <Route path="/infra" element={<InfraTest />} />
             <Route path="/salesHistory" element={<SalesHistory />} />
+            <Route path="/components" element={<Examples />} />
             <Route path="*" element={<h1>404</h1>} />
           </Routes>
         </BrowserRouter>
