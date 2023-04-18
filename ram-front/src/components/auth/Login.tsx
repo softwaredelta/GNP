@@ -6,7 +6,11 @@ import LogoGNP from "../../assets/imgs/GNP_LOGO.png";
 import vivir from "../../assets/imgs/VIVIR.png";
 import waves from "../../assets/imgs/wavesRAM.png";
 
-const LoginScreen = () => {
+export const LoginScreen = ({
+  onLogin,
+}: {
+  onLogin: (params: { username: string; password: string }) => void;
+}) => {
   return (
     <>
       <div className=" bg-slate-50 h-screen w-screen grid md:grid-cols-2 grid-cols-1 ">
@@ -18,11 +22,9 @@ const LoginScreen = () => {
           <img className="w-screen mx-auto" src={waves} alt="" />
         </div>
         <div className="w-full">
-          <LoginForm />
+          <LoginForm onLogin={onLogin} />
         </div>
       </div>
     </>
   );
 };
-
-export default LoginScreen;
