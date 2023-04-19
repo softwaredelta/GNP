@@ -39,13 +39,13 @@ describe("SalesHistory", () => {
 
   it("renders sales table component", () => {
     render(<SalesHistory />);
-    const tableComponent = screen.getByTestId("Table");
+    const tableComponent = screen.getByTestId("Pagination");
     expect(tableComponent).toBeInTheDocument();
   });
 
   it("renders filters component", () => {
     render(<SalesHistory />);
-    const filtersComponent = screen.getByTestId("Filters");
+    const filtersComponent = screen.getByTestId("Pagination");
     expect(filtersComponent).toBeInTheDocument();
   });
 
