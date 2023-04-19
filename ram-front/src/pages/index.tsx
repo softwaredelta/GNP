@@ -6,6 +6,7 @@ import { Home } from "./Home";
 import { useAuthentication } from "../lib/api/api-auth";
 import { Login } from "./Login";
 import Examples from "../components/generics/Examples";
+import Delivery from "../components/Delivery";
 
 export function AppRouter() {
   const { isAuthenticated } = useAuthentication();
@@ -14,6 +15,7 @@ export function AppRouter() {
     <Routes>
       <Route path="/infra" element={<InfraPage />} />
       <Route path="/components" element={<Examples />} />
+      <Route path="/entregables" element={<Delivery />} />
       {isAuthenticated ? (
         <>
           <Route path="/" element={<Home />} />
