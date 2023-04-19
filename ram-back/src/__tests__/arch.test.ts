@@ -9,10 +9,11 @@ describe("Architecture", () => {
   it("Should have db connection", async () => {
     const db = await getDataSource();
     await createUser({
-      id: "1",
       email: "test@delta.tec.mx",
-      password: "test-password",
+      password: "password",
+      id: "1",
     });
+
     const found = await db.manager.findOne(UserEnt, {
       where: {
         id: "1",

@@ -17,7 +17,6 @@ import { StateEnt } from "./state.entity";
 import {
   DATE_COLUMN,
   PASSWORD_COLUMN,
-  REQUIRED_DATE_COLUMN,
   TELEPHONE_COLUMN,
   URL_COLUMN,
   USERNAME_COLUMN,
