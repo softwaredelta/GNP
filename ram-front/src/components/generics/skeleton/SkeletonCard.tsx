@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 export default function SkeletonCard(): JSX.Element {
   return (
     <div

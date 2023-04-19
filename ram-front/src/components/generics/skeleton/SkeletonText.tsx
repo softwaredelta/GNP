@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 export default function SkeletonText() {
   return (
     <div role="status" className="max-w-sm animate-pulse">

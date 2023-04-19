@@ -7,7 +7,10 @@ export interface IUseAlertReturn {
   toggleAlert: () => void;
 }
 
-export default function useAlert(initialState:boolean = false, time:number = 5): IUseAlertReturn {
+export default function useAlert(
+  initialState = false,
+  time = 5,
+): IUseAlertReturn {
   const [isOpen, setIsOpen] = useState(initialState);
 
   const toggleAlert = () => {
@@ -21,7 +24,7 @@ export default function useAlert(initialState:boolean = false, time:number = 5):
       }, time * 1000);
       return () => clearTimeout(timeout);
     }
-  }, [isOpen]);
+  }, [isOpen, time]);
 
   return { isOpen, toggleAlert };
 }

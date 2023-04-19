@@ -1,10 +1,10 @@
-import { BsCheckCircleFill } from "react-icons/bs";
+// (c) Delta Software 2023, rights reserved.
+
+import { BsCheckCircleFill, BsFillInfoCircleFill } from "react-icons/bs";
 import { ImWarning } from "react-icons/im";
 import { MdError } from "react-icons/md";
-import { BsFillInfoCircleFill } from "react-icons/bs";
+
 import ReactDOM from "react-dom";
-
-
 
 export interface IAlertProps {
   type: "success" | "error" | "warning" | "info";

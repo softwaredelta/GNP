@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 export default function SkeletonDiv(): JSX.Element {
   return (
     <div role="status" className="animate-pulse h-full w-full border">
