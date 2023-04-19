@@ -5,7 +5,7 @@ ENV TZ=America/Mexico_City
 ENV LANG=en_US.UTF-8
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y
+    apt-get install -y \
         --no-install-recommends \
         curl \
         wget \
@@ -23,16 +23,6 @@ RUN apt-get update && \
     && mkdir /app \
     && chmod 777 /checks
 
-# node setup
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x  \
-    | bash - \
-    && apt-get install -y \
-        --no-install-recommends \
-        nodejs \
-    && npm install -g \
-        yarn \
-        serve
-
 # postgres setup
 RUN apt-get install -y \
     --no-install-recommends \
@@ -41,7 +31,8 @@ RUN apt-get install -y \
 
 # minio setup
 RUN cd /tmp && \
-    wget https://dl.min.io/server/minio/release/linux-amd64/minio && \
+    wget https://dl.min.io/server/minio/release/linux-amd64/minio \
+        --no-check-certificate && \
     chmod +x minio && \
     mv minio /usr/local/bin/minio && \
     groupadd -r minio && \
@@ -79,6 +70,16 @@ RUN yarn \
 
 ####################################################################################
 FROM base as remote
+
+# node setup
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x  \
+    | bash - \
+    && apt-get install -y \
+        nodejs \
+        npm \
+    && npm install -g \
+        yarn \
+        serve
 
 COPY --from=frontend /app/frontend/dist /app/frontend/dist
 COPY --from=backend /app/backend/dist /app/backend/dist

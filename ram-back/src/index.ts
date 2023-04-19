@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { start } from "./app";
+import { start } from "./controller";
 
 start().catch((err) => {
   console.error(err);

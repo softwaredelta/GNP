@@ -7,6 +7,9 @@ export class UserEnt {
   @PrimaryColumn({ nullable: false, type: "varchar", select: true })
   id!: string;
 
-  @Column({ nullable: false, type: "varchar", select: false })
+  @Column({ nullable: false, type: "varchar", select: false, unique: true })
   email = "";
+
+  @Column({ nullable: false, type: "varchar", select: false })
+  password = "";
 }

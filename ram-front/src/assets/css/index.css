@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-primary {
+  @apply w-full mx-auto bg-gnp-blue-500 text-white px-4 py-2 rounded shadow-lg hover:scale-105 hover:bg-gnp-blue-700 transition duration-300 ease-in-out active:scale-95;
+}
+
+.btn-secondary {
+  @apply w-full mx-auto bg-gnp-orange-500 text-white px-4 py-2 rounded shadow-lg hover:scale-105 hover:bg-gnp-orange-700 transition duration-300 ease-in-out active:scale-95;
+}
+
+.btn-disabled {
+  @apply w-full mx-auto bg-gray-500 text-white px-4 py-2 rounded shadow-lg cursor-not-allowed;
+}
+
+.input-primary {
+  @apply rounded-lg border-2 border-gnp-blue-500 shadow-lg pl-3 h-12 mb-8 text-base;
+}
+
+.floating-button-primary {
+  @apply w-full aspect-square flex items-center justify-center bg-gnp-blue-500 text-white rounded-full shadow-lg hover:scale-105 hover:bg-gnp-blue-700 transition duration-300 ease-in-out active:scale-95;
+}
+.floating-button-secondary {
+  @apply w-full aspect-square flex items-center justify-center bg-gnp-orange-500 text-white rounded-full shadow-lg hover:scale-105 hover:bg-gnp-orange-700 transition duration-300 ease-in-out active:scale-95;
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #07080b #e5e7eb;
+}
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #07080b;
+  border-radius: 6px;
+  border: 3px solid #e5e7eb;
+}
