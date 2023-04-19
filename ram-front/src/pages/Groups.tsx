@@ -1,3 +1,4 @@
+// (c) Delta Software 2023, rights reserved.
 import ListGroup from "../components/groups/ListGroup";
 import Wrapper from "../containers/Wrapper";
 
