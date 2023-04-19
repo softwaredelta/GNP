@@ -16,15 +16,15 @@ export const SalesHistory = () => {
   return (
     <Wrapper>
       <div className="flex flex-col mt-8 justify-center items-center">
-        <SalesFilters data-testid="salesFilters" />
+        <SalesFilters testid="Filters" />
         <SalesTable
+          testid="Table"
           indexStart={indexStart}
           indexEnd={indexEnd}
-          data-testid="salesTable"
         />
         <div className="flex items-center justify-center text-center">
           <Pagination
-            data-testid="paginationComponent"
+            data-testid="Pagination"
             currentPage={1}
             layout="table"
             onPageChange={onPageChange}
