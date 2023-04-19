@@ -10,17 +10,17 @@ export interface ICardInfoAssuranceProps {
 }
 
 function CardInfoAssurence({
-                             typeAssurance,
-                             total,
-                             color
-                           }: ICardInfoAssuranceProps): JSX.Element {
+  typeAssurance,
+  total,
+  color,
+}: ICardInfoAssuranceProps): JSX.Element {
   const colorOptions = {
     blue: { icon: "fill-gnp-blue-500", text: "text-gnp-blue-500" },
-    orange: { icon: "fill-gnp-orange-500", text: "text-gnp-orange-500" }
+    orange: { icon: "fill-gnp-orange-500", text: "text-gnp-orange-500" },
   };
 
   return (
-    <div className="mt-3 h-full w-full items-center justify-center rounded rounded-xl bg-gnp-white">
+    <div className="mt-3 h-full w-full items-center justify-center rounded-xl bg-gnp-white">
       <h1 className=" text-center text-2xl font-bold text-black w-10/12 mx-auto">
         {typeAssurance}
       </h1>
