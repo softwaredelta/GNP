@@ -10,20 +10,21 @@ export const SalesHistory = () => {
   const [indexStart, setIndexStart] = useState(0);
   const [indexEnd, setIndexEnd] = useState(5);
   function onPageChange() {
-    // if (newPage < currentPage){
-    //   setIndexStart(indexStart - 5);
-    //   setIndexEnd(indexEnd - 5);
-    // }
     setIndexEnd(indexEnd + 5);
     setIndexStart(indexStart + 5);
   }
   return (
     <Wrapper>
       <div className="flex flex-col mt-8 justify-center items-center">
-        <SalesFilters />
-        <SalesTable indexStart={indexStart} indexEnd={indexEnd} />
+        <SalesFilters data-testid="salesFilters" />
+        <SalesTable
+          indexStart={indexStart}
+          indexEnd={indexEnd}
+          data-testid="salesTable"
+        />
         <div className="flex items-center justify-center text-center">
           <Pagination
+            data-testid="paginationComponent"
             currentPage={1}
             layout="table"
             onPageChange={onPageChange}
