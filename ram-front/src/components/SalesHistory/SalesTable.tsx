@@ -108,7 +108,6 @@ const INITIAL_STATE = [
 type Props = {
   indexStart: number;
   indexEnd: number;
-  testid?: string;
 };
 
 export const SalesTable = (props: Props) => {
