@@ -16,9 +16,9 @@ export const SalesHistory = () => {
   return (
     <Wrapper>
       <div className="flex flex-col mt-8 justify-center items-center">
-        <SalesFilters testid="Filters" />
+        <SalesFilters data-testid="Filters" />
         <SalesTable
-          testid="Table"
+          data-testid="Table"
           indexStart={indexStart}
           indexEnd={indexEnd}
         />
