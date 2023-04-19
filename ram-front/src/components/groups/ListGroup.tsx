@@ -16,17 +16,17 @@ export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
 
   return (
     <>
-      {groups.map((group) => (
-        <div className="w-7/12" key={group.id} role="group">
+      {groups.map((group, index) => (
+        <div className="w-11/12 lg:w-10/12" key={group.id} role="group">
           <button
             className="w-full hover:scale-105 transition-all ease-in-out active:scale-95 cursor-pointer"
             onClick={() => {
               alert("Redireccionando al grupo ...");
             }}
           >
-            <Card color="blue" image={group.image}>
+            <Card color={index % 2 ? "orange" : "blue"} image={group.image}>
               <CardInfoGroup
-                color="blue"
+                color={index % 2 ? "orange" : "blue"}
                 nameGroup={group.name}
                 progress={group.progress}
               />
