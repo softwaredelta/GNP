@@ -1,5 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-import "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
 import { render, screen } from "@testing-library/react";
 import ListGroups from "../components/groups/ListGroup";
 
