@@ -4,7 +4,7 @@ import { getDataSource } from "../arch/db-client";
 import { v4 } from "uuid";
 import { UserEnt } from "../entities/user.entity";
 import { TokenType, generateToken, verifyToken } from "./auth";
-
+import { hashPassword, comparePassword } from "../utils/hash";
 export enum UserError {
   USER_EXISTS = "USER_EXISTS",
   USER_NOT_FOUND = "USER_NOT_FOUND",
@@ -29,9 +29,9 @@ export async function createUser(params: {
 
   const ds = await getDataSource();
   const id = params.id || v4();
-
+  const hashedPassword = await hashPassword(params.password);
   return ds.manager
-    .save(UserEnt, { id, email: params.email, password: params.password })
+    .save(UserEnt, { id, email: params.email, password: hashedPassword })
     .then((user) => {
       return { user };
     })
@@ -48,12 +48,14 @@ export async function authenticateUser(params: {
   const user = await ds.manager.findOne(UserEnt, {
     where: {
       email: params.email,
-      password: params.password,
     },
     select: ["id", "email", "password"],
   });
-
-  if (!user) {
+  const correctPass =
+    user === null
+      ? false
+      : await comparePassword(params.password, user.password);
+  if (!user || !correctPass) {
     return { error: UserError.USER_NOT_FOUND, auth: {} as UserAuthentication };
   }
 

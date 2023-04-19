@@ -3,7 +3,7 @@
 import jwt from "jsonwebtoken";
 
 // TODO: FIXME
-const SECRET = "Secret_delta";
+const jwtSecret = "secret";
 
 export enum TokenType {
   AccessToken = "accessToken",
@@ -26,8 +26,7 @@ export const generateToken = (id: string, type: TokenType): Token => {
     tokenType: type,
   };
   const expires = type === TokenType.AccessToken ? "1h" : "1d";
-  const token = jwt.sign(payload, SECRET, { expiresIn: expires });
-
+  const token = jwt.sign(payload, jwtSecret, { expiresIn: expires });
   const secondsToExpire = type === TokenType.AccessToken ? 3600 : 86400;
   return {
     token,
@@ -43,7 +42,7 @@ export const verifyToken = (
   error?: Error;
 } => {
   try {
-    const decoded = jwt.verify(token, SECRET);
+    const decoded = jwt.verify(token, jwtSecret);
 
     if (decoded) {
       const { tokenType } = decoded as AuthPayload;
