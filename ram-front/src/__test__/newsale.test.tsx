@@ -57,8 +57,8 @@ describe("NewSale", () => {
   it("updates client name input on change", () => {
     render(<NewSale />);
     const clientInput: HTMLInputElement = screen.getByPlaceholderText(
-        "Ingrese el nombre del cliente",
-      );
+      "Ingrese el nombre del cliente",
+    );
     fireEvent.change(clientInput, { target: { value: "John Doe" } });
     expect(clientInput.value).toBe("John Doe");
   });
