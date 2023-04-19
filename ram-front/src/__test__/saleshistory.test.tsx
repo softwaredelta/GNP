@@ -39,14 +39,14 @@ describe("SalesHistory", () => {
   });
 
   it("renders sales table component [wip]", () => {
-    const getById = queryByAttribute.bind(null, "testid");
-    const tableComponent = getById(container, "Table");
+    render(<SalesHistory />);
+    const tableComponent = screen.getByTestId("Table");
     expect(tableComponent).toBeInTheDocument();
   });
 
   it("renders filters component [wip]", () => {
-    const getById = queryByAttribute.bind(null, "testid");
-    const filtersComponent = getById(container, "Filters");
+    render(<SalesHistory />);
+    const filtersComponent = screen.getByTestId("Filters");
     expect(filtersComponent).toBeInTheDocument();
   });
 
