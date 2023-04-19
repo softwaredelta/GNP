@@ -13,9 +13,14 @@ import { RiPencilFill } from "react-icons/ri";
 import { IoPawSharp } from "react-icons/io5";
 import Modal from "./Modal";
 import useModal from "../../hooks/useModal";
-
+import SkeletonCard from "./skeleton/SkeletonCard";
+import SkeletonText from "./skeleton/SkeletonText";
+import SkeletonDiv from "./skeleton/SkeletonDiv";
+import Alert from "./alerts/Alert";
+import useAlert from "../../hooks/useAlert";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
+  const { isOpen: isOpenAlert, toggleAlert } = useAlert(false, 5);
 
   return (
     <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center gap-10 py-20">
@@ -146,6 +151,34 @@ export default function Examples() {
               />
             </div>
           </Modal>
+        )}
+      </div>
+      <div className="w-11/12">
+        <SkeletonCard />
+      </div>
+      <div>
+        <SkeletonText />
+      </div>
+      <div className="w-32 h-32 rounded-full overflow-hidden">
+        <SkeletonDiv />
+      </div>
+      {/* <div className="w-11/12">
+        <Alert
+          type="success"
+          message="¡Éxito!"
+          description="Se ha realizado la acción correctamente"
+        />
+      </div> */}
+      <div className="w-11/12">
+        <button className="btn-primary" onClick={toggleAlert}>
+          Abrir alerta
+        </button>
+        {isOpenAlert && (
+          <Alert
+            type="error"
+            message="¡¡Namames rompiste el proyecto!!"
+            description="Tu imbecibilidad hizo que se rompiera el proyecto, felicidades, neta no puede ser más baboso, si no le sabes mejor ni le muevas papito, no mames, neta si me da coraje, te veo y tengo ganas de romperte la madre, ayDios Mio, agarrenme"
+          />
         )}
       </div>
     </div>
