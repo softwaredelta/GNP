@@ -5,6 +5,7 @@ import { InfraPage } from "./InfraTest";
 import { Home } from "./Home";
 import { useAuthentication } from "../lib/api/api-auth";
 import { Login } from "./Login";
+import { SalesHistory } from "./SalesHistory";
 import Examples from "../components/generics/Examples";
 
 export function AppRouter() {
@@ -14,6 +15,7 @@ export function AppRouter() {
     <Routes>
       <Route path="/infra" element={<InfraPage />} />
       <Route path="/components" element={<Examples />} />
+      <Route path="/salesHistory" element={<SalesHistory />} />
       {isAuthenticated ? (
         <>
           <Route path="/" element={<Home />} />
