@@ -4,21 +4,17 @@ import request from "supertest";
 import { app } from "../controller";
 import { getDataSource } from "../arch/db-client";
 import { UserEnt } from "../entities/user.entity";
+import { createUser } from "../app/user";
 
 describe("user", () => {
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.manager.clear(UserEnt);
 
-    await ds.manager.save(
-      UserEnt,
-      {
-        id: "1",
-        email: "fermin@delta.tec.mx",
-        password: "L3LitoB3b3ciT0Itc",
-      },
-      {},
-    );
+    await createUser({
+      email: "fermin@delta.tec.mx",
+      password: "L3LitoB3b3ciT0Itc",
+    });
   });
 
   describe("creation handler", () => {
