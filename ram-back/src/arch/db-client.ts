@@ -4,11 +4,10 @@
  */
 
 import { DataSource } from "typeorm";
-import { UserEnt } from "../entities/user.entity";
 import { loadSeeds } from "../seeds";
+import { entities } from "../entities";
 
 let dataSource: DataSource | null = null;
-const entities = [UserEnt];
 
 export async function getDataSource(): Promise<DataSource> {
   if (dataSource) {
