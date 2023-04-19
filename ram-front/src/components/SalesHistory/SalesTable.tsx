@@ -108,7 +108,6 @@ const INITIAL_STATE = [
 type Props = {
   indexStart: number;
   indexEnd: number;
-  testid?: string;
 };
 
 export const SalesTable = (props: Props) => {
@@ -127,7 +126,7 @@ export const SalesTable = (props: Props) => {
   }, []);
 
   return (
-    <div className="w-full p-8">
+    <div data-testid="Table" className="w-full p-8">
       <Table hoverable={true}>
         <Table.Head>
           <Table.HeadCell>Nombre del Cliente</Table.HeadCell>
