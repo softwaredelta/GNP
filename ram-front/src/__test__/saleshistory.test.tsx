@@ -1,6 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { render, screen, act, queryByAttribute } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
 import { SalesHistory } from "../pages/SalesHistory";
 import { RecoilRoot } from "recoil";
 import { Suspense } from "react";
@@ -31,25 +32,22 @@ describe("SalesHistory", () => {
     });
   });
 
-  it("renders pagination component", async () => {
+  it("renders pagination component", () => {
     render(<SalesHistory />);
-    await waitFor(() => {
-      expect(screen.getByTestId("paginationComponent")).toBeInTheDocument();
-    });
+    const paginationComponent = screen.getByTestId("Pagination");
+    expect(paginationComponent).toBeInTheDocument();
   });
 
-  it("renders sales table component", async () => {
-    render(<SalesHistory />);
-    await waitFor(() => {
-      expect(screen.getByTestId("salesTable")).toBeInTheDocument();
-    });
+  it("renders sales table component [wip]", () => {
+    const getById = queryByAttribute.bind(null, "testid");
+    const tableComponent = getById(container, "Table");
+    expect(tableComponent).toBeInTheDocument();
   });
 
-  it("renders filters component", async () => {
-    render(<SalesHistory />);
-    await waitFor(() => {
-      expect(screen.getByTestId("salesFilters")).toBeInTheDocument();
-    });
+  it("renders filters component [wip]", () => {
+    const getById = queryByAttribute.bind(null, "testid");
+    const filtersComponent = getById(container, "Filters");
+    expect(filtersComponent).toBeInTheDocument();
   });
 
   //   it("updates client input filter on change", () => {
