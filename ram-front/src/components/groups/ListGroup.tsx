@@ -1,5 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-import "@testing-library/jest-dom";
 import Card from "../generics/cards/base/Card";
 import CardInfoGroup from "../generics/cards/info/CardInfoGroup";
 
