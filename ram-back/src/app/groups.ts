@@ -5,6 +5,7 @@ import { getDataSource } from "../arch/db-client";
 import { GroupUserStatus } from "../entities/group-user.entity";
 import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
+import { v4 } from "uuid";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",
@@ -12,11 +13,14 @@ export enum GroupError {
 
 export async function createGroup(params: {
   name: string;
+  id?: string;
 }): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
   const ds = await getDataSource();
 
+  const id = params.id || v4();
+
   return ds.manager
-    .save(ds.manager.create(GroupEnt, { name: params.name }))
+    .save(ds.manager.create(GroupEnt, { id, name: params.name }))
     .then((group) => {
       return { group };
     })

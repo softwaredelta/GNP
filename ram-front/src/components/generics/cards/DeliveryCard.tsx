@@ -12,6 +12,7 @@ export interface DeliveryCardProps {
   image: string;
   color: "blue" | "orange";
   status: "Sin enviar" | "Enviado" | "Rechazado" | "Aceptado";
+  onclick?: () => void;
 }
 
 const iconList = {
