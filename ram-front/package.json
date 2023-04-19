@@ -15,7 +15,6 @@
   "dependencies": {
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "@types/react-icons": "^3.0.0",
     "autoprefixer": "^10.4.13",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-notice": "^0.9.10",
