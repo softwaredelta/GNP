@@ -16,12 +16,8 @@ export const SalesHistory = () => {
   return (
     <Wrapper>
       <div className="flex flex-col mt-8 justify-center items-center">
-        <SalesFilters data-testid="Filters" />
-        <SalesTable
-          data-testid="Table"
-          indexStart={indexStart}
-          indexEnd={indexEnd}
-        />
+        <SalesFilters />
+        <SalesTable indexStart={indexStart} indexEnd={indexEnd} />
         <div className="flex items-center justify-center text-center">
           <Pagination
             data-testid="Pagination"
