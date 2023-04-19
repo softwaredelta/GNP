@@ -3,7 +3,11 @@
 import React from "react";
 import { Label, TextInput } from "flowbite-react";
 
-export const SalesFilters = () => {
+type Props = {
+  testid?: string;
+};
+
+export const SalesFilters = (props: Props) => {
   return (
     <div className="flex">
       <div className="w-1/5 mr-4">
