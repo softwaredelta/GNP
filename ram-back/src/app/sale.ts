@@ -9,7 +9,7 @@ export enum SellError {
   POLICY_NUM_DUPLICATED = "POLICY_NUM_DUPLICATED",
   SALE_ERROR = "SALE_ERROR",
 }
-
+ 
 export async function createSale(params: {
   policyNumber: string;
   assuranceType: DeepPartial<AssuranceTypeEnt>;
