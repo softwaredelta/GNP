@@ -2,7 +2,7 @@
 
 import { FaCloudUploadAlt } from "react-icons/fa";
 
-function DropZone() {
+function DropZone({ ref }: { ref: any }) {
   return (
     <div className=" w-full h-full flex flex-col items-center justify-center bg-white rounded-lg shadow-md">
       <label
@@ -13,7 +13,7 @@ function DropZone() {
           <FaCloudUploadAlt size={40} className="text-white" />
         </div>
         <div className="text-gray-500 text-xl mt-2">Subir archivo</div>
-        <input id="dropzone-file" type="file" className="hidden" />
+        <input id="dropzone-file" type="file" className="hidden" ref={ref} />
       </label>
     </div>
   );
