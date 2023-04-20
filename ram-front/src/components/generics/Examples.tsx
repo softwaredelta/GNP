@@ -21,7 +21,7 @@ import useAlert from "../../hooks/useAlert";
 import useAxios from "../../hooks/useAxios";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
-  const { isOpen: isOpenAlert, toggleAlert } = useAlert(false, 5);
+  const { showAlert } = useAlert();
   const { response: me } = useAxios<{ email: string; id: string }>({
     url: "user/me",
     method: "GET",
@@ -197,16 +197,28 @@ export default function Examples() {
         />
       </div> */}
       <div className="w-11/12">
-        <button className="btn-primary" onClick={toggleAlert}>
+        <button
+          className="btn-primary"
+          onClick={() =>
+            showAlert(
+              {
+                type: "error",
+                description: "Alerta buena",
+                message: "Prueba de alerta",
+              },
+              5,
+            )
+          }
+        >
           Abrir alerta
         </button>
-        {isOpenAlert && (
+        {/* {isOpenAlert && (
           <Alert
             type="error"
             message="¡¡Namames rompiste el proyecto!!"
             description="Tu imbecibilidad hizo que se rompiera el proyecto, felicidades, neta no puede ser más baboso, si no le sabes mejor ni le muevas papito, no mames, neta si me da coraje, te veo y tengo ganas de romperte la madre, ayDios Mio, agarrenme"
           />
-        )}
+        )} */}
       </div>
     </div>
   );

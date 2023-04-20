@@ -3,14 +3,8 @@
 import { BsCheckCircleFill, BsFillInfoCircleFill } from "react-icons/bs";
 import { ImWarning } from "react-icons/im";
 import { MdError } from "react-icons/md";
-
 import ReactDOM from "react-dom";
-
-export interface IAlertProps {
-  type: "success" | "error" | "warning" | "info";
-  message?: string;
-  description?: string;
-}
+import { IAlert } from "../../../recoil/visual";
 
 const ALERT_OPTIONS = {
   success: {
@@ -30,7 +24,7 @@ const ALERT_OPTIONS = {
     color: "bg-blue-500",
   },
 };
-export default function Alert({ type, message, description }: IAlertProps) {
+export default function Alert({ description, type, message }: IAlert) {
   return ReactDOM.createPortal(
     <div
       className={`fixed top-0 right-0 ${ALERT_OPTIONS[type].color} max-w-sm text-white py-4 px-5 mt-10`}

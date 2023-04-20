@@ -1,30 +1,22 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import atomAlert, { IAlert } from "../recoil/visual";
 
 export interface IUseAlertReturn {
-  isOpen: boolean;
-  toggleAlert: () => void;
+  showAlert: (state: IAlert, seconds: number) => void;
 }
 
-export default function useAlert(
-  initialState = false,
-  time = 5,
-): IUseAlertReturn {
-  const [isOpen, setIsOpen] = useState(initialState);
+export default function useAlert(): IUseAlertReturn {
+  const [state, setState] = useRecoilState(atomAlert);
 
-  const toggleAlert = () => {
-    setIsOpen((prev) => !prev);
+  const showAlert = (state: IAlert, seconds: number) => {
+    setState((prev) => ({ ...prev, isOpen: false }));
+    setState({ ...state, isOpen: true });
+    setTimeout(() => {
+      setState((prev) => ({ ...prev, isOpen: false }));
+    }, seconds * 1000);
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      const timeout = setTimeout(() => {
-        setIsOpen(false);
-      }, time * 1000);
-      return () => clearTimeout(timeout);
-    }
-  }, [isOpen, time]);
-
-  return { isOpen, toggleAlert };
+  return { showAlert };
 }
