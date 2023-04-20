@@ -59,4 +59,32 @@ describe("groups", () => {
       expect(userGroups.groups).toHaveLength(2);
     });
   });
+
+  it("get my groups", async () => {
+    const password = "password7812361";
+    const email = "";
+    const user = await createUser({ email, password }).then(({ user }) => user);
+    const groupNames = Array.from({ length: 3 }, (_, i) => `group/${i}`);
+
+    const groups = await Promise.all(
+      groupNames.map((name) =>
+        createGroup({ name }).then(({ group }) => group),
+      ),
+    );
+
+    await addUserToGroup({
+      groupId: groups[0].id,
+      userId: user.id,
+      status: GroupUserStatus.ACTIVE,
+    });
+    await addUserToGroup({
+      groupId: groups[1].id,
+      userId: user.id,
+      status: GroupUserStatus.INACTIVE,
+    });
+
+    const userGroups = await getUserGroups({ userId: user.id });
+    expect(userGroups.groups).toHaveLength(2);
+    expect(userGroups.groups.map((group) => group.id)).not.toContain(groups[2].id);
+  });
 });

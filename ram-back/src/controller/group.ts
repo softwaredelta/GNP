@@ -14,7 +14,6 @@ groupsRouter.get("/my-groups", authMiddleware, async (req, res) => {
     return;
   }
   const userId = req.user.id;
-  console.log("userId", userId);
 
   const data = await getUserGroups({ userId });
 
