@@ -17,16 +17,16 @@ describe("sale", () => {
         id: "123456",
         policyNumber: "123456",
         assuranceType: {
-          id: "123456",
-          name: "vida",
-          description: "vida",
-          goals: [],
+          name: "test-assurance-type-1",
+          description: "test-assurance-type-1-description",
+          id: "test-at-1"
         },
-        sellDate: new Date(),
+        sellDate: new Date("2021/01/01"),
         amountInCents: "123456",
         clientName: "Juan Perez",
       });
 
+    
       expect(sale).toBeDefined();
       expect(error).toBeDefined();
       //   expect(sale).toHaveProperty("id");

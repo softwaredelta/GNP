@@ -1,5 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
+import { createAssuranceType } from "../app/assuranceType";
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
 
@@ -15,6 +16,8 @@ export async function loadSeeds() {
       password: "test-password",
       id: "test-user",
     });
+
+    // GROUPS
     const group1 = await createGroup({
       name: "test-group-1",
     });
@@ -36,4 +39,14 @@ export async function loadSeeds() {
   } catch (e) {
     console.error(e);
   }
+
+  // SALES
+
+  // ASSURANCE TYPES
+  await createAssuranceType({
+    name: "test-assurance-type-1",
+    description: "test-assurance-type-1-description",
+    id: "test-at-1",
+  });
+
 }
