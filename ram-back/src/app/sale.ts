@@ -18,11 +18,12 @@ export async function createSale(params: {
   clientName: string;
   id?: string;
   status?: string;
+  periodicity?: string;
 }): Promise<{ sale: SellEnt; error?: SellError }> {
   const ds = await getDataSource();
   const id = params.id || v4();
   const status = "sin revisar";
-  //   const periodicity = "mensual";
+  const periodicity = "mensual";
   //   const evidenceUrl = "https://www.google.com";
   //   const user = createUser({ email: "user@user.test", password: "123456", id: "123456" });
   //   const createdAt = new Date();
@@ -37,11 +38,12 @@ export async function createSale(params: {
       amountInCents: params.amountInCents,
       clientName: params.clientName,
       status,
+      periodicity
     })
     .then((sale) => {
       return { sale };
     })
-    .catch(() => {
-      return { sale: {} as SellEnt, error: SellError.SALE_ERROR };
+    .catch((error) => {
+      return { sale: {} as SellEnt, error: error.message };
     });
 }
