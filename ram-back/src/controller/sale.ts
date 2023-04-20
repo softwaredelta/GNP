@@ -19,7 +19,7 @@ const saleParametersMiddleware: RequestHandler = (req, res, next) => {
     res.status(400).json({ message: "BAD_DATA", reason: error });
     return;
   }
-  next()
+  next();
 };
 
 salesRouter.post("/create", saleParametersMiddleware, async (req, res) => {

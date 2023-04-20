@@ -38,7 +38,7 @@ export async function createSale(params: {
       amountInCents: params.amountInCents,
       clientName: params.clientName,
       status,
-      periodicity
+      periodicity,
     })
     .then((sale) => {
       return { sale };

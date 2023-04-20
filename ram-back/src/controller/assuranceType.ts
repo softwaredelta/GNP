@@ -6,8 +6,8 @@ export const assuranceTypeRouter = Router();
 import * as j from "joi";
 
 const userParameters = j.object({
-    name: j.string().required(),
-    description: j.string().required()
+  name: j.string().required(),
+  description: j.string().required(),
 });
 
 const saleParametersMiddleware: RequestHandler = (req, res, next) => {
@@ -19,15 +19,19 @@ const saleParametersMiddleware: RequestHandler = (req, res, next) => {
   next();
 };
 
-assuranceTypeRouter.post("/create", saleParametersMiddleware, async (req, res) => {
-  const {name, description} =
-    req.body;
-  const { assurance_type, error } = await createAssuranceType({
-    name, description
-  });
-  if (error) {
-    res.status(400).json({ message: error });
-    return;
-  }
-  res.json(assurance_type);
-});
+assuranceTypeRouter.post(
+  "/create",
+  saleParametersMiddleware,
+  async (req, res) => {
+    const { name, description } = req.body;
+    const { assuranceType, error } = await createAssuranceType({
+      name,
+      description,
+    });
+    if (error) {
+      res.status(400).json({ message: error });
+      return;
+    }
+    res.json(assuranceType);
+  },
+);
