@@ -2,7 +2,7 @@
 
 import { Router } from "express";
 import { authMiddleware } from "./user";
-import { getUserGroups } from "../app/groups";
+import { createGroup, getUserGroups } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
 
@@ -16,6 +16,18 @@ groupsRouter.get("/my-groups", authMiddleware, async (req, res) => {
   const userId = req.user.id;
 
   const data = await getUserGroups({ userId });
+
+  res.json({ data });
+});
+
+groupsRouter.post("/create", authMiddleware, async (req, res) => {
+  if (!req.user) {
+    res.status(401).json({ message: "No user" });
+    return;
+  }
+  const { name } = req.body;
+
+  const data = await createGroup({ name });
 
   res.json({ data });
 });
