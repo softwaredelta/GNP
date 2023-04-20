@@ -26,6 +26,3 @@ groupRouter.get("/:id", async (req, res) => {
   res.json(group);
 });
 
-groupRouter.get("/:id/deliveries", async (req, res) => {
-  const ds = await getDataSource();
-});
