@@ -43,7 +43,7 @@ export async function createSale(params: {
     .then((sale) => {
       return { sale };
     })
-    .catch(() => {
-      return { sale: {} as SellEnt, error: SellError.SALE_ERROR };
+    .catch((err) => {
+      return { sale: {} as SellEnt, error: err.message };
     });
 }
