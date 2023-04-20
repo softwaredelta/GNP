@@ -2,7 +2,7 @@
 
 import { FaCloudUploadAlt } from "react-icons/fa";
 
-function DropZone({ ref }: { ref: any }) {
+function DropZone({ ref }: { ref: any | null }) {
   return (
     <div className=" w-full h-full flex flex-col items-center justify-center bg-white rounded-lg shadow-md">
       <label

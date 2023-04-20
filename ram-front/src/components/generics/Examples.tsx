@@ -18,6 +18,7 @@ import SkeletonText from "./skeleton/SkeletonText";
 import SkeletonDiv from "./skeleton/SkeletonDiv";
 import Alert from "./alerts/Alert";
 import useAlert from "../../hooks/useAlert";
+
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
   const { isOpen: isOpenAlert, toggleAlert } = useAlert(false, 5);
@@ -103,6 +104,7 @@ export default function Examples() {
       </div>
       <div className="md:col-span-3 ">
         <DeliveryCard
+          onFileSubmit={() => {}}
           color="blue"
           nameDelivery="Nombre de la entrega"
           status="Sin enviar"
@@ -110,7 +112,7 @@ export default function Examples() {
         />
       </div>
       <div className="w-10/12">
-        <DropZone />
+        <DropZone ref={null} />
       </div>
       <div className="w-7/12">
         <button
