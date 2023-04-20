@@ -18,12 +18,42 @@ import SkeletonText from "./skeleton/SkeletonText";
 import SkeletonDiv from "./skeleton/SkeletonDiv";
 import Alert from "./alerts/Alert";
 import useAlert from "../../hooks/useAlert";
+import useAxios from "../../hooks/useAxios";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
   const { isOpen: isOpenAlert, toggleAlert } = useAlert(false, 5);
+  const { response: me } = useAxios<{ email: string; id: string }>({
+    url: "user/me",
+    method: "GET",
+  });
+
+  const { response, error, loading, callback } = useAxios<{
+    data: {
+      group: {
+        id: string;
+        name: string;
+      };
+    };
+  }>({
+    url: "groups/create",
+    method: "POST",
+    body: { name: "Grupo novinos" },
+  });
+  console.log({ response });
+  console.log({ me });
+
+  if (loading) <div>loading..</div>;
+
+  if (error) return <div>error:{JSON.stringify(error)}</div>;
 
   return (
     <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center gap-10 py-20">
+      <div className="w-40">
+        <button className="btn-primary" onClick={callback}>
+          post
+        </button>
+      </div>
+      <div className="w-40">Hola {me && me.email}</div>
       <div className=" w-7/12 py-10">
         <ProgressBar
           progress={30}
