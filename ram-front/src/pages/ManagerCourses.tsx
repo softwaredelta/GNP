@@ -25,8 +25,7 @@ export function ManagerCourses() {
             </div>
           </div>
           <div className="grid md:grid-cols-4 place-items-center">
-            {groups &&
-              groups.length > 0 &&
+            {groups.length > 0 ? (
               groups.map((groupsObj, index) => (
                 <div className=" p-10" key={index}>
                   <button
@@ -45,8 +44,12 @@ export function ManagerCourses() {
                     </Card>
                   </button>
                 </div>
-              ))}{" "}
-            : (<div>No hay grupos </div>)
+              ))
+            ) : (
+              <div className="h-56 text-xl flex items-center justify-center">
+                No hay grupos registrados
+              </div>
+            )}
           </div>
         </div>
       </Wrapper>

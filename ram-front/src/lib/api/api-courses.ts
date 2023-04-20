@@ -3,11 +3,20 @@
 import { selector } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  password : string;
+  mobile: number;
+  phone: number;
+  imageUrl?: string;
+}
+
 export interface Course {
   id: string;
   name: string;
-  // FIXME: create user type
-  groupUsers: any;
+  groupUsers: User[];
 }
 
 export const allCourses$ = selector<Course[]>({
