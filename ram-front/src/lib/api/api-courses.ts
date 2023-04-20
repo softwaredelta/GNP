@@ -7,7 +7,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  password : string;
+  password: string;
   mobile: number;
   phone: number;
   imageUrl?: string;
