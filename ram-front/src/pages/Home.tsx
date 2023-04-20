@@ -2,7 +2,7 @@
 
 import { useAuthentication } from "../lib/api/api-auth";
 
-export function Home() {
+export default function Home() {
   const { logout } = useAuthentication();
 
   return (
