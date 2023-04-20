@@ -40,7 +40,7 @@ describe("sale", () => {
         sellDate: new Date("2021/01/01"),
         amountInCents: "123456",
         clientName: "Juan Perez",
-        evidenceUrl: "https://www.google.com"
+        evidenceUrl: "https://www.google.com",
       });
 
       expect(error).toBeUndefined();
