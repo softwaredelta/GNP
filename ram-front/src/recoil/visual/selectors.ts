@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 import { selector } from "recoil";
 import { alert } from "./atoms";
 

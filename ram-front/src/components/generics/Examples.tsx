@@ -16,7 +16,6 @@ import useModal from "../../hooks/useModal";
 import SkeletonCard from "./skeleton/SkeletonCard";
 import SkeletonText from "./skeleton/SkeletonText";
 import SkeletonDiv from "./skeleton/SkeletonDiv";
-import Alert from "./alerts/Alert";
 import useAlert from "../../hooks/useAlert";
 import useAxios from "../../hooks/useAxios";
 export default function Examples() {
@@ -189,13 +188,6 @@ export default function Examples() {
       <div className="w-32 h-32 rounded-full overflow-hidden">
         <SkeletonDiv />
       </div>
-      {/* <div className="w-11/12">
-        <Alert
-          type="success"
-          message="¡Éxito!"
-          description="Se ha realizado la acción correctamente"
-        />
-      </div> */}
       <div className="w-11/12">
         <button
           className="btn-primary"
@@ -212,13 +204,6 @@ export default function Examples() {
         >
           Abrir alerta
         </button>
-        {/* {isOpenAlert && (
-          <Alert
-            type="error"
-            message="¡¡Namames rompiste el proyecto!!"
-            description="Tu imbecibilidad hizo que se rompiera el proyecto, felicidades, neta no puede ser más baboso, si no le sabes mejor ni le muevas papito, no mames, neta si me da coraje, te veo y tengo ganas de romperte la madre, ayDios Mio, agarrenme"
-          />
-        )} */}
       </div>
     </div>
   );

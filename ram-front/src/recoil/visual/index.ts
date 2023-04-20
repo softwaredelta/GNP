@@ -1,3 +1,5 @@
+// (c) Delta Software 2023, rights reserved.
+
 import { alert } from "./atoms";
 import { selectAlert } from "./selectors";
 

@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import atomAlert, { IAlert } from "../recoil/visual";
 
 export interface IUseAlertReturn {
@@ -8,7 +8,7 @@ export interface IUseAlertReturn {
 }
 
 export default function useAlert(): IUseAlertReturn {
-  const [state, setState] = useRecoilState(atomAlert);
+  const setState = useSetRecoilState(atomAlert);
 
   const showAlert = (state: IAlert, seconds: number) => {
     setState((prev) => ({ ...prev, isOpen: false }));

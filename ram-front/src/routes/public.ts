@@ -1,12 +1,12 @@
+// (c) Delta Software 2023, rights reserved.
+
 import { lazy } from "react";
 import { IRoute } from "../types";
 
-const Login = lazy(async () => await import("../pages/Login"));
-const InfraTest = lazy(async () => await import("../pages/InfraTest"));
+const Login = lazy(async () => import("../pages/Login"));
+const InfraTest = lazy(async () => import("../pages/InfraTest"));
 
-const Components = lazy(
-  async () => await import("../components/generics/Examples"),
-);
+const Components = lazy(async () => import("../components/generics/Examples"));
 
 export const publicRoutes: IRoute[] = [
   {
