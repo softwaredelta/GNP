@@ -3,7 +3,7 @@
 import { LoginScreen } from "../components/auth/Login";
 import { useAuthentication } from "../lib/api/api-auth";
 
-export function Login() {
+export default function Login() {
   const { authenticate } = useAuthentication();
 
   return <LoginScreen onLogin={authenticate}></LoginScreen>;

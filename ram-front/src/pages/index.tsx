@@ -1,36 +1,52 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Navigate, Route, Routes } from "react-router-dom";
-import { InfraPage } from "./InfraTest";
-import { Home } from "./Home";
 import { useAuthentication } from "../lib/api/api-auth";
-import { Login } from "./Login";
-import Examples from "../components/generics/Examples";
-import Groups from "./Groups";
+import { privateRoutes } from "../routes/privates";
+import { publicRoutes } from "../routes/public";
+import { useRecoilValue } from "recoil";
+import atomAlert, { IAlert } from "../recoil/visual/index";
+import Alert from "../components/generics/alerts/Alert";
 
 export function AppRouter() {
   const { isAuthenticated } = useAuthentication();
+  const state = useRecoilValue<IAlert>(atomAlert);
 
   return (
-    <Routes>
-      <Route path="/infra" element={<InfraPage />} />
-      <Route path="/components" element={<Examples />} />
-      <Route path="/groups" element={<Groups />} />
-      {isAuthenticated ? (
-        <>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/infra" element={<InfraTest />} /> */}
-          <Route path="/login" element={<Navigate to="/" />} />
-          <Route path="*" element={<h1>404</h1>} />
-        </>
-      ) : (
-        <>
-          <Route path="/" element={<Navigate to="/login" />} />
-          {/* <Route path="/infra" element={<InfraTest />} /> */}
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<h1>404</h1>} />
-        </>
+    <>
+      {state.isOpen && (
+        <Alert
+          type={state.type}
+          description={state.description}
+          message={state.message}
+        />
       )}
-    </Routes>
+      <Routes>
+        {isAuthenticated ? (
+          <>
+            {privateRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={<route.component />}
+              />
+            ))}
+            <Route path="/login" element={<Navigate to="/" />} />
+          </>
+        ) : (
+          <>
+            {publicRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={<route.component />}
+              />
+            ))}
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="*" element={<h1>404</h1>} />
+          </>
+        )}
+      </Routes>
+    </>
   );
 }

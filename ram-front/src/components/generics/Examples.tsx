@@ -16,12 +16,11 @@ import useModal from "../../hooks/useModal";
 import SkeletonCard from "./skeleton/SkeletonCard";
 import SkeletonText from "./skeleton/SkeletonText";
 import SkeletonDiv from "./skeleton/SkeletonDiv";
-import Alert from "./alerts/Alert";
 import useAlert from "../../hooks/useAlert";
 import useAxios from "../../hooks/useAxios";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
-  const { isOpen: isOpenAlert, toggleAlert } = useAlert(false, 5);
+  const { showAlert } = useAlert();
   const { response: me } = useAxios<{ email: string; id: string }>({
     url: "user/me",
     method: "GET",
@@ -168,10 +167,7 @@ export default function Examples() {
           <Modal closeModal={toggleModal}>
             <div>
               <h1 className="text-2xl font-bold text-center">Hola mundo</h1>
-              <p className="text-center">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Quisquam, quod.
-              </p>
+              <p className="text-center">hola oli</p>
               <div>
                 <h3 className="font-bold text-center py-5">Miren un gatito:</h3>
               </div>
@@ -192,24 +188,22 @@ export default function Examples() {
       <div className="w-32 h-32 rounded-full overflow-hidden">
         <SkeletonDiv />
       </div>
-      {/* <div className="w-11/12">
-        <Alert
-          type="success"
-          message="¡Éxito!"
-          description="Se ha realizado la acción correctamente"
-        />
-      </div> */}
       <div className="w-11/12">
-        <button className="btn-primary" onClick={toggleAlert}>
+        <button
+          className="btn-primary"
+          onClick={() =>
+            showAlert(
+              {
+                type: "error",
+                description: "Alerta buena",
+                message: "Prueba de alerta",
+              },
+              5,
+            )
+          }
+        >
           Abrir alerta
         </button>
-        {isOpenAlert && (
-          <Alert
-            type="error"
-            message="¡¡Namames rompiste el proyecto!!"
-            description="Tu imbecibilidad hizo que se rompiera el proyecto, felicidades, neta no puede ser más baboso, si no le sabes mejor ni le muevas papito, no mames, neta si me da coraje, te veo y tengo ganas de romperte la madre, ayDios Mio, agarrenme"
-          />
-        )}
       </div>
     </div>
   );
