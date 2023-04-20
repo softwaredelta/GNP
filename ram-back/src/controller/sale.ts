@@ -7,18 +7,19 @@ import * as j from "joi";
 
 const userParameters = j.object({
   policyNumber: j.string().required(),
-  assuranceType: j.string().required(),
+  assuranceType: j.object().required(),
   sellDate: j.string().required(),
   amountInCents: j.string().required(),
   clientName: j.string().required(),
 });
 
-const saleParametersMiddleware: RequestHandler = (req, res) => {
+const saleParametersMiddleware: RequestHandler = (req, res, next) => {
   const { error } = userParameters.validate(req.body);
   if (error) {
     res.status(400).json({ message: "BAD_DATA", reason: error });
     return;
   }
+  next()
 };
 
 salesRouter.post("/create", saleParametersMiddleware, async (req, res) => {
