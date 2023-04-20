@@ -3,8 +3,10 @@
 import { Router } from "express";
 import { authRouter } from "./user";
 import { infraRouter } from "./infra";
+import { salesRouter } from "./sale";
 
 export const router = Router();
 
 router.use("/user", authRouter);
 router.use("/infra", infraRouter);
+router.use("/sales", salesRouter);
