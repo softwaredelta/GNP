@@ -1,6 +1,7 @@
+// (c) Delta Software 2023, rights reserved.
+
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
-import { createUser } from "./user";
 import { v4 } from "uuid";
 import { DeepPartial } from "typeorm";
 import { AssuranceTypeEnt } from "../entities/assurance-type.entity";
@@ -40,7 +41,7 @@ export async function createSale(params: {
     .then((sale) => {
       return { sale };
     })
-    .catch((e) => {
+    .catch(() => {
       return { sale: {} as SellEnt, error: SellError.SALE_ERROR };
     });
 }
