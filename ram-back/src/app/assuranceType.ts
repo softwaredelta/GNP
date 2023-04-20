@@ -11,7 +11,7 @@ export async function createAssuranceType(params: {
   name: string;
   description: string;
   id?: string;
-}): Promise<{ assurance_type: AssuranceTypeEnt; error?: AssuranceTypeError }> {
+}): Promise<{ assuranceType: AssuranceTypeEnt; error?: AssuranceTypeError }> {
   const ds = await getDataSource();
   const id = params.id || v4();
   //   const status = "sin revisar";
@@ -25,12 +25,15 @@ export async function createAssuranceType(params: {
     .save(AssuranceTypeEnt, {
       id,
       name: params.name,
-      description: params.description
+      description: params.description,
     })
-    .then((assurance_type) => {
-      return { assurance_type };
+    .then((assuranceType) => {
+      return { assuranceType };
     })
     .catch(() => {
-      return { assurance_type: {} as AssuranceTypeEnt, error: AssuranceTypeError.ASSURANCE_TYPE_ERROR };
+      return {
+        assuranceType: {} as AssuranceTypeEnt,
+        error: AssuranceTypeError.ASSURANCE_TYPE_ERROR,
+      };
     });
 }
