@@ -52,5 +52,4 @@ export async function loadSeeds() {
     description: "test-assurance-type-1-description",
     id: "test-at-1",
   });
-
 }

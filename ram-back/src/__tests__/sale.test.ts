@@ -19,14 +19,13 @@ describe("sale", () => {
         assuranceType: {
           name: "test-assurance-type-1",
           description: "test-assurance-type-1-description",
-          id: "test-at-1"
+          id: "test-at-1",
         },
         sellDate: new Date("2021/01/01"),
         amountInCents: "123456",
         clientName: "Juan Perez",
       });
 
-    
       expect(sale).toBeDefined();
       expect(error).toBeDefined();
       //   expect(sale).toHaveProperty("id");
