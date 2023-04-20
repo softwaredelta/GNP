@@ -168,10 +168,7 @@ export default function Examples() {
           <Modal closeModal={toggleModal}>
             <div>
               <h1 className="text-2xl font-bold text-center">Hola mundo</h1>
-              <p className="text-center">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Quisquam, quod.
-              </p>
+              <p className="text-center">hola oli</p>
               <div>
                 <h3 className="font-bold text-center py-5">Miren un gatito:</h3>
               </div>
