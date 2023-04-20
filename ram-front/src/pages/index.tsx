@@ -6,6 +6,7 @@ import { Home } from "./Home";
 import { useAuthentication } from "../lib/api/api-auth";
 import { Login } from "./Login";
 import Examples from "../components/generics/Examples";
+import { ManagerCourses } from "./ManagerCourses";
 
 export function AppRouter() {
   const { isAuthenticated } = useAuthentication();
@@ -17,14 +18,13 @@ export function AppRouter() {
       {isAuthenticated ? (
         <>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/infra" element={<InfraTest />} /> */}
+          <Route path="/managerCourses" element={<ManagerCourses />} />
           <Route path="/login" element={<Navigate to="/" />} />
           <Route path="*" element={<h1>404</h1>} />
         </>
       ) : (
         <>
           <Route path="/" element={<Navigate to="/login" />} />
-          {/* <Route path="/infra" element={<InfraTest />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<h1>404</h1>} />
         </>
