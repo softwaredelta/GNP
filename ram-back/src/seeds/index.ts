@@ -48,4 +48,24 @@ export async function loadSeeds() {
     description: "test-assurance-type-1-description",
     id: "test-at-1",
   });
+
+  await createAssuranceType({
+    name: "VIDA",
+    description: "Seguros de Vida",
+  });
+
+  await createAssuranceType({
+    name: "GMM",
+    description: "Seguros de Gastos Médicos Mayores",
+  });
+
+  await createAssuranceType({
+    name: "PYMES",
+    description: "Seguros para Pequeñas y Medianas Empresas",
+  });
+
+  await createAssuranceType({
+    name: "PATRIMONIAL",
+    description: "seguros de patrimonio",
+  });
 }

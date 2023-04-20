@@ -2,6 +2,8 @@
 
 import { Router, RequestHandler } from "express";
 import { createAssuranceType } from "../app/assuranceType";
+import { getDataSource } from "../arch/db-client";
+import { AssuranceTypeEnt } from "../entities/assurance-type.entity";
 export const assuranceTypeRouter = Router();
 import * as j from "joi";
 
@@ -35,3 +37,9 @@ assuranceTypeRouter.post(
     res.json(assuranceType);
   },
 );
+
+assuranceTypeRouter.get("/all", async (req, res) => {
+  const db = await getDataSource();
+  const assuranceTypes = await db.manager.find(AssuranceTypeEnt);
+  res.json({ assuranceTypes });
+});
