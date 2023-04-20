@@ -5,6 +5,7 @@
 import { createSale } from "../app/sale";
 import { getDataSource } from "../arch/db-client";
 import { createAssuranceType } from "../app/assuranceType";
+import { createUser } from "../app/user";
 
 describe("sale", () => {
   beforeEach(async () => {
@@ -14,6 +15,11 @@ describe("sale", () => {
       name: "test-assurance-type-1",
       description: "test-assurance-type-1-description",
       id: "test-at-1",
+    });
+    await createUser({
+      email: "test@delta.tec.mx",
+      password: "test-password",
+      id: "test-user",
     });
   });
 
@@ -26,9 +32,15 @@ describe("sale", () => {
           description: "test-assurance-type-1-description",
           id: "test-at-1",
         },
+        user: {
+          email: "test@delta.tec.mx",
+          password: "test-password",
+          id: "test-user",
+        },
         sellDate: new Date("2021/01/01"),
         amountInCents: "123456",
         clientName: "Juan Perez",
+        evidenceUrl: "https://www.google.com"
       });
 
       expect(error).toBeUndefined();
