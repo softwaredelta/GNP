@@ -2,7 +2,6 @@
 
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuthentication } from "../lib/api/api-auth";
-import Examples from "../components/generics/Examples";
 import { privateRoutes } from "../routes/privates";
 import { publicRoutes } from "../routes/public";
 
