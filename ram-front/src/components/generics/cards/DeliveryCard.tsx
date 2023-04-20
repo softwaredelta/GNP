@@ -1,10 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
-import { FiUpload, FiEye } from "react-icons/fi";
+import { FiEye, FiUpload } from "react-icons/fi";
 import {
-  BsSendPlus,
   BsSend,
-  BsSendExclamation,
   BsSendCheck,
+  BsSendExclamation,
+  BsSendPlus,
 } from "react-icons/bs";
 
 export interface DeliveryCardProps {
@@ -12,7 +12,7 @@ export interface DeliveryCardProps {
   image: string;
   color: "blue" | "orange";
   status: "Sin enviar" | "Enviado" | "Rechazado" | "Aceptado";
-  onclick?: () => void;
+  onFileSubmit: (id: string) => void;
 }
 
 const iconList = {
@@ -26,6 +26,7 @@ export default function DeliveryCard({
   nameDelivery,
   image,
   color,
+  onFileSubmit,
   status,
 }: DeliveryCardProps): JSX.Element {
   const colorOptions = {
@@ -54,9 +55,13 @@ export default function DeliveryCard({
           <div className="mr-4">
             <FiEye color="gray" size={25} />
           </div>
-          <div>
-            <FiUpload color="gray" size={25} />
-          </div>
+          <button>
+            <FiUpload
+              color="gray"
+              size={25}
+              onClick={() => onFileSubmit("IDDDD")}
+            />
+          </button>
         </div>
       </div>
     </div>
