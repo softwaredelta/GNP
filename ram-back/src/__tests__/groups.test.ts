@@ -63,7 +63,9 @@ describe("groups", () => {
   it("get my groups", async () => {
     const password = "password7812361";
     const email = "";
-    const user = await createUser({ email, password }).then(({ user }) => user);
+    const newUser = await createUser({ email, password }).then(
+      ({ user }) => user,
+    );
     const groupNames = Array.from({ length: 3 }, (_, i) => `group/${i}`);
 
     const groups = await Promise.all(
@@ -74,17 +76,19 @@ describe("groups", () => {
 
     await addUserToGroup({
       groupId: groups[0].id,
-      userId: user.id,
+      userId: newUser.id,
       status: GroupUserStatus.ACTIVE,
     });
     await addUserToGroup({
       groupId: groups[1].id,
-      userId: user.id,
+      userId: newUser.id,
       status: GroupUserStatus.INACTIVE,
     });
 
-    const userGroups = await getUserGroups({ userId: user.id });
+    const userGroups = await getUserGroups({ userId: newUser.id });
     expect(userGroups.groups).toHaveLength(2);
-    expect(userGroups.groups.map((group) => group.id)).not.toContain(groups[2].id);
+    expect(userGroups.groups.map((group) => group.id)).not.toContain(
+      groups[2].id,
+    );
   });
 });
