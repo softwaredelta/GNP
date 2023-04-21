@@ -2,12 +2,16 @@
 
 import { FaCloudUploadAlt } from "react-icons/fa";
 
-function DropZone({ ref }: { ref: any | null }) {
+export interface DropZoneProps {
+  ref: any | null;
+}
+
+function DropZone({ ref }: DropZoneProps): JSX.Element {
   return (
     <div className=" w-full h-full flex flex-col items-center justify-center bg-white rounded-lg shadow-md">
       <label
         htmlFor="dropzone-file"
-        className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        className="flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
       >
         <div className="flex items-center justify-center relative w-24 h-24 mb-4 rounded-full bg-gnp-orange-400">
           <FaCloudUploadAlt size={40} className="text-white" />
