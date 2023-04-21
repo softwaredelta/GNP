@@ -5,7 +5,6 @@ import { IRoute } from "../types";
 
 const Login = lazy(async () => import("../pages/Login"));
 const InfraTest = lazy(async () => import("../pages/InfraTest"));
-
 const Components = lazy(async () => import("../components/generics/Examples"));
 
 export const publicRoutes: IRoute[] = [
