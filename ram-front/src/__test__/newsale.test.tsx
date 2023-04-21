@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { render, fireEvent, screen, act } from "@testing-library/react";
-import { NewSale } from "../pages/NewSale";
+import { NewSale } from "../pages/NewSaleOld";
 import { RecoilRoot } from "recoil";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
