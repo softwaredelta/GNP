@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { render, fireEvent, screen, act } from "@testing-library/react";
-import { NewSale } from "../pages/NewSaleOld";
+import NewSaleOld from "../pages/NewSaleOld";
 import { RecoilRoot } from "recoil";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
@@ -22,7 +22,7 @@ describe("NewSale", () => {
       createRoot(container).render(
         <RecoilRoot>
           <Suspense>
-            <NewSale />
+            <NewSaleOld />
           </Suspense>
         </RecoilRoot>,
       );
@@ -30,7 +30,7 @@ describe("NewSale", () => {
   });
 
   it("updates policy number input on change", () => {
-    render(<NewSale />);
+    render(<NewSaleOld />);
     const policyNumInput: HTMLInputElement = screen.getByPlaceholderText(
       "Ingrese el número de poliza",
     );
@@ -39,14 +39,14 @@ describe("NewSale", () => {
   });
 
   it("updates date input on change", () => {
-    render(<NewSale />);
+    render(<NewSaleOld />);
     const datePicker: HTMLInputElement = screen.getByLabelText("Fecha");
     fireEvent.change(datePicker, { target: { value: "18/04/2023" } });
     expect(datePicker.value).toBe("18/04/2023");
   });
 
   it("updates amount input on change", () => {
-    render(<NewSale />);
+    render(<NewSaleOld />);
     const amountInput: HTMLInputElement = screen.getByPlaceholderText(
       "Ingrese el monto de la venta",
     );
@@ -55,7 +55,7 @@ describe("NewSale", () => {
   });
 
   it("updates client name input on change", () => {
-    render(<NewSale />);
+    render(<NewSaleOld />);
     const clientInput: HTMLInputElement = screen.getByTestId("clientInput");
     fireEvent.change(clientInput, { target: { value: "John Doe" } });
     expect(clientInput.value).toBe("John Doe");
