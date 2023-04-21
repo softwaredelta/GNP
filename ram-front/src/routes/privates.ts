@@ -19,6 +19,5 @@ export const privateRoutes: IRoute[] = [
   {
     path: "/componentsPage",
     component: Components,
-  }
+  },
 ];
-
