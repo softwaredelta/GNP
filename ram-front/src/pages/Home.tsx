@@ -26,6 +26,14 @@ export default function Home() {
           </a>
         </li>
         <li>
+          <a
+            href="/managerCourses"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            manager courses
+          </a>
+        </li>
+        <li>
           <button
             onClick={() => {
               logout();

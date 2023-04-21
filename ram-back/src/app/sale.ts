@@ -52,7 +52,7 @@ export async function createSale(params: {
     .then((sale) => {
       return { sale };
     })
-    .catch((err) => {
-      return { sale: {} as SellEnt, error: err.message };
+    .catch((error) => {
+      return { sale: {} as SellEnt, error: error.message };
     });
 }

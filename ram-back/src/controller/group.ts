@@ -1,40 +1,18 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Router } from "express";
-import { authMiddleware } from "./user";
-import { createGroup, getUserGroups } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
+import { Router } from "express";
 
-export const groupsRouter = Router();
+export const groupRouter = Router();
 
-groupsRouter.get("/my-groups", authMiddleware, async (req, res) => {
-  if (!req.user) {
-    res.status(401).json({ message: "No user" });
-    return;
-  }
-  const userId = req.user.id;
+// FIXME: no auth, endpoint should not be part of API
+groupRouter.get("/all", async (req, res) => {
+  const ds = await getDataSource();
+  const groups = await ds.manager.find(GroupEnt, {
+    select: ["id", "name", "groupUsers"],
+    relations: ["groupUsers"],
+  });
 
-  const data = await getUserGroups({ userId });
-
-  res.json({ data });
-});
-
-groupsRouter.post("/create", authMiddleware, async (req, res) => {
-  if (!req.user) {
-    res.status(401).json({ message: "No user" });
-    return;
-  }
-  const { name } = req.body;
-
-  const data = await createGroup({ name });
-
-  res.json({ data });
-});
-
-groupsRouter.get("/all", async (req, res) => {
-  const db = await getDataSource();
-  const groups = await db.manager.find(GroupEnt);
-
-  res.json({ groups });
+  res.json(groups);
 });
