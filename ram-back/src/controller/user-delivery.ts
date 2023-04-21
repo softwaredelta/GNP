@@ -23,7 +23,6 @@ userDeliveryRouter.get(
 userDeliveryRouter.get(
   "/",
   async (req: Request, res: Response): Promise<void> => {
-    gh;
     try {
       const ds: DataSource = await getDataSource();
       const userDeliveryEntities: UserDeliveryEnt[] = await ds.manager.find(
@@ -37,15 +36,15 @@ userDeliveryRouter.get(
   },
 );
 
-userDeliveryRouter.post(
-  "/:id/send",
-  async (req: Request, res: Response): void => {
-    try {
-    } catch (error) {
-      console.error(error);
-    }
-  },
-);
+// userDeliveryRouter.post(
+//   "/:id/send",
+//   async (req: Request, res: Response): void => {
+//     try {
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   },
+// );
 
 userDeliveryRouter.put("/:id", (req: Request, res: Response): void => {
   try {

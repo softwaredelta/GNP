@@ -23,7 +23,7 @@
   ],
   "rules": {
     // "prettier/prettier": [
-    //   "error"
+    // "error"
     // ],
     "prettier/prettier": 0,
     "import/extensions": [
