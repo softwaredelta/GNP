@@ -77,7 +77,7 @@ function InfraTest() {
   );
 }
 
-export function InfraPage() {
+export default function InfraPage() {
   return (
     <Suspense fallback={<p>connecting to infraestructure...</p>}>
       <InfraTest />

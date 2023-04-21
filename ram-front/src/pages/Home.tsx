@@ -2,7 +2,7 @@
 
 import { useAuthentication } from "../lib/api/api-auth";
 
-export function Home() {
+export default function Home() {
   const { logout } = useAuthentication();
 
   return (
@@ -23,6 +23,14 @@ export function Home() {
             className="underline text-red-500 hover:text-red-800"
           >
             components
+          </a>
+        </li>
+        <li>
+          <a
+            href="/managerCourses"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            manager courses
           </a>
         </li>
         <li>

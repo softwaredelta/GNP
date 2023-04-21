@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "test": "jest --config=jest.config.ts",
+    "test": "jest --config=jest.config.ts --colors --silent",
+    "test:dev": "jest --config=jest.config.ts --colors --silent --watch",
     "preview": "vite preview",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --fix",
@@ -29,6 +30,7 @@
     "react-router-dom": "^6.10.0",
     "recoil": "^0.7.7",
     "rxjs": "^7.8.0",
+    "sinon": "^15.0.3",
     "tailwindcss": "^3.2.7"
   },
   "devDependencies": {
@@ -37,6 +39,7 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.4",
     "@testing-library/dom": "^9.2.0",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.5.0",
