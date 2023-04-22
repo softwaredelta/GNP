@@ -2,17 +2,6 @@
 
 import { selector } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  mobile: number;
-  phone: number;
-  imageUrl?: string;
-}
-
 export interface AssuranceType {
   id: string;
   name: string;
@@ -32,16 +21,6 @@ export const allAssuranceTypes$ = selector<AssuranceType[]>({
           name: "Test name",
           description: "test-description",
         },
-        // {
-        //   id: "test-course",
-        //   name: "Test Course",
-        //   groupUsers: [],
-        // },
-        // {
-        //   id: "test-course2",
-        //   name: "Test Course 2",
-        //   groupUsers: [],
-        // },
       ];
     }
 

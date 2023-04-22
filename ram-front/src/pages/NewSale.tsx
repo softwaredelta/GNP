@@ -13,10 +13,6 @@ export default function NewSale() {
     <Wrapper>
       <div className="flex flex-col justify-center items-center pt-8">
         <CardNewSale assuranceTypes={assuranceTypes.assuranceTypes} />
-        {/* <button onClick={() => console.log(Object.values(assurance_types[0]))}>click</button> */}
-        {/* <button onClick={() => console.log(assurance_types.assuranceTypes[0])}>
-          click
-        </button> */}
       </div>
     </Wrapper>
   );

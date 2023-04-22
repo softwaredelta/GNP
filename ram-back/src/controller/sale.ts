@@ -4,6 +4,8 @@ import { Router, RequestHandler } from "express";
 import { createSale } from "../app/sale";
 export const salesRouter = Router();
 import * as j from "joi";
+import { getDataSource } from "../arch/db-client";
+import { SellEnt } from "../entities/sell.entity";
 
 const userParameters = j.object({
   policyNumber: j.string().required(),
@@ -37,4 +39,10 @@ salesRouter.post("/create", saleParametersMiddleware, async (req, res) => {
     return;
   }
   res.json(sale);
+});
+
+salesRouter.get("/all", async (req, res) => {
+  const db = await getDataSource();
+  const sales = await db.manager.find(SellEnt);
+  res.json({ sales });
 });
