@@ -6,23 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
-import axios from "axios";
-import { apiBase$ } from "../../lib/api/api-base";
-import { useRecoilValue } from "recoil";
-
-type CreateSaleResponse = {
-  clientName: string;
-  id: string;
-  amountInCents: string;
-  policyNumber: string;
-  sellDate: string;
-  assuranceType: {
-    name: string;
-    description: string;
-    id: string;
-  };
-};
-
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
     id: string;
