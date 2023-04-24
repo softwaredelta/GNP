@@ -10,7 +10,7 @@ export enum AssuranceTypeError {
 
 export async function createAssuranceType(params: {
   name: string;
-  description: string;
+  description?: string;
   id?: string;
 }): Promise<{ assuranceType: AssuranceTypeEnt; error?: AssuranceTypeError }> {
   const ds = await getDataSource();

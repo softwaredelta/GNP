@@ -6,10 +6,11 @@ export const salesRouter = Router();
 import * as j from "joi";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
+import { authMiddleware } from "./user";
 
 const userParameters = j.object({
   policyNumber: j.string().required(),
-  assuranceType: j.object().required(),
+  assuranceTypeId: j.string().required(),
   sellDate: j.string().required(),
   amountInCents: j.string().required(),
   clientName: j.string().required(),
@@ -24,22 +25,36 @@ const saleParametersMiddleware: RequestHandler = (req, res, next) => {
   next();
 };
 
-salesRouter.post("/create", saleParametersMiddleware, async (req, res) => {
-  const { policyNumber, assuranceType, sellDate, amountInCents, clientName } =
-    req.body;
-  const { sale, error } = await createSale({
-    policyNumber,
-    assuranceType,
-    sellDate,
-    amountInCents,
-    clientName,
-  });
-  if (error) {
-    res.status(400).json({ message: error });
-    return;
-  }
-  res.json(sale);
-});
+salesRouter.post(
+  "/create",
+  authMiddleware,
+  saleParametersMiddleware,
+  async (req, res) => {
+    const {
+      policyNumber,
+      assuranceTypeId,
+      sellDate,
+      amountInCents,
+      clientName,
+    } = req.body;
+    const { user } = req;
+    const { sale, error } = await createSale({
+      policyNumber,
+      assuranceTypeId,
+      sellDate,
+      amountInCents,
+      clientName,
+      userId: user!.id,
+    });
+
+    if (error) {
+      res.status(400).json({ message: error });
+      return;
+    }
+
+    res.status(201).json(sale);
+  },
+);
 
 salesRouter.get("/all", async (req, res) => {
   const db = await getDataSource();
