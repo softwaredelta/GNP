@@ -14,6 +14,7 @@ const userParameters = j.object({
   sellDate: j.string().required(),
   amountInCents: j.string().required(),
   clientName: j.string().required(),
+  periodicity: j.string().required(),
 });
 
 const saleParametersMiddleware: RequestHandler = (req, res, next) => {
