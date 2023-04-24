@@ -6,10 +6,12 @@ import { v4 } from "uuid";
 import { UserEnt } from "../entities/user.entity";
 import { DeepPartial } from "typeorm";
 import { AssuranceTypeEnt } from "../entities/assurance-type.entity";
+
 export enum SellError {
   POLICY_NUM_DUPLICATED = "POLICY_NUM_DUPLICATED",
   SALE_ERROR = "DEFAULT_ERROR",
 }
+
 export async function createSale(params: {
   policyNumber: string;
   assuranceType: DeepPartial<AssuranceTypeEnt>;
