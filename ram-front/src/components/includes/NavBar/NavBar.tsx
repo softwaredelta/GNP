@@ -3,6 +3,7 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
 import LogoRAM from "../../../assets/imgs/Ram_LogoInv.png";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
@@ -45,13 +46,18 @@ function NavBar() {
       </div>
       <Navbar.Collapse>
         <Navbar.Link
-          href="/"
+          as={Link}
+          to="/"
           className="text-lg ml-2 active:bg-amber-500"
           active={true}
         >
           Home
         </Navbar.Link>
-        <Navbar.Link href="/navbars" className="text-lg  mx-8 text-gray-900 ">
+        <Navbar.Link
+          as={Link}
+          to="/navbars"
+          className="text-lg  mx-8 text-gray-900 "
+        >
           Grupos
         </Navbar.Link>
 
@@ -63,7 +69,11 @@ function NavBar() {
           </Dropdown>
         </div>
 
-        <Navbar.Link href="/prospectos" className="text-lg mx-8 text-gray-900">
+        <Navbar.Link
+          as={Link}
+          to="/prospectos"
+          className="text-lg mx-8 text-gray-900"
+        >
           Prospectos
         </Navbar.Link>
         <div className="text-lg mx-8 text-gray-900">
