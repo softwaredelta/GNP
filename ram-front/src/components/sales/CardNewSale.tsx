@@ -75,6 +75,14 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     }
   };
 
+  const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const regex = /^[a-z A-Z ñ]*$/; // expresión regular que solo permite letras, números, guiones bajos y espacios
+    if (regex.test(inputValue)) {
+      setClient(inputValue);
+    }
+  };
+
   useEffect(() => {
     if (response) {
       Swal.fire({
@@ -91,6 +99,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
       });
     }
   }, [response, error]);
+
 
   return (
     <div className="grid grid-cols-4 bg-gradient-to-t from-gnp-cream to-gnp-white rounded-lg m-4">
