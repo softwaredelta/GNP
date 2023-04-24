@@ -17,7 +17,12 @@ export async function createGroup(params: {
   const ds = await getDataSource();
 
   return ds.manager
-    .save(ds.manager.create(GroupEnt, { name: params.name, imageURL: params.imageURL }))
+    .save(
+      ds.manager.create(GroupEnt, {
+        name: params.name,
+        imageURL: params.imageURL,
+      }),
+    )
     .then((group) => {
       return { group };
     })
