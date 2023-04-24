@@ -34,9 +34,9 @@ export default function ManagerDelivery({
       >
         <div className="w-full flex items-center text-center justify-end">
           <div className="p-2">
-          <BsFillPeopleFill color="gray" size={20} />
+            <BsFillPeopleFill color="gray" size={20} />
           </div>
-        {membersNumber} Miembros
+          {membersNumber} Miembros
         </div>
       </button>
     </div>

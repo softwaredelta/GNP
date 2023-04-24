@@ -27,8 +27,8 @@ export default function DeliveryCard({
   nameDelivery,
   image,
   color,
-  // status,
-}: DeliveryCardProps): JSX.Element {
+}: // status,
+DeliveryCardProps): JSX.Element {
   const colorOptions = {
     blue: "bg-gnp-blue-500",
     orange: "bg-gnp-orange-500",
