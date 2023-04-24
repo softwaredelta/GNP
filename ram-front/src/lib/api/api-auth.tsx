@@ -22,6 +22,7 @@ export interface Authentication {
   refreshTokenExpiresAt: number;
   username: string;
   userRole: string;
+  userID: string;
 }
 
 export interface AuthenticationError {
@@ -128,6 +129,7 @@ export const authenticationApi$ = selectorFamily<
                   new Date().getTime() + 24 * 60 * 60 * 1000,
                 username: "username",
                 userRole: "userRole",
+                userID: "test-user",
               });
               set(authenticationError$, null);
 
@@ -248,6 +250,7 @@ export function AuthenticationHandler() {
             refreshTokenExpiresAt: 3600,
             username: "username",
             userRole: "userRole",
+            userID: "test-user",
           });
         } else {
           setAuthentication(null);

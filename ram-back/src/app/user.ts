@@ -3,8 +3,9 @@
 import { getDataSource } from "../arch/db-client";
 import { v4 } from "uuid";
 import { UserEnt } from "../entities/user.entity";
-import { TokenType, generateToken, verifyToken } from "./auth";
-import { hashPassword, comparePassword } from "../utils/hash";
+import { generateToken, TokenType, verifyToken } from "./auth";
+import { comparePassword, hashPassword } from "../utils/hash";
+
 export enum UserError {
   USER_EXISTS = "USER_EXISTS",
   USER_NOT_FOUND = "USER_NOT_FOUND",
@@ -18,6 +19,7 @@ export interface UserAuthentication {
   refreshTokenExpiresAt: number;
   username: string;
   userRole: string;
+  userID: string;
 }
 
 export async function createUser(params: {
@@ -70,6 +72,7 @@ export async function authenticateUser(params: {
       refreshTokenExpiresAt: refreshToken.expiresAt,
       username: user.email,
       userRole: "user",
+      userID: user.id,
     },
   };
 }

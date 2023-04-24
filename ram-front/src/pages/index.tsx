@@ -7,6 +7,7 @@ import { publicRoutes } from "../routes/public";
 import { useRecoilValue } from "recoil";
 import atomAlert, { IAlert } from "../recoil/visual/index";
 import Alert from "../components/generics/alerts/Alert";
+import Delivery from "../components/Delivery";
 
 export function AppRouter() {
   const { isAuthenticated } = useAuthentication();
@@ -32,6 +33,7 @@ export function AppRouter() {
               />
             ))}
             <Route path="/login" element={<Navigate to="/" />} />
+            <Route path="/entregables" element={<Delivery />} />
           </>
         ) : (
           <>
