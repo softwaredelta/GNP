@@ -10,8 +10,8 @@ export const groupRouter = Router();
 groupRouter.get("/all", async (req, res) => {
   const ds = await getDataSource();
   const groups = await ds.manager.find(GroupEnt, {
-    select: ["id", "name", "groupUsers"],
-    relations: ["groupUsers"],
+    select: ["id", "name", "imageURL", "groupUsers"],
+    relations: ["groupUsers", "groupDeliveries"],
   });
 
   res.json(groups);

@@ -8,10 +8,12 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from "typeorm";
 import { DESCRIPTION_COLUMN, URL_COLUMN } from "./columns";
 import { UserDeliveryEnt } from "./user-delivery";
 import { UserEnt } from "./user.entity";
+import { GroupEnt } from "./group.entity";
 
 @Entity({ name: "delivery" })
 export class DeliveryEnt {
@@ -29,6 +31,13 @@ export class DeliveryEnt {
 
   @Column(URL_COLUMN)
   imageUrl: string;
+
+  @ManyToOne(() => GroupEnt, (groupEnt) => groupEnt.id)
+  @JoinColumn({ name: "group_id" })
+  group!: GroupEnt;
+
+  @Column({ name: "group_id", nullable: false, primary: true })
+  groupId!: string;
 
   @OneToMany(() => UserDeliveryEnt, (userDelivery) => userDelivery.delivery)
   userDeliveries: UserDeliveryEnt[];
