@@ -3,12 +3,13 @@ import Card from "../generics/cards/base/Card";
 import CardInfoGroup from "../generics/cards/info/CardInfoGroup";
 
 export interface IListGroupProps {
-  groups: {
-    id: string;
-    name: string;
-    progress: number;
-    image: string;
-  }[];
+  groups: IGroup[];
+}
+export interface IGroup {
+  id: string;
+  name: string;
+  progress: number;
+  image: string;
 }
 
 export default function ListGroup({ groups }: IListGroupProps): JSX.Element {

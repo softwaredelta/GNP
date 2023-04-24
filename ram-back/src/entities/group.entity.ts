@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 import { DESCRIPTION_COLUMN, NAME_COLUMN } from "./columns";
 import { GroupUserEnt } from "./group-user.entity";
+import { DeliveryEnt } from "./delivery.entity";
 
 @Entity({ name: "group" })
 export class GroupEnt {
@@ -18,6 +19,9 @@ export class GroupEnt {
 
   @Column(NAME_COLUMN)
   name!: string;
+
+  @Column(DESCRIPTION_COLUMN)
+  image!: string;
 
   @Column(DESCRIPTION_COLUMN)
   description: string;
@@ -30,4 +34,7 @@ export class GroupEnt {
 
   @OneToMany(() => GroupUserEnt, (groupUser) => groupUser.group)
   groupUsers!: GroupUserEnt[];
+
+  @OneToMany(() => DeliveryEnt, (userDeliveries) => userDeliveries.group)
+  deliveries!: DeliveryEnt[];
 }

@@ -87,8 +87,8 @@ describe("groups", () => {
 
     const userGroups = await getUserGroups({ userId: newUser.id });
     expect(userGroups.groups).toHaveLength(2);
-    expect(userGroups.groups.map((group) => group.id)).not.toContain(
-      groups[2].id,
-    );
+    expect(
+      userGroups.groups.map((userGroup) => userGroup.group.id),
+    ).not.toContain(groups[2].id);
   });
 });

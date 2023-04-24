@@ -4,7 +4,9 @@ import { lazy } from "react";
 import { IRoute } from "../types";
 
 const Home = lazy(async () => import("../pages/Home"));
-const NewSale = lazy(async () => import("../pages/NewSale"));
+const InfraTest = lazy(async () => import("../pages/InfraTest"));
+const Components = lazy(async () => import("../components/generics/Examples"));
+const Groups = lazy(async () => import("../pages/Groups"));
 
 export const privateRoutes: IRoute[] = [
   {
@@ -12,7 +14,15 @@ export const privateRoutes: IRoute[] = [
     component: Home,
   },
   {
-    path: "/new-sale",
-    component: NewSale,
+    path: "/infra-test",
+    component: InfraTest,
+  },
+  {
+    path: "/components",
+    component: Components,
+  },
+  {
+    path: "/my-groups",
+    component: Groups,
   },
 ];
