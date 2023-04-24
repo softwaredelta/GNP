@@ -13,6 +13,7 @@ const userParameters = j.object({
   sellDate: j.string().required(),
   amountInCents: j.string().required(),
   clientName: j.string().required(),
+  periodicity: j.string().required(),
 });
 
 const saleParametersMiddleware: RequestHandler = (req, res, next) => {
@@ -25,7 +26,7 @@ const saleParametersMiddleware: RequestHandler = (req, res, next) => {
 };
 
 salesRouter.post("/create", saleParametersMiddleware, async (req, res) => {
-  const { policyNumber, assuranceType, sellDate, amountInCents, clientName } =
+  const { policyNumber, assuranceType, sellDate, amountInCents, clientName, periodicity} =
     req.body;
   const { sale, error } = await createSale({
     policyNumber,
@@ -33,8 +34,10 @@ salesRouter.post("/create", saleParametersMiddleware, async (req, res) => {
     sellDate,
     amountInCents,
     clientName,
+    periodicity,
   });
   if (error) {
+    //console.log(res);
     res.status(400).json({ message: error });
     return;
   }

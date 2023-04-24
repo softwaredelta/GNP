@@ -16,18 +16,16 @@ export async function createSale(params: {
   sellDate: Date;
   amountInCents: string;
   clientName: string;
+  periodicity: string;
   id?: string;
   status?: string;
-  periodicity?: string;
   user?: DeepPartial<UserEnt>;
   evidenceUrl?: string;
 }): Promise<{ sale: SellEnt; error?: SellError }> {
   const ds = await getDataSource();
   const id = params.id || v4();
-
   // Static values not handled yet in frontend
   const status = "sin revisar";
-  const periodicity = "mensual";
   const user = {
     email: "test@delta.tec.mx",
     password: "test-password",
@@ -42,9 +40,9 @@ export async function createSale(params: {
       sellDate: params.sellDate,
       amountInCents: params.amountInCents,
       clientName: params.clientName,
+      periodicity: params.periodicity,
       user: user,
       status,
-      periodicity,
       evidenceUrl: "https://www.google.com",
     })
     .then((sale) => {

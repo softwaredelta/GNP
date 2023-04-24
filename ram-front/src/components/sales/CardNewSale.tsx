@@ -21,10 +21,16 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   const [amount, setAmount] = useState("");
   const [client, setClient] = useState("");
   const [assuranceType, setAssuranceType] = useState(assuranceTypes[0].id);
+  const [periodicity, setPeriodicity] = useState("")
 
   const handleAssuranceTypeChange = (event: any) => {
     setAssuranceType(event.target.value);
-    console.log(assuranceType);
+    //console.log(assuranceType);
+  };
+  
+  const handlePeriodicityTypeChange = (event: any) => {
+    setPeriodicity(event.target.value);
+    //console.log(assuranceType);
   };
 
   const { response, error, callback } = useAxios<{
@@ -45,8 +51,17 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
       },
       amountInCents: amount,
       clientName: client,
-    },
+      periodicity: periodicity,
+    }
   });
+
+  const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const regex = /^[a-z A-Z ñ]*$/; // expresión regular que solo permite letras, números, guiones bajos y espacios
+    if (regex.test(inputValue)) {
+      setClient(inputValue);
+    }
+  };
 
   useEffect(() => {
     if (response) {
@@ -64,6 +79,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
       });
     }
   }, [response, error]);
+
 
   return (
     <div className="grid grid-cols-4 bg-gradient-to-t from-gnp-cream to-gnp-white rounded-lg m-4">
@@ -89,18 +105,22 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setPolicyNum(e.target.value)
               }
+              minLength = {9} maxLength={9}
+              required
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
               Monto
             </label>
             <input
               className="input-primary w-full"
-              type="number"
+              type="text"
               placeholder="Ingrese el monto de la venta"
               value={amount}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setAmount(e.target.value)
               }
+              minLength={2} maxLength={7}
+              required
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
               Nombre del Cliente
@@ -111,9 +131,8 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               data-testid="clientInput"
               placeholder="Ingrese el nombre del cliente"
               value={client}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setClient(e.target.value)
-              }
+              onChange={handleInputCharacterChange}
+              required
             />
           </div>
           <div className="md:col-span-2 col-span-4 px-8 pt-8">
@@ -131,6 +150,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               dateFormat="dd/MM/yyyy"
               className="input-primary w-full"
               placeholderText="dd/mm/aaaa"
+              required
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
               Tipo de seguro
@@ -149,7 +169,9 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
               Periodicidad
             </label>
-            <select className="input-primary w-full">
+            <select className="input-primary w-full"
+            value = {periodicity}
+            onChange={handlePeriodicityTypeChange}>
               <option> semestral </option>
               <option> mensual </option>
               <option> anual </option>
