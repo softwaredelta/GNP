@@ -1,5 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-
 import {
   Column,
   CreateDateColumn,
@@ -48,6 +47,9 @@ export class SellEnt {
 
   @Column(MONEY_COLUMN)
   amountInCents!: string;
+
+  @Column(NAME_COLUMN)
+  clientName!: string;
 
   @Column(REQUIRED_STRING_COLUMN("periodicity"))
   periodicity!: string;
