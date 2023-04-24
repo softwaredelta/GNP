@@ -35,7 +35,7 @@ export async function createUser(params: {
     .then((user) => {
       return { user };
     })
-    .catch((e) => {
+    .catch(() => {
       return { error: UserError.USER_EXISTS, user: {} as UserEnt };
     });
 }
