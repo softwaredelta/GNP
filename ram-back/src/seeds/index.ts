@@ -44,8 +44,6 @@ export async function loadSeeds() {
     console.error(e);
   }
 
-  // SALES
-
   // ASSURANCE TYPES
   await createAssuranceType({
     name: "test-assurance-type-1",

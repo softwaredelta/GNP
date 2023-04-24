@@ -8,7 +8,7 @@ import { DeepPartial } from "typeorm";
 import { AssuranceTypeEnt } from "../entities/assurance-type.entity";
 export enum SellError {
   POLICY_NUM_DUPLICATED = "POLICY_NUM_DUPLICATED",
-  SALE_ERROR = "SALE_ERROR",
+  SALE_ERROR = "DEFAULT_ERROR",
 }
 export async function createSale(params: {
   policyNumber: string;
@@ -24,16 +24,15 @@ export async function createSale(params: {
 }): Promise<{ sale: SellEnt; error?: SellError }> {
   const ds = await getDataSource();
   const id = params.id || v4();
+
+  // Static values not handled yet in frontend
   const status = "sin revisar";
   const periodicity = "mensual";
-  //   const evidenceUrl = "https://www.google.com";
   const user = {
     email: "test@delta.tec.mx",
     password: "test-password",
     id: "test-user",
   };
-  //   const createdAt = new Date();
-  //   const updatedAt = new Date();
 
   return ds.manager
     .save(SellEnt, {
@@ -51,7 +50,7 @@ export async function createSale(params: {
     .then((sale) => {
       return { sale };
     })
-    .catch((error) => {
-      return { sale: {} as SellEnt, error: error.message };
+    .catch(() => {
+      return { sale: {} as SellEnt, error: SellError.SALE_ERROR };
     });
 }

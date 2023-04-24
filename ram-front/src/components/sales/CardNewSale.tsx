@@ -1,11 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
+import Swal from "sweetalert2";
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
     id: string;
@@ -16,15 +17,17 @@ export interface IListAssuranceTypesProps {
 
 const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [poliza, setPoliza] = useState("");
-  const [monto, setMonto] = useState("");
+  const [policyNum, setPolicyNum] = useState("");
+  const [amount, setAmount] = useState("");
   const [client, setClient] = useState("");
+  const [assuranceType, setAssuranceType] = useState(assuranceTypes[0].id);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleAssuranceTypeChange = (event: any) => {
+    setAssuranceType(event.target.value);
+    console.log(assuranceType);
   };
 
-  const { response, error, loading, callback } = useAxios<{
+  const { response, error, callback } = useAxios<{
     data: {
       group: {
         id: string;
@@ -35,17 +38,32 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     url: "sales/create",
     method: "POST",
     body: {
-      policyNumber: "56",
-      sellDate: "12/03/2022",
+      policyNumber: policyNum,
+      sellDate: selectedDate,
       assuranceType: {
-        name: "test-assurance-type-1",
-        description: "test-assurance-type-1-description",
-        id: "test-at-1",
+        id: assuranceType,
       },
-      amountInCents: "123456",
-      clientName: "Renato FUNCIONA",
+      amountInCents: amount,
+      clientName: client,
     },
   });
+
+  useEffect(() => {
+    if (response) {
+      Swal.fire({
+        title: "Success!",
+        text: "La venta se ha registrado correctamente.",
+        icon: "success",
+      });
+    } else if (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Ocurrió un error al registrar la venta.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  }, [response, error]);
 
   return (
     <div className="grid grid-cols-4 bg-gradient-to-t from-gnp-cream to-gnp-white rounded-lg m-4">
@@ -54,22 +72,22 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
         alt="Imagen"
         className="rounded-l-lg object-cover hidden md:block md:h-full"
       />
-      <div className="col-span-4 w-96 md:w-full md:col-span-3 rounded-l-lg grid grid-cols">
-        <div className="col bg-orange-500 flex justify-center p-4 items-center rounded-tr-lg">
+      <div className="col-span-4 w-full md:w-full md:col-span-3 rounded-l-lg grid grid-cols">
+        <div className="col bg-orange-500 flex justify-center p-4 items-center rounded-t-lg md:rounded-tr-lg">
           <h1 className="text-3xl my-2 font-bold text-white">Agregar venta</h1>
         </div>
         <div className="col grid grid-cols-4 gap-4">
           <div className="md:col-span-2 col-span-4 px-8 pt-8">
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
-              Poliza
+              Póliza
             </label>
             <input
               className="input-primary w-full"
               type="text"
-              placeholder="Ingrese el número de poliza"
-              value={poliza}
+              placeholder="Ingrese el número de póliza"
+              value={policyNum}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setPoliza(e.target.value)
+                setPolicyNum(e.target.value)
               }
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
@@ -79,9 +97,9 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               className="input-primary w-full"
               type="number"
               placeholder="Ingrese el monto de la venta"
-              value={monto}
+              value={amount}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setMonto(e.target.value)
+                setAmount(e.target.value)
               }
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
@@ -117,9 +135,13 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
               Tipo de seguro
             </label>
-            <select className="input-primary w-full">
+            <select
+              className="input-primary w-full"
+              value={assuranceType}
+              onChange={handleAssuranceTypeChange}
+            >
               {assuranceTypes.map((at, index) => (
-                <option key={index} value={at.name}>
+                <option key={index} value={at.id}>
                   {at.name}
                 </option>
               ))}
