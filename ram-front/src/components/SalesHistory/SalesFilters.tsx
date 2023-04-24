@@ -1,61 +1,80 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { Label, TextInput } from "flowbite-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { FaFilter } from "react-icons/fa";
 
 export const SalesFilters = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [policyNum, setPolicyNum] = useState<string>("");
 
   return (
-    <div data-testid="Filters" className="flex">
-      <div className="w-1/5 mr-4">
-        <div className="mb-2 block ">
-          <Label htmlFor="clientName" value="Nombre del cliente" />
-        </div>
-        <TextInput
-          id="clientName"
-          data-testid="ClientInput"
-          type="text"
-          placeholder="Kenny Vercamer"
-        />
-      </div>
-      <div className="w-1/5 mr-4">
-        <div className="mb-2 block">
-          <Label htmlFor="policyNum" value="Póliza" />
-        </div>
-        <TextInput
-          id="policyNum"
-          data-testid="PolicyNumInput"
-          type="number"
-          placeholder="123455"
-        />
-      </div>
-      <div className="w-1/5 mr-4">
-        <div className="mb-2 block">
-          <Label htmlFor="insuranceType" value="Tipo de Seguro" />
-        </div>
-        <TextInput id="insuranceType" type="text" placeholder="Vida" />
-      </div>
-      <div className="w-1/5 mr-8">
-        <label
-          htmlFor="datePicker"
-          className="block text-gray-700 text-sm font-bold mb-2"
-        >
-          Fecha
+    <div data-testid="Filters" className="grid grid-cols-5 gap-8">
+      <div className="col-span-1">
+        <label className="block text-gray-700 ml-3 font-semibold mb-1">
+          Póliza
         </label>
-        <DatePicker
-          selected={selectedDate}
-          name="datePicker"
-          id="datePicker"
-          onChange={(date: Date | null) => setSelectedDate(date)}
-          dateFormat="dd/MM/yyyy"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        <input
+          className="input-primary w-full"
+          type="text"
+          placeholder="Ingrese el número de póliza"
+          value={policyNum}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPolicyNum(e.target.value)
+          }
         />
       </div>
-      <div className="w-1/5 block my-auto">
-        <button className="btn-primary">Filtrar</button>
+      <div className="col-span-1">
+        <label className="block text-gray-700 ml-3 font-semibold mb-1">
+          Póliza
+        </label>
+        <input
+          className="input-primary w-full"
+          type="text"
+          placeholder="Ingrese el número de póliza"
+          value={policyNum}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPolicyNum(e.target.value)
+          }
+        />
+      </div>
+      <div className="col-span-1">
+        <label className="block text-gray-700 ml-3 font-semibold mb-1">
+          Póliza
+        </label>
+        <input
+          className="input-primary w-full"
+          type="text"
+          placeholder="Ingrese el número de póliza"
+          value={policyNum}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPolicyNum(e.target.value)
+          }
+        />
+      </div>
+      <div className="col-span-1">
+        <label className="block text-gray-700 ml-3 font-semibold mb-1">
+          Póliza
+        </label>
+        <input
+          className="input-primary w-full"
+          type="text"
+          placeholder="Ingrese el número de póliza"
+          value={policyNum}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPolicyNum(e.target.value)
+          }
+        />
+      </div>
+      <div className="col-span-1 flex justify-center items-center">
+        <div className="w-40">
+          <button className="btn-primary flex justify-center items-center">
+            <span className="font-semibold"> Filtrar </span>
+            <FaFilter size={15} className="ml-2" />
+          </button>
+        </div>
       </div>
     </div>
   );
