@@ -6,7 +6,7 @@ import { SalesFilters } from "../components/SalesHistory/SalesFilters";
 import Wrapper from "../containers/Wrapper";
 import { Pagination } from "flowbite-react";
 
-export const SalesHistory = () => {
+export default function SalesHistory() {
   const [indexStart, setIndexStart] = useState(0);
   const [indexEnd, setIndexEnd] = useState(5);
   function onPageChange() {
@@ -30,4 +30,4 @@ export const SalesHistory = () => {
       </div>
     </Wrapper>
   );
-};
+}
