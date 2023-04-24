@@ -22,7 +22,7 @@ export class AssuranceTypeEnt {
   @UpdateDateColumn()
   updatedtAt!: Date;
 
-  @Column(NAME_COLUMN)
+  @Column({ ...NAME_COLUMN, unique: true })
   name: string;
 
   @Column(DESCRIPTION_COLUMN)

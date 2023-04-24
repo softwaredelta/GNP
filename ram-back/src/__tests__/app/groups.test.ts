@@ -1,13 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { addUserToGroup, createGroup, getUserGroups } from "../app/groups";
-import { createUser } from "../app/user";
-import { getDataSource } from "../arch/db-client";
-import { GroupUserStatus } from "../entities/group-user.entity";
-import { GroupEnt } from "../entities/group.entity";
-import { UserEnt } from "../entities/user.entity";
+import { addUserToGroup, createGroup, getUserGroups } from "../../app/groups";
+import { createUser } from "../../app/user";
+import { getDataSource } from "../../arch/db-client";
+import { GroupUserStatus } from "../../entities/group-user.entity";
+import { GroupEnt } from "../../entities/group.entity";
+import { UserEnt } from "../../entities/user.entity";
 
-describe("groups", () => {
+describe("app:groups", () => {
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.synchronize(true);
@@ -60,7 +60,7 @@ describe("groups", () => {
     });
   });
 
-  it("get my groups", async () => {
+  it("only gets correct user groups", async () => {
     const password = "password7812361";
     const email = "";
     const newUser = await createUser({ email, password }).then(

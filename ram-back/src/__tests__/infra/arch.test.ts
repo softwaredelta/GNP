@@ -1,12 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { getDataSource } from "../arch/db-client";
-import { UserEnt } from "../entities/user.entity";
-import { getS3Api } from "../arch/s3-client";
-import { createUser } from "../app/user";
+import { getDataSource } from "../../arch/db-client";
+import { UserEnt } from "../../entities/user.entity";
+import { getS3Api } from "../../arch/s3-client";
+import { createUser } from "../../app/user";
 
-describe("Architecture", () => {
-  it("Should have db connection", async () => {
+describe("infra:arch", () => {
+  it("should have db connection", async () => {
     const db = await getDataSource();
     await createUser({
       email: "test@delta.tec.mx",
@@ -24,7 +24,7 @@ describe("Architecture", () => {
     expect(found).toHaveProperty("email", "test@delta.tec.mx");
   });
 
-  it("Should have s3 connection", async () => {
+  it("should have s3 connection", async () => {
     const s3 = await getS3Api();
     await s3.putObject("test", "hello");
     const download = await s3.getObject("test");
