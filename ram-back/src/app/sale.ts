@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 import { UserEnt } from "../entities/user.entity";
 import { DeepPartial } from "typeorm";
 import { AssuranceTypeEnt } from "../entities/assurance-type.entity";
-export enum SellError {
+export enum SaleError {
   POLICY_NUM_DUPLICATED = "POLICY_NUM_DUPLICATED",
   SALE_ERROR = "DEFAULT_ERROR",
 }
@@ -21,7 +21,7 @@ export async function createSale(params: {
   status?: string;
   user?: DeepPartial<UserEnt>;
   evidenceUrl?: string;
-}): Promise<{ sale: SellEnt; error?: SellError }> {
+}): Promise<{ sale: SellEnt; error?: SaleError }> {
   const ds = await getDataSource();
   const id = params.id || v4();
   // Static values not handled yet in frontend
@@ -49,6 +49,6 @@ export async function createSale(params: {
       return { sale };
     })
     .catch(() => {
-      return { sale: {} as SellEnt, error: SellError.SALE_ERROR };
+      return { sale: {} as SellEnt, error: SaleError.SALE_ERROR };
     });
 }
