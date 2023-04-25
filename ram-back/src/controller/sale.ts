@@ -64,6 +64,7 @@ salesRouter.post(
 
 salesRouter.get("/all", async (req, res) => {
   const db = await getDataSource();
+  // const sales = await db.manager.find(SellEnt);
   const sales = await db.manager
     .createQueryBuilder(SellEnt, "sell")
     .leftJoinAndSelect("sell.assuranceType", "assuranceType")
@@ -71,9 +72,8 @@ salesRouter.get("/all", async (req, res) => {
   res.json({ sales });
 });
 
-salesRouter.get("/delete/:id", async (req, res) => {
+salesRouter.post("/delete/:id", async (req, res) => {
   const db = await getDataSource();
-  const sales = await db.manager.getRepository(SellEnt)
-  .delete(req.params.id)
+  const sales = await db.manager.getRepository(SellEnt).delete(req.params.id);
   res.json({ sales });
 });

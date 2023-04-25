@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Table } from "flowbite-react";
-import { FaTrash } from "react-icons/fa";
-import useAxios from "../../hooks/useAxios";
+import SalesRow from "./SalesRow";
 
 export interface AssuranceType {
   id: string;
@@ -30,16 +29,17 @@ export interface IListSalesProps {
     user: User;
     evidenceUrl: string;
   }[];
+  onDeleted: () => void;
 }
 
-export const SalesTable = ({ sales }: IListSalesProps) => {
-  const [deleteID, setDeleteID] = useState<string>("");
-  const { response, error, callback } = useAxios({
-    url: `sales/delete/${deleteID}`,
-    method: "GET",
-    body: {
-    },
-  });
+export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+  useEffect(() => {
+    if (shouldUpdate) {
+      onDeleted();
+      setShouldUpdate(false);
+    }
+  }, [shouldUpdate]);
 
   return (
     <div data-testid="Table" className="w-full p-8">
@@ -58,25 +58,19 @@ export const SalesTable = ({ sales }: IListSalesProps) => {
         <Table.Body className="divide-y">
           {sales.map((sale) => {
             return (
-              <Table.Row
+              <SalesRow
                 key={sale.id}
-                className="bg-white dark:border-gray-700 dark:bg-gray-800"
-              >
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {sale.clientName}
-                </Table.Cell>
-                <Table.Cell>{sale.clientName}</Table.Cell>
-                <Table.Cell>{sale.amountInCents}</Table.Cell>
-                <Table.Cell>{sale.assuranceType.name}</Table.Cell>
-                <Table.Cell>{new Date(sale.sellDate).getDate()}</Table.Cell>
-                <Table.Cell>{sale.status}</Table.Cell>
-                <Table.Cell>
-                  <FaTrash
-                    onClick={() => setDeleteID(sale.id)}
-                    className=" hover:fill-red-500 hover:scale-105"
-                  />
-                </Table.Cell>
-              </Table.Row>
+                id={sale.id}
+                clientName={sale.clientName}
+                amountInCents={sale.amountInCents}
+                assuranceTypeName={sale.assuranceType.name}
+                sellDate={sale.sellDate}
+                status={sale.status}
+                policyNum={sale.policyNumber}
+                onDeleted={() => {
+                  setShouldUpdate(true);
+                }}
+              />
             );
           })}
         </Table.Body>
