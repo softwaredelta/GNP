@@ -13,6 +13,6 @@ export const router = Router();
 router.use("/user", authRouter);
 router.use("/infra", infraRouter);
 router.use("/groups", groupsRouter);
-router.use("/delivies", deliveriesRouter);
+router.use("/deliveries", deliveriesRouter);
 router.use("/sales", salesRouter);
 router.use("/assurance-types", assuranceTypeRouter);

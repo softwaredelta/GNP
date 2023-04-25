@@ -73,11 +73,13 @@ export async function setDeliverieToUser(params: {
     }));
 }
 
-export async function getDeliveriesfromGroup(params: {
-  groupId: string;
+// Obtain the deliveries from UserDeliveries where the groupId is the same as the params.groupId
+// and the userId is the same as the params.userId
+export async function getUserDeliveriesbyGroup(params: {
   userId: string;
+  groupId: string;
 }): Promise<{
-  deliveries: UserDeliveryEnt[];
+  user_deliveries: UserDeliveryEnt[];
   error?: DeliveryError;
   errorReason?: Error;
 }> {
@@ -88,16 +90,22 @@ export async function getDeliveriesfromGroup(params: {
       relations: {
         delivery: true,
       },
-      where: { userId: params.userId },
+      where: { userId: params.userId},
     });
 
-    // Obtain the deliveries from the userDeliveries where the groupId is the same as the params.groupId
+    const user_deliveries = userDeliveries.filter((user_delivery) => {
+      return (
+        user_delivery.userId === params.userId &&
+        user_delivery.delivery.groupId === params.groupId
+      );
+    });
 
+    return { user_deliveries };
   } catch (e) {
     return {
-      deliveries: [],
       error: DeliveryError.UNHANDLED,
       errorReason: e as Error,
+      user_deliveries: [],
     };
   }
 }

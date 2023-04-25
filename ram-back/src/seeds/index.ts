@@ -21,13 +21,15 @@ export async function loadSeeds() {
       image: "https://picsum.photos/100",
     });
     const delivery1 = await createDelivery({
-      description: "test-delivery-1",
+      deliveryName: "test-delivery-1",
+      description: "test-description-1",
       idGroup: group1.group.id,
       imageUrl: "https://picsum.photos/200",
     });
 
     const delivery2 = await createDelivery({
-      description: "test-delivery-2",
+      deliveryName: "test-delivery-2",
+      description: "test-description-2",
       idGroup: group1.group.id,
       imageUrl: "https://picsum.photos/300",
     });
@@ -52,7 +54,8 @@ export async function loadSeeds() {
     });
 
     await createDelivery({
-      description: "test-delivery-3",
+      deliveryName: "test-delivery-3",
+      description: "test-description-3",
       idGroup: group2.group.id,
       imageUrl: "https://picsum.photos/500",
     });
