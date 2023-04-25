@@ -202,7 +202,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             </select>
             <FileUpload onFileUpload={handleFileUpload} />
           </div>
-
           <div className="col-span-4 flex justify-center items-center pb-8">
             <div className="w-52">
               <button
