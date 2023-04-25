@@ -59,7 +59,7 @@ export async function loadSeeds() {
       id: "test-user-2",
     });
 
-    await userSeeds();
+    const { regular } = await userSeeds();
 
     //GROUPS
 
@@ -116,6 +116,16 @@ export async function loadSeeds() {
       groupId: group2.group.id,
     });
 
+    await addUserToGroup({
+      userId: regular.id,
+      groupId: group2.group.id,
+    });
+
+    await addUserToGroup({
+      userId: regular.id,
+      groupId: group3.group.id,
+    });
+
     // DELIVERIES TO USERS
     await setDeliverieToUser({
       idDeliverie: delivery1.delivery.id,
@@ -135,6 +145,14 @@ export async function loadSeeds() {
     await setDeliverieToUser({
       idDeliverie: delivery3.delivery.id,
       idUser: user.user.id,
+      dateDelivery: new Date(),
+      status: StatusUserDelivery.sending,
+      fileUrl: "https://picsum.photos/400",
+    });
+
+    await setDeliverieToUser({
+      idDeliverie: delivery3.delivery.id,
+      idUser: regular.id,
       dateDelivery: new Date(),
       status: StatusUserDelivery.sending,
       fileUrl: "https://picsum.photos/400",

@@ -63,13 +63,13 @@ salesRouter.get("/all", async (req, res) => {
     .createQueryBuilder(SellEnt, "sell")
     .leftJoinAndSelect("sell.assuranceType", "assuranceType")
     .getMany();
-  res.json({ sales });
+  res.json(sales);
 });
 
 salesRouter.post("/delete/:id", async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.getRepository(SellEnt).delete(req.params.id);
-  res.json({ sales });
+  res.json(sales);
 });
 
 salesRouter.get("/my-sales", authMiddleware(), async (req, res) => {

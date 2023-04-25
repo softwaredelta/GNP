@@ -3,10 +3,11 @@
 import Wrapper from "../containers/Wrapper";
 import { useRecoilValue } from "recoil";
 import { allCourses$ } from "../lib/api/api-courses";
-import ListManagerGroup from "../components/groups/ListManagerGroup";
+import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 
+// Manager view that list all groups
 export default function ManagerCourses() {
-  const data = useRecoilValue(allCourses$);
+  const groups = useRecoilValue(allCourses$);
 
   return (
     <div>
@@ -18,7 +19,7 @@ export default function ManagerCourses() {
             </div>
           </div>
           <div className="grid md:grid-cols-4 place-items-center">
-            <ListManagerGroup groups={data.groups}></ListManagerGroup>
+            <ManagerListGroups groups={groups}></ManagerListGroups>
           </div>
         </div>
       </Wrapper>

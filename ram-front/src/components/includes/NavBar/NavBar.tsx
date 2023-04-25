@@ -55,7 +55,7 @@ function NavBar() {
         </Navbar.Link>
         <Navbar.Link
           as={Link}
-          to="/my-groups"
+          to="/groups"
           className="text-lg  mx-8 text-gray-900 "
         >
           Grupos

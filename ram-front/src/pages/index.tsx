@@ -52,8 +52,6 @@ export function AppRouter() {
     return routes;
   }, [hasRole, isAuthenticated]);
 
-  console.log("availableRoutes", availableRoutes);
-
   return (
     <>
       {isTest || <AlertsContainer />}

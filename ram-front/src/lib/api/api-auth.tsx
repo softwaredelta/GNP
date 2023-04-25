@@ -2,6 +2,7 @@
 
 import {
   atom,
+  selector,
   selectorFamily,
   useRecoilState,
   useRecoilValue,
@@ -109,8 +110,6 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
       const isTest = get(isTest$);
       const isLoading = get(isLoading$);
 
-      console.log("authentication", auth);
-
       const authenticate = getCallback(
         ({ set }) =>
           ({ username, password }: AuthenticationParams) => {
@@ -154,7 +153,6 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
               const result = await response.json();
               set(isLoading$, false);
               if (response.ok) {
-                console.log("authentication result", result);
                 set(authentication$, result);
                 set(authenticationError$, null);
 
@@ -166,7 +164,6 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
                   }),
                 );
               } else {
-                console.log("authentication error", result);
                 set(authentication$, null);
                 set(authenticationError$, result);
               }
@@ -181,8 +178,6 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
         }
 
         const { refreshToken, refreshTokenExpiresAt } = auth;
-
-        console.log("refreshing token", refreshToken, refreshTokenExpiresAt);
 
         if (isTest || DISABLE_FETCH) {
           if (refreshToken !== "refreshToken") {
@@ -316,3 +311,11 @@ export const useAuthentication = () => {
   const authenticationApi = useRecoilValue(authenticationApi$({ hash }));
   return authenticationApi;
 };
+
+export const accessToken$ = selector({
+  key: "accessToken",
+  get: ({ get }) => {
+    const auth = get(authentication$);
+    return auth?.accessToken ?? null;
+  },
+});
