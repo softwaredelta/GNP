@@ -3,11 +3,8 @@
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
 import { Router } from "express";
-// import {getDeliveryGroups, getUserGroups} from "../app/groups";
-
 export const groupRouter = Router();
 
-// FIXME: no auth, endpoint should not be part of API
 groupRouter.get("/all", async (req, res) => {
   const ds = await getDataSource();
   const groups = await ds.manager.find(GroupEnt, {

@@ -16,7 +16,14 @@ describe("groups", () => {
   it("creates groups successfully", async () => {
     const groupNames = Array.from({ length: 5 }, (_, i) => `group/${i}`);
 
-    await Promise.all(groupNames.map((name) => createGroup({ name })));
+    await Promise.all(
+      groupNames.map((name) =>
+        createGroup({
+          name,
+          imageURL: "",
+        }),
+      ),
+    );
   });
 
   describe("when users and groups exist", () => {
@@ -36,7 +43,10 @@ describe("groups", () => {
 
       groups = await Promise.all(
         groupNames.map((name) =>
-          createGroup({ name }).then(({ group }) => group),
+          createGroup({
+            name,
+            imageURL: "",
+          }).then(({ group }) => group),
         ),
       );
     });
@@ -70,7 +80,10 @@ describe("groups", () => {
 
     const groups = await Promise.all(
       groupNames.map((name) =>
-        createGroup({ name }).then(({ group }) => group),
+        createGroup({
+          name,
+          imageURL: "",
+        }).then(({ group }) => group),
       ),
     );
 
