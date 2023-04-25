@@ -21,6 +21,9 @@ export class GroupEnt {
   name!: string;
 
   @Column(DESCRIPTION_COLUMN)
+  image!: string;
+
+  @Column(DESCRIPTION_COLUMN)
   description: string;
 
   @Column(URL_COLUMN)
@@ -34,6 +37,9 @@ export class GroupEnt {
 
   @OneToMany(() => GroupUserEnt, (groupUser) => groupUser.group)
   groupUsers!: GroupUserEnt[];
+
+  @OneToMany(() => DeliveryEnt, (userDeliveries) => userDeliveries.group)
+  deliveries!: DeliveryEnt[];
 
   @OneToMany(() => DeliveryEnt, (groupDelivery) => groupDelivery.group)
   groupDeliveries!: DeliveryEnt[];

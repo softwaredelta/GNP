@@ -4,23 +4,17 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuthentication } from "../lib/api/api-auth";
 import { privateRoutes } from "../routes/privates";
 import { publicRoutes } from "../routes/public";
+import { AlertsContainer } from "../components/generics/alerts/Alert";
 import { useRecoilValue } from "recoil";
-import atomAlert, { IAlert } from "../recoil/visual/index";
-import Alert from "../components/generics/alerts/Alert";
+import { isTest$ } from "../lib/api/api-base";
 
 export function AppRouter() {
   const { isAuthenticated } = useAuthentication();
-  const state = useRecoilValue<IAlert>(atomAlert);
+  const isTest = useRecoilValue(isTest$);
 
   return (
     <>
-      {state.isOpen && (
-        <Alert
-          type={state.type}
-          description={state.description}
-          message={state.message}
-        />
-      )}
+      {isTest || <AlertsContainer />}
       <Routes>
         {isAuthenticated ? (
           <>

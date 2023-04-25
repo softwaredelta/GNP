@@ -3,6 +3,7 @@
 import { createDelivery, setDeliverieToUser } from "../app/deliveries";
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
+import { createDelivery, setDeliverieToUser } from "../app/deliveries";
 
 /**
  * Make sure to specify ids so things stay consistent
@@ -11,16 +12,25 @@ import { createUser } from "../app/user";
 export async function loadSeeds() {
   try {
     // USERS
-    await createUser({
+    const user = await createUser({
       email: "test@delta.tec.mx",
       password: "test-password",
       id: "test-user",
     });
+    const group1 = await createGroup({
+      name: "test-group-1",
+      image: "https://picsum.photos/100",
+    });
+    const delivery1 = await createDelivery({
+      description: "test-delivery-1",
+      idGroup: group1.group.id,
+      imageUrl: "https://picsum.photos/200",
+    });
 
-    await createUser({
-      email: "test@delta2.tec.mx",
-      password: "test-password2",
-      id: "test-user2",
+    const delivery2 = await createDelivery({
+      description: "test-delivery-2",
+      idGroup: group1.group.id,
+      imageUrl: "https://picsum.photos/300",
     });
 
     // GROUPS
@@ -28,19 +38,41 @@ export async function loadSeeds() {
       name: "group",
       imageURL:
         "https://i1.wp.com/kayum.mx/wp-content/uploads/2019/09/logo-GNP.jpeg?fit=3307%2C1686&ssl=1",
-    });
-    if (group2Error) {
-      throw new Error(group2Error);
-    }
-
-    await addUserToGroup({
-      userId: "test-user",
-      groupId: group.id,
+    await setDeliverieToUser({
+      idDeliverie: delivery1.delivery.id,
+      idUser: user.user.id,
+      dateDelivery: new Date(),
+      status: "Aceptado",
+      fileUrl: "https://picsum.photos/400",
     });
 
+    await setDeliverieToUser({
+      idDeliverie: delivery2.delivery.id,
+      idUser: user.user.id,
+      dateDelivery: new Date(),
+      status: "Rechazado",
+      fileUrl: "https://picsum.photos/400",
+    });
+
+    const group2 = await createGroup({
+      name: "test-group-2",
+      image: "https://picsum.photos/500",
+    });
+
+    await createDelivery({
+      description: "test-delivery-3",
+      idGroup: group2.group.id,
+      imageUrl: "https://picsum.photos/500",
+    });
+
+    await createGroup({
+      name: "test-group-3",
+      image: "https://picsum.photos/600",
+    });
+
     await addUserToGroup({
-      userId: "test-user2",
-      groupId: group.id,
+      userId: user.user.id,
+      groupId: group1.group.id,
     });
 
     // Deliveries
@@ -59,6 +91,10 @@ export async function loadSeeds() {
       dateDelivery: new Date(),
       status: "Aceptado",
       fileUrl: "https://picsum.photos/400",
+    });
+    await addUserToGroup({
+      userId: user.user.id,
+      groupId: group2.group.id,
     });
   } catch (e) {
     console.error(e);
