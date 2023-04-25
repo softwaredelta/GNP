@@ -4,4 +4,5 @@ export interface IAlert {
   type: "success" | "error" | "warning" | "info";
   message: string;
   description: string;
+  id?: string;
 }

@@ -5,9 +5,8 @@ import { ImWarning } from "react-icons/im";
 import { MdError } from "react-icons/md";
 import ReactDOM from "react-dom";
 import { IAlert } from "../../../recoil/visual";
-import { useRecoilCallback, useRecoilValue } from "recoil";
-import { alerts$ } from "../../../recoil/visual/atoms";
 import useAlert from "../../../hooks/useAlert";
+import { AiOutlineClose } from "react-icons/ai";
 
 const ALERT_OPTIONS = {
   success: {
@@ -37,13 +36,16 @@ export function Alert({
 }) {
   return (
     <div className={`${ALERT_OPTIONS[type].color} max-w-sm text-white`}>
-      <div className="grid grid-cols-6 place-items-center">
+      <div className="grid grid-cols-5 place-items-center p-3">
         <div className="col-span-1">{ALERT_OPTIONS[type].icon}</div>
-        <h2 className="col-span-4 text-xl w-full font-bold text-center">
+        <h2 className="col-span-3 text-xl w-full font-bold text-center">
           {message}
         </h2>
         <button className="col-span-1 justify-self-end" onClick={onClose}>
-          X
+          <AiOutlineClose
+            size={20}
+            className="fill-white hover:fill-gnp-orange-500 hover:scale-125 active:scale-90 transition-all ease-in-out "
+          />
         </button>
         <div className="col-span-5">
           <p className="text-sm font-medium p-2">{description}</p>
@@ -62,7 +64,7 @@ export function AlertsContainer() {
         <Alert
           key={id}
           onClose={() => {
-            closeAlert(id);
+            if (id) closeAlert(id);
           }}
           alert={{
             description,

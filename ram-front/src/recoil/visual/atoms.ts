@@ -3,7 +3,7 @@
 import { atom } from "recoil";
 import { IAlert } from ".";
 
-export const alerts$ = atom<Array<IAlert & { id: string }>>({
+export const alerts$ = atom<Array<IAlert>>({
   key: "alert",
   default: [],
 });
