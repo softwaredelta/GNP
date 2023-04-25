@@ -85,6 +85,7 @@ export async function loadSeeds() {
     // Deliveries
     const { delivery: delivery, error: delivery2Error } = await createDelivery({
       description: "test-delivery",
+      deliveryName: "test-delivery",
       imageUrl: "https://i.ytimg.com/vi/eDkLz16lmxI/maxresdefault.jpg",
       idGroup: group.id,
     });
