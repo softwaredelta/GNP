@@ -6,11 +6,12 @@ export const salesRouter = Router();
 import * as j from "joi";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
+import { authMiddleware } from "./user";
 
 
 const userParameters = j.object({
   policyNumber: j.string().required(),
-  assuranceType: j.object().required(),
+  assuranceTypeId: j.string().required(),
   sellDate: j.string().required(),
   amountInCents: j.string().required(),
   clientName: j.string().required(),
@@ -47,6 +48,9 @@ salesRouter.post("/create", saleParametersMiddleware, async (req, res) => {
 
 salesRouter.get("/all", async (req, res) => {
   const db = await getDataSource();
-  const sales = await db.manager.find(SellEnt);
+  const sales = await db.manager
+    .createQueryBuilder(SellEnt, "sell")
+    .leftJoinAndSelect("sell.assuranceType", "assuranceType")
+    .getMany();
   res.json({ sales });
 });
