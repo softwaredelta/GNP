@@ -1,6 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { createDelivery, setDeliverieToUser } from "../app/deliveries";
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
 import { createDelivery, setDeliverieToUser } from "../app/deliveries";
@@ -19,7 +18,7 @@ export async function loadSeeds() {
     });
     const group1 = await createGroup({
       name: "test-group-1",
-      image: "https://picsum.photos/100",
+      imageURL: "https://picsum.photos/100",
     });
     const delivery1 = await createDelivery({
       description: "test-delivery-1",
@@ -38,6 +37,8 @@ export async function loadSeeds() {
       name: "group",
       imageURL:
         "https://i1.wp.com/kayum.mx/wp-content/uploads/2019/09/logo-GNP.jpeg?fit=3307%2C1686&ssl=1",
+    });
+
     await setDeliverieToUser({
       idDeliverie: delivery1.delivery.id,
       idUser: user.user.id,
@@ -56,7 +57,7 @@ export async function loadSeeds() {
 
     const group2 = await createGroup({
       name: "test-group-2",
-      image: "https://picsum.photos/500",
+      imageURL: "https://picsum.photos/500",
     });
 
     await createDelivery({
@@ -67,7 +68,7 @@ export async function loadSeeds() {
 
     await createGroup({
       name: "test-group-3",
-      image: "https://picsum.photos/600",
+      imageURL: "https://picsum.photos/600",
     });
 
     await addUserToGroup({
