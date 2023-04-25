@@ -77,9 +77,15 @@ export async function addDeliveryToGroup(params: {
     }));
 }
 
+interface GroupUser {
+  group: GroupEnt;
+  numberOfDeliveries: number;
+  totalDeliveries: number;
+}
+
 export async function getUserGroups(params: {
   userId: string;
-}): Promise<{ groups: GroupEnt[]; error?: GroupError; errorReason?: Error }> {
+}): Promise<{ groups: GroupUser[]; error?: GroupError; errorReason?: Error }> {
   const ds = await getDataSource();
 
   try {
@@ -124,25 +130,3 @@ export async function getUserGroups(params: {
     };
   }
 }
-
-// export async function getDeliveryGroups(params: {
-//   groupId: string;
-// }): Promise<{ deliveries: DeliveryEnt[]; error?: GroupError; errorReason?: Error }> {
-//   const ds = await getDataSource();
-
-//   ds.manager.find(GroupDeliveries)
-
-//   return ds.manager
-//     .find(DeliveryEnt, {
-//       select: ["description", "imageUrl"],
-//       where: { groupId: params.groupId},
-//     })
-//     .then((GroupDeliveries) => GroupDeliveries.map((GroupDelivery) => GroupDelivery.groupId))
-//     .then((groupIds) => ds.manager.findBy(DeliveryEnt, { groupId: In(groupIds) }))
-//     .then((deliveries) => ({ deliveries }))
-//     .catch((e) => ({
-//       error: GroupError.UNHANDLED,
-//       errorReason: e,
-//       deliveries: [],
-//     }));
-// }
