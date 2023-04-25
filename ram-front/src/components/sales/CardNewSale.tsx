@@ -7,6 +7,7 @@ import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
+import  { CreateNewSale, SaleData } from "../../lib/api/api-sale";
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
     id: string;
@@ -33,27 +34,39 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     //console.log(assuranceType);
   };
 
-  const { response, error, callback } = useAxios<{
-    data: {
-      group: {
-        id: string;
-        name: string;
-      };
-    };
-  }>({
-    url: "sales/create",
-    method: "POST",
-    body: {
-      policyNumber: policyNum,
-      sellDate: selectedDate,
-      assuranceType: {
-        id: assuranceType,
-      },
-      amountInCents: amount,
-      clientName: client,
-      periodicity: periodicity,
-    }
-  });
+  const saleData: SaleData = {
+    policyNumber: policyNum,
+    sellDate: selectedDate,
+    assuranceType: {
+      id: assuranceType,
+    },
+    amountInCents: amount,
+    clientName: client,
+    periodicity: periodicity,
+  };
+  const { response, error, callback } = CreateNewSale({ saleData })
+
+  // const { response, error, callback } = useAxios<{
+  //   data: {
+  //     group: {
+  //       id: string;
+  //       name: string;
+  //     };
+  //   };
+  // }>({
+  //   url: "sales/create",
+  //   method: "POST",
+  //   body: {
+  //     policyNumber: policyNum,
+  //     sellDate: selectedDate,
+  //     assuranceType: {
+  //       id: assuranceType,
+  //     },
+  //     amountInCents: amount,
+  //     clientName: client,
+  //     periodicity: periodicity,
+  //   }
+  // });
 
   const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
