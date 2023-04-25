@@ -7,11 +7,14 @@ import {
   BsSendCheck,
 } from "react-icons/bs";
 
+export type color = "blue" | "orange";
+export type status = "Sin enviar" | "Enviado" | "Rechazado" | "Aceptado";
+
 export interface DeliveryCardProps {
   nameDelivery: string;
   image: string;
-  color: "blue" | "orange";
-  status: "Sin enviar" | "Enviado" | "Rechazado" | "Aceptado";
+  color: color;
+  status: status;
 }
 
 const iconList = {
