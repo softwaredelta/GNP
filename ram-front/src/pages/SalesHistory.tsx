@@ -1,22 +1,24 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState } from "react";
+import React from "react";
 import { SalesTable } from "../components/sales/SalesTable";
 import { SalesFilters } from "../components/sales/SalesFilters";
 import Wrapper from "../containers/Wrapper";
 import { Pagination } from "flowbite-react";
-import { allSales$ } from "../lib/api/api-sales";
+import { allSales$, useUpdateSales } from "../lib/api/api-sales";
 import { useRecoilValue } from "recoil";
 import { allAssuranceTypes$ } from "../lib/api/api-assurance-type";
 
 export default function SalesHistory() {
   const sales = useRecoilValue(allSales$);
   const assuranceTypes = useRecoilValue(allAssuranceTypes$);
+  const updateSales = useUpdateSales();
+
   return (
     <Wrapper>
       <div className="flex flex-col mt-8 justify-center items-center">
         <SalesFilters assuranceTypes={assuranceTypes.assuranceTypes} />
-        <SalesTable sales={sales.sales} />
+        <SalesTable sales={sales.sales} onDeleted={() => updateSales()} />
         <div className="flex items-center justify-center text-center">
           <Pagination
             data-testid="Pagination"
