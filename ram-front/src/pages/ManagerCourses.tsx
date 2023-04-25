@@ -8,12 +8,6 @@ import { allCourses$ } from "../lib/api/api-courses";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-export interface IManagerCoursesProps {
-  name: string;
-  members: number;
-  color: "blue" | "orange";
-}
-
 export default function ManagerCourses() {
   const groups = useRecoilValue(allCourses$);
   const navigate = useNavigate();

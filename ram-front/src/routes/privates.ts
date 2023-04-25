@@ -18,7 +18,7 @@ export const privateRoutes: IRoute[] = [
     component: ManagerCourses,
   },
   {
-    path: "/groupDeliveries",
+    path: "/groupDeliveries/:id",
     component: GroupDeliveries,
   },
   {
