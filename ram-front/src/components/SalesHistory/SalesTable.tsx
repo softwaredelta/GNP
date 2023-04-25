@@ -1,130 +1,37 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { Table } from "flowbite-react";
 import { FaTrash } from "react-icons/fa";
 
-// Prueba con "datos" estáticos
-const INITIAL_STATE = [
-  {
-    clientName: "Fermín Mendez",
-    monto: 1000,
-    date: new Date("01-01-2021"),
-    poliza: 123456,
-    insuranceType: "Vida",
-    state: "Aceptado",
-  },
-  {
-    clientName: "Kenny Vercamer",
-    monto: 1000,
-    date: new Date("2021-01-01"),
-    poliza: 123457,
-    insuranceType: "Mascotas",
-    state: "Rechazado",
-  },
-  {
-    clientName: "Karen López",
-    monto: 14200,
-    date: new Date("2022-01-01"),
-    poliza: 123458,
-    insuranceType: "Vida",
-    state: "Aceptado",
-  },
-  {
-    clientName: "Mónica Ayala",
-    monto: 10000,
-    date: new Date("2023-05-01"),
-    poliza: 123459,
-    insuranceType: "Gastos Médicos",
-    state: "Sin revisar",
-  },
-  {
-    clientName: "Renato Ramírez",
-    monto: 5000,
-    date: new Date("2021-05-10"),
-    poliza: 123450,
-    insuranceType: "Vida",
-    state: "Aceptado",
-  },
-  {
-    clientName: "Jennifer Lee",
-    monto: 20000,
-    date: new Date("2023-03-01"),
-    poliza: 789012,
-    insuranceType: "Hogar",
-    state: "Aceptado",
-  },
-  {
-    clientName: "David Kim",
-    monto: 10000,
-    date: new Date("2023-04-02"),
-    poliza: 789013,
-    insuranceType: "Hogar",
-    state: "En proceso",
-  },
-  {
-    clientName: "Anna Chen",
-    monto: 5000,
-    date: new Date("2023-03-15"),
-    poliza: 789014,
-    insuranceType: "Hogar",
-    state: "Rechazado",
-  },
-  {
-    clientName: "Jason Huang",
-    monto: 15000,
-    date: new Date("2023-04-05"),
-    poliza: 789015,
-    insuranceType: "Hogar",
-    state: "Aceptado",
-  },
-  {
-    clientName: "Eric Liu",
-    monto: 8000,
-    date: new Date("2023-03-20"),
-    poliza: 789016,
-    insuranceType: "Hogar",
-    state: "Sin revisar",
-  },
-  {
-    clientName: "Emily Brown",
-    monto: 4500,
-    date: new Date("2023-03-10"),
-    poliza: 567893,
-    insuranceType: "Auto",
-    state: "Sin revisar",
-  },
-  {
-    clientName: "David Rodriguez",
-    monto: 3000,
-    date: new Date("2023-04-01"),
-    poliza: 567894,
-    insuranceType: "Auto",
-    state: "Aceptado",
-  },
-];
+export interface AssuranceType {
+  id: string;
+  name: string;
+  description: string;
+}
 
-type Props = {
-  indexStart: number;
-  indexEnd: number;
-};
-
-export const SalesTable = (props: Props) => {
-  interface Sale {
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+export interface IListSalesProps {
+  sales: {
+    id: string;
+    policyNumber: string;
+    assuranceType: AssuranceType;
+    sellDate: Date;
+    amountInCents: string;
     clientName: string;
-    monto: number;
-    date: Date;
-    poliza: number;
-    insuranceType: string;
-    state: string;
-  }
+    status: string;
+    periodicity: string;
+    user: User;
+    evidenceUrl: string;
+  }[];
+}
 
-  const [sales, setSales] = useState<Array<Sale>>([]);
-  useEffect(() => {
-    setSales(INITIAL_STATE);
-  }, []);
-
+export const SalesTable = ({ sales }: IListSalesProps) => {
   return (
     <div data-testid="Table" className="w-full p-8">
       <Table hoverable={true}>
@@ -140,20 +47,20 @@ export const SalesTable = (props: Props) => {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {sales.slice(props.indexStart, props.indexEnd).map((sale) => {
+          {sales.map((sale) => {
             return (
               <Table.Row
-                key={sale.poliza}
+                key={sale.id}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {sale.clientName}
                 </Table.Cell>
-                <Table.Cell>{sale.poliza}</Table.Cell>
-                <Table.Cell>{sale.monto}</Table.Cell>
-                <Table.Cell>{sale.insuranceType}</Table.Cell>
-                <Table.Cell>{sale.date.toLocaleDateString()}</Table.Cell>
-                <Table.Cell>{sale.state}</Table.Cell>
+                <Table.Cell>{sale.clientName}</Table.Cell>
+                <Table.Cell>{sale.amountInCents}</Table.Cell>
+                <Table.Cell>{sale.assuranceType.name}</Table.Cell>
+                <Table.Cell>{new Date(sale.sellDate).getDate()}</Table.Cell>
+                <Table.Cell>{sale.status}</Table.Cell>
                 <Table.Cell>
                   <FaTrash className=" hover:fill-red-500 hover:scale-105" />
                 </Table.Cell>
