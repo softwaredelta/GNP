@@ -8,8 +8,10 @@ import waves from "../../assets/imgs/wavesRAM.png";
 
 export const LoginScreen = ({
   onLogin,
+  isLoading,
 }: {
   onLogin: (params: { username: string; password: string }) => void;
+  isLoading: boolean;
 }) => {
   return (
     <>
@@ -22,7 +24,7 @@ export const LoginScreen = ({
           <img className="w-screen mx-auto" src={waves} alt="" />
         </div>
         <div className="w-full">
-          <LoginForm onLogin={onLogin} />
+          <LoginForm onLogin={onLogin} isLoading={isLoading} />
         </div>
       </div>
     </>
