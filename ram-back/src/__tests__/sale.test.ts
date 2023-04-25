@@ -26,7 +26,7 @@ describe("sale", () => {
   describe("creation function works", () => {
     it("creates new sale", async () => {
       const { sale, error } = await createSale({
-        policyNumber: "123456",
+        policyNumber: "123456789",
         assuranceType: {
           name: "test-assurance-type-1",
           description: "test-assurance-type-1-description",
@@ -38,16 +38,16 @@ describe("sale", () => {
           id: "test-user",
         },
         sellDate: new Date("2021/01/01"),
-        amountInCents: "123456",
+        amountInCents: "1234567",
         clientName: "Juan Perez",
         evidenceUrl: "https://www.google.com",
       });
 
       expect(error).toBeUndefined();
       expect(sale).toHaveProperty("id");
-      expect(sale).toHaveProperty("policyNumber", "123456");
+      expect(sale).toHaveProperty("policyNumber", "123456789");
       expect(sale).toHaveProperty("clientName", "Juan Perez");
-      expect(sale).toHaveProperty("amountInCents", "123456");
+      expect(sale).toHaveProperty("amountInCents", "1234567");
     });
   });
 });

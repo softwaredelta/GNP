@@ -7,7 +7,7 @@ import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
-import  { CreateNewSale, SaleData } from "../../lib/api/api-sale";
+import { CreateNewSale, SaleData } from "../../lib/api/api-sale";
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
     id: string;
@@ -46,7 +46,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     clientName: client,
     periodicity: periodicity,
   };
-  const { response, error, callback } = CreateNewSale({ saleData })
+  const { response, error, callback } = CreateNewSale({ saleData });
 
   // const { response, error, callback } = useAxios<{
   //   data: {
