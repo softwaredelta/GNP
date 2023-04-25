@@ -1,12 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-import { FiUpload, FiEye } from "react-icons/fi";
-import {
-  BsSendPlus,
-  BsSend,
-  BsSendExclamation,
-  BsSendCheck,
-} from "react-icons/bs";
-
 export interface DeliveryCardProps {
   children: React.ReactNode;
   nameDelivery: string;
@@ -14,13 +6,6 @@ export interface DeliveryCardProps {
   color: "blue" | "orange";
   // status: "Sin enviar" | "Enviado" | "Rechazado" | "Aceptado";
 }
-
-const iconList = {
-  "Sin enviar": <BsSendPlus color="gray" size={25} />,
-  Enviado: <BsSend color="#197492" size={25} />,
-  Rechazado: <BsSendExclamation color="#c22f0e" size={25} />,
-  Aceptado: <BsSendCheck color="green" size={25} />,
-};
 
 export default function DeliveryCard({
   children,

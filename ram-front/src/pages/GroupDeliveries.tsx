@@ -5,47 +5,42 @@ import DeliveryCard from "../components/generics/cards/base/DeliveryCard";
 import ManagerDelivery from "../components/generics/cards/info/ManagerDelivery";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
-import { allCourses$ } from "../lib/api/api-courses";
-import { useRecoilValue } from "recoil";
 
 export default function GroupDeliveries() {
-  const {id} = useParams();
+  const { id } = useParams();
 
-  const { response, loading, error } = useAxios<{   
+  const { response } = useAxios<{
+    id: string;
+    name: string;
+    groupDeliveries: {
+      id: string;
+      description: string;
+      imageUrl: string;
+      groupId: string;
+      userDeliveries: {
         id: string;
-        groupDeliveries: {
-          id: string;
-          description: string;
-          imageUrl: string;
-          groupId: string;
-          userDeliveries: {
-            id: string;
-            description: string;
-            imageURL: string;
-          }[];
+        description: string;
+        imageURL: string;
       }[];
+    }[];
   }>({
     url: `group/${id}`,
     method: "GET",
   });
 
-  console.log(response)
-
   return (
     <div>
       <Wrapper>
         <>
-          <p className="title">Nombre del curso</p>
+          <p className="title">{response?.name}</p>
           <div className="w-full flex justify-center min-h-[26%] gap-10">
             <div className="w-3/5">
-              {response? (
+              {response ? (
                 response?.groupDeliveries.map((groupsObj, index) => (
                   <div className="pb-6" key={index}>
                     <DeliveryCard
                       color="blue"
-                      nameDelivery={
-                        groupsObj.description
-                      }
+                      nameDelivery={groupsObj.description}
                       image={groupsObj.imageUrl}
                     >
                       <ManagerDelivery

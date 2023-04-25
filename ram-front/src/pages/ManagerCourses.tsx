@@ -6,7 +6,6 @@ import Wrapper from "../containers/Wrapper";
 import { useRecoilValue } from "recoil";
 import { allCourses$ } from "../lib/api/api-courses";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 export default function ManagerCourses() {
   const groups = useRecoilValue(allCourses$);

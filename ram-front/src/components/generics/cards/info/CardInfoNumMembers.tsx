@@ -11,7 +11,6 @@ export interface ICardInfoNumMembersProps {
 export default function CardInfoNumMembers({
   nameGroup,
   number,
-  color,
 }: ICardInfoNumMembersProps): JSX.Element {
   return (
     <div className=" grid grid-cols-1 grid-rows-2 h-full w-full">

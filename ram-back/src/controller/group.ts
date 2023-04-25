@@ -21,7 +21,7 @@ groupRouter.get("/all", async (req, res) => {
 groupRouter.get("/:id", async (req, res) => {
   const ds = await getDataSource();
   const groups = await ds.manager.findOne(GroupEnt, {
-    select: ["id", "groupDeliveries", "groupDeliveries"],
+    select: ["id", "name", "groupDeliveries", "groupDeliveries"],
     relations: ["groupDeliveries.userDeliveries"],
     where: {
       id: req.params.id,
