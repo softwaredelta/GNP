@@ -52,7 +52,7 @@ export const useAuthentication = () => {
 
 // implementation
 
-const authentication$ = atom<Authentication | null>({
+export const authentication$ = atom<Authentication | null>({
   key: "authentication",
   default: null,
 });

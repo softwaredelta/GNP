@@ -2,19 +2,24 @@
 
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { AiOutlineFileProtect } from "react-icons/ai";
+// import { AiOutlineFileProtect } from "react-icons/ai";
 import Wrapper from "../containers/Wrapper";
 import useModal from "../hooks/useModal";
 import { Button } from "./button";
 import DropZone from "./generics/DropZone";
 import Modal from "./generics/Modal";
 import DeliveryCard from "./generics/cards/DeliveryCard";
+import { useRecoilValue } from "recoil";
+import { apiBase$ } from "../lib/api/api-base";
+import { useAuthentication } from "../lib/api/api-auth";
 
 // import useAxios from "../hooks/useAxios";
 
 function Delivery() {
   // Get data using axios from http://localhost:8080/user-delivery
   const [deliveries, setDeliveries] = useState<any>([]);
+  const API_URL = useRecoilValue(apiBase$);
+  const { auth } = useAuthentication();
 
   useEffect(() => {
     axios.get("http://localhost:8080/user-delivery").then((response) => {
@@ -35,8 +40,6 @@ function Delivery() {
     toggleModal();
   };
 
-  // TODO: Pull authenticated user id using recoil.
-
   const uploadFile = (): void => {
     const file: File | undefined = modalFileInput.current?.files?.[0];
     if (file) {
@@ -44,7 +47,15 @@ function Delivery() {
       formData.append("file", file);
       try {
         (async (): Promise<void> => {
-          const response = await axios.post("", formData);
+          const response = await axios.post(
+            `${API_URL}/user-delivery/${id}/upload`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${auth?.accessToken}`,
+              },
+            },
+          );
           console.debug(response);
 
           setUploadFileURL(response.data); //Se guarda la url del archivo en el estado
@@ -67,16 +78,24 @@ function Delivery() {
       <>
         <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center gap-10 py-20">
           <div className="md:col-span-3 space-y-10 ">
-            {deliveries.map((delivery: any) => (
-              <DeliveryCard
-                key={delivery.status}
-                color="blue"
-                nameDelivery="Nombre de la entrega"
-                status={delivery.status}
-                onFileSubmit={handleModalOpen}
-                image={delivery.fileUrl}
-              />
-            ))}
+            <DeliveryCard
+              key="98759284375908"
+              deliveryID="test-delivery"
+              color="blue"
+              nameDelivery="Nombre "
+              onFileSubmit={() => handleModalOpen("test-delivery")}
+              image="https://i.pinimg.com/474x/e2/e8/9e/e2e89eb6dd581f7f0a8a05a13675f4d4.jpg"
+            />
+            {/*{deliveries.map((delivery: IDelivery) => (*/}
+            {/*  <DeliveryCard*/}
+            {/*    key={delivery.id}*/}
+            {/*    deliveryID={delivery.id}*/}
+            {/*    color="blue"*/}
+            {/*    nameDelivery="Nombre de la entrega"*/}
+            {/*    onFileSubmit={handleModalOpen}*/}
+            {/*    image={delivery.imageUrl}*/}
+            {/*  />*/}
+            {/*))}*/}
           </div>
         </div>
         {isOpen && (
@@ -86,7 +105,7 @@ function Delivery() {
                 Sube tu evidencia
               </h3>
               <div className="h-80">
-                <DropZone ref={modalFileInput} />
+                <DropZone fileInputRef={modalFileInput} />
               </div>
               <div className="flex flex-col justify-end items-center">
                 <div className="my-2 w-2/5">
@@ -94,29 +113,6 @@ function Delivery() {
                     Subir
                   </Button>
                 </div>
-                {/*{uploadFileURL && (*/}
-                <>
-                  <div className="my-2 w-2/5">
-                    <button
-                      className="btn-secondary"
-                      onClick={() => openFileInNewTab()}
-                    >
-                      Ver evidencia
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-center my-5">
-                    <AiOutlineFileProtect
-                      size={40}
-                      className=" text-gnp-blue-600"
-                    />
-                    <p className="ml-3 text-sm font-semibold">
-                      {fileName?.length > 30
-                        ? `${fileName?.slice(0, 40)}...`
-                        : fileName}
-                    </p>
-                  </div>
-                </>
-                {/*)}*/}
               </div>
             </div>
           </Modal>

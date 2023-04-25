@@ -21,15 +21,41 @@ export async function createUserDelivery(
   return ds.manager.save(userDelivery);
 }
 
-export async function getUserDelivery(
+export async function getAllUserDeliveries(
   id: string,
+): Promise<{ userDeliveries: UserDeliveryEnt[]; error?: FileError }> {
+  const deliveryId: string = id;
+  const ds: DataSource = await getDataSource();
+  const userDeliveries: UserDeliveryEnt[] = await ds.manager.find(
+    UserDeliveryEnt,
+    {
+      where: { deliveryId },
+      relations: ["user", "delivery"],
+    },
+  );
+  if (userDeliveries) {
+    return { userDeliveries };
+  } else {
+    return {
+      userDeliveries: [],
+      error: FileError.FILE_NOT_FOUND,
+    };
+  }
+}
+
+export async function getAuthUserDelivery(
+  id: string,
+  userId: string,
 ): Promise<{ userDelivery: UserDeliveryEnt; error?: FileError }> {
   const deliveryId: string = id;
   const ds: DataSource = await getDataSource();
-  const userDelivery = await ds.manager.findOne(UserDeliveryEnt, {
-    where: { deliveryId },
-    relations: ["user", "delivery"],
-  });
+  const userDelivery: UserDeliveryEnt | null = await ds.manager.findOne(
+    UserDeliveryEnt,
+    {
+      where: { deliveryId, userId },
+      relations: ["user", "delivery"],
+    },
+  );
   if (userDelivery) {
     return { userDelivery };
   } else {
@@ -50,22 +76,3 @@ export async function uploadUserDelivery(
   }
   return [];
 }
-
-// export async function updateUserDelivery(id: string): Promise<UserDeliveryEnt[]> {
-//     const ds: DataSource = await getDataSource();
-//     const deliveryId: string = id;
-//     return [];
-
-//       return ds.manager
-//         .find(UserDeliveryEnt, {
-//           select: ["user", "delivery"],
-//           where: { deliveryId },
-//           relations: ["user", "delivery"]
-//         })
-//         .then((userDelivery: UserDeliveryEnt[]) => {
-//           return userDelivery;
-//         }).catch((error) => {
-//           console.error(error);
-//         });
-//        console.error(error);
-//     }

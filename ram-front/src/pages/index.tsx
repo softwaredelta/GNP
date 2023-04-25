@@ -10,7 +10,7 @@ import Alert from "../components/generics/alerts/Alert";
 import Delivery from "../components/Delivery";
 
 export function AppRouter() {
-  const { isAuthenticated } = useAuthentication();
+  const { isAuthenticated, auth } = useAuthentication();
   const state = useRecoilValue<IAlert>(atomAlert);
 
   return (
