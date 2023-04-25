@@ -136,4 +136,54 @@ export async function loadSeeds() {
     name: "PATRIMONIAL",
     description: "seguros de patrimonio",
   });
+
+  // SALES
+
+  await createSale({
+    policyNumber: "123456789",
+    assuranceType: {
+      id: "test-at-1",
+    },
+    sellDate: new Date("2021-01-01"),
+    amountInCents: "100000",
+    clientName: "test-client",
+    periodicity: "Mensual",
+    id: "test-sale1",
+  });
+
+  await createSale({
+    policyNumber: "223456789",
+    assuranceType: {
+      id: "test-at-1",
+    },
+    sellDate: new Date("2021-01-01"),
+    amountInCents: "100000",
+    clientName: "test-client",
+    periodicity: "Mensual",
+    id: "test-sale2",
+  });
+
+  await createSale({
+    policyNumber: "323456789",
+    assuranceType: {
+      id: "test-at-1",
+    },
+    sellDate: new Date("2021-01-01"),
+    amountInCents: "100000",
+    clientName: "test-client",
+    periodicity: "Trimestral",
+    id: "test-sale3",
+  });
+
+  await createSale({
+    policyNumber: "423456789",
+    assuranceType: {
+      id: "test-at-1",
+    },
+    sellDate: new Date("2021-01-01"),
+    amountInCents: "100000",
+    clientName: "test-client",
+    periodicity: "Anual",
+    id: "test-sale4",
+  });
 }

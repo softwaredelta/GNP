@@ -100,7 +100,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     }
   }, [response, error]);
 
-
   return (
     <div className="grid grid-cols-4 bg-gradient-to-t from-gnp-cream to-gnp-white rounded-lg m-4">
       <img
