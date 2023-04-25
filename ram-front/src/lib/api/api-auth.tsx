@@ -37,8 +37,10 @@ export interface AuthenticationParams {
 export interface AuthenticationApi {
   auth: Authentication | null;
   authError: AuthenticationError | null;
+  isLoading: boolean;
   isAuthenticated: boolean;
   hasError: boolean;
+  clearError: () => void;
   authenticate: (params: AuthenticationParams) => void;
   logout: () => void;
   refresh: () => void;
@@ -60,6 +62,11 @@ const authentication$ = atom<Authentication | null>({
 const authenticationError$ = atom<AuthenticationError | null>({
   key: "authenticationError",
   default: null,
+});
+
+const isLoading$ = atom<boolean>({
+  key: "isLoading",
+  default: false,
 });
 
 async function refreshTokens({
@@ -109,6 +116,7 @@ export const authenticationApi$ = selectorFamily<
       const hasError = authError !== null;
       const apiBase = get(apiBase$);
       const isTest = get(isTest$);
+      const isLoading = get(isLoading$);
 
       const authenticate = getCallback(
         ({ set }) =>
@@ -137,6 +145,7 @@ export const authenticationApi$ = selectorFamily<
             }
 
             (async () => {
+              set(isLoading$, true);
               const response = await fetch(
                 `${apiBase}/${AUTHENTICATE_ENDPOINT}`,
                 {
@@ -151,6 +160,7 @@ export const authenticationApi$ = selectorFamily<
                 },
               );
               const result = await response.json();
+              set(isLoading$, false);
               if (response.ok) {
                 set(authentication$, result);
                 set(authenticationError$, null);
@@ -195,6 +205,7 @@ export const authenticationApi$ = selectorFamily<
           return;
         }
 
+        set(isLoading$, true);
         refreshTokens({
           apiBase,
           refreshToken,
@@ -202,6 +213,7 @@ export const authenticationApi$ = selectorFamily<
           setAuthentication: (a) => set(authentication$, a),
           setAuthenticationError: (a) => set(authenticationError$, a),
         });
+        set(isLoading$, false);
       });
 
       const logout = getCallback(({ set }) => () => {
@@ -210,11 +222,17 @@ export const authenticationApi$ = selectorFamily<
         localStorage.removeItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
       });
 
+      const clearError = getCallback(({ set }) => () => {
+        set(authenticationError$, null);
+      });
+
       return {
         auth,
         authError,
         isAuthenticated,
+        isLoading,
         hasError,
+        clearError,
         authenticate,
         logout,
         refresh,
