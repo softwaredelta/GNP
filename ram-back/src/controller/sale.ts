@@ -8,7 +8,6 @@ import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
 
-
 const userParameters = j.object({
   policyNumber: j.string().required(),
   sellDate: j.string().required(),

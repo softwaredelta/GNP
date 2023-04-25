@@ -5,25 +5,24 @@ import { SalesTable } from "../components/SalesHistory/SalesTable";
 import { SalesFilters } from "../components/SalesHistory/SalesFilters";
 import Wrapper from "../containers/Wrapper";
 import { Pagination } from "flowbite-react";
+import { allSales$ } from "../lib/api/api-sales";
+import { useRecoilValue } from "recoil";
+import { allAssuranceTypes$ } from "../lib/api/api-assurance-type";
 
 export default function SalesHistory() {
-  const [indexStart, setIndexStart] = useState(0);
-  const [indexEnd, setIndexEnd] = useState(5);
-  function onPageChange() {
-    setIndexEnd(indexEnd + 5);
-    setIndexStart(indexStart + 5);
-  }
+  const sales = useRecoilValue(allSales$);
+  const assuranceTypes = useRecoilValue(allAssuranceTypes$);
   return (
     <Wrapper>
       <div className="flex flex-col mt-8 justify-center items-center">
-        <SalesFilters />
-        <SalesTable indexStart={indexStart} indexEnd={indexEnd} />
+        <SalesFilters assuranceTypes={assuranceTypes.assuranceTypes} />
+        <SalesTable sales={sales.sales} />
         <div className="flex items-center justify-center text-center">
           <Pagination
             data-testid="Pagination"
             currentPage={1}
             layout="table"
-            onPageChange={onPageChange}
+            onPageChange={() => {}}
             totalPages={1000}
           />
         </div>
