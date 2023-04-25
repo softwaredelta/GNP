@@ -59,3 +59,10 @@ salesRouter.get("/all", async (req, res) => {
     .getMany();
   res.json({ sales });
 });
+
+salesRouter.get("/delete/:id", async (req, res) => {
+  const db = await getDataSource();
+  const sales = await db.manager.getRepository(SellEnt)
+  .delete(req.params.id)
+  res.json({ sales });
+});

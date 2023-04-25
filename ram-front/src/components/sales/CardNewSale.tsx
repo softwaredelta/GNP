@@ -31,17 +31,14 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
 
   const handleAssuranceTypeChange = (event: any) => {
     setAssuranceType(event.target.value);
-    //console.log(assuranceType);
   };
 
   const handlePeriodicityTypeChange = (event: any) => {
     setPeriodicity(event.target.value);
-    //console.log(assuranceType);
   };
 
   const handleFileUpload = (file: File) => {
     console.log("Archivo seleccionado:", file);
-    // Aquí puedes hacer lo que necesites con el archivo
   };
 
   const { response, error, callback } = useAxios<{

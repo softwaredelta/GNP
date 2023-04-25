@@ -1,8 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
 import React, { useState } from "react";
-import { SalesTable } from "../components/SalesHistory/SalesTable";
-import { SalesFilters } from "../components/SalesHistory/SalesFilters";
+import { SalesTable } from "../components/sales/SalesTable";
+import { SalesFilters } from "../components/sales/SalesFilters";
 import Wrapper from "../containers/Wrapper";
 import { Pagination } from "flowbite-react";
 import { allSales$ } from "../lib/api/api-sales";

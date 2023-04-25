@@ -16,7 +16,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload }) => {
 
   return (
     <div>
-      <label>Selecciona un archivo:</label>
       <input type="file" onChange={handleFileChange} />
     </div>
   );
