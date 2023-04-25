@@ -26,12 +26,10 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
 
   const handleAssuranceTypeChange = (event: any) => {
     setAssuranceType(event.target.value);
-    //console.log(assuranceType);
   };
 
   const handlePeriodicityTypeChange = (event: any) => {
     setPeriodicity(event.target.value);
-    //console.log(assuranceType);
   };
 
   const saleData: SaleData = {
