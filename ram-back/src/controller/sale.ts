@@ -7,6 +7,7 @@ import * as j from "joi";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 
+
 const userParameters = j.object({
   policyNumber: j.string().required(),
   assuranceType: j.object().required(),

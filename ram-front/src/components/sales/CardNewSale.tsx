@@ -7,6 +7,12 @@ import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
+import FileUpload from "./upload";
+
+export interface FileUploadProps {
+  onFileUpload: (file: File) => void;
+}
+
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
     id: string;
@@ -27,10 +33,15 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     setAssuranceType(event.target.value);
     //console.log(assuranceType);
   };
-  
+
   const handlePeriodicityTypeChange = (event: any) => {
     setPeriodicity(event.target.value);
     //console.log(assuranceType);
+  };
+
+  const handleFileUpload = (file: File) => {
+    console.log('Archivo seleccionado:', file);
+    // Aquí puedes hacer lo que necesites con el archivo
   };
 
   const { response, error, callback } = useAxios<{
@@ -176,7 +187,9 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               <option> mensual </option>
               <option> anual </option>
             </select>
+            <FileUpload onFileUpload={handleFileUpload} />
           </div>
+            
           <div className="col-span-4 flex justify-center items-center pb-8">
             <div className="w-52">
               <button
