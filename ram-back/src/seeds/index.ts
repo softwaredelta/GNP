@@ -146,7 +146,7 @@ export async function loadSeeds() {
     },
     sellDate: new Date("2021-01-01"),
     amountInCents: "100000",
-    clientName: "test-client",
+    clientName: "Jordana",
     periodicity: "Mensual",
     id: "test-sale1",
   });
@@ -158,7 +158,7 @@ export async function loadSeeds() {
     },
     sellDate: new Date("2021-01-01"),
     amountInCents: "100000",
-    clientName: "test-client",
+    clientName: "Karen López",
     periodicity: "Mensual",
     id: "test-sale2",
   });
@@ -169,8 +169,8 @@ export async function loadSeeds() {
       id: "test-at-1",
     },
     sellDate: new Date("2021-01-01"),
-    amountInCents: "100000",
-    clientName: "test-client",
+    amountInCents: "400000",
+    clientName: "Renato",
     periodicity: "Trimestral",
     id: "test-sale3",
   });
@@ -182,8 +182,20 @@ export async function loadSeeds() {
     },
     sellDate: new Date("2021-01-01"),
     amountInCents: "100000",
-    clientName: "test-client",
+    clientName: "Mónica Ayala",
     periodicity: "Anual",
     id: "test-sale4",
+  });
+
+  await createSale({
+    policyNumber: "823456789",
+    assuranceType: {
+      id: "test-at-1",
+    },
+    sellDate: new Date("2021-01-01"),
+    amountInCents: "200000",
+    clientName: "Ian García",
+    periodicity: "Anual",
+    id: "test-sale5",
   });
 }
