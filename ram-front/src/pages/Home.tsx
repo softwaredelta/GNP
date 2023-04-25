@@ -34,6 +34,14 @@ export default function Home() {
           </a>
         </li>
         <li>
+          <a
+            href="/my-groups"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            my groups
+          </a>
+        </li>
+        <li>
           <button
             onClick={() => {
               logout();
