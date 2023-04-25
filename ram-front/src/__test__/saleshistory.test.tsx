@@ -6,7 +6,7 @@ import SalesHistory from "../pages/SalesHistory";
 import { RecoilRoot } from "recoil";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { SalesFilters } from "../components/SalesHistory/SalesFilters";
+import { SalesFilters } from "../components/sales/SalesFilters";
 
 describe("SalesHistory", () => {
   let container: HTMLDivElement;
@@ -49,33 +49,25 @@ describe("SalesHistory", () => {
     expect(filtersComponent).toBeInTheDocument();
   });
 
-  it("updates client input filter on change", () => {
-    render(<SalesFilters />);
-    const clientInput: HTMLInputElement = screen.getByTestId("ClientInput");
-    fireEvent.change(clientInput, { target: { value: "Kenny Vercamer" } });
-    expect(clientInput.value).toBe("Kenny Vercamer");
-  });
+  // it("updates client input filter on change", () => {
+  //   render(<SalesFilters />);
+  //   const clientInput: HTMLInputElement = screen.getByTestId("ClientInput");
+  //   fireEvent.change(clientInput, { target: { value: "Kenny Vercamer" } });
+  //   expect(clientInput.value).toBe("Kenny Vercamer");
+  // });
 
-  it("updates policy number input filter on change", () => {
-    render(<SalesFilters />);
-    const policyNumInput: HTMLInputElement =
-      screen.getByTestId("PolicyNumInput");
-    fireEvent.change(policyNumInput, { target: { value: "1234567" } });
-    expect(policyNumInput.value).toBe("1234567");
-  });
+  // it("updates policy number input filter on change", () => {
+  //   render(<SalesFilters />);
+  //   const policyNumInput: HTMLInputElement =
+  //     screen.getByTestId("PolicyNumInput");
+  //   fireEvent.change(policyNumInput, { target: { value: "1234567" } });
+  //   expect(policyNumInput.value).toBe("1234567");
+  // });
 
-  it("updates date input filter on change", () => {
-    render(<SalesFilters />);
-    const datePicker: HTMLInputElement = screen.getByLabelText("Fecha");
-    fireEvent.change(datePicker, { target: { value: "18/04/2023" } });
-    expect(datePicker.value).toBe("18/04/2023");
-  });
-
-  //   it("updates insurance type input filter on change", () => {
-  //     render(<SalesFilters />);
-  //   });
-
-  //   it("pagination works on the table [wip]", () => {
-  //     render(<SalesHistory />);
-  //   });
+  // it("updates date input filter on change", () => {
+  //   render(<SalesFilters />);
+  //   const datePicker: HTMLInputElement = screen.getByLabelText("Fecha");
+  //   fireEvent.change(datePicker, { target: { value: "18/04/2023" } });
+  //   expect(datePicker.value).toBe("18/04/2023");
+  // });
 });

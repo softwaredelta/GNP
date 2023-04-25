@@ -1,9 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { Table } from "flowbite-react";
 import { FaTrash } from "react-icons/fa";
+import useAxios from "../../hooks/useAxios";
 
 export interface AssuranceType {
   id: string;
@@ -32,6 +33,14 @@ export interface IListSalesProps {
 }
 
 export const SalesTable = ({ sales }: IListSalesProps) => {
+  const [deleteID, setDeleteID] = useState<string>("");
+  const { response, error, callback } = useAxios({
+    url: `sales/delete/${deleteID}`,
+    method: "GET",
+    body: {
+    },
+  });
+
   return (
     <div data-testid="Table" className="w-full p-8">
       <Table hoverable={true}>
@@ -62,7 +71,10 @@ export const SalesTable = ({ sales }: IListSalesProps) => {
                 <Table.Cell>{new Date(sale.sellDate).getDate()}</Table.Cell>
                 <Table.Cell>{sale.status}</Table.Cell>
                 <Table.Cell>
-                  <FaTrash className=" hover:fill-red-500 hover:scale-105" />
+                  <FaTrash
+                    onClick={() => setDeleteID(sale.id)}
+                    className=" hover:fill-red-500 hover:scale-105"
+                  />
                 </Table.Cell>
               </Table.Row>
             );
