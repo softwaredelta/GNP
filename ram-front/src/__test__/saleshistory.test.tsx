@@ -2,7 +2,7 @@
 
 import { render, screen, act, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import  SalesHistory from "../pages/SalesHistory";
+import SalesHistory from "../pages/SalesHistory";
 import { RecoilRoot } from "recoil";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";

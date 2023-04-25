@@ -3,7 +3,6 @@
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { v4 } from "uuid";
-
 export enum SaleError {
   POLICY_NUM_DUPLICATED = "POLICY_NUM_DUPLICATED",
   SALE_ERROR = "DEFAULT_ERROR",

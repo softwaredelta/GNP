@@ -22,7 +22,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   const [amount, setAmount] = useState("");
   const [client, setClient] = useState("");
   const [assuranceType, setAssuranceType] = useState(assuranceTypes[0].id);
-  const [periodicity, setPeriodicity] = useState("")
+  const [periodicity, setPeriodicity] = useState("");
 
   const handleAssuranceTypeChange = (event: any) => {
     setAssuranceType(event.target.value);
@@ -93,7 +93,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     }
   }, [response, error]);
 
-
   return (
     <div className="grid grid-cols-4 bg-gradient-to-t from-gnp-cream to-gnp-white rounded-lg m-4">
       <img
@@ -118,7 +117,8 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setPolicyNum(e.target.value)
               }
-              minLength = {9} maxLength={9}
+              minLength={9}
+              maxLength={9}
               required
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
@@ -132,7 +132,8 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setAmount(e.target.value)
               }
-              minLength={2} maxLength={7}
+              minLength={2}
+              maxLength={7}
               required
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
@@ -182,16 +183,18 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
               Periodicidad
             </label>
-            <select className="input-primary w-full"
-            value = {periodicity}
-            onChange={handlePeriodicityTypeChange}>
+            <select
+              className="input-primary w-full"
+              value={periodicity}
+              onChange={handlePeriodicityTypeChange}
+            >
               <option> semestral </option>
               <option> mensual </option>
               <option> anual </option>
             </select>
             <FileUpload onFileUpload={handleFileUpload} />
           </div>
-            
+
           <div className="col-span-4 flex justify-center items-center pb-8">
             <div className="w-52">
               <button
