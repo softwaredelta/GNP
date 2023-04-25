@@ -28,7 +28,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     setAssuranceType(event.target.value);
     //console.log(assuranceType);
   };
-  
+
   const handlePeriodicityTypeChange = (event: any) => {
     setPeriodicity(event.target.value);
     //console.log(assuranceType);
@@ -189,7 +189,9 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               <option> mensual </option>
               <option> anual </option>
             </select>
+            <FileUpload onFileUpload={handleFileUpload} />
           </div>
+            
           <div className="col-span-4 flex justify-center items-center pb-8">
             <div className="w-52">
               <button
