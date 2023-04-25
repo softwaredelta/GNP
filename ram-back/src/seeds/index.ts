@@ -36,7 +36,6 @@ export async function loadSeeds() {
       idDeliverie: delivery1.delivery.id,
       idUser: user.user.id,
       dateDelivery: new Date(),
-      status: "Aceptado",
       fileUrl: "https://picsum.photos/400",
     });
 
@@ -44,7 +43,6 @@ export async function loadSeeds() {
       idDeliverie: delivery2.delivery.id,
       idUser: user.user.id,
       dateDelivery: new Date(),
-      status: "Rechazado",
       fileUrl: "https://picsum.photos/400",
     });
 

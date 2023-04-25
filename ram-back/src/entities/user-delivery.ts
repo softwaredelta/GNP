@@ -9,6 +9,13 @@ import {
 } from "./columns";
 import { DeliveryEnt } from "./delivery.entity";
 
+export enum StatusUserDelivery {
+  withoutSending = "Sin enviar",
+  sending = "Enviado",
+  refused = "Rechazado",
+  accepted = "Aceptado",
+}
+
 @Entity({ name: "user_delivery" })
 export class UserDeliveryEnt {
   @ManyToOne(() => UserEnt, {
@@ -36,7 +43,10 @@ export class UserDeliveryEnt {
   @Column(REQUIRED_DATE_COLUMN)
   dateDelivery!: Date;
 
-  @Column(REQUIRED_STRING_COLUMN("status"))
+  @Column({
+    ...REQUIRED_STRING_COLUMN("status"),
+    default: StatusUserDelivery.withoutSending,
+  })
   status!: string;
 
   @Column(URL_COLUMN)

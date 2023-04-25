@@ -4,6 +4,7 @@ import { getDataSource } from "../arch/db-client";
 import { GroupUserStatus } from "../entities/group-user.entity";
 import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
+import { StatusUserDelivery } from "../entities/user-delivery";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",
@@ -83,7 +84,7 @@ export async function getUserGroups(params: { userId: string }): Promise<{
         delivery.userDeliveries.some(
           (userDelivery) =>
             userDelivery.userId === params.userId &&
-            userDelivery.status === "Aceptado",
+            userDelivery.status === StatusUserDelivery.accepted,
         ),
       ).length;
 

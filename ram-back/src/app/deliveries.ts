@@ -2,7 +2,7 @@
 
 import { getDataSource } from "../arch/db-client";
 import { DeliveryEnt } from "../entities/delivery.entity";
-import { UserDeliveryEnt } from "../entities/user-delivery";
+import { UserDeliveryEnt, StatusUserDelivery } from "../entities/user-delivery";
 
 export enum DeliveryError {
   UNHANDLED = "UNHANDLED",
@@ -41,7 +41,7 @@ export async function setDeliverieToUser(params: {
   idUser: string;
   idDeliverie: string;
   dateDelivery: Date;
-  status: string;
+  status?: string;
   fileUrl: string;
 }): Promise<{
   user_delivery: UserDeliveryEnt;
@@ -57,7 +57,7 @@ export async function setDeliverieToUser(params: {
         deliveryId: params.idDeliverie,
         userId: params.idUser,
         dateDelivery: params.dateDelivery,
-        status: params.status,
+        status: params.status ?? StatusUserDelivery.withoutSending,
         fileUrl: params.fileUrl,
       }),
     )
