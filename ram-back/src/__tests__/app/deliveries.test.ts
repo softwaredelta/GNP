@@ -1,5 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-import { createDelivery, setDeliverieToUser } from "../../app/deliveries";
+import { createDelivery, getUserDeliveriesbyGroup, setDeliverieToUser } from "../../app/deliveries";
 import { createGroup } from "../../app/groups";
 import { createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
@@ -91,7 +91,7 @@ describe("app:deliveries", () => {
         deliveryNames.map((name) =>
           createDelivery({
             idGroup: group1.group.id,
-            deliveryName: "test-delivery",
+            deliveryName: name,
             description: "test-description",
             imageUrl: "test-image",
           }).then(({ delivery }) => delivery),
@@ -110,15 +110,15 @@ describe("app:deliveries", () => {
         ),
       );
 
-      const { user_delivery_group, error } = await getUserDeliveryGroup({
-        idGroup: group1.group.id,
-        idUser: user.user.id,
+      const { user_deliveries, error } = await getUserDeliveriesbyGroup({
+        userId: user.user.id,
+        groupId: group1.group.id,
       });
 
       expect(error).toBeUndefined();
-      expect(user_delivery_group.deliveries).toHaveLength(3);
+      expect(user_deliveries).toHaveLength(3);
       expect(
-        user_delivery_group.user_delivery.map((user_delivery) => user_delivery.delivery.groupId),
+        user_deliveries.map((item) => item.delivery.groupId),
       ).not.toContain(group2.group.id);
     });
   });
