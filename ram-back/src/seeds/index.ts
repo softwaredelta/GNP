@@ -38,6 +38,9 @@ export async function loadSeeds() {
       imageURL:
         "https://i1.wp.com/kayum.mx/wp-content/uploads/2019/09/logo-GNP.jpeg?fit=3307%2C1686&ssl=1",
     });
+    if (group2Error) {
+      throw new Error(group2Error);
+    }
 
     await setDeliverieToUser({
       idDeliverie: delivery1.delivery.id,
