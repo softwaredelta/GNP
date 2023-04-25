@@ -8,18 +8,25 @@ import { getUserDeliveriesbyGroup } from "../app/deliveries";
 
 export const deliveriesRouter = Router();
 
-deliveriesRouter.get("/my-deliveries/:groupId", authMiddleware, async (req, res) => {
-  if (!req.user) {
-    res.status(401).json({ message: "No user" });
-    return;
-  }
-  const userId = req.user.id;
-  const groupId = req.params.groupId;
+deliveriesRouter.get(
+  "/my-deliveries/:groupId",
+  authMiddleware,
+  async (req, res) => {
+    if (!req.user) {
+      res.status(401).json({ message: "No user" });
+      return;
+    }
+    const userId = req.user.id;
+    const groupId = req.params.groupId;
 
-  const data = await getUserDeliveriesbyGroup({ userId, groupId });
+    const data = await getUserDeliveriesbyGroup({ userId, groupId });
 
-  res.json({ data });
-});
+    if (data.userDeliveries.length === 0)
+      return res.status(404).json({ message: "No deliveries found" });
+
+    res.json({ data });
+  },
+);
 
 deliveriesRouter.get("/all", async (req, res) => {
   const db = await getDataSource();

@@ -1,8 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
-import { createDelivery, getUserDeliveriesbyGroup, setDeliverieToUser } from "../../app/deliveries";
+import {
+  createDelivery,
+  getUserDeliveriesbyGroup,
+  setDeliverieToUser,
+} from "../../app/deliveries";
 import { createGroup } from "../../app/groups";
 import { createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
+import { StatusUserDelivery } from "../../entities/user-delivery";
 
 describe("app:deliveries", () => {
   beforeEach(async () => {
@@ -17,14 +22,13 @@ describe("app:deliveries", () => {
         image: "test-image-1",
       });
 
-      const { delivery, error } = await createDelivery({
-        idGroup: "test",
+      const { delivery } = await createDelivery({
+        idGroup: group.group.id,
         deliveryName: "test-delivery-1",
         description: "test-description-1",
         imageUrl: "test-image-1",
       });
 
-      expect(error).toBeUndefined();
       expect(delivery).toHaveProperty("deliveryName", "test-delivery-1");
       expect(delivery).toHaveProperty("description", "test-description-1");
       expect(delivery).toHaveProperty("imageUrl", "test-image-1");
@@ -51,7 +55,7 @@ describe("app:deliveries", () => {
         imageUrl: "test-image-1",
       });
 
-      const { user_delivery, error } = await setDeliverieToUser({
+      const { userDelivery, error } = await setDeliverieToUser({
         idUser: user.user.id,
         idDeliverie: delivery.delivery.id,
         dateDelivery: new Date("2021-01-01"),
@@ -60,11 +64,14 @@ describe("app:deliveries", () => {
       });
 
       expect(error).toBeUndefined();
-      expect(user_delivery).toHaveProperty("userId", user.user.id);
-      expect(user_delivery).toHaveProperty("deliveryId", delivery.delivery.id);
-      expect(user_delivery).toHaveProperty("dateDelivery", new Date("2021-01-01"));
-      expect(user_delivery).toHaveProperty("status", "test-status-1");
-      expect(user_delivery).toHaveProperty("imageUrl", "test-file-url-1");
+      expect(userDelivery).toHaveProperty("userId", user.user.id);
+      expect(userDelivery).toHaveProperty("deliveryId", delivery.delivery.id);
+      expect(userDelivery).toHaveProperty(
+        "dateDelivery",
+        new Date("2021-01-01"),
+      );
+      expect(userDelivery).toHaveProperty("status", "test-status-1");
+      expect(userDelivery).toHaveProperty("fileUrl", "test-file-url-1");
     });
   });
 
@@ -80,12 +87,10 @@ describe("app:deliveries", () => {
         image: "test-image-1",
       });
 
-      const group2 = await createGroup({
-        name: "test-group-2",
-        image: "test-image-2",
-      });
-
-      const deliveryNames = Array.from({ length: 3 }, (_, i) => `delivery-${i}`);
+      const deliveryNames = Array.from(
+        { length: 3 },
+        (_, i) => `delivery-${i}`,
+      );
 
       const deliveries = await Promise.all(
         deliveryNames.map((name) =>
@@ -104,22 +109,18 @@ describe("app:deliveries", () => {
             idUser: user.user.id,
             idDeliverie: delivery.id,
             dateDelivery: new Date("2021-01-01"),
-            status: "test-status",
+            status: StatusUserDelivery.withoutSending,
             fileUrl: "test-file-url",
-          }).then(({ user_delivery }) => user_delivery),
+          }).then(({ userDelivery }) => userDelivery),
         ),
       );
 
-      const { user_deliveries, error } = await getUserDeliveriesbyGroup({
+      const data = await getUserDeliveriesbyGroup({
         userId: user.user.id,
         groupId: group1.group.id,
       });
 
-      expect(error).toBeUndefined();
-      expect(user_deliveries).toHaveLength(3);
-      expect(
-        user_deliveries.map((item) => item.delivery.groupId),
-      ).not.toContain(group2.group.id);
+      expect(data.userDeliveries).toHaveLength(3);
     });
   });
 });

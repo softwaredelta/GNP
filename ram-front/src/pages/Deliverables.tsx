@@ -9,15 +9,15 @@ export default function Deliverables(): JSX.Element {
       nameDelivery: "Entregable 1",
       image:
         "https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg",
-        color: "blue",
-        status: "Entregado"
+      color: "blue",
+      status: "Entregado",
     },
     {
       nameDelivery: "Entregable 2",
       image:
         "https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg",
-        color: "orange",
-        status: "Rechazado"
+      color: "orange",
+      status: "Rechazado",
     },
   ];
 

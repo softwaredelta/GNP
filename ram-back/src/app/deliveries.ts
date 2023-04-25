@@ -46,7 +46,7 @@ export async function setDeliverieToUser(params: {
   status?: string;
   fileUrl: string;
 }): Promise<{
-  user_delivery: UserDeliveryEnt;
+  userDelivery: UserDeliveryEnt;
   error?: DeliveryError;
   errorReason?: Error;
 }> {
@@ -63,49 +63,69 @@ export async function setDeliverieToUser(params: {
         fileUrl: params.fileUrl,
       }),
     )
-    .then((user_delivery) => {
-      return { user_delivery };
+    .then((userDelivery) => {
+      return { userDelivery };
     })
     .catch((e) => ({
-      user_delivery: {} as UserDeliveryEnt,
+      userDelivery: {} as UserDeliveryEnt,
       error: DeliveryError.UNHANDLED,
       errorReason: e,
     }));
 }
 
+export interface UserDeliveryResponse {
+  deliveryId: string;
+  dateDelivery: Date;
+  status: string;
+  fileUrl: string;
+  deliveryName: string;
+  description: string;
+  imageUrl: string;
+  groupName: string;
+}
 // Obtain the deliveries from UserDeliveries where the groupId is the same as the params.groupId
 // and the userId is the same as the params.userId
 export async function getUserDeliveriesbyGroup(params: {
   userId: string;
   groupId: string;
 }): Promise<{
-  user_deliveries: UserDeliveryEnt[];
+  userDeliveries: UserDeliveryResponse[];
   error?: DeliveryError;
   errorReason?: Error;
 }> {
   const ds = await getDataSource();
 
   try {
-    const userDeliveries = await ds.manager.find(UserDeliveryEnt, {
+    const userDeliveriesBase = await ds.manager.find(UserDeliveryEnt, {
       relations: {
-        delivery: true,
+        delivery: {
+          group: true,
+        },
       },
-      where: { userId: params.userId},
+      where: { userId: params.userId, delivery: { groupId: params.groupId } },
     });
 
-    const user_deliveries = userDeliveries.filter((user_delivery) => {
-      return (
-        user_delivery.userId === params.userId &&
-        user_delivery.delivery.groupId === params.groupId
-      );
-    });
+    const userDeliveries: UserDeliveryResponse[] = userDeliveriesBase.map(
+      (userDelivery): UserDeliveryResponse => ({
+        deliveryId: userDelivery.deliveryId,
+        dateDelivery: userDelivery.dateDelivery,
+        status: userDelivery.status,
+        fileUrl: userDelivery.fileUrl,
+        deliveryName: userDelivery.delivery.deliveryName,
+        description: userDelivery.delivery.description,
+        imageUrl: userDelivery.delivery.imageUrl,
+        groupName: userDelivery.delivery.group.name,
+      }),
+    );
 
-    return { user_deliveries };
+    return {
+      userDeliveries,
+    };
   } catch (e) {
     return {
       error: DeliveryError.UNHANDLED,
       errorReason: e as Error,
-      user_deliveries: [],
+      userDeliveries: [],
     };
   }
 }

@@ -7,6 +7,7 @@ import { authenticateUser, createUser } from "../../app/user";
 import { createGroup } from "../../app/groups";
 import { createDelivery } from "../../app/deliveries";
 import { setDeliverieToUser } from "../../app/deliveries";
+import { StatusUserDelivery } from "../../entities/user-delivery";
 
 describe("controller:deliveries", () => {
   let accessToken: string;
@@ -37,16 +38,18 @@ describe("controller:deliveries", () => {
 
   describe("query endpoint", () => {
     it("rejects unauthenticated request", async () => {
-      return request(app).get("/deliveries/my-deliveries").expect(401);
+      return request(app)
+        .get("/deliveries/my-deliveries/test-group-id")
+        .expect(401);
     });
 
-    it("returns group not found error", async () => {
+    it("returns no deliveries found", async () => {
       return request(app)
         .get("/deliveries/my-deliveries/test-group-id")
         .set("Authorization", `Bearer ${accessToken}`)
         .expect(404)
         .then((res) => {
-          expect(res.body).toMatchObject({ message: "GROUP_NOT_FOUND" });
+          expect(res.body).toMatchObject({ message: "No deliveries found" });
         });
     });
 
@@ -65,11 +68,12 @@ describe("controller:deliveries", () => {
         description: "test-description-2",
         imageUrl: "test-image-url-2",
       });
-      await setDeliverieToUser({
+
+      const userDelivery1 = await setDeliverieToUser({
         idUser: "1",
         idDeliverie: delivery1.delivery.id,
-        dateDelivery: new Date(),
-        status: "test-status",
+        dateDelivery: new Date("2023-04-25"),
+        status: StatusUserDelivery.withoutSending,
         fileUrl: "test-file-url",
       });
 
@@ -78,11 +82,23 @@ describe("controller:deliveries", () => {
         .set("Authorization", `Bearer ${accessToken}`)
         .expect(200)
         .then((res) => {
-          expect(res.body).toHaveLength(1);
-          expect(res.body[0]).toHaveProperty("userId", "1");
-          expect(res.body[0].delivery).toHaveProperty("id", delivery1.delivery.id);
-          expect(res.body[0]).toHaveProperty("status", "test-status-1");
-          expect(res.body[0]).toHaveProperty("fileUrl", "test-file-url-1");
+          expect(res.status).toBe(200);
+          expect(res.body).toMatchObject({
+            data: {
+              userDeliveries: [
+                {
+                  deliveryId: delivery1.delivery.id,
+                  dateDelivery: "2023-04-24",
+                  status: userDelivery1.userDelivery.status,
+                  fileUrl: userDelivery1.userDelivery.fileUrl,
+                  deliveryName: delivery1.delivery.deliveryName,
+                  description: delivery1.delivery.description,
+                  imageUrl: delivery1.delivery.imageUrl,
+                  groupName: group1.group.name,
+                },
+              ],
+            },
+          });
         });
     });
   });

@@ -1,5 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
-import DeliveryCard, {DeliveryCardProps} from "../generics/cards/DeliveryCard";
+import DeliveryCard, {
+  DeliveryCardProps,
+} from "../generics/cards/DeliveryCard";
 
 export interface IListDeliverables {
   deliverables: DeliveryCardProps[];
