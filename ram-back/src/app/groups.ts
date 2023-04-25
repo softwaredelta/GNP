@@ -5,6 +5,9 @@ import { getDataSource } from "../arch/db-client";
 import { GroupUserStatus } from "../entities/group-user.entity";
 import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
+import { DeliveryEnt } from "../entities/delivery.entity";
+import { group } from "console";
+import { groupRouter } from "../controller/group";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",
@@ -56,6 +59,27 @@ export async function addUserToGroup(params: {
     }));
 }
 
+export async function addDeliveryToGroup(params: {
+  deliveryID: string;
+  groupID: string;
+}): Promise<{ error?: GroupError; errorReason?: Error }> {
+  const ds = await getDataSource();
+
+  return ds.manager
+    .save(
+      DeliveryEnt,
+      ds.manager.create(DeliveryEnt, {
+        id: params.deliveryID,
+        groupId: params.groupID,
+      }),
+    )
+    .then(() => ({}))
+    .catch((e) => ({
+      error: GroupError.UNHANDLED,
+      errorReason: e,
+    }));
+}
+
 export async function getUserGroups(params: {
   userId: string;
 }): Promise<{ groups: GroupEnt[]; error?: GroupError; errorReason?: Error }> {
@@ -75,3 +99,25 @@ export async function getUserGroups(params: {
       groups: [],
     }));
 }
+
+// export async function getDeliveryGroups(params: {
+//   groupId: string;
+// }): Promise<{ deliveries: DeliveryEnt[]; error?: GroupError; errorReason?: Error }> {
+//   const ds = await getDataSource();
+
+//   ds.manager.find(GroupDeliveries)
+
+//   return ds.manager
+//     .find(DeliveryEnt, {
+//       select: ["description", "imageUrl"],
+//       where: { groupId: params.groupId},
+//     })
+//     .then((GroupDeliveries) => GroupDeliveries.map((GroupDelivery) => GroupDelivery.groupId))
+//     .then((groupIds) => ds.manager.findBy(DeliveryEnt, { groupId: In(groupIds) }))
+//     .then((deliveries) => ({ deliveries }))
+//     .catch((e) => ({
+//       error: GroupError.UNHANDLED,
+//       errorReason: e,
+//       deliveries: [],
+//     }));
+// }

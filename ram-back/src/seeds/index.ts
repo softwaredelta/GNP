@@ -1,6 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { addUserToGroup, createGroup } from "../app/groups";
+import { createDelivery, setDeliverieToUser } from "../app/deliveries";
+import { addDeliveryToGroup, addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
 
 /**
@@ -41,6 +42,25 @@ export async function loadSeeds() {
       userId: "test-user2",
       groupId: group.id,
     });
+
+    // Deliveries
+    const { delivery: delivery, error: delivery2Error } = await createDelivery({
+      description: "test-delivery",
+      imageUrl: "https://i.ytimg.com/vi/eDkLz16lmxI/maxresdefault.jpg",
+      idGroup: group.id,
+    });
+    if (delivery2Error) {
+      throw new Error(delivery2Error);
+    }
+
+    await setDeliverieToUser({
+      idDeliverie: delivery.id,
+      idUser: "test-user",
+      dateDelivery: new Date(),
+      status: "Aceptado",
+      fileUrl: "https://picsum.photos/400",
+    });
+
   } catch (e) {
     console.error(e);
   }

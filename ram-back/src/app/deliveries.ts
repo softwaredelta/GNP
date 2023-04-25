@@ -1,33 +1,72 @@
 // (c) Delta Software 2023, rights reserved.
-import { In } from "typeorm";
-import { getDataSource } from "../arch/db-client";
-import { GroupUserStatus } from "../entities/group-user.entity";
-import { GroupUserEnt } from "../entities/group-user.entity";
-import { GroupEnt } from "../entities/group.entity";
 
-export enum GroupError {
+import { getDataSource } from "../arch/db-client";
+import { DeliveryEnt } from "../entities/delivery.entity";
+import { UserDeliveryEnt } from "../entities/user-delivery";
+
+export enum DeliveryError {
   UNHANDLED = "UNHANDLED",
 }
 
 export async function createDelivery(params: {
-  name: string;
-  imageURL: string;
-}): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
+  idGroup: string;
+  description: string;
+  imageUrl: string;
+}): Promise<{
+  delivery: DeliveryEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
   const ds = await getDataSource();
 
   return ds.manager
     .save(
-      ds.manager.create(GroupEnt, {
-        name: params.name,
-        imageURL: params.imageURL,
+      ds.manager.create(DeliveryEnt, {
+        description: params.description,
+        imageUrl: params.imageUrl,
+        groupId: params.idGroup,
       }),
     )
-    .then((group) => {
-      return { group };
+    .then((delivery) => {
+      return { delivery };
     })
     .catch((e) => ({
-      error: GroupError.UNHANDLED,
+      error: DeliveryError.UNHANDLED,
       errorReason: e,
-      group: {} as GroupEnt,
+      delivery: {} as DeliveryEnt,
+    }));
+}
+
+export async function setDeliverieToUser(params: {
+  idUser: string;
+  idDeliverie: string;
+  dateDelivery: Date;
+  status: string;
+  fileUrl: string;
+}): Promise<{
+  user_delivery: UserDeliveryEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+
+  return ds.manager
+    .save(
+      UserDeliveryEnt,
+      ds.manager.create(UserDeliveryEnt, {
+        deliveryId: params.idDeliverie,
+        userId: params.idUser,
+        dateDelivery: params.dateDelivery,
+        status: params.status,
+        fileUrl: params.fileUrl,
+      }),
+    )
+    .then((user_delivery) => {
+      return { user_delivery };
+    })
+    .catch((e) => ({
+      user_delivery: {} as UserDeliveryEnt,
+      error: DeliveryError.UNHANDLED,
+      errorReason: e,
     }));
 }

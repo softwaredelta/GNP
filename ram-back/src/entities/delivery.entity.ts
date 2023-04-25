@@ -4,15 +4,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  JoinColumn,
 } from "typeorm";
 import { DESCRIPTION_COLUMN, URL_COLUMN } from "./columns";
 import { UserDeliveryEnt } from "./user-delivery";
-import { UserEnt } from "./user.entity";
 import { GroupEnt } from "./group.entity";
 
 @Entity({ name: "delivery" })
@@ -32,13 +31,17 @@ export class DeliveryEnt {
   @Column(URL_COLUMN)
   imageUrl: string;
 
-  @ManyToOne(() => GroupEnt, (groupEnt) => groupEnt.id)
+  @OneToMany(() => UserDeliveryEnt, (userDelivery) => userDelivery.delivery)
+  userDeliveries!: UserDeliveryEnt[];
+
+  @ManyToOne(() => GroupEnt, {
+    nullable: false,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
   @JoinColumn({ name: "group_id" })
   group!: GroupEnt;
 
-  @Column({ name: "group_id", nullable: false, primary: true })
+  @Column({ name: "group_id", nullable: false })
   groupId!: string;
-
-  @OneToMany(() => UserDeliveryEnt, (userDelivery) => userDelivery.delivery)
-  userDeliveries: UserDeliveryEnt[];
 }
