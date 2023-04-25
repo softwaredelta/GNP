@@ -6,10 +6,11 @@ export const salesRouter = Router();
 import * as j from "joi";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
+import { authMiddleware } from "./user";
 
 const userParameters = j.object({
   policyNumber: j.string().required(),
-  assuranceType: j.object().required(),
+  assuranceTypeId: j.string().required(),
   sellDate: j.string().required(),
   amountInCents: j.string().required(),
   clientName: j.string().required(),

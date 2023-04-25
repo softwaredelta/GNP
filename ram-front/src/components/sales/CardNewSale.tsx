@@ -7,7 +7,7 @@ import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
-import FileUpload from "./upload";
+import FileUpload from "../upload";
 
 export interface FileUploadProps {
   onFileUpload: (file: File) => void;
