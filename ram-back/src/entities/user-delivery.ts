@@ -35,7 +35,7 @@ export class UserDeliveryEnt {
     onUpdate: "CASCADE",
   })
   @JoinColumn({ name: "delivery_id" })
-  delivery!: string;
+  delivery!: DeliveryEnt;
 
   @PrimaryColumn({ name: "delivery_id", nullable: false })
   deliveryId!: string;

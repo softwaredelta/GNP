@@ -10,6 +10,7 @@ export enum DeliveryError {
 
 export async function createDelivery(params: {
   idGroup: string;
+  deliveryName: string;
   description: string;
   imageUrl: string;
 }): Promise<{
@@ -22,6 +23,7 @@ export async function createDelivery(params: {
   return ds.manager
     .save(
       ds.manager.create(DeliveryEnt, {
+        deliveryName: params.deliveryName,
         description: params.description,
         imageUrl: params.imageUrl,
         groupId: params.idGroup,
@@ -69,4 +71,33 @@ export async function setDeliverieToUser(params: {
       error: DeliveryError.UNHANDLED,
       errorReason: e,
     }));
+}
+
+export async function getDeliveriesfromGroup(params: {
+  groupId: string;
+  userId: string;
+}): Promise<{
+  deliveries: UserDeliveryEnt[];
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+
+  try {
+    const userDeliveries = await ds.manager.find(UserDeliveryEnt, {
+      relations: {
+        delivery: true,
+      },
+      where: { userId: params.userId },
+    });
+
+    // Obtain the deliveries from the userDeliveries where the groupId is the same as the params.groupId
+
+  } catch (e) {
+    return {
+      deliveries: [],
+      error: DeliveryError.UNHANDLED,
+      errorReason: e as Error,
+    };
+  }
 }
