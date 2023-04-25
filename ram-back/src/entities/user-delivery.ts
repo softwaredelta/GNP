@@ -1,13 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-} from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { UserEnt } from "./user.entity";
 import {
   REQUIRED_DATE_COLUMN,

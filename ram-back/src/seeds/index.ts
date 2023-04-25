@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { createDelivery, setDeliverieToUser } from "../app/deliveries";
-import { addDeliveryToGroup, addUserToGroup, createGroup } from "../app/groups";
+import { addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
 
 /**
@@ -60,7 +60,6 @@ export async function loadSeeds() {
       status: "Aceptado",
       fileUrl: "https://picsum.photos/400",
     });
-
   } catch (e) {
     console.error(e);
   }

@@ -6,8 +6,6 @@ import { GroupUserStatus } from "../entities/group-user.entity";
 import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
 import { DeliveryEnt } from "../entities/delivery.entity";
-import { group } from "console";
-import { groupRouter } from "../controller/group";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",

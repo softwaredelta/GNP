@@ -13,7 +13,6 @@ import { AssuranceTypeEnt } from "./assurance-type.entity";
 import { UserEnt } from "./user.entity";
 import {
   MONEY_COLUMN,
-  NAME_COLUMN,
   POLICY_NUMBER_COLUMN,
   REQUIRED_DATE_COLUMN,
   REQUIRED_STRING_COLUMN,

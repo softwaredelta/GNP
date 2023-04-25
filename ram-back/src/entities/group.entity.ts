@@ -9,7 +9,6 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { DESCRIPTION_COLUMN, NAME_COLUMN, URL_COLUMN } from "./columns";
-import { UserDeliveryEnt } from "./user-delivery";
 import { GroupUserEnt } from "./group-user.entity";
 import { DeliveryEnt } from "./delivery.entity";
 
