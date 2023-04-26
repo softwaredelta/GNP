@@ -7,8 +7,10 @@ import LogoRAM from "../../assets/imgs/Ram_LogoInv.png";
 
 function LoginForm({
   onLogin,
+  isLoading,
 }: {
   onLogin: (params: { username: string; password: string }) => void;
+  isLoading: boolean;
 }) {
   const [passwordVisible, setpasswordVisible] = useState<boolean>(false);
 
@@ -77,6 +79,7 @@ function LoginForm({
         <button
           className="uppercase items-center justify-center mt-16 w-56 bg-gnp-blue-500 hover:bg-gnp-blue-700 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:shadow-lg transform transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 active:scale-95 active:translate-y- "
           type="submit"
+          disabled={isLoading}
         >
           Login
         </button>
