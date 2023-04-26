@@ -2,25 +2,38 @@
 import DeliveryCard, {
   DeliveryCardProps,
 } from "../generics/cards/DeliveryCard";
+import { StatusDelivery } from "../generics/cards/DeliveryCard";
+
+export interface IUserDeliverable {
+  dateDelivery: string;
+  deliveryId: string;
+  deliveryName: string;
+  description: string;
+  fileUrl: string;
+  groupName: string;
+  imageUrl: string;
+  status: StatusDelivery;
+}
 
 export interface IListDeliverables {
-  deliverables: DeliveryCardProps[];
+  deliverables?: IUserDeliverable[];
 }
 
 export default function ListDeliverables({ deliverables }: IListDeliverables) {
   return (
-    <div className=" w-full grid grid-cols-2 gap-10 p-12">
-      {deliverables.map((elem, index) => {
-        return (
-          <DeliveryCard
-            key={index}
-            nameDelivery={elem.nameDelivery}
-            image={elem.image}
-            color={elem.color}
-            status={elem.status}
-          />
-        );
-      })}
+    <div className="grid grid-cols-1 gap-10 p-12 w-10/12 mx-auto">
+      {deliverables &&
+        deliverables.map((elem, index) => {
+          return (
+            <DeliveryCard
+              key={index}
+              nameDelivery={elem.deliveryName}
+              image={elem.imageUrl}
+              color={index % 2 ? "orange" : "blue"}
+              status={elem.status}
+            />
+          );
+        })}
     </div>
   );
 }

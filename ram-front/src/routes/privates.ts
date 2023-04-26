@@ -2,12 +2,13 @@
 
 import { lazy } from "react";
 import { IRoute } from "../types";
-import Deliverables from "../pages/Deliverables";
+import Deliverables from "../pages/Group";
 
 const Home = lazy(async () => import("../pages/Home"));
 const InfraTest = lazy(async () => import("../pages/InfraTest"));
 const Components = lazy(async () => import("../components/generics/Examples"));
 const Groups = lazy(async () => import("../pages/Groups"));
+const Group = lazy(async () => import("../pages/Group"));
 
 export const privateRoutes: IRoute[] = [
   {
@@ -27,7 +28,7 @@ export const privateRoutes: IRoute[] = [
     component: Groups,
   },
   {
-    path: "/my-deliverables",
-    component: Deliverables,
+    path: "/group/:id",
+    component: Group,
   },
 ];
