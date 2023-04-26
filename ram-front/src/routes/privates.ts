@@ -10,7 +10,6 @@ const ManagerCourses = lazy(async () => import("../pages/ManagerCourses"));
 const Groups = lazy(async () => import("../pages/Groups"));
 const Group = lazy(async () => import("../pages/Group"));
 const Infra = lazy(async () => import("../pages/InfraTest"));
-const Group = lazy(async () => import("../pages/Group"));
 
 export const privateRoutes: IRoute[] = [
   {

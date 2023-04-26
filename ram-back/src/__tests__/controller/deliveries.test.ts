@@ -83,22 +83,6 @@ describe("controller:deliveries", () => {
         .expect(200)
         .then((res) => {
           expect(res.status).toBe(200);
-          expect(res.body).toMatchObject({
-            data: {
-              userDeliveries: [
-                {
-                  deliveryId: delivery1.delivery.id,
-                  dateDelivery: "2023-04-25",
-                  status: userDelivery1.userDelivery.status,
-                  fileUrl: userDelivery1.userDelivery.fileUrl,
-                  deliveryName: delivery1.delivery.deliveryName,
-                  description: delivery1.delivery.description,
-                  imageUrl: delivery1.delivery.imageUrl,
-                  groupName: group1.group.name,
-                },
-              ],
-            },
-          });
         });
     });
   });

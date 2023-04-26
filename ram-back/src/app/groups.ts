@@ -6,7 +6,6 @@ import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
 import { StatusUserDelivery } from "../entities/user-delivery";
 import { DeliveryEnt } from "../entities/delivery.entity";
-import { StatusUserDelivery } from "../entities/user-delivery";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",
@@ -14,7 +13,7 @@ export enum GroupError {
 
 export async function createGroup(params: {
   name: string;
-  imageURL: string;
+  imageURL?: string;
 }): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
   const ds = await getDataSource();
 

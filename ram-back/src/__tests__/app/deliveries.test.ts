@@ -19,7 +19,7 @@ describe("app:deliveries", () => {
     it("creates a new delivery", async () => {
       const group = await createGroup({
         name: "test-group-1",
-        image: "test-image-1",
+        imageURL: "test-image-1",
       });
 
       const { delivery } = await createDelivery({
@@ -45,7 +45,7 @@ describe("app:deliveries", () => {
 
       const group = await createGroup({
         name: "test-group-1",
-        image: "test-image-1",
+        imageURL: "test-image-1",
       });
 
       const delivery = await createDelivery({
@@ -84,7 +84,7 @@ describe("app:deliveries", () => {
 
       const group1 = await createGroup({
         name: "test-group-1",
-        image: "test-image-1",
+        imageURL: "test-image-1",
       });
 
       const deliveryNames = Array.from(
