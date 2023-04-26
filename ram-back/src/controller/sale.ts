@@ -38,13 +38,18 @@ salesRouter.post(
       clientName,
     } = req.body;
     const { user } = req;
+
+    if (!user) {
+      res.status(400).json({ message: "BAD_DATA" });
+      return;
+    }
     const { sale, error } = await createSale({
       policyNumber,
       assuranceTypeId,
       sellDate,
       amountInCents,
       clientName,
-      userId: user!.id,
+      userId: user.id,
     });
 
     if (error) {

@@ -3,6 +3,7 @@
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
 import { createDelivery, setDeliverieToUser } from "../app/deliveries";
+import { StatusUserDelivery } from "../entities/user-delivery";
 
 /**
  * Make sure to specify ids so things stay consistent
@@ -21,13 +22,15 @@ export async function loadSeeds() {
       imageURL: "https://picsum.photos/100",
     });
     const delivery1 = await createDelivery({
-      description: "test-delivery-1",
+      deliveryName: "test-delivery-1",
+      description: "test-description-1",
       idGroup: group1.group.id,
       imageUrl: "https://picsum.photos/200",
     });
 
     const delivery2 = await createDelivery({
-      description: "test-delivery-2",
+      deliveryName: "test-delivery-2",
+      description: "test-description-2",
       idGroup: group1.group.id,
       imageUrl: "https://picsum.photos/300",
     });
@@ -46,7 +49,6 @@ export async function loadSeeds() {
       idDeliverie: delivery1.delivery.id,
       idUser: user.user.id,
       dateDelivery: new Date(),
-      status: "Aceptado",
       fileUrl: "https://picsum.photos/400",
     });
 
@@ -54,7 +56,7 @@ export async function loadSeeds() {
       idDeliverie: delivery2.delivery.id,
       idUser: user.user.id,
       dateDelivery: new Date(),
-      status: "Rechazado",
+      status: StatusUserDelivery.sending,
       fileUrl: "https://picsum.photos/400",
     });
 
@@ -64,7 +66,8 @@ export async function loadSeeds() {
     });
 
     await createDelivery({
-      description: "test-delivery-3",
+      deliveryName: "test-delivery-3",
+      description: "test-description-3",
       idGroup: group2.group.id,
       imageUrl: "https://picsum.photos/500",
     });
@@ -82,6 +85,7 @@ export async function loadSeeds() {
     // Deliveries
     const { delivery: delivery, error: delivery2Error } = await createDelivery({
       description: "test-delivery",
+      deliveryName: "test-delivery",
       imageUrl: "https://i.ytimg.com/vi/eDkLz16lmxI/maxresdefault.jpg",
       idGroup: group.id,
     });

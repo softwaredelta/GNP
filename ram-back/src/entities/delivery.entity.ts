@@ -19,6 +19,9 @@ export class DeliveryEnt {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
+  @Column(DESCRIPTION_COLUMN)
+  deliveryName!: string;
+
   @CreateDateColumn()
   createdAt!: Date;
 
