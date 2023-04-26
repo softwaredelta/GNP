@@ -88,7 +88,7 @@ describe("controller:deliveries", () => {
               userDeliveries: [
                 {
                   deliveryId: delivery1.delivery.id,
-                  dateDelivery: "2023-04-24",
+                  dateDelivery: userDelivery1.userDelivery.dateDelivery,
                   status: userDelivery1.userDelivery.status,
                   fileUrl: userDelivery1.userDelivery.fileUrl,
                   deliveryName: delivery1.delivery.deliveryName,
