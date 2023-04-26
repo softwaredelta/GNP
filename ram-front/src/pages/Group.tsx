@@ -9,7 +9,7 @@ import useAxios from "../hooks/useAxios";
 export default function Group(): JSX.Element {
   const { id: idGroup } = useParams();
 
-  const { response, error, loading, callback } = useAxios<{
+  const { response, error, loading } = useAxios<{
     data: {
       userDeliveries: IUserDeliverable[];
     };
@@ -24,24 +24,6 @@ export default function Group(): JSX.Element {
     console.log({ error });
     return <h1>Error...</h1>;
   }
-
-  const exampleGroupName = "Grupo 1";
-  const exampleDeliverables = [
-    {
-      nameDelivery: "Entregable 1",
-      image:
-        "https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg",
-      color: "blue",
-      status: "Entregado",
-    },
-    {
-      nameDelivery: "Entregable 2",
-      image:
-        "https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg",
-      color: "orange",
-      status: "Rechazado",
-    },
-  ];
 
   return (
     <Wrapper>

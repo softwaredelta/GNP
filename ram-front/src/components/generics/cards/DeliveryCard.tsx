@@ -39,7 +39,10 @@ export default function DeliveryCard({
     orange: "bg-gnp-orange-500",
   };
   return (
-    <div className="w-full grid grid-cols-2  rounded-b-lg overflow-hidden bg-gnp-white shadow-lg">
+    <div
+      className="w-full grid grid-cols-2  rounded-b-lg overflow-hidden bg-gnp-white shadow-lg"
+      role="delivery"
+    >
       <div className="grid grid-cols-3 ">
         <div className="relative">
           <img className="w-full h-20 object-cover" src={image} />

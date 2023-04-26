@@ -3,6 +3,7 @@
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
 import { createDelivery, setDeliverieToUser } from "../app/deliveries";
+import { StatusUserDelivery } from "../entities/user-delivery";
 
 /**
  * Make sure to specify ids so things stay consistent
@@ -45,6 +46,7 @@ export async function loadSeeds() {
       idDeliverie: delivery2.delivery.id,
       idUser: user.user.id,
       dateDelivery: new Date(),
+      status: StatusUserDelivery.sending,
       fileUrl: "https://picsum.photos/400",
     });
 

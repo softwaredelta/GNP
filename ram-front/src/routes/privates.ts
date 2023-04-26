@@ -2,7 +2,6 @@
 
 import { lazy } from "react";
 import { IRoute } from "../types";
-import Deliverables from "../pages/Group";
 
 const Home = lazy(async () => import("../pages/Home"));
 const InfraTest = lazy(async () => import("../pages/InfraTest"));
