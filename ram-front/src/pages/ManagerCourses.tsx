@@ -5,15 +5,21 @@ import CardInfoNumMembers from "../components/generics/cards/info/CardInfoNumMem
 import Wrapper from "../containers/Wrapper";
 import { useRecoilValue } from "recoil";
 import { allCourses$ } from "../lib/api/api-courses";
+import { useNavigate } from "react-router-dom";
 
-export interface IManagerCoursesProps {
-  name: string;
-  members: number;
-  color: "blue" | "orange";
-}
+export default function ManagerCourses() {
+  const data = useRecoilValue(allCourses$);
+  const navigate = useNavigate();
 
-export function ManagerCourses() {
-  const groups = useRecoilValue(allCourses$);
+  const clickHandler = async (event: any, courseId: string) => {
+    event.preventDefault();
+    try {
+      await onclick;
+      navigate(`/groupDeliveries/${courseId}`);
+    } catch (error) {
+      navigate("/managerCourses");
+    }
+  };
 
   return (
     <div>
@@ -25,17 +31,14 @@ export function ManagerCourses() {
             </div>
           </div>
           <div className="grid md:grid-cols-4 place-items-center">
-            {groups.length > 0 ? (
-              groups.map((groupsObj, index) => (
+            {data.groups.length > 0 ? (
+              data.groups.map((groupsObj, index) => (
                 <div className=" p-10" key={index}>
                   <button
                     className="hover:scale-105 transition-all ease-in-out active:scale-95 cursor-pointer"
-                    onClick={() => alert("Redireccionando al grupo ...")}
+                    onClick={(event) => clickHandler(event, groupsObj.id)}
                   >
-                    <Card
-                      color="blue"
-                      image="https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg"
-                    >
+                    <Card color="blue" image={groupsObj.imageURL}>
                       <CardInfoNumMembers
                         color="blue"
                         nameGroup={groupsObj.name}
