@@ -57,4 +57,3 @@ groupsRouter.post("/create", authMiddleware, async (req, res) => {
 
   res.json({ data });
 });
-

@@ -35,7 +35,7 @@ export default function GroupDeliveries() {
           <p className="title">{response?.name}</p>
           <div className="w-full flex justify-center min-h-[26%] gap-10">
             <div className="w-3/5">
-              {response?.groupDeliveries.length ?  (
+              {response?.groupDeliveries.length ? (
                 response.groupDeliveries.map((groupsObj, index) => (
                   <div className="pb-6" key={index}>
                     <DeliveryCard

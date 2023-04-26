@@ -32,7 +32,7 @@ export default function ManagerCourses() {
           </div>
           <div className="grid md:grid-cols-4 place-items-center">
             {data.groups.length > 0 ? (
-             data.groups.map((groupsObj, index) => (
+              data.groups.map((groupsObj, index) => (
                 <div className=" p-10" key={index}>
                   <button
                     className="hover:scale-105 transition-all ease-in-out active:scale-95 cursor-pointer"
