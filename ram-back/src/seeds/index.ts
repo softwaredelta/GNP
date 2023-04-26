@@ -18,7 +18,7 @@ export async function loadSeeds() {
     });
     const group1 = await createGroup({
       name: "test-group-1",
-      image: "https://picsum.photos/100",
+      imageURL: "https://picsum.photos/100",
     });
     const delivery1 = await createDelivery({
       description: "test-delivery-1",
@@ -31,6 +31,16 @@ export async function loadSeeds() {
       idGroup: group1.group.id,
       imageUrl: "https://picsum.photos/300",
     });
+
+    // GROUPS
+    const { group: group, error: group2Error } = await createGroup({
+      name: "group",
+      imageURL:
+        "https://i1.wp.com/kayum.mx/wp-content/uploads/2019/09/logo-GNP.jpeg?fit=3307%2C1686&ssl=1",
+    });
+    if (group2Error) {
+      throw new Error(group2Error);
+    }
 
     await setDeliverieToUser({
       idDeliverie: delivery1.delivery.id,
@@ -50,7 +60,7 @@ export async function loadSeeds() {
 
     const group2 = await createGroup({
       name: "test-group-2",
-      image: "https://picsum.photos/500",
+      imageURL: "https://picsum.photos/500",
     });
 
     await createDelivery({
@@ -61,12 +71,30 @@ export async function loadSeeds() {
 
     await createGroup({
       name: "test-group-3",
-      image: "https://picsum.photos/600",
+      imageURL: "https://picsum.photos/600",
     });
 
     await addUserToGroup({
       userId: user.user.id,
       groupId: group1.group.id,
+    });
+
+    // Deliveries
+    const { delivery: delivery, error: delivery2Error } = await createDelivery({
+      description: "test-delivery",
+      imageUrl: "https://i.ytimg.com/vi/eDkLz16lmxI/maxresdefault.jpg",
+      idGroup: group.id,
+    });
+    if (delivery2Error) {
+      throw new Error(delivery2Error);
+    }
+
+    await setDeliverieToUser({
+      idDeliverie: delivery.id,
+      idUser: "test-user",
+      dateDelivery: new Date(),
+      status: "Aceptado",
+      fileUrl: "https://picsum.photos/400",
     });
     await addUserToGroup({
       userId: user.user.id,

@@ -40,6 +40,6 @@ export const allCourses$ = selector<Course[]>({
       ];
     }
 
-    return fetch(`${apiBase}/group/all`).then((res) => res.json());
+    return fetch(`${apiBase}/groups/all`).then((res) => res.json());
   },
 });

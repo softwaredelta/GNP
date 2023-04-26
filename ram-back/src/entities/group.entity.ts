@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { DESCRIPTION_COLUMN, NAME_COLUMN } from "./columns";
+import { DESCRIPTION_COLUMN, NAME_COLUMN, URL_COLUMN } from "./columns";
 import { GroupUserEnt } from "./group-user.entity";
 import { DeliveryEnt } from "./delivery.entity";
 
@@ -26,6 +26,9 @@ export class GroupEnt {
   @Column(DESCRIPTION_COLUMN)
   description: string;
 
+  @Column(URL_COLUMN)
+  imageURL!: string;
+
   @CreateDateColumn()
   createdAt!: Date;
 
@@ -37,4 +40,7 @@ export class GroupEnt {
 
   @OneToMany(() => DeliveryEnt, (userDeliveries) => userDeliveries.group)
   deliveries!: DeliveryEnt[];
+
+  @OneToMany(() => DeliveryEnt, (groupDelivery) => groupDelivery.group)
+  groupDeliveries!: DeliveryEnt[];
 }
