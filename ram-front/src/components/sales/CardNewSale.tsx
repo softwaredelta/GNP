@@ -16,7 +16,6 @@ export interface IListAssuranceTypesProps {
   }[];
 }
 
-
 const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [policyNum, setPolicyNum] = useState<string>("");
@@ -26,7 +25,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     assuranceTypes[0].id,
   );
   const [periodicity, setPeriodicity] = useState<string>("");
-  const[evidence,setEvidence] = useState<string>("");
+  const [evidence, setEvidence] = useState<string>("");
 
   const handleAssuranceTypeChange = (event: any) => {
     setAssuranceType(event.target.value);
@@ -43,7 +42,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     setEvidence(fileUrl);
     // console.log("Hola");
     console.log(fileUrl);
-    // reader.readAsDataURL(file);    
+    // reader.readAsDataURL(file);
   };
 
   const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -205,7 +204,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               <option> anual </option>
             </select>
 
-            <input type="file" onChange={handleFileUpload}/>
+            <input type="file" onChange={handleFileUpload} />
           </div>
 
           <div className="col-span-4 flex justify-center items-center pb-8">

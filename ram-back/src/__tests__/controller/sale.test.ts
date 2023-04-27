@@ -54,6 +54,9 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "mensual",
+        evidenceUrl:
+          "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b742",
       };
 
       const fields = Object.keys(data);
@@ -82,6 +85,9 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
+        evidenceUrl:
+          "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b741",
       };
 
       return request(app)
@@ -126,6 +132,9 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
+        evidenceUrl:
+          "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b742",
       };
 
       await request(app)
@@ -153,6 +162,9 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
+        evidenceUrl:
+          "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b742",
       };
 
       return request(app)

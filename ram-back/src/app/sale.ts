@@ -41,7 +41,6 @@ export async function createSale(params: {
       periodicity: params.periodicity,
       evidenceUrl: params.evidenceUrl,
       status,
-      
     })
     .then((sale) => {
       return { sale };
