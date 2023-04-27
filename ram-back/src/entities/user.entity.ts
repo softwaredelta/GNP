@@ -17,6 +17,7 @@ import { StateEnt } from "./state.entity";
 import {
   DATE_COLUMN,
   PASSWORD_COLUMN,
+  REQUIRED_STRING_COLUMN,
   TELEPHONE_COLUMN,
   URL_COLUMN,
   USERNAME_COLUMN,
@@ -65,4 +66,7 @@ export class UserEnt {
 
   @Column(URL_COLUMN)
   imageUrl?: string;
+
+  @Column(REQUIRED_STRING_COLUMN("roles"))
+  rolesString!: string;
 }

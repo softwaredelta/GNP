@@ -20,24 +20,120 @@ export interface UserAuthentication {
   userRole: string;
 }
 
+export enum UserRole {
+  ADMIN = "admin",
+  MANAGER = "manager",
+  REGULAR = "regular",
+}
+
+function buildRoleString(roles: UserRole[]): string {
+  return roles.join(",");
+}
+
+function rolesFromString(roles: string): UserRole[] {
+  return roles.split(",") as UserRole[];
+}
+
 export async function createUser(params: {
   email: string;
   password: string;
   id?: string;
+  roles?: UserRole[];
 }): Promise<{ user: UserEnt; error?: UserError }> {
   // TODO: handle authentication with admin or something
 
   const ds = await getDataSource();
   const id = params.id || v4();
   const hashedPassword = await hashPassword(params.password);
+  const roles = params.roles || [UserRole.REGULAR];
+  
   return ds.manager
-    .save(UserEnt, { id, email: params.email, password: hashedPassword })
+    .save(
+      UserEnt,
+      ds.manager.create(UserEnt, {
+        id,
+        email: params.email,
+        password: hashedPassword,
+        rolesString: buildRoleString(roles),
+      }),
+    )
     .then((user) => {
       return { user };
     })
     .catch(() => {
       return { error: UserError.USER_EXISTS, user: {} as UserEnt };
     });
+}
+
+export function userHasRole(params: {
+  user: UserEnt;
+  role: UserRole;
+}): boolean {
+  const roles = rolesFromString(params.user.rolesString);
+  return roles.includes(params.role);
+}
+
+export async function addRoleToUser(params: {
+  userId: string;
+  role: UserRole;
+}): Promise<{ error?: UserError }> {
+  const ds = await getDataSource();
+  const user = await ds.manager.findOne(UserEnt, {
+    where: {
+      id: params.userId,
+    },
+  });
+
+  if (!user) {
+    return { error: UserError.USER_NOT_FOUND };
+  }
+
+  const roles = rolesFromString(user.rolesString);
+  if (roles.includes(params.role)) {
+    return {};
+  }
+
+  roles.push(params.role);
+  const newRoleString = buildRoleString(roles);
+  await ds.manager.update(
+    UserEnt,
+    { id: params.userId },
+    { rolesString: newRoleString },
+  );
+
+  return {};
+}
+
+export async function removeRoleFromUser(params: {
+  userId: string;
+  role: UserRole;
+}): Promise<{ error?: UserError }> {
+  const ds = await getDataSource();
+  const user = await ds.manager.findOne(UserEnt, {
+    where: {
+      id: params.userId,
+    },
+  });
+
+  if (!user) {
+    return { error: UserError.USER_NOT_FOUND };
+  }
+
+  const roles = rolesFromString(user.rolesString);
+  if (!roles.includes(params.role)) {
+    return {};
+  }
+
+  const newRoleString = buildRoleString(
+    roles.filter((role) => role !== params.role),
+  );
+  await ds.manager.update(
+    UserEnt,
+    { id: params.userId },
+    { rolesString: newRoleString },
+  );
+
+  return {};
 }
 
 export async function authenticateUser(params: {
@@ -49,7 +145,7 @@ export async function authenticateUser(params: {
     where: {
       email: params.email,
     },
-    select: ["id", "email", "password"],
+    select: ["id", "email", "password", "rolesString"],
   });
   const correctPass =
     user === null
