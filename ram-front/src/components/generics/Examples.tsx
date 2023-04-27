@@ -18,6 +18,7 @@ import SkeletonText from "./skeleton/SkeletonText";
 import SkeletonDiv from "./skeleton/SkeletonDiv";
 import useAlert from "../../hooks/useAlert";
 import useAxios from "../../hooks/useAxios";
+
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
   const { showAlert } = useAlert();
@@ -132,10 +133,10 @@ export default function Examples() {
       </div>
       <div className="md:col-span-3 ">
         <DeliveryCard
+          deliveryID="test-delivery"
           onFileSubmit={() => {}}
           color="blue"
           nameDelivery="Nombre de la entrega"
-          status="Sin enviar"
           image="https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg"
         />
       </div>

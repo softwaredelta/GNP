@@ -1,6 +1,14 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { UserEnt } from "./user.entity";
 import {
   REQUIRED_DATE_COLUMN,
@@ -11,26 +19,21 @@ import { DeliveryEnt } from "./delivery.entity";
 
 @Entity({ name: "user_delivery" })
 export class UserDeliveryEnt {
-  @ManyToOne(() => UserEnt, {
-    nullable: false,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
+
+  @ManyToOne(() => UserEnt, (userEnt) => userEnt.id)
   @JoinColumn({ name: "user_id" })
   user!: UserEnt;
 
-  @PrimaryColumn({ name: "user_id", nullable: false })
+  @Column({ name: "user_id", nullable: false, primary: true })
   userId!: string;
 
-  @ManyToOne(() => DeliveryEnt, {
-    nullable: false,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
+  @ManyToOne(() => DeliveryEnt, (deliveryEnt) => deliveryEnt.userDeliveries)
   @JoinColumn({ name: "delivery_id" })
-  delivery!: string;
+  delivery!: DeliveryEnt;
 
-  @PrimaryColumn({ name: "delivery_id", nullable: false })
+  @Column({ name: "delivery_id", nullable: false, primary: true })
   deliveryId!: string;
 
   @Column(REQUIRED_DATE_COLUMN)
@@ -41,4 +44,10 @@ export class UserDeliveryEnt {
 
   @Column(URL_COLUMN)
   fileUrl!: string;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

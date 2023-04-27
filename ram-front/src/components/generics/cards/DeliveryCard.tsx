@@ -6,12 +6,23 @@ import {
   BsSendExclamation,
   BsSendPlus,
 } from "react-icons/bs";
+import {
+  authenticatedUserDelivery$,
+  IUserDelivery,
+} from "../../../lib/api/api-user-deliveries";
+import { useRecoilValue } from "recoil";
+
+export type UserDeliveryStatus =
+  | "Sin enviar"
+  | "Enviado"
+  | "Rechazado"
+  | "Aceptado";
 
 export interface DeliveryCardProps {
+  deliveryID: string;
   nameDelivery: string;
   image: string;
   color: "blue" | "orange";
-  status: "Sin enviar" | "Enviado" | "Rechazado" | "Aceptado";
   onFileSubmit: (id: string) => void;
 }
 
@@ -23,16 +34,26 @@ const iconList = {
 };
 
 export default function DeliveryCard({
+  deliveryID,
   nameDelivery,
   image,
   color,
   onFileSubmit,
-  status,
 }: DeliveryCardProps): JSX.Element {
   const colorOptions = {
     blue: "bg-gnp-blue-500",
     orange: "bg-gnp-orange-500",
   };
+
+  const userDelivery: IUserDelivery | null =
+    useRecoilValue<IUserDelivery | null>(
+      authenticatedUserDelivery$({ deliveryID }),
+    );
+
+  const openFileInNewTab = (url: string): void => {
+    window.open(url);
+  };
+
   return (
     <div className="w-full grid grid-cols-2  rounded-b-lg overflow-hidden bg-gnp-white shadow-lg">
       <div className="grid grid-cols-3 ">
@@ -48,18 +69,24 @@ export default function DeliveryCard({
       </div>
       <div className="grid grid-cols-3 border-l-2 border-l-gray-300">
         <div className="col-span-2 flex items-center text-center justify-center font-semibold">
-          <div className="mr-4">{iconList[status]}</div>
-          {status}
+          <div className="mr-4">
+            {iconList[userDelivery?.status ?? "Sin enviar"]}
+          </div>
+          {userDelivery?.status ?? "Sin enviar"}
         </div>
         <div className="flex items-center text-center justify-center">
-          <div className="mr-4">
-            <FiEye color="gray" size={25} />
-          </div>
-          <button>
+          <button className="mr-4">
+            <FiEye
+              onClick={() => openFileInNewTab(userDelivery?.fileUrl ?? "")}
+              color="gray"
+              size={25}
+            />
+          </button>
+          <button disabled={!userDelivery}>
             <FiUpload
               color="gray"
               size={25}
-              onClick={() => onFileSubmit("IDDDD")}
+              onClick={() => onFileSubmit(deliveryID)}
             />
           </button>
         </div>
