@@ -21,7 +21,9 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   const [policyNum, setPolicyNum] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [client, setClient] = useState<string>("");
-  const [assuranceType, setAssuranceType] = useState<string>(assuranceTypes[0].id);
+  const [assuranceType, setAssuranceType] = useState<string>(
+    assuranceTypes[0].id,
+  );
   const [periodicity, setPeriodicity] = useState<string>("");
 
   const handleAssuranceTypeChange = (event: any) => {
