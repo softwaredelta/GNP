@@ -3,7 +3,7 @@
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
 import { createDelivery, setDeliverieToUser } from "../app/deliveries";
-import { StatusUserDelivery } from "../entities/user-delivery";
+import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { createAssuranceType } from "../app/assuranceType";
 import { createSale } from "../app/sale";
 
