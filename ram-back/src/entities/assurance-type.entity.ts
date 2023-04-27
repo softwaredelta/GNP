@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { DESCRIPTION_COLUMN, NAME_COLUMN } from "./columns";
+import { DESCRIPTION_COLUMN, UNIQUE_NAME_COLUMN } from "./columns";
 import { GoalEnt } from "./goal.entity";
 
 @Entity({ name: "assurance_type" })
@@ -22,7 +22,7 @@ export class AssuranceTypeEnt {
   @UpdateDateColumn()
   updatedtAt!: Date;
 
-  @Column({ ...NAME_COLUMN, unique: true })
+  @Column(UNIQUE_NAME_COLUMN)
   name: string;
 
   @Column(DESCRIPTION_COLUMN)

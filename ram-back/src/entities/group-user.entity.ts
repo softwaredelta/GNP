@@ -3,7 +3,7 @@
 import { Column, Entity, ManyToOne, JoinColumn } from "typeorm";
 import { GroupEnt } from "./group.entity";
 import { UserEnt } from "./user.entity";
-import { REQUIRED_STRING_COLUMN } from "./columns";
+import { ID_COLUMN, REQUIRED_STRING_COLUMN } from "./columns";
 
 export enum GroupUserStatus {
   ACTIVE = "active",
@@ -23,7 +23,7 @@ export class GroupUserEnt {
   @JoinColumn({ name: "user_id" })
   user!: UserEnt;
 
-  @Column({ name: "user_id", nullable: false, primary: true })
+  @Column(ID_COLUMN("user_id"))
   userId!: string;
 
   @ManyToOne(() => GroupEnt, {
@@ -34,6 +34,6 @@ export class GroupUserEnt {
   @JoinColumn({ name: "group_id" })
   group!: GroupEnt;
 
-  @Column({ name: "group_id", nullable: false, primary: true })
+  @Column(ID_COLUMN("group_id"))
   groupId!: string;
 }
