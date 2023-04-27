@@ -27,8 +27,12 @@ describe("app:sale", () => {
     it("creates new sale", async () => {
       const { sale, error } = await createSale({
         policyNumber: "123456",
-        assuranceTypeId: "test-at-1",
-        userId: "test-user",
+        assuranceType: {
+          id: "test-at-1",
+        },
+        user: {
+          id: "test-user",
+        },
         sellDate: new Date("2021/01/01"),
         amountInCents: "123456",
         clientName: "Juan Perez",

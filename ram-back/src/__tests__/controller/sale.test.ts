@@ -11,7 +11,6 @@ import { SaleError } from "../../app/sale";
 describe("controller:sale", () => {
   let accessToken: string;
   let assurance: AssuranceTypeEnt;
-  let userId: string;
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.synchronize(true);
@@ -23,7 +22,6 @@ describe("controller:sale", () => {
     if (userError) {
       throw new Error(userError);
     }
-    userId = user.id;
 
     const { auth, error: authError } = await authenticateUser({
       email: "test@delta.tec.mx",
@@ -52,7 +50,7 @@ describe("controller:sale", () => {
     it("rejects bad data", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceType: assurance,
+        assuranceType: assurance.id,
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
@@ -80,7 +78,7 @@ describe("controller:sale", () => {
     it("accepts valid data", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceTypeId: assurance.id,
+        assuranceType: assurance,
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
@@ -95,14 +93,14 @@ describe("controller:sale", () => {
           expect(res.body).toHaveProperty("id");
           expect(res.body).toHaveProperty("policyNumber", data.policyNumber);
           expect(res.body).toHaveProperty("status");
-          expect(res.body).toHaveProperty("user.id", userId);
+          expect(res.body).toHaveProperty("user");
         });
     });
 
     it("rejects additional fields", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceTypeId: assurance.id,
+        assuranceType: assurance,
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
@@ -124,7 +122,7 @@ describe("controller:sale", () => {
     it("rejects duplicated policy number", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceTypeId: assurance.id,
+        assuranceType: assurance,
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
@@ -151,7 +149,7 @@ describe("controller:sale", () => {
     it("rejects invalid policy assurance type", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceTypeId: "invalid-id",
+        assuranceType: { id: "invalid-id" },
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",

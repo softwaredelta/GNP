@@ -4,6 +4,7 @@ import { addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
 import { createDelivery, setDeliverieToUser } from "../app/deliveries";
 import { StatusUserDelivery } from "../entities/user-delivery";
+import { createAssuranceType } from "../app/assuranceType";
 
 /**
  * Make sure to specify ids so things stay consistent
@@ -107,4 +108,32 @@ export async function loadSeeds() {
   } catch (e) {
     console.error(e);
   }
+
+  // ASSURANCE TYPES
+
+  await createAssuranceType({
+    name: "test-assurance-type-1",
+    description: "test-assurance-type-1-description",
+    id: "test-at-1",
+  });
+
+  await createAssuranceType({
+    name: "VIDA",
+    description: "Seguros de Vida",
+  });
+
+  await createAssuranceType({
+    name: "GMM",
+    description: "Seguros de Gastos Médicos Mayores",
+  });
+
+  await createAssuranceType({
+    name: "PYMES",
+    description: "Seguros para Pequeñas y Medianas Empresas",
+  });
+
+  await createAssuranceType({
+    name: "PATRIMONIAL",
+    description: "seguros de patrimonio",
+  });
 }
