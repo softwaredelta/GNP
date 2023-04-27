@@ -40,6 +40,7 @@ export async function createSale(params: {
       clientName: params.clientName,
       user: params.user,
       status,
+      periodicity,
       evidenceUrl: "https://www.google.com",
     })
     .then((sale) => {

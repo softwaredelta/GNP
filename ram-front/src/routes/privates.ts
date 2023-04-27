@@ -11,6 +11,7 @@ const Groups = lazy(async () => import("../pages/Groups"));
 const Group = lazy(async () => import("../pages/Group"));
 const Infra = lazy(async () => import("../pages/InfraTest"));
 const NewSale = lazy(async () => import("../pages/NewSale"));
+const SalesHistory = lazy(async () => import("../pages/SalesHistory"));
 
 export const privateRoutes: IRoute[] = [
   {
@@ -48,5 +49,9 @@ export const privateRoutes: IRoute[] = [
   {
     path: "/new-sale",
     component: NewSale,
+  },
+  {
+    path: "sales-history",
+    component: SalesHistory,
   },
 ];

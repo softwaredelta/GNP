@@ -5,6 +5,7 @@ import { createUser } from "../app/user";
 import { createDelivery, setDeliverieToUser } from "../app/deliveries";
 import { StatusUserDelivery } from "../entities/user-delivery";
 import { createAssuranceType } from "../app/assuranceType";
+import { createSale } from "../app/sale";
 
 /**
  * Make sure to specify ids so things stay consistent
@@ -149,6 +150,9 @@ export async function loadSeeds() {
     clientName: "Jordana",
     periodicity: "Mensual",
     id: "test-sale1",
+    user: {
+      id: "test-user",
+    },
   });
 
   await createSale({
@@ -161,6 +165,9 @@ export async function loadSeeds() {
     clientName: "Karen López",
     periodicity: "Mensual",
     id: "test-sale2",
+    user: {
+      id: "test-user",
+    },
   });
 
   await createSale({
@@ -173,6 +180,9 @@ export async function loadSeeds() {
     clientName: "Renato",
     periodicity: "Trimestral",
     id: "test-sale3",
+    user: {
+      id: "test-user",
+    },
   });
 
   await createSale({
@@ -185,6 +195,9 @@ export async function loadSeeds() {
     clientName: "Mónica Ayala",
     periodicity: "Anual",
     id: "test-sale4",
+    user: {
+      id: "test-user",
+    },
   });
 
   await createSale({
@@ -197,5 +210,8 @@ export async function loadSeeds() {
     clientName: "Ian García",
     periodicity: "Anual",
     id: "test-sale5",
+    user: {
+      id: "test-user",
+    },
   });
 }

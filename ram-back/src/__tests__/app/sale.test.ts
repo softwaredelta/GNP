@@ -1,7 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
 
-// import request from "supertest";
-// import { app } from "../controller";
 import { createSale } from "../../app/sale";
 import { getDataSource } from "../../arch/db-client";
 import { createAssuranceType } from "../../app/assuranceType";

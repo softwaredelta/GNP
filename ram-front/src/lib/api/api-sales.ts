@@ -2,10 +2,7 @@
 
 import { atom, selector, useSetRecoilState } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
-// import { DeepPartial } from "ts-essentials";
-// import { AssuranceTypeEnt } from "../../../ram-back/src/entities/assurance-type.entity.ts";
-// import { UserEnt } from "../../../ram-back/src/entities/user.entity.ts";
-
+import useAxios from "../../hooks/useAxios";
 export interface AssuranceType {
   id: string;
   name: string;
@@ -59,3 +56,37 @@ export const allSales$ = selector<Sell[]>({
     return fetch(`${apiBase}/sales/all`).then((res) => res.json());
   },
 });
+
+export type SaleData = {
+  policyNumber: string;
+  sellDate: Date | null;
+  assuranceType: {
+    id: string;
+  };
+  amountInCents: string;
+  clientName: string;
+  periodicity: string;
+};
+
+type CreateSaleResponse = {
+  data: {
+    group: {
+      id: string;
+      name: string;
+    };
+  };
+};
+
+type UseCreateSaleProps = {
+  saleData: SaleData;
+};
+
+export function CreateNewSale({ saleData }: UseCreateSaleProps) {
+  const { response, error, callback } = useAxios<CreateSaleResponse>({
+    url: "sales/create",
+    method: "POST",
+    body: saleData,
+  });
+
+  return { response, error, callback };
+}

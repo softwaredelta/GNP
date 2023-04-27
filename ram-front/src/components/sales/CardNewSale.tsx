@@ -7,7 +7,6 @@ import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
-import { CreateNewSale, SaleData } from "../../lib/api/api-sale";
 import FileUpload from "../upload";
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
@@ -33,39 +32,26 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     setPeriodicity(event.target.value);
   };
 
-  const saleData: SaleData = {
-    policyNumber: policyNum,
-    sellDate: selectedDate,
-    assuranceType: {
-      id: assuranceType,
+  const { response, error, callback } = useAxios<{
+    data: {
+      group: {
+        id: string;
+        name: string;
+      };
+    };
+  }>({
+    url: "sales/create",
+    method: "POST",
+    body: {
+      policyNumber: policyNum,
+      sellDate: selectedDate,
+      assuranceType: {
+        id: assuranceType,
+      },
+      amountInCents: amount,
+      clientName: client,
     },
-    amountInCents: amount,
-    clientName: client,
-    periodicity: periodicity,
-  };
-  const { response, error, callback } = CreateNewSale({ saleData });
-
-  // const { response, error, callback } = useAxios<{
-  //   data: {
-  //     group: {
-  //       id: string;
-  //       name: string;
-  //     };
-  //   };
-  // }>({
-  //   url: "sales/create",
-  //   method: "POST",
-  //   body: {
-  //     policyNumber: policyNum,
-  //     sellDate: selectedDate,
-  //     assuranceType: {
-  //       id: assuranceType,
-  //     },
-  //     amountInCents: amount,
-  //     clientName: client,
-  //     periodicity: periodicity,
-  //   }
-  // });
+  });
 
   const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -191,7 +177,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               <option> mensual </option>
               <option> anual </option>
             </select>
-            <FileUpload onFileUpload={handleFileUpload} />
           </div>
 
           <div className="col-span-4 flex justify-center items-center pb-8">
