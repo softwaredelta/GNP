@@ -32,10 +32,11 @@ describe("app:sale", () => {
           id: "test-user",
         },
         sellDate: new Date("2021/01/01"),
-        amountInCents: "123456",
+        amountInCents: "123456789",
         clientName: "Juan Perez",
         periodicity: "mensual",
-        evidenceUrl: "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b741",
+        evidenceUrl:
+          "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b741",
       });
 
       expect(error).toBeUndefined();
@@ -43,8 +44,14 @@ describe("app:sale", () => {
       expect(sale).toHaveProperty("policyNumber", "123456789");
       expect(sale).toHaveProperty("clientName", "Juan Perez");
       expect(sale).toHaveProperty("amountInCents", "1234567");
-      expect(sale).toHaveProperty("periodicity", "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b741");
-      expect(sale).toHaveProperty("evidenceUrl", "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b741");
+      expect(sale).toHaveProperty(
+        "periodicity",
+        "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b741",
+      );
+      expect(sale).toHaveProperty(
+        "evidenceUrl",
+        "blob:http://localhost:3000/3f7f2230-cfbc-4bd7-82b1-1248b1b9b741",
+      );
     });
   });
 });
