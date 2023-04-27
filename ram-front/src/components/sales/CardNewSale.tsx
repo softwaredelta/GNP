@@ -18,11 +18,11 @@ export interface IListAssuranceTypesProps {
 
 const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [policyNum, setPolicyNum] = useState("");
-  const [amount, setAmount] = useState("");
-  const [client, setClient] = useState("");
-  const [assuranceType, setAssuranceType] = useState(assuranceTypes[0].id);
-  const [periodicity, setPeriodicity] = useState("");
+  const [policyNum, setPolicyNum] = useState<string>("");
+  const [amount, setAmount] = useState<string>("");
+  const [client, setClient] = useState<string>("");
+  const [assuranceType, setAssuranceType] = useState<string>(assuranceTypes[0].id);
+  const [periodicity, setPeriodicity] = useState<string>("");
 
   const handleAssuranceTypeChange = (event: any) => {
     setAssuranceType(event.target.value);

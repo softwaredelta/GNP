@@ -33,7 +33,7 @@ export interface IListSalesProps {
 }
 
 export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
-  const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
   useEffect(() => {
     if (shouldUpdate) {
       onDeleted();
