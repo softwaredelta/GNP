@@ -13,7 +13,10 @@ const userParameters = j.object({
   sellDate: j.string().required(),
   amountInCents: j.string().required(),
   clientName: j.string().required(),
+  periodicity: j.string().required(),
+  evidenceUrl: j.string().required(),
   assuranceType: j.object().required(),
+  
 });
 
 const saleParametersMiddleware: RequestHandler = (req, res, next) => {
@@ -30,7 +33,7 @@ salesRouter.post(
   authMiddleware,
   saleParametersMiddleware,
   async (req, res) => {
-    const { policyNumber, sellDate, amountInCents, clientName, assuranceType } =
+    const { policyNumber, sellDate, amountInCents, clientName, assuranceType, periodicity, evidenceUrl } =
       req.body;
     const { user } = req;
 
@@ -46,6 +49,8 @@ salesRouter.post(
       clientName,
       assuranceType,
       user,
+      periodicity,
+      evidenceUrl,
     });
 
     if (error) {

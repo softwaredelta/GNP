@@ -7,7 +7,6 @@ import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
-import FileUpload from "../upload";
 import { CreateNewSale, SaleData } from "../../lib/api/api-sales";
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
@@ -27,6 +26,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     assuranceTypes[0].id,
   );
   const [periodicity, setPeriodicity] = useState<string>("");
+  const[evidence,setEvidence] = useState<string>("");
 
   const handleAssuranceTypeChange = (event: any) => {
     setAssuranceType(event.target.value);
@@ -34,6 +34,24 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
 
   const handlePeriodicityTypeChange = (event: any) => {
     setPeriodicity(event.target.value);
+  };
+
+  const handleFileUpload = (event: any) => {
+    const file = event.target.files[0];
+    const fileUrl = URL.createObjectURL(file);
+    // const reader = new FileReader();
+    setEvidence(fileUrl);
+    // console.log("Hola");
+    console.log(fileUrl);
+    // reader.readAsDataURL(file);    
+  };
+
+  const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const regex = /^[a-z A-Z ñ]*$/; // expresión regular que solo permite letras, números, guiones bajos y espacios
+    if (regex.test(inputValue)) {
+      setClient(inputValue);
+    }
   };
 
   const saleData: SaleData = {
@@ -45,6 +63,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     amountInCents: amount,
     clientName: client,
     periodicity: periodicity,
+    evidenceUrl: evidence,
   };
   const { response, error, callback } = CreateNewSale({ saleData });
   // const { response, error, callback } = useAxios<{
@@ -65,17 +84,9 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   //     },
   //     amountInCents: amount,
   //     clientName: client,
+  //     periodicity: periodicity,
   //   },
   // });
-
-  const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    const regex = /^[a-z A-Z ñ]*$/; // expresión regular que solo permite letras, números, guiones bajos y espacios
-    if (regex.test(inputValue)) {
-      setClient(inputValue);
-    }
-  };
-
 
   useEffect(() => {
     if (response) {
@@ -193,6 +204,8 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               <option> mensual </option>
               <option> anual </option>
             </select>
+
+            <input type="file" onChange={handleFileUpload}/>
           </div>
 
           <div className="col-span-4 flex justify-center items-center pb-8">

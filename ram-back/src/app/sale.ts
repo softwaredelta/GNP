@@ -19,8 +19,8 @@ export async function createSale(params: {
   sellDate: Date;
   amountInCents: string;
   clientName: string;
-  status?: string;
   periodicity?: string;
+  status?: string;
   evidenceUrl?: string;
   id?: string;
 }): Promise<{ sale: SellEnt; error?: SaleError }> {
@@ -28,7 +28,6 @@ export async function createSale(params: {
   const id = params.id || v4();
   // Static values not handled yet in frontend
   const status = "sin revisar";
-  const periodicity = "mensual";
 
   return ds.manager
     .save(SellEnt, {
@@ -39,9 +38,10 @@ export async function createSale(params: {
       amountInCents: params.amountInCents,
       clientName: params.clientName,
       user: params.user,
+      periodicity: params.periodicity,
+      evidenceUrl: params.evidenceUrl,
       status,
-      periodicity,
-      evidenceUrl: "https://www.google.com",
+      
     })
     .then((sale) => {
       return { sale };
