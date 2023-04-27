@@ -10,10 +10,10 @@ import { authMiddleware } from "./user";
 
 const userParameters = j.object({
   policyNumber: j.string().required(),
-  assuranceTypeId: j.string().required(),
   sellDate: j.string().required(),
   amountInCents: j.string().required(),
   clientName: j.string().required(),
+  assuranceType: j.object().required(),
 });
 
 const saleParametersMiddleware: RequestHandler = (req, res, next) => {
@@ -30,26 +30,22 @@ salesRouter.post(
   authMiddleware,
   saleParametersMiddleware,
   async (req, res) => {
-    const {
-      policyNumber,
-      assuranceTypeId,
-      sellDate,
-      amountInCents,
-      clientName,
-    } = req.body;
+    const { policyNumber, sellDate, amountInCents, clientName, assuranceType } =
+      req.body;
     const { user } = req;
 
     if (!user) {
-      res.status(400).json({ message: "BAD_DATA" });
+      res.status(401).json({ message: "BAD_DATA" });
       return;
     }
+
     const { sale, error } = await createSale({
       policyNumber,
-      assuranceTypeId,
       sellDate,
       amountInCents,
       clientName,
-      userId: user.id,
+      assuranceType,
+      user,
     });
 
     if (error) {
@@ -63,6 +59,9 @@ salesRouter.post(
 
 salesRouter.get("/all", async (req, res) => {
   const db = await getDataSource();
-  const sales = await db.manager.find(SellEnt);
+  const sales = await db.manager
+    .createQueryBuilder(SellEnt, "sell")
+    .leftJoinAndSelect("sell.assuranceType", "assuranceType")
+    .getMany();
   res.json({ sales });
 });
