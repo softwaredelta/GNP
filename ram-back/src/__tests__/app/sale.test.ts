@@ -32,7 +32,7 @@ describe("app:sale", () => {
           id: "test-user",
         },
         sellDate: new Date("2021/01/01"),
-        amountInCents: "123456789",
+        amountInCents: "1234567",
         clientName: "Juan Perez",
         periodicity: "mensual",
         evidenceUrl:
