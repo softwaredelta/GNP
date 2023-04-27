@@ -26,7 +26,6 @@ export async function createSale(params: {
 }): Promise<{ sale: SellEnt; error?: SaleError }> {
   const ds = await getDataSource();
   const id = params.id || v4();
-
   // Static values not handled yet in frontend
   const status = "sin revisar";
   const periodicity = "mensual";

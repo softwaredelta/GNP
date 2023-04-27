@@ -1,11 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { createSale } from "../../app/sale";
-import { getDataSource } from "../../arch/db-client";
-import { createAssuranceType } from "../../app/assuranceType";
-import { createUser } from "../../app/user";
+import { createSale } from "../app/sale";
+import { getDataSource } from "../arch/db-client";
+import { createAssuranceType } from "../app/assuranceType";
+import { createUser } from "../app/user";
 
-describe("app:sale", () => {
+describe("sale", () => {
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.synchronize(true);
@@ -21,10 +21,10 @@ describe("app:sale", () => {
     });
   });
 
-  describe("creation function", () => {
+  describe("creation function works", () => {
     it("creates new sale", async () => {
       const { sale, error } = await createSale({
-        policyNumber: "123456",
+        policyNumber: "123456789",
         assuranceType: {
           id: "test-at-1",
         },
@@ -32,16 +32,17 @@ describe("app:sale", () => {
           id: "test-user",
         },
         sellDate: new Date("2021/01/01"),
-        amountInCents: "123456",
+        amountInCents: "1234567",
         clientName: "Juan Perez",
         evidenceUrl: "https://www.google.com",
+        periodicity: "mensual",
       });
 
       expect(error).toBeUndefined();
       expect(sale).toHaveProperty("id");
-      expect(sale).toHaveProperty("policyNumber", "123456");
+      expect(sale).toHaveProperty("policyNumber", "123456789");
       expect(sale).toHaveProperty("clientName", "Juan Perez");
-      expect(sale).toHaveProperty("amountInCents", "123456");
+      expect(sale).toHaveProperty("amountInCents", "1234567");
     });
   });
 });
