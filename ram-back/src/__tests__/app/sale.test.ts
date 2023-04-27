@@ -24,7 +24,7 @@ describe("app:sale", () => {
   describe("creation function", () => {
     it("creates new sale", async () => {
       const { sale, error } = await createSale({
-        policyNumber: "123456",
+        policyNumber: "123456789",
         assuranceType: {
           id: "test-at-1",
         },
