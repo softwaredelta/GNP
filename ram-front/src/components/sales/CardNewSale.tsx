@@ -79,7 +79,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   }, [response, error]);
 
   return (
-    <div className="grid grid-cols-4 bg-gradient-to-t from-gnp-cream to-gnp-white rounded-lg m-4">
+    <div className="grid grid-cols-4 w-3/4 bg-gradient-to-t from-[#DBDFE6] to-[#FFEFDB] rounded-lg m-4 shadow-lg">
       <img
         src={moneyGrowth}
         alt="Imagen"
