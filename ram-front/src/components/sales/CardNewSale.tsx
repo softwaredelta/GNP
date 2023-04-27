@@ -8,6 +8,7 @@ import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
 import { CreateNewSale, SaleData } from "../../lib/api/api-sale";
+import FileUpload from "../upload";
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
     id: string;
