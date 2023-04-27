@@ -1,25 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
 
-import Card from "../components/generics/cards/base/Card";
-import CardInfoNumMembers from "../components/generics/cards/info/CardInfoNumMembers";
 import Wrapper from "../containers/Wrapper";
 import { useRecoilValue } from "recoil";
 import { allCourses$ } from "../lib/api/api-courses";
-import { useNavigate } from "react-router-dom";
+import ListManagerGroup from "../components/groups/ListManagerGroup";
 
 export default function ManagerCourses() {
   const data = useRecoilValue(allCourses$);
-  const navigate = useNavigate();
-
-  const clickHandler = async (event: any, courseId: string) => {
-    event.preventDefault();
-    try {
-      await onclick;
-      navigate(`/groupDeliveries/${courseId}`);
-    } catch (error) {
-      navigate("/managerCourses");
-    }
-  };
 
   return (
     <div>
@@ -31,28 +18,7 @@ export default function ManagerCourses() {
             </div>
           </div>
           <div className="grid md:grid-cols-4 place-items-center">
-            {data.groups.length > 0 ? (
-              data.groups.map((groupsObj, index) => (
-                <div className=" p-10" key={index}>
-                  <button
-                    className="hover:scale-105 transition-all ease-in-out active:scale-95 cursor-pointer"
-                    onClick={(event) => clickHandler(event, groupsObj.id)}
-                  >
-                    <Card color="blue" image={groupsObj.imageURL}>
-                      <CardInfoNumMembers
-                        color="blue"
-                        nameGroup={groupsObj.name}
-                        number={groupsObj.groupUsers.length}
-                      />
-                    </Card>
-                  </button>
-                </div>
-              ))
-            ) : (
-              <div className="h-56 text-xl flex items-center justify-center">
-                No hay grupos registrados
-              </div>
-            )}
+            <ListManagerGroup groups={data.groups}></ListManagerGroup>
           </div>
         </div>
       </Wrapper>
