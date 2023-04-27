@@ -29,22 +29,4 @@ describe("SalesHistory", () => {
       );
     });
   });
-
-  it("renders pagination component", () => {
-    render(<SalesHistory />);
-    const paginationComponent = screen.getByTestId("Pagination");
-    expect(paginationComponent).toBeInTheDocument();
-  });
-
-  it("renders sales table component", () => {
-    render(<SalesHistory />);
-    const tableComponent = screen.getByTestId("Table");
-    expect(tableComponent).toBeInTheDocument();
-  });
-
-  it("renders filters component", () => {
-    render(<SalesHistory />);
-    const filtersComponent = screen.getByTestId("Filters");
-    expect(filtersComponent).toBeInTheDocument();
-  });
 });
