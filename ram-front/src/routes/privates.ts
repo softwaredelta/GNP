@@ -51,7 +51,7 @@ export const privateRoutes: IRoute[] = [
     component: NewSale,
   },
   {
-    path: "sales-history",
+    path: "/sales-history",
     component: SalesHistory,
   },
 ];
