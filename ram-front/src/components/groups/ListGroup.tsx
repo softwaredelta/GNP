@@ -1,17 +1,20 @@
 // (c) Delta Software 2023, rights reserved.
+import { useNavigate } from "react-router-dom";
 import Card from "../generics/cards/base/Card";
 import CardInfoGroup from "../generics/cards/info/CardInfoGroup";
 
 export interface IListGroupProps {
-  groups: {
-    id: string;
-    name: string;
-    progress: number;
-    image: string;
-  }[];
+  groups: IGroup[];
+}
+export interface IGroup {
+  id: string;
+  name: string;
+  progress: number;
+  image: string;
 }
 
 export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
+  const navigate = useNavigate();
   if (groups.length === 0) return <h1>No hay grupos</h1>;
 
   return (
@@ -21,7 +24,7 @@ export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
           <button
             className="w-full hover:scale-105 transition-all ease-in-out active:scale-95 cursor-pointer"
             onClick={() => {
-              alert("Redireccionando al grupo ...");
+              navigate(`/group/${group.id}`);
             }}
           >
             <Card color={index % 2 ? "orange" : "blue"} image={group.image}>

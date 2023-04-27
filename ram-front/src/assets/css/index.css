@@ -25,6 +25,10 @@
   @apply w-full aspect-square flex items-center justify-center bg-gnp-orange-500 text-white rounded-full shadow-lg hover:scale-105 hover:bg-gnp-orange-700 transition duration-300 ease-in-out active:scale-95;
 }
 
+.title {
+  @apply my-10 w-72 bg-gnp-orange-500 rounded-r-3xl text-white p-4 text-2xl text-center font-semibold;
+}
+
 .custom-scroll {
   scrollbar-width: thin;
   scrollbar-color: #07080b #e5e7eb;

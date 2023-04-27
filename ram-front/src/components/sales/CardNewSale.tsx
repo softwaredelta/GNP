@@ -1,14 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
-import  { CreateNewSale, SaleData } from "../../lib/api/api-sale";
-
+import FileUpload from "../upload";
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
     id: string;
@@ -28,47 +27,32 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
 
   const handleAssuranceTypeChange = (event: any) => {
     setAssuranceType(event.target.value);
-    //console.log(assuranceType);
   };
-  
+
   const handlePeriodicityTypeChange = (event: any) => {
     setPeriodicity(event.target.value);
-    //console.log(assuranceType);
   };
 
-  const saleData: SaleData = {
-    policyNumber: policyNum,
-    sellDate: selectedDate,
-    assuranceType: {
-      id: assuranceType,
+  const { response, error, callback } = useAxios<{
+    data: {
+      group: {
+        id: string;
+        name: string;
+      };
+    };
+  }>({
+    url: "sales/create",
+    method: "POST",
+    body: {
+      policyNumber: policyNum,
+      sellDate: selectedDate,
+      assuranceType: {
+        id: assuranceType,
+      },
+      amountInCents: amount,
+      clientName: client,
     },
-    amountInCents: amount,
-    clientName: client,
-    periodicity: periodicity,
-  };
-  const { response, error, callback } = CreateNewSale({ saleData })
-
-  // const { response, error, callback } = useAxios<{
-  //   data: {
-  //     group: {
-  //       id: string;
-  //       name: string;
-  //     };
-  //   };
-  // }>({
-  //   url: "sales/create",
-  //   method: "POST",
-  //   body: {
-  //     policyNumber: policyNum,
-  //     sellDate: selectedDate,
-  //     assuranceType: {
-  //       id: assuranceType,
-  //     },
-  //     amountInCents: amount,
-  //     clientName: client,
-  //     periodicity: periodicity,
-  //   }
-  // });
+  });
 
   const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -95,7 +79,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     }
   }, [response, error]);
 
-
   return (
     <div className="grid grid-cols-4 bg-gradient-to-t from-gnp-cream to-gnp-white rounded-lg m-4">
       <img
@@ -120,7 +103,8 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setPolicyNum(e.target.value)
               }
-              minLength = {9} maxLength={9}
+              minLength={9}
+              maxLength={9}
               required
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
@@ -134,7 +118,8 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setAmount(e.target.value)
               }
-              minLength={2} maxLength={7}
+              minLength={2}
+              maxLength={7}
               required
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
@@ -184,14 +169,17 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
               Periodicidad
             </label>
-            <select className="input-primary w-full"
-            value = {periodicity}
-            onChange={handlePeriodicityTypeChange}>
+            <select
+              className="input-primary w-full"
+              value={periodicity}
+              onChange={handlePeriodicityTypeChange}
+            >
               <option> semestral </option>
               <option> mensual </option>
               <option> anual </option>
             </select>
           </div>
+
           <div className="col-span-4 flex justify-center items-center pb-8">
             <div className="w-52">
               <button

@@ -1,8 +1,25 @@
 // (c) Delta Software 2023, rights reserved.
-import ListGroup from "../components/groups/ListGroup";
+import ListGroup, { IGroup } from "../components/groups/ListGroup";
 import Wrapper from "../containers/Wrapper";
+import useAxios from "../hooks/useAxios";
 
 export default function Groups(): JSX.Element {
+  const { response, loading, error } = useAxios<{
+    data: {
+      groups: {
+        group: IGroup;
+        numberOfDeliveries: number;
+        totalDeliveries: number;
+      }[];
+    };
+  }>({
+    url: "groups/my-groups",
+    method: "GET",
+  });
+
+  if (loading) return <h1>Loading ...</h1>;
+  if (error) return <h1>Error ...</h1>;
+
   return (
     <Wrapper>
       <div>
@@ -13,34 +30,17 @@ export default function Groups(): JSX.Element {
         </div>
 
         <div className=" grid sm:grid-cols-2 xl:grid-cols-4 place-items-center gap-10">
-          <ListGroup
-            groups={[
-              {
-                id: "1",
-                name: "Group 1",
-                progress: 50,
-                image: "https://picsum.photos/200",
-              },
-              {
-                id: "2",
-                name: "Group 2",
-                progress: 80,
-                image: "https://picsum.photos/300",
-              },
-              {
-                id: "3",
-                name: "Group 3",
-                progress: 100,
-                image: "https://picsum.photos/400",
-              },
-              {
-                id: "4",
-                name: "Group 4",
-                progress: 100,
-                image: "https://picsum.photos/500",
-              },
-            ]}
-          />
+          {response && (
+            <ListGroup
+              groups={response?.data.groups.map(
+                (item): IGroup => ({
+                  ...item.group,
+                  progress:
+                    (item.numberOfDeliveries / item.totalDeliveries) * 100,
+                }),
+              )}
+            />
+          )}
         </div>
       </div>
     </Wrapper>

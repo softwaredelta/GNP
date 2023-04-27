@@ -2,49 +2,58 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen } from "@testing-library/react";
 import ListGroups from "../components/groups/ListGroup";
+import { BrowserRouter } from "react-router-dom";
 
 describe("ListGroups", () => {
   it("renders a list of groups", () => {
     render(
-      <ListGroups
-        groups={[
-          {
-            id: "fdsf-fdsfsf",
-            name: "Group 1",
-            progress: 50,
-            image: "https://picsum.photos/200",
-          },
-          {
-            id: "fdsf-fdsfsf-fddfs",
-            name: "Group 2",
-            progress: 80,
-            image: "https://picsum.photos/200",
-          },
-        ]}
-      />,
+      <BrowserRouter>
+        <ListGroups
+          groups={[
+            {
+              id: "fdsf-fdsfsf",
+              name: "Group 1",
+              progress: 50,
+              image: "https://picsum.photos/200",
+            },
+            {
+              id: "fdsf-fdsfsf-fddfs",
+              name: "Group 2",
+              progress: 80,
+              image: "https://picsum.photos/200",
+            },
+          ]}
+        />
+      </BrowserRouter>,
     );
     const groups = screen.getAllByRole("group");
     expect(groups).toHaveLength(2);
   });
 
   it("renders a message when there are no groups", () => {
-    render(<ListGroups groups={[]} />);
+    render(
+      <BrowserRouter>
+        <ListGroups groups={[]} />
+      </BrowserRouter>,
+    );
     const message = screen.getByText("No hay grupos");
     expect(message).toBeInTheDocument();
   });
 
   it("renders a group", () => {
     render(
-      <ListGroups
-        groups={[
-          {
-            id: "fdsf-fdsfsf",
-            name: "Group 1",
-            progress: 50,
-            image: "https://picsum.photos/200",
-          },
-        ]}
-      />,
+      <BrowserRouter>
+        <ListGroups
+          groups={[
+            {
+              id: "fdsf-fdsfsf",
+              name: "Group 1",
+              progress: 50,
+              image: "https://picsum.photos/200",
+            },
+          ]}
+        />
+      </BrowserRouter>,
     );
     const group = screen.getByRole("group");
     expect(group).toBeInTheDocument();

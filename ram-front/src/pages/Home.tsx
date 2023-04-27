@@ -1,5 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
+import { Link } from "react-router-dom";
 import { useAuthentication } from "../lib/api/api-auth";
 
 export default function Home() {
@@ -10,27 +11,51 @@ export default function Home() {
       <h1>Home</h1>
       <ul>
         <li>
-          <a
-            href="/infra"
+          <Link
+            to="/infra"
             className="underline text-red-500 hover:text-red-800"
           >
             infra test
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href="/components"
+          <Link
+            to="/components"
             className="underline text-red-500 hover:text-red-800"
           >
             components
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/managerCourses"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            manager courses
+          </Link>
+        </li>
+        <li>
+          <a
+            href="/my-groups"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            my groups
           </a>
         </li>
         <li>
           <a
-            href="/managerCourses"
+            href="/new-sale"
             className="underline text-red-500 hover:text-red-800"
           >
-            manager courses
+            register new sale
+          </a>
+        </li>
+        <li>
+          <a
+            href="/sales-history"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            all sales
           </a>
         </li>
         <li>
