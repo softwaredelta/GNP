@@ -7,7 +7,7 @@ import { authenticateUser, createUser } from "../../app/user";
 import { createGroup } from "../../app/groups";
 import { createDelivery } from "../../app/deliveries";
 import { setDeliverieToUser } from "../../app/deliveries";
-import { StatusUserDelivery } from "../../entities/user-delivery";
+import { StatusUserDelivery } from "../../entities/user-delivery.entity";
 
 describe("controller:deliveries", () => {
   let accessToken: string;
