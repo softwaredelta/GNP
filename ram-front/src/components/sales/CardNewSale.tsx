@@ -8,6 +8,7 @@ import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
 import  { CreateNewSale, SaleData } from "../../lib/api/api-sale";
+
 export interface IListAssuranceTypesProps {
   assuranceTypes: {
     id: string;
@@ -16,13 +17,14 @@ export interface IListAssuranceTypesProps {
   }[];
 }
 
+
 const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [policyNum, setPolicyNum] = useState("");
   const [amount, setAmount] = useState("");
   const [client, setClient] = useState("");
   const [assuranceType, setAssuranceType] = useState(assuranceTypes[0].id);
-  const [periodicity, setPeriodicity] = useState("")
+  const [periodicity, setPeriodicity] = useState("");
 
   const handleAssuranceTypeChange = (event: any) => {
     setAssuranceType(event.target.value);
