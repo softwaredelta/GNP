@@ -1,17 +1,17 @@
 // (c) Delta Software 2023, rights reserved.
 
 import {
+  AfterLoad,
+  AfterUpdate,
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { RoleEnt } from "./role.entity";
 import { OriginEnt } from "./origin.entity";
 import { StateEnt } from "./state.entity";
 import {
@@ -23,6 +23,20 @@ import {
   USERNAME_COLUMN,
 } from "./columns";
 import { UserLevelEnt } from "./user-level.entity";
+
+export enum UserRole {
+  ADMIN = "admin",
+  MANAGER = "manager",
+  REGULAR = "regular",
+}
+
+export function buildRoleString(roles: UserRole[]): string {
+  return roles.join(",");
+}
+
+export function rolesFromString(roles: string): UserRole[] {
+  return roles.split(",") as UserRole[];
+}
 
 @Entity({ name: "user" })
 export class UserEnt {
@@ -37,8 +51,8 @@ export class UserEnt {
   @JoinColumn()
   state: StateEnt;
 
-  @ManyToMany(() => RoleEnt, (role) => role.users)
-  roles: RoleEnt[];
+  // @ManyToMany(() => RoleEnt, (role) => role.users)
+  // roles: RoleEnt[];
 
   @ManyToOne(() => UserLevelEnt, (level) => level.users, { eager: true })
   level: UserLevelEnt;
@@ -69,4 +83,20 @@ export class UserEnt {
 
   @Column(REQUIRED_STRING_COLUMN("roles"))
   rolesString!: string;
+
+  roles!: UserRole[];
+
+  @AfterLoad()
+  async afterLoad() {
+    this.roles = this.rolesString ? rolesFromString(this.rolesString) : [];
+  }
+
+  @AfterUpdate()
+  async afterUpdate() {
+    this.roles = this.rolesString ? rolesFromString(this.rolesString) : [];
+  }
+
+  hasRole(role: UserRole): boolean {
+    return this.roles?.includes(role) || false;
+  }
 }

@@ -2,9 +2,15 @@
 
 import { getDataSource } from "../arch/db-client";
 import { v4 } from "uuid";
-import { UserEnt } from "../entities/user.entity";
+import {
+  UserEnt,
+  UserRole,
+  buildRoleString,
+  rolesFromString,
+} from "../entities/user.entity";
 import { TokenType, generateToken, verifyToken } from "./auth";
 import { hashPassword, comparePassword } from "../utils/hash";
+
 export enum UserError {
   USER_EXISTS = "USER_EXISTS",
   USER_NOT_FOUND = "USER_NOT_FOUND",
@@ -20,20 +26,6 @@ export interface UserAuthentication {
   userRole: string;
 }
 
-export enum UserRole {
-  ADMIN = "admin",
-  MANAGER = "manager",
-  REGULAR = "regular",
-}
-
-function buildRoleString(roles: UserRole[]): string {
-  return roles.join(",");
-}
-
-function rolesFromString(roles: string): UserRole[] {
-  return roles.split(",") as UserRole[];
-}
-
 export async function createUser(params: {
   email: string;
   password: string;
@@ -46,7 +38,7 @@ export async function createUser(params: {
   const id = params.id || v4();
   const hashedPassword = await hashPassword(params.password);
   const roles = params.roles || [UserRole.REGULAR];
-  
+
   return ds.manager
     .save(
       UserEnt,
@@ -65,14 +57,6 @@ export async function createUser(params: {
     });
 }
 
-export function userHasRole(params: {
-  user: UserEnt;
-  role: UserRole;
-}): boolean {
-  const roles = rolesFromString(params.user.rolesString);
-  return roles.includes(params.role);
-}
-
 export async function addRoleToUser(params: {
   userId: string;
   role: UserRole;
@@ -82,6 +66,7 @@ export async function addRoleToUser(params: {
     where: {
       id: params.userId,
     },
+    select: ["id", "rolesString"],
   });
 
   if (!user) {
@@ -113,6 +98,7 @@ export async function removeRoleFromUser(params: {
     where: {
       id: params.userId,
     },
+    select: ["id", "rolesString"],
   });
 
   if (!user) {
@@ -183,7 +169,6 @@ export async function validateUserToken(params: {
     where: {
       id: auth.id,
     },
-    select: ["id", "email", "password"],
   });
 
   if (!user) {

@@ -1,14 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
-import {
-  UserRole,
-  addRoleToUser,
-  authenticateUser,
-  createUser,
-  userHasRole,
-} from "../../app/user";
+import { addRoleToUser, authenticateUser, createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
-import { UserEnt } from "../../entities/user.entity";
+import { UserEnt, UserRole } from "../../entities/user.entity";
 
 describe("app:user", () => {
   beforeEach(async () => {
@@ -80,8 +74,8 @@ describe("app:user", () => {
         where: { id: userId },
       });
 
-      expect(userHasRole({ user, role: UserRole.REGULAR })).toBe(true);
-      expect(userHasRole({ user, role: UserRole.ADMIN })).toBe(false);
+      expect(user.hasRole(UserRole.REGULAR)).toBe(true);
+      expect(user.hasRole(UserRole.ADMIN)).toBe(false);
 
       await addRoleToUser({
         userId,
@@ -92,8 +86,8 @@ describe("app:user", () => {
         where: { id: userId },
       });
 
-      expect(userHasRole({ user, role: UserRole.REGULAR })).toBe(true);
-      expect(userHasRole({ user, role: UserRole.ADMIN })).toBe(true);
+      expect(user.hasRole(UserRole.REGULAR)).toBe(true);
+      expect(user.hasRole(UserRole.ADMIN)).toBe(true);
 
       await addRoleToUser({
         userId,
@@ -104,8 +98,8 @@ describe("app:user", () => {
         where: { id: userId },
       });
 
-      expect(userHasRole({ user, role: UserRole.REGULAR })).toBe(true);
-      expect(userHasRole({ user, role: UserRole.ADMIN })).toBe(true);
+      expect(user.hasRole(UserRole.REGULAR)).toBe(true);
+      expect(user.hasRole(UserRole.ADMIN)).toBe(true);
     });
   });
 

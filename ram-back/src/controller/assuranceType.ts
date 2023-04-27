@@ -24,7 +24,7 @@ const saleParametersMiddleware: RequestHandler = (req, res, next) => {
 
 assuranceTypeRouter.post(
   "/create",
-  authMiddleware,
+  authMiddleware(),
   saleParametersMiddleware,
   async (req, res) => {
     const { name, description } = req.body;

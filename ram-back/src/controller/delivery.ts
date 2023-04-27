@@ -10,7 +10,7 @@ export const deliveriesRouter = Router();
 
 deliveriesRouter.get(
   "/my-deliveries/:groupId",
-  authMiddleware,
+  authMiddleware(),
   async (req, res) => {
     if (!req.user) {
       res.status(401).json({ message: "No user" });

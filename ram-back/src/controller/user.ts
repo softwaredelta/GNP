@@ -2,7 +2,7 @@
 
 import { RequestHandler, Router } from "express";
 import { getDataSource } from "../arch/db-client";
-import { UserEnt } from "../entities/user.entity";
+import { UserEnt, UserRole } from "../entities/user.entity";
 import { TokenType, generateToken, verifyToken } from "../app/auth";
 import { authenticateUser, createUser, validateUserToken } from "../app/user";
 import * as j from "joi";
@@ -50,36 +50,55 @@ authRouter.post("/authenticate", userParametersMiddleware, async (req, res) => {
   res.json(auth);
 });
 
-export const authMiddleware: RequestHandler = async (req, res, next) => {
-  const { authorization } = req.headers;
-  if (!authorization) {
-    res.status(401).json({ message: "No authorization header" });
-    return;
-  }
+// ALL requested roles must be present
+export const authMiddleware = (
+  params: {
+    neededRoles?: UserRole[];
+  } = {},
+): RequestHandler => {
+  const neededRoles = params.neededRoles || [];
 
-  const [type, token] = authorization.split(" ");
-  if (type !== "Bearer") {
-    res.status(401).json({ message: "Invalid authorization type" });
-    return;
-  }
+  return async (req, res, next) => {
+    const { authorization } = req.headers;
+    if (!authorization) {
+      res.status(401).json({ message: "No authorization header" });
+      return;
+    }
 
-  const { user, error } = await validateUserToken({ token });
-  if (error) {
-    res.status(401).json({ message: error });
-    return;
-  }
+    const [type, token] = authorization.split(" ");
+    if (type !== "Bearer") {
+      res.status(401).json({ message: "Invalid authorization type" });
+      return;
+    }
 
-  if (!user) {
-    res.status(401).json({ message: "Invalid credentials" });
-    return;
-  }
+    const { user, error } = await validateUserToken({ token });
+    if (error) {
+      res.status(401).json({ message: error });
+      return;
+    }
 
-  req.user = user;
+    if (!user) {
+      res.status(401).json({ message: "Invalid credentials" });
+      return;
+    }
 
-  next();
+    if (neededRoles.length > 0) {
+      const hasRoles = neededRoles.every((neededRole) =>
+        user.roles.includes(neededRole),
+      );
+      if (!hasRoles) {
+        res.status(403).json({ message: "Insufficient permissions" });
+        return;
+      }
+    }
+
+    req.user = user;
+
+    next();
+  };
 };
 
-authRouter.get("/me", authMiddleware, async (req, res) => {
+authRouter.get("/me", authMiddleware(), async (req, res) => {
   res.json(req.user);
 });
 
@@ -97,7 +116,7 @@ authRouter.post("/refresh", async (req, res) => {
     where: {
       id: auth.id,
     },
-    select: ["id", "email", "password"],
+    select: ["id", "email"],
   });
 
   if (!user) {

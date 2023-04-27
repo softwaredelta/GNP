@@ -18,7 +18,7 @@ groupsRouter.get("/all", async (req, res) => {
   res.json({ groups });
 });
 
-groupsRouter.get("/my-groups", authMiddleware, async (req, res) => {
+groupsRouter.get("/my-groups", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });
     return;
@@ -43,7 +43,7 @@ groupsRouter.get("/:id", async (req, res) => {
   res.json(groups);
 });
 
-groupsRouter.post("/create", authMiddleware, async (req, res) => {
+groupsRouter.post("/create", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });
     return;
