@@ -55,7 +55,7 @@ function NavBar() {
         </Navbar.Link>
         <Navbar.Link
           as={Link}
-          to="/navbars"
+          to="/my-groups"
           className="text-lg  mx-8 text-gray-900 "
         >
           Grupos
@@ -63,9 +63,15 @@ function NavBar() {
 
         <div className="text-lg mx-8 text-gray-900">
           <Dropdown label="Ventas" size="xl" inline={true}>
-            <Dropdown.Item>Datos Generales</Dropdown.Item>
-            <Dropdown.Item>Agregar Venta</Dropdown.Item>
-            <Dropdown.Item>Mis ventas</Dropdown.Item>
+            <Link to="/·">
+              <Dropdown.Item>Datos Generales</Dropdown.Item>
+            </Link>
+            <Link to="/new-sale">
+              <Dropdown.Item>Agregar Venta</Dropdown.Item>
+            </Link>
+            <Link to="/sales-history">
+              <Dropdown.Item>Mis ventas</Dropdown.Item>
+            </Link>
           </Dropdown>
         </div>
 
@@ -78,8 +84,12 @@ function NavBar() {
         </Navbar.Link>
         <div className="text-lg mx-8 text-gray-900">
           <Dropdown label="Metas" size="xl" inline={true}>
-            <Dropdown.Item>Mis metas</Dropdown.Item>
-            <Dropdown.Item>Agregar Metas</Dropdown.Item>
+            <Link to="/·">
+              <Dropdown.Item>Mis metas</Dropdown.Item>
+            </Link>
+            <Link to="/·">
+              <Dropdown.Item>Agregar Metas</Dropdown.Item>
+            </Link>
           </Dropdown>
         </div>
       </Navbar.Collapse>
