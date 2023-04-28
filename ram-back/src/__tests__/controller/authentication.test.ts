@@ -43,6 +43,24 @@ describe("controller:authentication", () => {
         });
     });
 
-    it("rejects request with insufficient roles", async () => {});
+    it("rejects request with insufficient roles", async () => {
+      const authenticationResponse = await request(app)
+        .post("/user/authenticate")
+        .send({
+          email: "regular@delta.tec.mx",
+          password: "password",
+        })
+        .expect(200);
+
+      const accessToken = authenticationResponse.body.accessToken;
+
+      return request(app)
+        .get("/user/admin")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .expect(403)
+        .then((res) => {
+          expect(res.body.message).toBe("Insufficient permissions");
+        });
+    });
   });
 });

@@ -106,6 +106,16 @@ authRouter.get(
   },
 );
 
+// this is purely an example and currently serves no purpose for the app
+// see tests
+authRouter.get(
+  "/admin",
+  authMiddleware({ neededRoles: [UserRole.ADMIN] }),
+  async (req, res) => {
+    res.json(req.user);
+  },
+);
+
 authRouter.post("/refresh", async (req, res) => {
   const { refreshToken, refreshTokenExpiresAt } = req.body;
 
