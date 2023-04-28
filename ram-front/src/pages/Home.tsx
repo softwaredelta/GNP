@@ -66,6 +66,14 @@ export default function Home() {
           </Link>
         </li>
         <li>
+          <Link
+            to="/verify-sales"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            verify sales
+          </Link>
+        </li>
+        <li>
           <button
             onClick={() => {
               logout();

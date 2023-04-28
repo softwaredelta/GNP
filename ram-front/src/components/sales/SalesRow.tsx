@@ -28,7 +28,7 @@ export default function SalesRow({
   policyNum,
   onDeleted,
 }: Props) {
-  const { response, error, callback } = useAxios({
+  const { callback } = useAxios({
     url: `sales/delete/${id}`,
     method: "POST",
     body: {},
