@@ -54,3 +54,8 @@ export async function createSale(params: {
       return { sale: {} as SellEnt, error: SaleError.SALE_ERROR };
     });
 }
+
+export async function getUserSales(userId:string): Promise<SellEnt[]> {
+  const ds = await getDataSource();
+  return ds.manager.find(SellEnt, { where: { user: { id: userId } } });
+}

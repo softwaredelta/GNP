@@ -5,8 +5,10 @@ import {
   Entity,
   ManyToOne,
   OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  JoinColumn
 } from "typeorm";
 import { AssuranceTypeEnt } from "./assurance-type.entity";
 import { UserEnt } from "./user.entity";
@@ -36,7 +38,8 @@ export class SellEnt {
   @ManyToOne(() => AssuranceTypeEnt)
   assuranceType!: AssuranceTypeEnt;
 
-  @OneToOne(() => UserEnt)
+  @ManyToOne(() => UserEnt)
+  @JoinColumn({ name: "user_id"})
   user!: UserEnt;
 
   @Column(REQUIRED_DATE_COLUMN)

@@ -173,16 +173,17 @@ export async function loadSeeds() {
 
   // SALES
 
+
   await createSale({
-    policyNumber: "123456789",
+    policyNumber: "423456789",
     assuranceType: {
       id: "test-at-1",
     },
     sellDate: new Date("2021-01-01"),
     amountInCents: "100000",
-    clientName: "Jordana",
-    periodicity: "Mensual",
-    id: "test-sale1",
+    clientName: "Mónica Ayala",
+    periodicity: "Anual",
+    id: "test-sale4",
     user: {
       id: "test-user",
     },
@@ -202,6 +203,37 @@ export async function loadSeeds() {
       id: "test-user",
     },
   });
+
+  await createSale({
+    policyNumber: "123456789",
+    assuranceType: {
+      id: "test-at-1",
+    },
+    sellDate: new Date("2021-01-01"),
+    amountInCents: "100000",
+    clientName: "Jordana",
+    periodicity: "Mensual",
+    id: "test-sale1",
+    user: {
+      id: "test-user",
+    },
+  });
+
+  await createSale({
+    policyNumber: "123456789",
+    assuranceType: {
+      id: "test-at-1",
+    },
+    sellDate: new Date("2021-01-01"),
+    amountInCents: "100000",
+    clientName: "Olivia",
+    periodicity: "Mensual",
+    id: "test-sale1",
+    user: {
+      id: "test-user-2",
+    },
+  });
+
 
   await createSale({
     policyNumber: "323456789",

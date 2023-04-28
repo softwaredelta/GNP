@@ -16,17 +16,25 @@ export default function SalesHistory() {
 
   return (
     <Wrapper>
-      <div className="flex flex-col mt-8 justify-center items-center">
-        <SalesFilters assuranceTypes={assuranceTypes.assuranceTypes} />
-        <SalesTable sales={sales.sales} onDeleted={() => updateSales()} />
-        <div className="flex items-center justify-center text-center">
-          <Pagination
-            data-testid="Pagination"
-            currentPage={1}
-            layout="table"
-            onPageChange={() => {}}
-            totalPages={1000}
-          />
+      <div>
+        <div className="w-full flex items-center justify-start pt-8">
+          <h1 className=" font-bold py-3 px-20 bg-gnp-orange-500 text-white text-xl rounded-r-2xl">
+            Mis ventas
+          </h1>
+        </div>
+        <div className="flex flex-col mt-8 justify-center items-center">
+          <SalesTable sales={sales.sales} onDeleted={() => updateSales()} />
+          <div className="flex items-center justify-center text-center">
+            <Pagination
+              data-testid="Pagination"
+              currentPage={1}
+              layout="table"
+              onPageChange={() => {}}
+              totalPages={1000}
+              nextLabel="Siguiente"
+              previousLabel="Anterior"
+            />
+          </div>
         </div>
       </div>
     </Wrapper>

@@ -1,12 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Router, RequestHandler } from "express";
-import { createSale } from "../app/sale";
+import { createSale, getUserSales } from "../app/sale";
 export const salesRouter = Router();
 import * as j from "joi";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
+import { createUser } from "../app/user";
 
 const userParameters = j.object({
   policyNumber: j.string().required(),
@@ -45,7 +46,7 @@ salesRouter.post(
       amountInCents,
       clientName,
       assuranceType,
-      user,
+      user: user,
     });
 
     if (error) {
@@ -69,5 +70,20 @@ salesRouter.get("/all", async (req, res) => {
 salesRouter.post("/delete/:id", async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.getRepository(SellEnt).delete(req.params.id);
+  res.json({ sales });
+});
+
+salesRouter.get("/my-sales", authMiddleware(),  async (req, res) => {
+  if (!req.user) {
+    res.status(401).json({ message: "No user" });
+    return;
+  }
+  const userId = req.user.id;
+  const db = await getDataSource();
+  const sales = await db.manager.find(SellEnt, {
+    relations: { user: true, assuranceType: true },
+    where: { user: { id: userId } },
+  });
+
   res.json({ sales });
 });
