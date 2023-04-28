@@ -68,4 +68,8 @@ export const ManagerUserRoutes: IRoute[] = [
     path: "/verify-sales",
     Component: () => <VerifySales />,
   },
+  {
+    path: "/verify-sales",
+    Component: () => <VerifySales />,
+  },
 ];

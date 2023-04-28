@@ -73,6 +73,32 @@ export const verifySales$ = selector<Sell[]>({
   },
 });
 
+export const verifySales$ = selector<Sell[]>({
+  key: "verifySales$",
+  get: async ({ get }) => {
+    get(updateVerifiedSales$);
+    const auth = get(authentication$);
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${auth.accessToken}`);
+    const isTest = get(isTest$);
+    const apiBase = get(apiBase$);
+
+    if (isTest) {
+      return [
+        {
+          id: "test-id",
+          clientname: "Test name",
+        },
+      ];
+    }
+
+    const response = await fetch(`${apiBase}/sales/verify-sales`, {
+      headers,
+    });
+    return response.json();
+  },
+});
+
 export type SaleData = {
   policyNumber: string;
   sellDate: Date | null;
