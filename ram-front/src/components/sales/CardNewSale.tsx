@@ -62,7 +62,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   };
   const { response, error, callback } = CreateNewSale({ saleData });
 
-
   useEffect(() => {
     if (response) {
       Swal.fire({
@@ -179,7 +178,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               <option> mensual </option>
               <option> anual </option>
             </select>
-
+ 
             <input type="file" onChange={handleFileUpload} />
           </div>
 
