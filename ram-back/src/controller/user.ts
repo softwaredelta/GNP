@@ -98,9 +98,13 @@ export const authMiddleware = (
   };
 };
 
-authRouter.get("/me", authMiddleware(), async (req, res) => {
-  res.json(req.user);
-});
+authRouter.get(
+  "/me",
+  authMiddleware({ neededRoles: [UserRole.REGULAR] }),
+  async (req, res) => {
+    res.json(req.user);
+  },
+);
 
 authRouter.post("/refresh", async (req, res) => {
   const { refreshToken, refreshTokenExpiresAt } = req.body;

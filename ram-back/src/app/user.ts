@@ -169,6 +169,7 @@ export async function validateUserToken(params: {
     where: {
       id: auth.id,
     },
+    select: ["id", "email", "rolesString"],
   });
 
   if (!user) {
