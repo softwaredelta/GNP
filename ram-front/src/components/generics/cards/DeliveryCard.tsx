@@ -18,12 +18,20 @@ export type UserDeliveryStatus =
   | "Rechazado"
   | "Aceptado";
 
+export type Colors = "blue" | "orange";
+export type StatusDelivery =
+  | "Sin enviar"
+  | "Enviado"
+  | "Rechazado"
+  | "Aceptado";
+
 export interface DeliveryCardProps {
   deliveryID: string;
   nameDelivery: string;
   image: string;
-  color: "blue" | "orange";
   onFileSubmit: (id: string) => void;
+  color: Colors;
+  status: StatusDelivery;
 }
 
 const iconList = {
@@ -55,7 +63,10 @@ export default function DeliveryCard({
   };
 
   return (
-    <div className="w-full grid grid-cols-2  rounded-b-lg overflow-hidden bg-gnp-white shadow-lg">
+    <div
+      className="w-full grid grid-cols-2  rounded-b-lg overflow-hidden bg-gnp-white shadow-lg"
+      role="delivery"
+    >
       <div className="grid grid-cols-3 ">
         <div className="relative">
           <img className="w-full h-20 object-cover" src={image} />

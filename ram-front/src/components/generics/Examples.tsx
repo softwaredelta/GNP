@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import Card from "./cards/base/Card";
-import DeliveryCard from "./cards/DeliveryCard";
+import DeliveryCard from "./cards/base/DeliveryCard";
 import CardInfoAssurence from "./cards/info/CardInfoAssurence";
 import CardInfoTopFive from "./cards/info/CardInfoTopFive";
 import ProgressBar from "./ProgressBar";
@@ -18,7 +18,8 @@ import SkeletonText from "./skeleton/SkeletonText";
 import SkeletonDiv from "./skeleton/SkeletonDiv";
 import useAlert from "../../hooks/useAlert";
 import useAxios from "../../hooks/useAxios";
-
+import ManagerDelivery from "./cards/info/ManagerDelivery";
+// import DeliveryCard from "./cards/DeliveryCard";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
   const { showAlert } = useAlert();
@@ -133,15 +134,17 @@ export default function Examples() {
       </div>
       <div className="md:col-span-3 ">
         <DeliveryCard
-          deliveryID="test-delivery"
-          onFileSubmit={() => {}}
+          // deliveryID="test-delivery"
+          // onFileSubmit={() => {}}
           color="blue"
           nameDelivery="Nombre de la entrega"
           image="https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg"
-        />
+        >
+          <ManagerDelivery membersNumber={30}></ManagerDelivery>
+        </DeliveryCard>
       </div>
       <div className="w-10/12">
-        <DropZone ref={null} />
+        <DropZone fileInputRef={null} />
       </div>
       <div className="w-7/12">
         <button

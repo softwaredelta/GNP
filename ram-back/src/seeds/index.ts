@@ -3,10 +3,11 @@
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createUser } from "../app/user";
 import { createDelivery, setDeliverieToUser } from "../app/deliveries";
-import { createUserDelivery } from "../app/user-delivery";
+import { StatusUserDelivery } from "../entities/user-delivery";
 import { DataSource } from "typeorm";
-import { getDataSource } from "../arch/db-client";
 import { DeliveryEnt } from "../entities/delivery.entity";
+import { getDataSource } from "../arch/db-client";
+import { createUserDelivery } from "../app/user-delivery";
 
 /**
  * Make sure to specify ids so things stay consistent
@@ -22,25 +23,36 @@ export async function loadSeeds() {
     });
     const group1 = await createGroup({
       name: "test-group-1",
-      image: "https://picsum.photos/100",
+      imageURL: "https://picsum.photos/100",
     });
     const delivery1 = await createDelivery({
-      description: "test-delivery-1",
+      deliveryName: "test-delivery-1",
+      description: "test-description-1",
       idGroup: group1.group.id,
       imageUrl: "https://picsum.photos/200",
     });
 
     const delivery2 = await createDelivery({
-      description: "test-delivery-2",
+      deliveryName: "test-delivery-2",
+      description: "test-description-2",
       idGroup: group1.group.id,
       imageUrl: "https://picsum.photos/300",
     });
+
+    // GROUPS
+    const { group: group, error: group2Error } = await createGroup({
+      name: "group",
+      imageURL:
+        "https://i1.wp.com/kayum.mx/wp-content/uploads/2019/09/logo-GNP.jpeg?fit=3307%2C1686&ssl=1",
+    });
+    if (group2Error) {
+      throw new Error(group2Error);
+    }
 
     await setDeliverieToUser({
       idDeliverie: delivery1.delivery.id,
       idUser: user.user.id,
       dateDelivery: new Date(),
-      status: "Aceptado",
       fileUrl: "https://picsum.photos/400",
     });
 
@@ -48,29 +60,49 @@ export async function loadSeeds() {
       idDeliverie: delivery2.delivery.id,
       idUser: user.user.id,
       dateDelivery: new Date(),
-      status: "Rechazado",
+      status: StatusUserDelivery.sending,
       fileUrl: "https://picsum.photos/400",
     });
 
     const group2 = await createGroup({
       name: "test-group-2",
-      image: "https://picsum.photos/500",
+      imageURL: "https://picsum.photos/500",
     });
 
     await createDelivery({
-      description: "test-delivery-3",
+      deliveryName: "test-delivery-3",
+      description: "test-description-3",
       idGroup: group2.group.id,
       imageUrl: "https://picsum.photos/500",
     });
 
     await createGroup({
       name: "test-group-3",
-      image: "https://picsum.photos/600",
+      imageURL: "https://picsum.photos/600",
     });
 
     await addUserToGroup({
       userId: user.user.id,
       groupId: group1.group.id,
+    });
+
+    // Deliveries
+    const { delivery: delivery, error: delivery2Error } = await createDelivery({
+      description: "test-delivery",
+      deliveryName: "test-delivery",
+      imageUrl: "https://i.ytimg.com/vi/eDkLz16lmxI/maxresdefault.jpg",
+      idGroup: group.id,
+    });
+    if (delivery2Error) {
+      throw new Error(delivery2Error);
+    }
+
+    await setDeliverieToUser({
+      idDeliverie: delivery.id,
+      idUser: "test-user",
+      dateDelivery: new Date(),
+      status: "Aceptado",
+      fileUrl: "https://picsum.photos/400",
     });
     await addUserToGroup({
       userId: user.user.id,
@@ -80,30 +112,30 @@ export async function loadSeeds() {
     console.error(e);
   }
 
-  try {
-    const ds: DataSource = await getDataSource();
-    const delivery: DeliveryEnt = ds.manager.create(DeliveryEnt, {
-      id: "test-delivery",
-      description: "Delivery test description",
-      imageUrl:
-        "https://i.pinimg.com/474x/e2/e8/9e/e2e89eb6dd581f7f0a8a05a13675f4d4.jpg",
-      userDeliveries: [],
-    });
-    await ds.manager.save(delivery);
-  } catch (error) {
-    console.error(error);
-  }
+  // try {
+  //   const ds: DataSource = await getDataSource();
+  //   const delivery: DeliveryEnt = ds.manager.create(DeliveryEnt, {
+  //     id: "test-delivery",
+  //     description: "Delivery test description",
+  //     imageUrl:
+  //       "https://i.pinimg.com/474x/e2/e8/9e/e2e89eb6dd581f7f0a8a05a13675f4d4.jpg",
+  //     userDeliveries: [],
+  //   });
+  //   await ds.manager.save(delivery);
+  // } catch (error) {
+  //   console.error(error);
+  // }
 
-  try {
-    // User Delivery
-    await createUserDelivery({
-      userId: "test-user",
-      deliveryId: "test-delivery",
-      dateDelivery: new Date("2021-09-01"),
-      status: "Sin enviar",
-      fileUrl: "https://random.imagecdn.app/500/150",
-    });
-  } catch (error) {
-    console.error(error);
-  }
+  // try {
+  //   // User Delivery
+  //   await createUserDelivery({
+  //     userId: "test-user",
+  //     deliveryId: "test-delivery",
+  //     dateDelivery: new Date("2021-09-01"),
+  //     status: "Sin enviar",
+  //     fileUrl: "https://random.imagecdn.app/500/150",
+  //   });
+  // } catch (error) {
+  //   console.error(error);
+  // }
 }

@@ -3,15 +3,15 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 // import { AiOutlineFileProtect } from "react-icons/ai";
+import { useRecoilValue } from "recoil";
 import Wrapper from "../containers/Wrapper";
 import useModal from "../hooks/useModal";
+import { useAuthentication } from "../lib/api/api-auth";
+import { apiBase$ } from "../lib/api/api-base";
 import { Button } from "./button";
 import DropZone from "./generics/DropZone";
 import Modal from "./generics/Modal";
 import DeliveryCard from "./generics/cards/DeliveryCard";
-import { useRecoilValue } from "recoil";
-import { apiBase$ } from "../lib/api/api-base";
-import { useAuthentication } from "../lib/api/api-auth";
 
 // import useAxios from "../hooks/useAxios";
 
@@ -85,6 +85,7 @@ function Delivery() {
               nameDelivery="Nombre "
               onFileSubmit={() => handleModalOpen("test-delivery")}
               image="https://i.pinimg.com/474x/e2/e8/9e/e2e89eb6dd581f7f0a8a05a13675f4d4.jpg"
+              status={deliveries}
             />
             {/*{deliveries.map((delivery: IDelivery) => (*/}
             {/*  <DeliveryCard*/}

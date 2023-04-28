@@ -4,6 +4,8 @@ import { getDataSource } from "../arch/db-client";
 import { GroupUserStatus } from "../entities/group-user.entity";
 import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
+import { StatusUserDelivery } from "../entities/user-delivery";
+import { DeliveryEnt } from "../entities/delivery.entity";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",
@@ -11,13 +13,16 @@ export enum GroupError {
 
 export async function createGroup(params: {
   name: string;
-  image?: string;
+  imageURL?: string;
 }): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
   const ds = await getDataSource();
 
   return ds.manager
     .save(
-      ds.manager.create(GroupEnt, { name: params.name, image: params.image }),
+      ds.manager.create(GroupEnt, {
+        name: params.name,
+        imageURL: params.imageURL,
+      }),
     )
     .then((group) => {
       return { group };
@@ -52,17 +57,36 @@ export async function addUserToGroup(params: {
     }));
 }
 
+export async function addDeliveryToGroup(params: {
+  deliveryID: string;
+  groupID: string;
+}): Promise<{ error?: GroupError; errorReason?: Error }> {
+  const ds = await getDataSource();
+
+  return ds.manager
+    .save(
+      DeliveryEnt,
+      ds.manager.create(DeliveryEnt, {
+        id: params.deliveryID,
+        groupId: params.groupID,
+      }),
+    )
+    .then(() => ({}))
+    .catch((e) => ({
+      error: GroupError.UNHANDLED,
+      errorReason: e,
+    }));
+}
+
 interface GroupUser {
   group: GroupEnt;
   numberOfDeliveries: number;
   totalDeliveries: number;
 }
 
-export async function getUserGroups(params: { userId: string }): Promise<{
-  groups: GroupUser[];
-  error?: GroupError;
-  errorReason?: Error;
-}> {
+export async function getUserGroups(params: {
+  userId: string;
+}): Promise<{ groups: GroupUser[]; error?: GroupError; errorReason?: Error }> {
   const ds = await getDataSource();
 
   try {
@@ -83,7 +107,7 @@ export async function getUserGroups(params: { userId: string }): Promise<{
         delivery.userDeliveries.some(
           (userDelivery) =>
             userDelivery.userId === params.userId &&
-            userDelivery.status === "Aceptado",
+            userDelivery.status === StatusUserDelivery.accepted,
         ),
       ).length;
 
