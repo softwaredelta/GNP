@@ -69,7 +69,7 @@ export class UserEnt {
   mobile!: number;
 
   @OneToMany(() => SellEnt, (sell) => sell.user)
-  sell! : SellEnt[];
+  sell!: SellEnt[];
 
   @Column(TELEPHONE_COLUMN)
   phone!: number;

@@ -173,7 +173,6 @@ export async function loadSeeds() {
 
   // SALES
 
-
   await createSale({
     policyNumber: "423456789",
     assuranceType: {
@@ -233,7 +232,6 @@ export async function loadSeeds() {
       id: "test-user-2",
     },
   });
-
 
   await createSale({
     policyNumber: "323456789",
