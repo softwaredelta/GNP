@@ -2,9 +2,15 @@
 
 import { getDataSource } from "../arch/db-client";
 import { v4 } from "uuid";
-import { UserEnt } from "../entities/user.entity";
+import {
+  UserEnt,
+  UserRole,
+  buildRoleString,
+  rolesFromString,
+} from "../entities/user.entity";
 import { TokenType, generateToken, verifyToken } from "./auth";
 import { hashPassword, comparePassword } from "../utils/hash";
+
 export enum UserError {
   USER_EXISTS = "USER_EXISTS",
   USER_NOT_FOUND = "USER_NOT_FOUND",
@@ -17,27 +23,103 @@ export interface UserAuthentication {
   refreshToken: string;
   refreshTokenExpiresAt: number;
   username: string;
-  userRole: string;
+  roles: UserRole[];
 }
 
 export async function createUser(params: {
   email: string;
   password: string;
   id?: string;
+  roles?: UserRole[];
 }): Promise<{ user: UserEnt; error?: UserError }> {
   // TODO: handle authentication with admin or something
 
   const ds = await getDataSource();
   const id = params.id || v4();
   const hashedPassword = await hashPassword(params.password);
+  const roles = params.roles || [UserRole.REGULAR];
+
   return ds.manager
-    .save(UserEnt, { id, email: params.email, password: hashedPassword })
+    .save(
+      UserEnt,
+      ds.manager.create(UserEnt, {
+        id,
+        email: params.email,
+        password: hashedPassword,
+        rolesString: buildRoleString(roles),
+      }),
+    )
     .then((user) => {
       return { user };
     })
     .catch(() => {
       return { error: UserError.USER_EXISTS, user: {} as UserEnt };
     });
+}
+
+export async function addRoleToUser(params: {
+  userId: string;
+  role: UserRole;
+}): Promise<{ error?: UserError }> {
+  const ds = await getDataSource();
+  const user = await ds.manager.findOne(UserEnt, {
+    where: {
+      id: params.userId,
+    },
+    select: ["id", "rolesString"],
+  });
+
+  if (!user) {
+    return { error: UserError.USER_NOT_FOUND };
+  }
+
+  const roles = rolesFromString(user.rolesString);
+  if (roles.includes(params.role)) {
+    return {};
+  }
+
+  roles.push(params.role);
+  const newRoleString = buildRoleString(roles);
+  await ds.manager.update(
+    UserEnt,
+    { id: params.userId },
+    { rolesString: newRoleString },
+  );
+
+  return {};
+}
+
+export async function removeRoleFromUser(params: {
+  userId: string;
+  role: UserRole;
+}): Promise<{ error?: UserError }> {
+  const ds = await getDataSource();
+  const user = await ds.manager.findOne(UserEnt, {
+    where: {
+      id: params.userId,
+    },
+    select: ["id", "rolesString"],
+  });
+
+  if (!user) {
+    return { error: UserError.USER_NOT_FOUND };
+  }
+
+  const roles = rolesFromString(user.rolesString);
+  if (!roles.includes(params.role)) {
+    return {};
+  }
+
+  const newRoleString = buildRoleString(
+    roles.filter((role) => role !== params.role),
+  );
+  await ds.manager.update(
+    UserEnt,
+    { id: params.userId },
+    { rolesString: newRoleString },
+  );
+
+  return {};
 }
 
 export async function authenticateUser(params: {
@@ -49,7 +131,7 @@ export async function authenticateUser(params: {
     where: {
       email: params.email,
     },
-    select: ["id", "email", "password"],
+    select: ["id", "email", "password", "rolesString"],
   });
   const correctPass =
     user === null
@@ -69,7 +151,7 @@ export async function authenticateUser(params: {
       refreshToken: refreshToken.token,
       refreshTokenExpiresAt: refreshToken.expiresAt,
       username: user.email,
-      userRole: "user",
+      roles: user.roles,
     },
   };
 }
@@ -87,7 +169,7 @@ export async function validateUserToken(params: {
     where: {
       id: auth.id,
     },
-    select: ["id", "email", "password"],
+    select: ["id", "email", "rolesString"],
   });
 
   if (!user) {

@@ -4,11 +4,18 @@ import { Link } from "react-router-dom";
 import { useAuthentication } from "../lib/api/api-auth";
 
 export default function Home() {
-  const { logout } = useAuthentication();
+  const { logout, auth } = useAuthentication();
 
   return (
     <div>
       <h1>Home</h1>
+
+      <h2>user info</h2>
+      <ul>
+        <li>username: {auth?.username}</li>
+        <li>roles: {auth?.roles.join(", ")}</li>
+      </ul>
+
       <ul>
         <li>
           <Link
@@ -35,28 +42,28 @@ export default function Home() {
           </Link>
         </li>
         <li>
-          <a
-            href="/my-groups"
+          <Link
+            to="/my-groups"
             className="underline text-red-500 hover:text-red-800"
           >
             my groups
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href="/new-sale"
+          <Link
+            to="/new-sale"
             className="underline text-red-500 hover:text-red-800"
           >
             register new sale
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href="/sales-history"
+          <Link
+            to="/sales-history"
             className="underline text-red-500 hover:text-red-800"
           >
             all sales
-          </a>
+          </Link>
         </li>
         <li>
           <button

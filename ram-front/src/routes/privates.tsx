@@ -13,45 +13,47 @@ const Infra = lazy(async () => import("../pages/InfraTest"));
 const NewSale = lazy(async () => import("../pages/NewSale"));
 const SalesHistory = lazy(async () => import("../pages/SalesHistory"));
 
-export const privateRoutes: IRoute[] = [
-  {
-    path: "/",
-    component: Home,
-  },
-  {
-    path: "/managerCourses",
-    component: ManagerCourses,
-  },
-  {
-    path: "/groupDeliveries/:id",
-    component: GroupDeliveries,
-  },
-  {
-    path: "/my-groups",
-    component: Groups,
-  },
-  {
-    path: "/group/:id",
-    component: Group,
-  },
+export const CommonUserRoutes: IRoute[] = [
   {
     path: "/infra",
-    component: Infra,
+    Component: () => <Infra />,
   },
   {
     path: "/components",
-    component: Components,
+    Component: () => <Components />,
+  },
+  {
+    path: "/",
+    Component: () => <Home />,
+  },
+];
+
+export const RegularUserRoutes: IRoute[] = [
+  {
+    path: "/my-groups",
+    Component: () => <Groups />,
   },
   {
     path: "/group/:id",
-    component: Group,
-  },
-  {
-    path: "/new-sale",
-    component: NewSale,
+    Component: () => <Group />,
   },
   {
     path: "/sales-history",
-    component: SalesHistory,
+    Component: () => <SalesHistory />,
+  },
+  {
+    path: "/new-sale",
+    Component: () => <NewSale />,
+  },
+];
+
+export const ManagerUserRoutes: IRoute[] = [
+  {
+    path: "/managerCourses",
+    Component: () => <ManagerCourses />,
+  },
+  {
+    path: "/groupDeliveries/:id",
+    Component: () => <GroupDeliveries />,
   },
 ];
