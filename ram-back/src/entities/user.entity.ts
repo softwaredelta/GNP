@@ -11,6 +11,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
 import { OriginEnt } from "./origin.entity";
 import { StateEnt } from "./state.entity";
@@ -23,6 +24,7 @@ import {
   USERNAME_COLUMN,
 } from "./columns";
 import { UserLevelEnt } from "./user-level.entity";
+import { SellEnt } from "./sell.entity";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -65,6 +67,9 @@ export class UserEnt {
 
   @Column(TELEPHONE_COLUMN)
   mobile!: number;
+
+  @OneToMany(() => SellEnt, (sell) => sell.user)
+  sell!: SellEnt[];
 
   @Column(TELEPHONE_COLUMN)
   phone!: number;

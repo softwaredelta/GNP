@@ -3,6 +3,7 @@
 import { atom, selector, useSetRecoilState } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
 import useAxios from "../../hooks/useAxios";
+import { authentication$ } from "./api-auth";
 export interface AssuranceType {
   id: string;
   name: string;
@@ -41,6 +42,9 @@ export const allSales$ = selector<Sell[]>({
   key: "allSales$",
   get: async ({ get }) => {
     get(updateSales$);
+    const auth = get(authentication$);
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${auth.accessToken}`);
     const isTest = get(isTest$);
     const apiBase = get(apiBase$);
 
@@ -53,7 +57,10 @@ export const allSales$ = selector<Sell[]>({
       ];
     }
 
-    return fetch(`${apiBase}/sales/all`).then((res) => res.json());
+    const response = await fetch(`${apiBase}/sales/my-sales`, {
+      headers,
+    });
+    return response.json();
   },
 });
 
