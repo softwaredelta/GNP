@@ -77,7 +77,7 @@ userDeliveryRouter.post(
           userId: req.user.id,
           deliveryId: id,
           status: "Enviado",
-          fileUrl: "",
+          fileUrl: filename,
           dateDelivery: new Date(),
         });
         res.status(201).json(createdUserDelivery);
