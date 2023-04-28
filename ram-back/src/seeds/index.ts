@@ -202,7 +202,37 @@ export async function loadSeeds() {
     periodicity: "Anual",
     id: "test-sale4",
     user: {
-      id: "test-user",
+      id: "manager@delta.tec.mx",
+    },
+  });
+
+  await createSale({
+    policyNumber: "423456789",
+    assuranceType: {
+      id: "test-at-1",
+    },
+    sellDate: new Date("2021-01-01"),
+    amountInCents: "100000",
+    clientName: "Mónica Ayala",
+    periodicity: "Anual",
+    id: "test-sale4",
+    user: {
+      id: "manager@delta.tec.mx",
+    },
+  });
+
+  await createSale({
+    policyNumber: "423456789",
+    assuranceType: {
+      id: "test-at-1",
+    },
+    sellDate: new Date("2021-01-01"),
+    amountInCents: "100000",
+    clientName: "Mónica Ayala",
+    periodicity: "Anual",
+    id: "test-sale4",
+    user: {
+      id: "manager@delta.tec.mx",
     },
   });
 
@@ -213,12 +243,13 @@ export async function loadSeeds() {
     },
     sellDate: new Date("2021-01-01"),
     amountInCents: "100000",
-    clientName: "Karen López",
+    clientName: "Karen López Revisada",
     periodicity: "Mensual",
     id: "test-sale2",
     user: {
       id: "test-user",
     },
+    status: "Revisada",
   });
 
   await createSale({
@@ -243,7 +274,7 @@ export async function loadSeeds() {
     },
     sellDate: new Date("2021-01-01"),
     amountInCents: "100000",
-    clientName: "Olivia",
+    clientName: "Olivia M",
     periodicity: "Mensual",
     id: "test-sale1",
     user: {
