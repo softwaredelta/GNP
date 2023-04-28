@@ -55,7 +55,9 @@ export const VerifySalesTable = ({ sales, onUpdated }: IListSalesProps) => {
           <Table.HeadCell> Acciones </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-        { sales.length === 0 && <div className="text-center">No hay ventas para verificar</div>}
+          {sales.length === 0 && (
+            <div className="text-center">No hay ventas para verificar</div>
+          )}
           {sales.map((sale) => {
             return (
               <VerifySalesRow
