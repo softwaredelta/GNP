@@ -44,7 +44,9 @@ function NavBar({ onLogout }: Props) {
           <Dropdown.Item>Ver Perfil</Dropdown.Item>
           <Dropdown.Item>Ayuda</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item onClick={onLogout}>Salir</Dropdown.Item>
+          <Dropdown.Item onClick={onLogout} data-testid="logout-button">
+            Salir
+          </Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
