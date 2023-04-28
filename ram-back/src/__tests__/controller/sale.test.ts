@@ -56,7 +56,6 @@ describe("controller:sale", () => {
         id: "test-user",
       },
     });
-
   });
 
   describe("creation endpoint", () => {
@@ -185,9 +184,12 @@ describe("controller:sale", () => {
     });
   });
 
-  describe ("Update endpoint", () => {
+  describe("Update endpoint", () => {
     it("rejects unauthenticated request", async () => {
-      return request(app).post("/sales/update-status/test-case-sale-id").send().expect(401);
+      return request(app)
+        .post("/sales/update-status/test-case-sale-id")
+        .send()
+        .expect(401);
     });
 
     it("rejects bad data", async () => {
@@ -200,11 +202,11 @@ describe("controller:sale", () => {
         .set("Authorization", `Bearer ${accessToken}`)
         .send(data)
         .expect(400)
-            .then((res) => {
-              expect(res.body).toMatchObject({
-                message: "BAD_DATA",
-              });
-            });
+        .then((res) => {
+          expect(res.body).toMatchObject({
+            message: "BAD_DATA",
+          });
+        });
     });
 
     it("rejects additional data", async () => {
@@ -218,11 +220,11 @@ describe("controller:sale", () => {
         .set("Authorization", `Bearer ${accessToken}`)
         .send(data)
         .expect(400)
-            .then((res) => {
-              expect(res.body).toMatchObject({
-                message: "BAD_DATA",
-              });
-            });
+        .then((res) => {
+          expect(res.body).toMatchObject({
+            message: "BAD_DATA",
+          });
+        });
     });
 
     it("updates status of sale", async () => {
@@ -237,9 +239,7 @@ describe("controller:sale", () => {
         .expect(200)
         .then((res) => {
           expect(res.body).toHaveProperty("changedSale");
-        }
-      );
+        });
     });
-
-  })
+  });
 });
