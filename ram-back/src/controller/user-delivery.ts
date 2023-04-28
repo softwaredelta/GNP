@@ -12,6 +12,7 @@ import { getDataSource } from "../arch/db-client";
 import { S3Api, getS3Api } from "../arch/s3-client";
 import { UserDeliveryEnt } from "../entities/user-delivery.entity";
 import { authMiddleware } from "./user";
+import { UserRole } from "../entities/user.entity";
 
 export const userDeliveryRouter: Router = Router();
 const upload = multer();
@@ -30,7 +31,7 @@ userDeliveryRouter.get(
 );
 userDeliveryRouter.get(
   "/:id/auth",
-  authMiddleware,
+  authMiddleware(),
   async (req: Request, res: Response): Promise<void> => {
     try {
       const id: string = req.params.id;
@@ -62,7 +63,7 @@ userDeliveryRouter.get(
 
 userDeliveryRouter.post(
   "/:id/upload",
-  authMiddleware,
+  authMiddleware({ neededRoles: [UserRole.REGULAR] }),
   upload.single("file"),
   async (req: Request, res: Response): Promise<void> => {
     try {
