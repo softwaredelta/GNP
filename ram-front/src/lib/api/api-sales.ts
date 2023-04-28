@@ -21,6 +21,11 @@ export const useUpdateSales = () => {
   return () => setUpdateSales((n) => n + 1);
 };
 
+export const useUpdateVerifiedSales = () => {
+  const setUpdateVerifiedSales = useSetRecoilState(updateVerifiedSales$);
+  return () => setUpdateVerifiedSales((n) => n + 1);
+};
+
 export const allSales$ = selector<ISell[]>({
   key: "allSales$",
   get: async ({ get }) => {
@@ -47,33 +52,7 @@ export const allSales$ = selector<ISell[]>({
   },
 });
 
-export const verifySales$ = selector<Sell[]>({
-  key: "verifySales$",
-  get: async ({ get }) => {
-    get(updateVerifiedSales$);
-    const auth = get(authentication$);
-    const headers = new Headers();
-    headers.append("Authorization", `Bearer ${auth.accessToken}`);
-    const isTest = get(isTest$);
-    const apiBase = get(apiBase$);
-
-    if (isTest) {
-      return [
-        {
-          id: "test-id",
-          clientname: "Test name",
-        },
-      ];
-    }
-
-    const response = await fetch(`${apiBase}/sales/verify-sales`, {
-      headers,
-    });
-    return response.json();
-  },
-});
-
-export const verifySales$ = selector<Sell[]>({
+export const verifySales$ = selector<ISell[]>({
   key: "verifySales$",
   get: async ({ get }) => {
     get(updateVerifiedSales$);
