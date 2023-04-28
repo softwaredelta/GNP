@@ -13,8 +13,12 @@ export const filesRouter = Router();
 filesRouter.get("/:filename", async (req, res) => {
   const s3 = await getS3Api();
   const { filename } = req.params;
+  const isPdf = filename.toLowerCase().endsWith(".pdf");
 
-  console.log("filename", filename);
   const object = await s3.getObject(filename);
+  if (isPdf) {
+    res.setHeader("Content-Type", "application/pdf");
+  }
+
   object.pipe(res);
 });
