@@ -17,7 +17,7 @@ export interface IUseAxiosReturn<T> {
   response: T | null;
   error?: AxiosError | unknown;
   loading?: boolean;
-  callback?: () => void;
+  callback?: (newBody: object) => void;
 }
 
 export default function useAxios<T>({
@@ -60,7 +60,8 @@ export default function useAxios<T>({
     }
   }, [auth, method, fetchData, mount]);
 
-  const callback = (): void => {
+  const callback = (newBody: object) => {
+    body = newBody;
     fetchData();
   };
 

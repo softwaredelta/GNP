@@ -7,6 +7,7 @@ import { authenticateUser, createUser } from "../../app/user";
 import { createAssuranceType } from "../../app/assuranceType";
 import { AssuranceTypeEnt } from "../../entities/assurance-type.entity";
 import { SaleError } from "../../app/sale";
+import { createSale } from "../../app/sale";
 
 describe("controller:sale", () => {
   let accessToken: string;
@@ -40,6 +41,21 @@ describe("controller:sale", () => {
     assurance = assuranceType;
 
     accessToken = auth.accessToken;
+
+    await createSale({
+      policyNumber: "823456789",
+      assuranceType: {
+        id: "test-at-1",
+      },
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "200000",
+      clientName: "test-client",
+      periodicity: "Anual",
+      id: "test-case-sale-id",
+      user: {
+        id: "test-user",
+      },
+    });
   });
 
   describe("creation endpoint", () => {
@@ -164,6 +180,65 @@ describe("controller:sale", () => {
           expect(res.body).toMatchObject({
             message: SaleError.SALE_ERROR,
           });
+        });
+    });
+  });
+
+  describe("Update endpoint", () => {
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .post("/sales/update-status/test-case-sale-id")
+        .send()
+        .expect(401);
+    });
+
+    it("rejects bad data", async () => {
+      const data = {
+        statusChange: 123456789,
+      };
+
+      return request(app)
+        .post("/sales/update-status/test-case-sale-id")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(data)
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toMatchObject({
+            message: "BAD_DATA",
+          });
+        });
+    });
+
+    it("rejects additional data", async () => {
+      const data = {
+        statusChange: "aceptada",
+        additionalField: "additional value",
+      };
+
+      return request(app)
+        .post("/sales/update-status/test-case-sale-id")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(data)
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toMatchObject({
+            message: "BAD_DATA",
+          });
+        });
+    });
+
+    it("updates status of sale", async () => {
+      const data = {
+        statusChange: "aceptada",
+      };
+
+      return request(app)
+        .post("/sales/update-status/test-case-sale-id")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(data)
+        .expect(200)
+        .then((res) => {
+          expect(res.body).toHaveProperty("changedSale");
         });
     });
   });

@@ -230,58 +230,9 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
 });
 
 export function AuthenticationHandler() {
-  const isTest = useRecoilValue(isTest$);
-  const [authentication, setAuthentication] = useRecoilState(authentication$);
-  const setAuthenticationError = useSetRecoilState(authenticationError$);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const authentication = useRecoilValue(authentication$);
   const hash = useHash();
   const { refresh } = useRecoilValue(authenticationApi$({ hash }));
-  const apiBase = useRecoilValue(apiBase$);
-
-  useEffect(() => {
-    if (isInitialized) return;
-    setIsInitialized(true);
-
-    (async () => {
-      const storedToken = localStorage.getItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
-      if (!storedToken) {
-        return;
-      }
-      const { refreshToken, refreshTokenExpiresAt } = JSON.parse(storedToken);
-
-      if (isTest) {
-        if (refreshToken === "valid-refresh-token") {
-          setAuthentication({
-            accessToken: "accessToken",
-            accessTokenExpiresAt: 3600,
-            refreshToken: "refreshToken",
-            refreshTokenExpiresAt: 3600,
-            username: "username",
-            roles: ["regular"],
-          });
-        } else {
-          setAuthentication(null);
-          localStorage.removeItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
-        }
-
-        return;
-      }
-
-      refreshTokens({
-        refreshToken,
-        refreshTokenExpiresAt,
-        apiBase,
-        setAuthentication,
-        setAuthenticationError,
-      });
-    })();
-  }, [
-    apiBase,
-    isInitialized,
-    isTest,
-    setAuthentication,
-    setAuthenticationError,
-  ]);
 
   useEffect(() => {
     if (!authentication) return;
@@ -302,6 +253,74 @@ export function AuthenticationHandler() {
       clearTimeout(timeout);
     };
   }, [authentication, refresh]);
+
+  return <></>;
+}
+
+export const isAuthenticationReady$ = atom<boolean>({
+  key: "isAuthenticationReady",
+  default: false,
+});
+
+export function AuthenticationInitializationHandler() {
+  const [isInitialized, setIsInitialized] = useState(false);
+  const isTest = useRecoilValue(isTest$);
+  const setAuthentication = useSetRecoilState(authentication$);
+  const setAuthenticationError = useSetRecoilState(authenticationError$);
+  const apiBase = useRecoilValue(apiBase$);
+  const setIsAuthenticationReady = useSetRecoilState(isAuthenticationReady$);
+
+  useEffect(() => {
+    if (isInitialized) {
+      return;
+    }
+    setIsInitialized(true);
+
+    (async () => {
+      const storedToken = localStorage.getItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
+      if (!storedToken) {
+        setIsAuthenticationReady(true);
+        return;
+      }
+      const { refreshToken, refreshTokenExpiresAt } = JSON.parse(storedToken);
+
+      if (isTest) {
+        if (refreshToken === "valid-refresh-token") {
+          setAuthentication({
+            accessToken: "accessToken",
+            accessTokenExpiresAt: 3600,
+            refreshToken: "refreshToken",
+            refreshTokenExpiresAt: 3600,
+            username: "username",
+            roles: ["regular"],
+          });
+        } else {
+          setAuthentication(null);
+          localStorage.removeItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
+        }
+
+        setIsAuthenticationReady(true);
+        return;
+      }
+
+      await refreshTokens({
+        refreshToken,
+        refreshTokenExpiresAt,
+        apiBase,
+        setAuthentication,
+        setAuthenticationError,
+      });
+
+      setIsAuthenticationReady(true);
+    })();
+  }, [
+    apiBase,
+    isInitialized,
+    isTest,
+    setAuthentication,
+    setAuthenticationError,
+    setIsAuthenticationReady,
+  ]);
 
   return <></>;
 }
