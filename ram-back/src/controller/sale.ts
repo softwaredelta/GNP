@@ -109,7 +109,7 @@ salesRouter.get("/verify-sales", authMiddleware(), async (req, res) => {
   res.json({ sales });
 });
 
-salesRouter.post("/update-status/:id", authMiddleware(), ../ram-back/src/controller/sale.tssaleUpdateParametersMiddleware, async (req, res) => {
+salesRouter.post("/update-status/:id", authMiddleware(), saleUpdateParametersMiddleware, async (req, res) => {
   const { statusChange } = req.body;
   const db = await getDataSource();
   const sales = await db.manager
