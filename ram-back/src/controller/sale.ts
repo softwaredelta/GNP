@@ -110,20 +110,25 @@ salesRouter.get("/verify-sales", authMiddleware(), async (req, res) => {
   res.json({ sales });
 });
 
-salesRouter.post("/update-status/:id", authMiddleware(), saleUpdateParametersMiddleware, async (req, res) => {
-  const { statusChange } = req.body;
-  const db = await getDataSource();
-  const sales = await db.manager
-    .createQueryBuilder()
-    .update(SellEnt)
-    .set({ status: req.body.statusChange })
-    .where("id = :id", { id: req.params.id })
-    .execute();
+salesRouter.post(
+  "/update-status/:id",
+  authMiddleware(),
+  saleUpdateParametersMiddleware,
+  async (req, res) => {
+    const { statusChange } = req.body;
+    const db = await getDataSource();
+    const sales = await db.manager
+      .createQueryBuilder()
+      .update(SellEnt)
+      .set({ status: req.body.statusChange })
+      .where("id = :id", { id: req.params.id })
+      .execute();
 
-  const changedSale = await db.manager.findOne(SellEnt, {
-    relations: { user: true, assuranceType: true },
-    where: { id: req.params.id },
-  });
+    const changedSale = await db.manager.findOne(SellEnt, {
+      relations: { user: true, assuranceType: true },
+      where: { id: req.params.id },
+    });
 
-  res.json({ changedSale });
-});
+    res.json({ changedSale });
+  },
+);
