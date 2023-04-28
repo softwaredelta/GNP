@@ -4,16 +4,14 @@ export interface DeliveryCardProps {
   nameDelivery: string;
   image: string;
   color: "blue" | "orange";
-  // status: "Sin enviar" | "Enviado" | "Rechazado" | "Aceptado";
 }
 
-export default function DeliveryCard({
+export default function DeliveryManagementCard({
   children,
   nameDelivery,
   image,
   color,
-}: // status,
-DeliveryCardProps): JSX.Element {
+}: DeliveryCardProps): JSX.Element {
   const colorOptions = {
     blue: "bg-gnp-blue-500",
     orange: "bg-gnp-orange-500",

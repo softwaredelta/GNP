@@ -1,12 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
+import { useParams } from "react-router-dom";
+import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
-import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
-import { useParams } from "react-router-dom";
 import { IDelivery } from "../types";
 
 export default function ManagerDeliveries(): JSX.Element {
-  const id = useParams().id;
+  const { id } = useParams();
 
   const { response: delivery } = useAxios<IDelivery>({
     url: `deliveries/${id}`,
