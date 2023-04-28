@@ -86,3 +86,25 @@ salesRouter.get("/my-sales", authMiddleware(), async (req, res) => {
 
   res.json({ sales });
 });
+
+salesRouter.get("/verify-sales", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const sales = await db.manager.find(SellEnt, {
+    relations: { user: true, assuranceType: true },
+    where: { status: "sin revisar" },
+  });
+
+  res.json({ sales });
+});
+
+salesRouter.post("/update-status/:id", async (req, res) => {
+  const { statusChange } = req.body;
+  const db = await getDataSource();
+  const sales = await db.manager
+    .createQueryBuilder()
+    .update(SellEnt)
+    .set({ status: req.body.statusChange })
+    .where("id = :id", { id: req.params.id })
+    .execute();
+  res.json({ sales });
+});
