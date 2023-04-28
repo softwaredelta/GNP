@@ -27,7 +27,7 @@ export async function createSale(params: {
   const ds = await getDataSource();
   const id = params.id || v4();
   // Static values not handled yet in frontend
-  const status = "sin revisar";
+  const status = params.status || "sin revisar";
   const periodicity = "mensual";
 
   return ds.manager
