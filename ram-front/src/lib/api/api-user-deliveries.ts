@@ -1,11 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { User } from "./api-courses";
 import { selectorFamily } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
 import { authentication$ } from "./api-auth";
-import { StatusDelivery } from "../../components/generics/cards/DeliveryCard";
 import axios from "axios";
+import { DeliveryStatus, IUser } from "../../types";
 
 export interface IDelivery {
   id: string;
@@ -18,12 +17,12 @@ export interface IDelivery {
 
 export interface IUserDelivery {
   id: string;
-  user: User;
+  user: IUser;
   userId: string;
   delivery: IDelivery;
   deliveryId: string;
   dateDelivery: Date;
-  status: StatusDelivery;
+  status: DeliveryStatus;
   fileUrl: string;
   createdAt: Date;
   updatedAt: Date;
