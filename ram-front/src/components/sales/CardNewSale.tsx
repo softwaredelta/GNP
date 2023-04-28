@@ -38,11 +38,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   const handleFileUpload = (event: any) => {
     const file = event.target.files[0];
     const fileUrl = URL.createObjectURL(file);
-    // const reader = new FileReader();
     setEvidence(fileUrl);
-    // console.log("Hola");
-    console.log(fileUrl);
-    // reader.readAsDataURL(file);
   };
 
   const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -65,27 +61,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     evidenceUrl: evidence,
   };
   const { response, error, callback } = CreateNewSale({ saleData });
-  // const { response, error, callback } = useAxios<{
-  //   data: {
-  //     group: {
-  //       id: string;
-  //       name: string;
-  //     };
-  //   };
-  // }>({
-  //   url: "sales/create",
-  //   method: "POST",
-  //   body: {
-  //     policyNumber: policyNum,
-  //     sellDate: selectedDate,
-  //     assuranceType: {
-  //       id: assuranceType,
-  //     },
-  //     amountInCents: amount,
-  //     clientName: client,
-  //     periodicity: periodicity,
-  //   },
-  // });
+
 
   useEffect(() => {
     if (response) {
