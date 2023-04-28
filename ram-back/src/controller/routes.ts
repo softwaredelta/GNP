@@ -8,6 +8,7 @@ import { deliveriesRouter } from "./delivery";
 import { salesRouter } from "./sale";
 import { assuranceTypeRouter } from "./assuranceType";
 import { userDeliveryRouter } from "./user-delivery";
+import { filesRouter } from "./files";
 
 export const router = Router();
 
@@ -18,3 +19,4 @@ router.use("/deliveries", deliveriesRouter);
 router.use("/sales", salesRouter);
 router.use("/assurance-types", assuranceTypeRouter);
 router.use("/user-delivery", userDeliveryRouter);
+router.use("/file", filesRouter);
