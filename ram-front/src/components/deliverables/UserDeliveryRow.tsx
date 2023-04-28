@@ -4,24 +4,25 @@ import { Table } from "flowbite-react";
 import { IUserDelivery } from "../../types";
 import { useMemo } from "react";
 import { ImCross, ImCheckmark } from "react-icons/im";
+import { RiFileSearchFill } from "react-icons/ri";
 import { type IconType } from "react-icons/lib";
-
-const actionIconSize = 20;
 
 function ActionButton({
   color,
   Icon,
   onClick,
+  size,
 }: {
   color: string;
   Icon: IconType;
   onClick: () => void;
+  size?: number;
 }) {
   return (
     <button onClick={onClick}>
       <Icon
         className={`${color} hover:scale-125 transition-all ease-in-out duration-100`}
-        size={actionIconSize}
+        size={size}
       />
     </button>
   );
@@ -69,7 +70,16 @@ export function UserDeliveryRow({
       <Table.Cell>{user.email}</Table.Cell>
 
       <Table.Cell>{status}</Table.Cell>
-      <Table.Cell>Archivo</Table.Cell>
+      <Table.Cell>
+        <ActionButton
+          color="text-gnp-blue-700"
+          Icon={RiFileSearchFill}
+          onClick={() => {
+            alert("Descargando...");
+          }}
+          size={50}
+        />
+      </Table.Cell>
       <Table.Cell>{date}</Table.Cell>
       <Table.Cell className="items-center justify-center h-full">
         <div className="flex flex-row gap-5 justify-around">
@@ -79,6 +89,7 @@ export function UserDeliveryRow({
             onClick={() => {
               alert("Aceptando...");
             }}
+            size={20}
           />
           <ActionButton
             color="text-red-500"
@@ -86,6 +97,7 @@ export function UserDeliveryRow({
             onClick={() => {
               alert("Rechazando...");
             }}
+            size={20}
           />
         </div>
       </Table.Cell>
