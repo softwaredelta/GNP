@@ -7,12 +7,10 @@ import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
+import FileUpload from "../upload";
+import { IAssuranceType } from "../../types";
 export interface IListAssuranceTypesProps {
-  assuranceTypes: {
-    id: string;
-    name: string;
-    description: string;
-  }[];
+  assuranceTypes: IAssuranceType[];
 }
 
 const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {

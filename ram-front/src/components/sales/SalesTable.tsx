@@ -6,31 +6,10 @@ import { Table } from "flowbite-react";
 import SalesRow from "./SalesRow";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { ISell } from "../../types";
 
-export interface AssuranceType {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-}
 export interface IListSalesProps {
-  sales: {
-    id: string;
-    policyNumber: string;
-    assuranceType: AssuranceType;
-    sellDate: Date;
-    amountInCents: string;
-    clientName: string;
-    status: string;
-    periodicity: string;
-    user: User;
-    evidenceUrl: string;
-  }[];
+  sales: ISell[];
   onDeleted: () => void;
 }
 
@@ -41,7 +20,7 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
       onDeleted();
       setShouldUpdate(false);
     }
-  }, [shouldUpdate]);
+  }, [onDeleted, shouldUpdate]);
 
   return (
     <div data-testid="Table" className="grid grid-row w-full pb-4 px-8">

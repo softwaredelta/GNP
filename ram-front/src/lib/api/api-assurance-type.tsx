@@ -2,13 +2,9 @@
 
 import { selector } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
-export interface AssuranceType {
-  id: string;
-  name: string;
-  description: string;
-}
+import { IAssuranceType } from "../../types";
 
-export const allAssuranceTypes$ = selector<AssuranceType[]>({
+export const allAssuranceTypes$ = selector<IAssuranceType[]>({
   key: "allAssuranceTypes$",
   get: async ({ get }) => {
     const isTest = get(isTest$);

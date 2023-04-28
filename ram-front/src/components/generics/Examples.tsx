@@ -83,7 +83,7 @@ export default function Examples() {
           icon={<BsHouses color="white" size={30} />}
         >
           <CardInfoAssurence
-            typeAssurance="Seguro de hogar"
+            assuranceName="Seguro de hogar"
             color="orange"
             total={2000000}
           />
@@ -96,7 +96,7 @@ export default function Examples() {
           icon={<IoPawSharp color="white" size={30} />}
         >
           <CardInfoTopFive
-            typeAssurance="Seguro de mascotas"
+            assuranceName="Seguro de mascotas"
             color="blue"
             top={[
               {

@@ -45,5 +45,5 @@ assuranceTypeRouter.post(
 assuranceTypeRouter.get("/all", async (req, res) => {
   const db = await getDataSource();
   const assuranceTypes = await db.manager.find(AssuranceTypeEnt);
-  res.json({ assuranceTypes });
+  res.json(assuranceTypes);
 });

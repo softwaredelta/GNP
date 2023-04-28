@@ -2,43 +2,28 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import ListManagerGroup from "../components/groups/ListManagerGroup";
-import ListManagerDeliveries from "../components/deliverables/ListManagerDeliveries";
+import { ManagerListGroupDeliveries } from "../components/deliverables/ListManagerDeliveries";
 
 describe("Manager deliveries card", () => {
   it("renders all the deliveries", () => {
     render(
       <BrowserRouter>
-        <ListManagerDeliveries
-          groupDeliveries={[
+        <ManagerListGroupDeliveries
+          deliveries={[
             {
               id: "1",
+              deliveryName: "test-delivery-1",
               description: "test-delivery-1",
-              imageUrl: "https://picsum.photos/100",
-              groupId: "1",
-              userDeliveries: [
-                {
-                  id: "1",
-                  description: "test-user-delivery-1",
-                  imageURL: "https://picsum.photos/100",
-                },
-              ],
+              imageURL: "https://picsum.photos/100",
             },
             {
               id: "2",
+              deliveryName: "test-delivery-2",
               description: "test-delivery-2",
-              imageUrl: "https://picsum.photos/100",
-              groupId: "1",
-              userDeliveries: [
-                {
-                  id: "2",
-                  description: "test-user-delivery-2",
-                  imageURL: "https://picsum.photos/100",
-                },
-              ],
+              imageURL: "https://picsum.photos/100",
             },
           ]}
-        ></ListManagerDeliveries>
+        />
       </BrowserRouter>,
     );
 
@@ -52,9 +37,10 @@ describe("Manager deliveries card", () => {
   it("renders a message when there are no deliveries", () => {
     render(
       <BrowserRouter>
-        <ListManagerDeliveries groupDeliveries={[]}></ListManagerDeliveries>
+        <ManagerListGroupDeliveries deliveries={[]} />
       </BrowserRouter>,
     );
+
     const message = screen.getByText("No hay entregas para este grupo");
     expect(message).toBeInTheDocument();
   });
@@ -62,23 +48,16 @@ describe("Manager deliveries card", () => {
   it("renders a delivery", () => {
     render(
       <BrowserRouter>
-        <ListManagerDeliveries
-          groupDeliveries={[
+        <ManagerListGroupDeliveries
+          deliveries={[
             {
               id: "1",
+              deliveryName: "test-delivery-1",
               description: "test-delivery-1",
-              imageUrl: "https://picsum.photos/200",
-              groupId: "1",
-              userDeliveries: [
-                {
-                  id: "1",
-                  description: "test-user-delivery-1",
-                  imageURL: "https://picsum.photos/100",
-                },
-              ],
+              imageURL: "https://picsum.photos/100",
             },
           ]}
-        ></ListManagerDeliveries>
+        />
       </BrowserRouter>,
     );
 

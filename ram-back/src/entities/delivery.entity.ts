@@ -26,7 +26,7 @@ export class DeliveryEnt {
   createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedtAt!: Date;
+  updatedAt!: Date;
 
   @Column(DESCRIPTION_COLUMN)
   description: string;

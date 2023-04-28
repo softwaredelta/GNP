@@ -84,7 +84,7 @@ export class UserEnt {
   updatedAt!: Date;
 
   @Column(URL_COLUMN)
-  imageUrl?: string;
+  imageURL?: string;
 
   @Column(REQUIRED_STRING_COLUMN("roles"))
   rolesString!: string;

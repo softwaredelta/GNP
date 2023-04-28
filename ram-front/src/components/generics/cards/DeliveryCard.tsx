@@ -12,18 +12,9 @@ import {
   authenticatedUserDelivery$,
 } from "../../../lib/api/api-user-deliveries";
 
-// export type UserDeliveryStatus =
-//   | "Sin enviar"
-//   | "Enviado"
-//   | "Rechazado"
-//   | "Aceptado";
+import { DeliveryStatus } from "../../../types";
 
 export type Colors = "blue" | "orange";
-export type StatusDelivery =
-  | "Sin enviar"
-  | "Enviado"
-  | "Rechazado"
-  | "Aceptado";
 
 export interface DeliveryCardProps {
   deliveryID: string;
@@ -31,7 +22,7 @@ export interface DeliveryCardProps {
   image: string;
   onFileSubmit: (id: string) => void;
   color: Colors;
-  status: StatusDelivery;
+  status: DeliveryStatus;
 }
 
 const iconList = {

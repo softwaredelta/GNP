@@ -2,7 +2,7 @@
 import { NumericFormat } from "react-number-format";
 
 export interface CardInfoTopFiveProps {
-  typeAssurance: string;
+  assuranceName: string;
   color: "blue" | "orange";
   top: {
     name: string;
@@ -11,7 +11,7 @@ export interface CardInfoTopFiveProps {
 }
 
 export default function CardInfoTopFive({
-  typeAssurance,
+  assuranceName,
   color,
   top,
 }: CardInfoTopFiveProps): JSX.Element {
@@ -22,7 +22,7 @@ export default function CardInfoTopFive({
   return (
     <div className="mt-3 h-full w-full items-center justify-center rounded-xl bg-gnp-white">
       <h1 className=" text-center text-2xl font-bold text-black">
-        {typeAssurance}
+        {assuranceName}
       </h1>
       <h2 className="text-center mt-2 font-bold text-xs text-gnp-gray-black">
         Top 5 vendedores por monto acumulado:

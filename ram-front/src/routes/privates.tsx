@@ -4,14 +4,17 @@ import { lazy } from "react";
 import { IRoute } from "../types";
 
 const Home = lazy(async () => import("../pages/Home"));
-const GroupDeliveries = lazy(async () => import("../pages/GroupDeliveries"));
 const Components = lazy(async () => import("../components/generics/Examples"));
-const ManagerCourses = lazy(async () => import("../pages/ManagerCourses"));
+const Infra = lazy(async () => import("../pages/InfraTest"));
+
 const Groups = lazy(async () => import("../pages/Groups"));
 const Group = lazy(async () => import("../pages/Group"));
-const Infra = lazy(async () => import("../pages/InfraTest"));
 const NewSale = lazy(async () => import("../pages/NewSale"));
 const SalesHistory = lazy(async () => import("../pages/SalesHistory"));
+
+const ManagerGroup = lazy(async () => import("../pages/ManagerGroup"));
+const ManagerGroups = lazy(async () => import("../pages/ManagerGroups"));
+const ManagerDelivery = lazy(async () => import("../pages/ManagerDelivery"));
 
 export const CommonUserRoutes: IRoute[] = [
   {
@@ -30,7 +33,7 @@ export const CommonUserRoutes: IRoute[] = [
 
 export const RegularUserRoutes: IRoute[] = [
   {
-    path: "/my-groups",
+    path: "/groups",
     Component: () => <Groups />,
   },
   {
@@ -49,11 +52,15 @@ export const RegularUserRoutes: IRoute[] = [
 
 export const ManagerUserRoutes: IRoute[] = [
   {
-    path: "/managerCourses",
-    Component: () => <ManagerCourses />,
+    path: "/groups",
+    Component: () => <ManagerGroups />,
   },
   {
-    path: "/groupDeliveries/:id",
-    Component: () => <GroupDeliveries />,
+    path: "/group/:id",
+    Component: () => <ManagerGroup />,
+  },
+  {
+    path: "/delivery/:id",
+    Component: () => <ManagerDelivery />,
   },
 ];
