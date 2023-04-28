@@ -8,7 +8,8 @@ import {
   useSetRecoilState,
 } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useHash } from "./api-hash";
 
 export const LOCAL_STORAGE_REFRESK_TOKEN_KEY = "refreshToken";
 const DISABLE_FETCH = false; // set to true when backend is ready, set to false if you want mocked data
@@ -21,8 +22,7 @@ export interface Authentication {
   refreshToken: string;
   refreshTokenExpiresAt: number;
   username: string;
-  userRole: string;
-  userID: string;
+  roles: string[];
 }
 
 export interface AuthenticationError {
@@ -45,12 +45,6 @@ export interface AuthenticationApi {
   logout: () => void;
   refresh: () => void;
 }
-
-export const AuthenticationContext = createContext({} as AuthenticationApi);
-
-export const useAuthentication = () => {
-  return useContext(AuthenticationContext);
-};
 
 // implementation
 
@@ -102,10 +96,7 @@ async function refreshTokens({
   }
 }
 
-export const authenticationApi$ = selectorFamily<
-  AuthenticationApi,
-  { hash: string }
->({
+const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
   key: "authenticationApi",
   get:
     () =>
@@ -117,6 +108,8 @@ export const authenticationApi$ = selectorFamily<
       const apiBase = get(apiBase$);
       const isTest = get(isTest$);
       const isLoading = get(isLoading$);
+
+      console.log("authentication", auth);
 
       const authenticate = getCallback(
         ({ set }) =>
@@ -136,8 +129,7 @@ export const authenticationApi$ = selectorFamily<
                 refreshTokenExpiresAt:
                   new Date().getTime() + 24 * 60 * 60 * 1000,
                 username: "username",
-                userRole: "userRole",
-                userID: "test-user",
+                roles: ["regular"],
               });
               set(authenticationError$, null);
 
@@ -162,6 +154,7 @@ export const authenticationApi$ = selectorFamily<
               const result = await response.json();
               set(isLoading$, false);
               if (response.ok) {
+                console.log("authentication result", result);
                 set(authentication$, result);
                 set(authenticationError$, null);
 
@@ -173,6 +166,7 @@ export const authenticationApi$ = selectorFamily<
                   }),
                 );
               } else {
+                console.log("authentication error", result);
                 set(authentication$, null);
                 set(authenticationError$, result);
               }
@@ -245,7 +239,8 @@ export function AuthenticationHandler() {
   const [authentication, setAuthentication] = useRecoilState(authentication$);
   const setAuthenticationError = useSetRecoilState(authenticationError$);
   const [isInitialized, setIsInitialized] = useState(false);
-  const { refresh } = useAuthentication();
+  const hash = useHash();
+  const { refresh } = useRecoilValue(authenticationApi$({ hash }));
   const apiBase = useRecoilValue(apiBase$);
 
   useEffect(() => {
@@ -267,8 +262,7 @@ export function AuthenticationHandler() {
             refreshToken: "refreshToken",
             refreshTokenExpiresAt: 3600,
             username: "username",
-            userRole: "userRole",
-            userID: "test-user",
+            roles: ["regular"],
           });
         } else {
           setAuthentication(null);
@@ -316,3 +310,9 @@ export function AuthenticationHandler() {
 
   return <></>;
 }
+
+export const useAuthentication = () => {
+  const hash = useHash();
+  const authenticationApi = useRecoilValue(authenticationApi$({ hash }));
+  return authenticationApi;
+};

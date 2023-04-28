@@ -6,6 +6,39 @@ import { createDelivery, setDeliverieToUser } from "../app/deliveries";
 import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { createAssuranceType } from "../app/assuranceType";
 import { createSale } from "../app/sale";
+import { UserRole } from "../entities/user.entity";
+
+export async function userSeeds() {
+  const userData = [
+    { email: "regular@delta.tec.mx", roles: [UserRole.REGULAR] },
+    { email: "manager@delta.tec.mx", roles: [UserRole.MANAGER] },
+    { email: "admin@delta.tec.mx", roles: [UserRole.ADMIN] },
+    {
+      email: "manager-admin@delta.tec.mx",
+      roles: [UserRole.MANAGER, UserRole.ADMIN],
+    },
+  ];
+
+  const users = await Promise.all(
+    userData.map((u) =>
+      createUser({ ...u, id: u.email, password: "password" }).then(
+        ({ user, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return user;
+        },
+      ),
+    ),
+  );
+
+  return {
+    regular: users[0],
+    manager: users[1],
+    admin: users[2],
+    managerAdmin: users[3],
+  };
+}
 
 /**
  * Make sure to specify ids so things stay consistent
@@ -26,7 +59,10 @@ export async function loadSeeds() {
       id: "test-user-2",
     });
 
+    await userSeeds();
+
     //GROUPS
+
     const group1 = await createGroup({
       name: "test-group-1",
       imageURL: "https://picsum.photos/300",

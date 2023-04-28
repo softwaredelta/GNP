@@ -27,7 +27,7 @@ const saleParametersMiddleware: RequestHandler = (req, res, next) => {
 
 salesRouter.post(
   "/create",
-  authMiddleware,
+  authMiddleware(),
   saleParametersMiddleware,
   async (req, res) => {
     const { policyNumber, sellDate, amountInCents, clientName, assuranceType } =

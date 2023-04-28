@@ -5,9 +5,9 @@ import { IRoute } from "../types";
 
 const Login = lazy(async () => import("../pages/Login"));
 
-export const publicRoutes: IRoute[] = [
+export const PublicRoutes: IRoute[] = [
   {
     path: "/login",
-    component: Login,
+    Component: () => <Login />,
   },
 ];
