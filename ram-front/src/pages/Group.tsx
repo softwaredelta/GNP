@@ -30,7 +30,6 @@ export default function Group(): JSX.Element {
                 {response && response[0].delivery?.group?.name}
               </h1>
             </div>
-
             <ListDeliverables deliverables={response} />
           </>
         ) : (

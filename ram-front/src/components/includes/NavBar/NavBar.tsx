@@ -5,7 +5,11 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import LogoRAM from "../../../assets/imgs/Ram_LogoInv.png";
 import { Link } from "react-router-dom";
 
-function NavBar() {
+interface Props {
+  onLogout: () => void;
+}
+
+function NavBar({ onLogout }: Props) {
   return (
     <Navbar
       className="shadow-md border border-black "
@@ -40,7 +44,9 @@ function NavBar() {
           <Dropdown.Item>Ver Perfil</Dropdown.Item>
           <Dropdown.Item>Ayuda</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item>Salir</Dropdown.Item>
+          <Dropdown.Item onClick={onLogout} data-testid="logout-button">
+            Salir
+          </Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
