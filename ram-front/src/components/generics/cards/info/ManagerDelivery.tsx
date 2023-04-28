@@ -19,7 +19,7 @@ export default function ManagerDelivery({
           <div className="p-2">
             <BsFillPeopleFill color="gray" size={20} />
           </div>
-          {membersNumber} Miembros
+          {membersNumber} Entregas
         </div>
       </button>
     </div>
