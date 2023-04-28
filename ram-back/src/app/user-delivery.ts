@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { DataSource } from "typeorm";
-import { UserDeliveryEnt } from "../entities/user-delivery";
+import { UserDeliveryEnt } from "../entities/user-delivery.entity";
 import { getDataSource } from "../arch/db-client";
 
 export enum FileError {

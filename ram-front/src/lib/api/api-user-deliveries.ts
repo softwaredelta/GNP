@@ -4,7 +4,7 @@ import { User } from "./api-courses";
 import { selectorFamily } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
 import { authentication$ } from "./api-auth";
-import { UserDeliveryStatus } from "../../components/generics/cards/DeliveryCard";
+import { StatusDelivery } from "../../components/generics/cards/DeliveryCard";
 import axios from "axios";
 
 export interface IDelivery {
@@ -23,7 +23,7 @@ export interface IUserDelivery {
   delivery: IDelivery;
   deliveryId: string;
   dateDelivery: Date;
-  status: UserDeliveryStatus;
+  status: StatusDelivery;
   fileUrl: string;
   createdAt: Date;
   updatedAt: Date;

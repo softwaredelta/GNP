@@ -1,17 +1,17 @@
 // (c) Delta Software 2023, rights reserved.
 import { Request, Response, Router } from "express";
+import multer from "multer";
+import path from "path";
+import { DataSource } from "typeorm";
 import {
   createUserDelivery,
   getAllUserDeliveries,
   getAuthUserDelivery,
 } from "../app/user-delivery";
-import { DataSource } from "typeorm";
 import { getDataSource } from "../arch/db-client";
-import { UserDeliveryEnt } from "../entities/user-delivery";
+import { S3Api, getS3Api } from "../arch/s3-client";
+import { UserDeliveryEnt } from "../entities/user-delivery.entity";
 import { authMiddleware } from "./user";
-import { getS3Api, S3Api } from "../arch/s3-client";
-import path from "path";
-import multer from "multer";
 
 export const userDeliveryRouter: Router = Router();
 const upload = multer();
@@ -86,19 +86,3 @@ userDeliveryRouter.post(
     }
   },
 );
-
-userDeliveryRouter.put("/:id", (req: Request, res: Response): void => {
-  try {
-    const id: string = req.params.id;
-    // const userDelivery: UserDeliveryEnt = req.body;
-    // const {userDelivery} = await updateUserDelivery(id, userDelivery);
-  } catch (error) {
-    console.error(error);
-  }
-});
-userDeliveryRouter.delete("/:id", (req: Request, res: Response): void => {
-  try {
-  } catch (error) {
-    console.error(error);
-  }
-});

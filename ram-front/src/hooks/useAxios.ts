@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useAuthentication } from "../lib/api/api-auth";
 import { apiBase$ } from "../lib/api/api-base";
@@ -36,7 +36,7 @@ export default function useAxios<T>({
   const fetchData = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
-      const res: AxiosResponse<T> = await axios({
+      const res = await axios({
         method,
         url: `${apiBase}/${url}`,
         data: body,

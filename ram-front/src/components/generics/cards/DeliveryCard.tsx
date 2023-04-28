@@ -1,22 +1,22 @@
 // (c) Delta Software 2023, rights reserved.
-import { FiEye, FiUpload } from "react-icons/fi";
 import {
   BsSend,
   BsSendCheck,
   BsSendExclamation,
   BsSendPlus,
 } from "react-icons/bs";
-import {
-  authenticatedUserDelivery$,
-  IUserDelivery,
-} from "../../../lib/api/api-user-deliveries";
+import { FiEye, FiUpload } from "react-icons/fi";
 import { useRecoilValue } from "recoil";
+import {
+  IUserDelivery,
+  authenticatedUserDelivery$,
+} from "../../../lib/api/api-user-deliveries";
 
-export type UserDeliveryStatus =
-  | "Sin enviar"
-  | "Enviado"
-  | "Rechazado"
-  | "Aceptado";
+// export type UserDeliveryStatus =
+//   | "Sin enviar"
+//   | "Enviado"
+//   | "Rechazado"
+//   | "Aceptado";
 
 export type Colors = "blue" | "orange";
 export type StatusDelivery =
