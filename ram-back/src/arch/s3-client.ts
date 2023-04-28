@@ -108,7 +108,7 @@ function makeTestS3Client(): S3Config {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     bucketName: string,
   ): Minio.BucketStream<Minio.BucketItem> {
-    const stream = new Readable();
+    const stream = new Readable({ objectMode: true });
     objects.forEach((_, key) => {
       stream.push({ name: key });
     });

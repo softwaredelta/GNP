@@ -75,9 +75,8 @@ export default function ListDeliverables({ deliverables }: Props) {
         return (
           <>
             <DeliveryCard
-              deliveryID="1"
-              key={index}
-              onFileSubmit={() => handleModalOpen("Hola")}
+              deliveryID={elem.delivery?.id ?? ""}
+              onFileSubmit={() => handleModalOpen(elem.delivery?.id ?? "")}
               nameDelivery={elem.delivery.deliveryName}
               image={elem.delivery.imageURL}
               color={index % 2 ? "orange" : "blue"}
