@@ -8,7 +8,7 @@ import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
 
-const userParameters = j.object({
+const saleParameters = j.object({
   policyNumber: j.string().required(),
   sellDate: j.string().required(),
   amountInCents: j.string().required(),
@@ -16,8 +16,21 @@ const userParameters = j.object({
   assuranceType: j.object().required(),
 });
 
+const saleUpdateParameters = j.object({
+  statusChange: j.string().required(),
+});
+
 const saleParametersMiddleware: RequestHandler = (req, res, next) => {
-  const { error } = userParameters.validate(req.body);
+  const { error } = saleParameters.validate(req.body);
+  if (error) {
+    res.status(400).json({ message: "BAD_DATA", reason: error });
+    return;
+  }
+  next();
+};
+
+const saleUpdateParametersMiddleware: RequestHandler = (req, res, next) => {
+  const { error } = saleUpdateParameters.validate(req.body);
   if (error) {
     res.status(400).json({ message: "BAD_DATA", reason: error });
     return;
@@ -96,7 +109,7 @@ salesRouter.get("/verify-sales", authMiddleware(), async (req, res) => {
   res.json({ sales });
 });
 
-salesRouter.post("/update-status/:id", async (req, res) => {
+salesRouter.post("/update-status/:id", authMiddleware(), ../ram-back/src/controller/sale.tssaleUpdateParametersMiddleware, async (req, res) => {
   const { statusChange } = req.body;
   const db = await getDataSource();
   const sales = await db.manager
@@ -105,5 +118,11 @@ salesRouter.post("/update-status/:id", async (req, res) => {
     .set({ status: req.body.statusChange })
     .where("id = :id", { id: req.params.id })
     .execute();
-  res.json({ sales });
+
+  const changedSale = await db.manager.findOne(SellEnt, {
+    relations: { user: true, assuranceType: true },
+    where: { id: req.params.id },
+  });
+
+  res.json({ changedSale });
 });
