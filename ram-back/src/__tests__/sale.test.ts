@@ -28,7 +28,7 @@ describe("sale", () => {
         assuranceType: {
           id: "test-at-1",
         },
-        user:{
+        user: {
           id: "test-user",
         },
         sellDate: new Date("2021/01/01"),
