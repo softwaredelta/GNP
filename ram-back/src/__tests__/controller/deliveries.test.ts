@@ -47,9 +47,9 @@ describe("controller:deliveries", () => {
       return request(app)
         .get("/deliveries/my-deliveries/test-group-id")
         .set("Authorization", `Bearer ${accessToken}`)
-        .expect(404)
+        .expect(200)
         .then((res) => {
-          expect(res.body).toMatchObject({ message: "No deliveries found" });
+          expect(res.body).toMatchObject([]);
         });
     });
 

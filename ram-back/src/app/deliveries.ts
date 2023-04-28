@@ -76,30 +76,20 @@ export async function setDeliverieToUser(params: {
     }));
 }
 
-export interface UserDeliveryResponse {
-  deliveryId: string;
-  dateDelivery: Date;
-  status: string;
-  fileUrl: string;
-  deliveryName: string;
-  description: string;
-  imageUrl: string;
-  groupName: string;
-}
 // Obtain the deliveries from UserDeliveries where the groupId is the same as the params.groupId
 // and the userId is the same as the params.userId
 export async function getUserDeliveriesbyGroup(params: {
   userId: string;
   groupId: string;
 }): Promise<{
-  userDeliveries: UserDeliveryResponse[];
+  userDeliveries: UserDeliveryEnt[];
   error?: DeliveryError;
   errorReason?: Error;
 }> {
   const ds = await getDataSource();
 
   try {
-    const userDeliveriesBase = await ds.manager.find(UserDeliveryEnt, {
+    const userDeliveries = await ds.manager.find(UserDeliveryEnt, {
       relations: {
         delivery: {
           group: true,
@@ -107,19 +97,6 @@ export async function getUserDeliveriesbyGroup(params: {
       },
       where: { userId: params.userId, delivery: { groupId: params.groupId } },
     });
-
-    const userDeliveries: UserDeliveryResponse[] = userDeliveriesBase.map(
-      (userDelivery): UserDeliveryResponse => ({
-        deliveryId: userDelivery.deliveryId,
-        dateDelivery: userDelivery.dateDelivery,
-        status: userDelivery.status,
-        fileUrl: userDelivery.fileUrl,
-        deliveryName: userDelivery.delivery.deliveryName,
-        description: userDelivery.delivery.description,
-        imageUrl: userDelivery.delivery.imageUrl,
-        groupName: userDelivery.delivery.group.name,
-      }),
-    );
 
     return {
       userDeliveries,

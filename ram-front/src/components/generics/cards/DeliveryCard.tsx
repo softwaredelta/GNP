@@ -6,19 +6,15 @@ import {
   BsSendExclamation,
   BsSendCheck,
 } from "react-icons/bs";
+import { DeliveryStatus } from "../../../types";
 
 export type Colors = "blue" | "orange";
-export type StatusDelivery =
-  | "Sin enviar"
-  | "Enviado"
-  | "Rechazado"
-  | "Aceptado";
 
 export interface DeliveryCardProps {
   nameDelivery: string;
   image: string;
   color: Colors;
-  status: StatusDelivery;
+  status: DeliveryStatus;
 }
 
 const iconList = {

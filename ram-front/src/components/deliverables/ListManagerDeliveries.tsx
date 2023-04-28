@@ -1,43 +1,31 @@
 // (c) Delta Software 2023, rights reserved.
 
+import { Link } from "react-router-dom";
 import DeliveryCard from "../generics/cards/base/DeliveryCard";
 import ManagerDelivery from "../generics/cards/info/ManagerDelivery";
+import { IDelivery } from "../../types";
 
-export interface IUserDeliveriesProps {
-  id: string;
-  description: string;
-  imageURL: string;
+interface Props {
+  deliveries: IDelivery[];
 }
 
-export interface IGroupDeliveriesProps {
-  id: string;
-  description: string;
-  imageUrl: string;
-  groupId: string;
-  userDeliveries: IUserDeliveriesProps[];
-}
-
-export interface IManagerDeliveriesProps {
-  groupDeliveries: IGroupDeliveriesProps[];
-}
-
-export default function ListManagerDeliveries({
-  groupDeliveries,
-}: IManagerDeliveriesProps) {
+export function ManagerListGroupDeliveries({ deliveries }: Props) {
   return (
     <>
-      {groupDeliveries.length ? (
-        groupDeliveries.map((groupsObj, index) => (
-          <div className="pb-6" key={index}>
-            <DeliveryCard
-              color="blue"
-              nameDelivery={groupsObj.description}
-              image={groupsObj.imageUrl}
-            >
-              <ManagerDelivery
-                membersNumber={groupsObj.userDeliveries.length}
-              ></ManagerDelivery>
-            </DeliveryCard>
+      {deliveries.length ? (
+        deliveries.map((delivery) => (
+          <div className="pb-6" key={delivery.id}>
+            <Link to={`/delivery/${delivery.id}`}>
+              <DeliveryCard
+                color="blue"
+                nameDelivery={delivery.description}
+                image={delivery.imageURL}
+              >
+                <ManagerDelivery
+                  membersNumber={delivery.userDeliveries?.length ?? 0}
+                ></ManagerDelivery>
+              </DeliveryCard>
+            </Link>
           </div>
         ))
       ) : (

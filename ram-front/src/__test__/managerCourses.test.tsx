@@ -2,45 +2,44 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import ListManagerGroup from "../components/groups/ListManagerGroup";
+import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
     render(
       <BrowserRouter>
-        <ListManagerGroup
+        <ManagerListGroups
           groups={[
             {
               id: "1",
               name: "test-group-1",
+              description: "test-delivery-1",
+              progress: 0,
               imageURL: "https://picsum.photos/100",
               groupUsers: [
                 {
-                  status: "active",
-                  userId: "test-user",
-                  groupId: "1",
+                  email: "test-user1",
+                  id: "1",
+                  imageURL: "",
                 },
               ],
             },
             {
               id: "2",
               name: "test-group-2",
-              imageURL: "https://picsum.photos/500",
+              description: "test-delivery-2",
+              progress: 0,
+              imageURL: "https://picsum.photos/100",
               groupUsers: [
                 {
-                  status: "active",
-                  userId: "test-user2",
-                  groupId: "2",
-                },
-                {
-                  status: "active",
-                  userId: "test-user3",
-                  groupId: "2",
+                  email: "test-user2",
+                  id: "2",
+                  imageURL: "",
                 },
               ],
             },
           ]}
-        ></ListManagerGroup>
+        ></ManagerListGroups>
       </BrowserRouter>,
     );
 
@@ -54,7 +53,7 @@ describe("Manager courses card", () => {
   it("renders a message when there are no groups", () => {
     render(
       <BrowserRouter>
-        <ListManagerGroup groups={[]}></ListManagerGroup>
+        <ManagerListGroups groups={[]}></ManagerListGroups>
       </BrowserRouter>,
     );
     const message = screen.getByText("No hay grupos registrados");
@@ -64,23 +63,24 @@ describe("Manager courses card", () => {
   it("renders a group", () => {
     render(
       <BrowserRouter>
-        <ListManagerGroup
+        <ManagerListGroups
           groups={[
             {
               id: "1",
               name: "test-group-1",
-              imageURL:
-                "https://ahorraseguros.mx/wp-content/uploads/2021/04/banner-gnp.jpeg",
+              description: "test-delivery-1",
+              progress: 0,
+              imageURL: "https://picsum.photos/100",
               groupUsers: [
                 {
-                  status: "active",
-                  userId: "test-user",
-                  groupId: "1",
+                  email: "test-user1",
+                  id: "1",
+                  imageURL: "",
                 },
               ],
             },
           ]}
-        ></ListManagerGroup>
+        ></ManagerListGroups>
       </BrowserRouter>,
     );
 

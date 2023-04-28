@@ -38,9 +38,6 @@ export class GroupEnt {
   @OneToMany(() => GroupUserEnt, (groupUser) => groupUser.group)
   groupUsers!: GroupUserEnt[];
 
-  @OneToMany(() => DeliveryEnt, (userDeliveries) => userDeliveries.group)
+  @OneToMany(() => DeliveryEnt, (delivery) => delivery.group)
   deliveries!: DeliveryEnt[];
-
-  @OneToMany(() => DeliveryEnt, (groupDelivery) => groupDelivery.group)
-  groupDeliveries!: DeliveryEnt[];
 }

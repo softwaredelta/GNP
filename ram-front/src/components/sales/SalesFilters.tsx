@@ -4,13 +4,10 @@ import React, { useState, ChangeEvent } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaFilter } from "react-icons/fa";
+import { IAssuranceType } from "../../types";
 
 export interface IListAssuranceTypesProps {
-  assuranceTypes: {
-    id: string;
-    name: string;
-    description: string;
-  }[];
+  assuranceTypes: IAssuranceType[];
 }
 
 export const SalesFilters = ({ assuranceTypes }: IListAssuranceTypesProps) => {
