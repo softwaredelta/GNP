@@ -130,7 +130,7 @@ authRouter.post("/refresh", async (req, res) => {
     where: {
       id: auth.id,
     },
-    select: ["id", "email"],
+    select: ["id", "email", "rolesString"],
   });
 
   if (!user) {
@@ -146,6 +146,6 @@ authRouter.post("/refresh", async (req, res) => {
     refreshToken,
     refreshTokenExpiresAt,
     username: user.email,
-    userRole: "admin",
+    roles: user.roles,
   });
 });

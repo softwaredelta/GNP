@@ -21,12 +21,14 @@ export async function userSeeds() {
 
   const users = await Promise.all(
     userData.map((u) =>
-      createUser({ ...u, password: "password" }).then(({ user, error }) => {
-        if (error) {
-          throw new Error(error);
-        }
-        return user;
-      }),
+      createUser({ ...u, id: u.email, password: "password" }).then(
+        ({ user, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return user;
+        },
+      ),
     ),
   );
 
@@ -57,7 +59,10 @@ export async function loadSeeds() {
       id: "test-user-2",
     });
 
+    await userSeeds();
+
     //GROUPS
+
     const group1 = await createGroup({
       name: "test-group-1",
       imageURL: "https://picsum.photos/300",

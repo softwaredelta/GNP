@@ -23,7 +23,7 @@ export interface UserAuthentication {
   refreshToken: string;
   refreshTokenExpiresAt: number;
   username: string;
-  userRole: string;
+  roles: UserRole[];
 }
 
 export async function createUser(params: {
@@ -151,7 +151,7 @@ export async function authenticateUser(params: {
       refreshToken: refreshToken.token,
       refreshTokenExpiresAt: refreshToken.expiresAt,
       username: user.email,
-      userRole: "user",
+      roles: user.roles,
     },
   };
 }
