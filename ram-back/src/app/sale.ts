@@ -1,8 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
 
+import { DeepPartial } from "typeorm";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { v4 } from "uuid";
+import { AssuranceTypeEnt } from "../entities/assurance-type.entity";
+import { UserEnt } from "../entities/user.entity";
 
 export enum SaleError {
   POLICY_NUM_DUPLICATED = "POLICY_NUM_DUPLICATED",
@@ -11,8 +14,8 @@ export enum SaleError {
 
 export async function createSale(params: {
   policyNumber: string;
-  assuranceTypeId: string;
-  userId: string;
+  assuranceType: DeepPartial<AssuranceTypeEnt>;
+  user: DeepPartial<UserEnt>;
   sellDate: Date;
   amountInCents: string;
   clientName: string;
@@ -23,7 +26,6 @@ export async function createSale(params: {
 }): Promise<{ sale: SellEnt; error?: SaleError }> {
   const ds = await getDataSource();
   const id = params.id || v4();
-
   // Static values not handled yet in frontend
   const status = "sin revisar";
   const periodicity = "mensual";
@@ -32,15 +34,11 @@ export async function createSale(params: {
     .save(SellEnt, {
       id,
       policyNumber: params.policyNumber,
-      assuranceType: {
-        id: params.assuranceTypeId,
-      },
+      assuranceType: params.assuranceType,
       sellDate: params.sellDate,
       amountInCents: params.amountInCents,
       clientName: params.clientName,
-      user: {
-        id: params.userId,
-      },
+      user: params.user,
       status,
       periodicity,
       evidenceUrl: "https://www.google.com",

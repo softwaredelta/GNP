@@ -14,7 +14,8 @@
     "@typescript-eslint",
     "prettier",
     "import",
-    "notice"
+    "notice",
+    "gnp-linter"
   ],
   "extends": [
     "airbnb-typescript/base",
@@ -22,10 +23,9 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    // "prettier/prettier": [
-    // "error"
-    // ],
-    "prettier/prettier": 0,
+    "prettier/prettier": [
+      "error"
+    ],
     "import/extensions": [
       "error",
       "never"
@@ -39,6 +39,7 @@
           "whenFailedToMatch": "Couldn't find 'Copyright notice', are you sure you added it?"
         }
       }
-    ]
+    ],
+    "gnp-linter/database-compat": "error"
   }
 }

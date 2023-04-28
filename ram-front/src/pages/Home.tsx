@@ -43,6 +43,22 @@ export default function Home() {
           </a>
         </li>
         <li>
+          <a
+            href="/new-sale"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            register new sale
+          </a>
+        </li>
+        <li>
+          <a
+            href="/sales-history"
+            className="underline text-red-500 hover:text-red-800"
+          >
+            all sales
+          </a>
+        </li>
+        <li>
           <button
             onClick={() => {
               logout();

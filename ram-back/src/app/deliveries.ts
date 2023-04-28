@@ -2,7 +2,10 @@
 
 import { getDataSource } from "../arch/db-client";
 import { DeliveryEnt } from "../entities/delivery.entity";
-import { UserDeliveryEnt, StatusUserDelivery } from "../entities/user-delivery";
+import {
+  UserDeliveryEnt,
+  StatusUserDelivery,
+} from "../entities/user-delivery.entity";
 
 export enum DeliveryError {
   UNHANDLED = "UNHANDLED",
