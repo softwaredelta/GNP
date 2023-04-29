@@ -18,7 +18,7 @@ describe("ListDeliveries", () => {
               imageURL: "",
               userDeliveries: [],
             },
-            fileURL: "https://www.google.com",
+            fileUrl: "https://www.google.com",
             group: {
               id: "1",
               deliveries: [],
@@ -45,7 +45,7 @@ describe("ListDeliveries", () => {
               imageURL: "",
               userDeliveries: [],
             },
-            fileURL: "https://www.google.com",
+            fileUrl: "https://www.google.com",
             group: {
               id: "2",
               deliveries: [],

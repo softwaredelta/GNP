@@ -30,7 +30,7 @@ function ActionButton({
 
 export function UserDeliveryRow({
   dateDelivery,
-  fileURL,
+  fileUrl,
   status,
   user,
 }: IUserDelivery) {
@@ -75,7 +75,9 @@ export function UserDeliveryRow({
           color="text-gnp-blue-700"
           Icon={RiFileSearchFill}
           onClick={() => {
-            alert("Descargando...");
+            const url = new URL("http://localhost:8080/files");
+            url.searchParams.append("fileUrl", fileUrl);
+            window.open(url.toString(), "_blank");
           }}
           size={50}
         />
