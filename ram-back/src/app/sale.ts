@@ -41,7 +41,7 @@ export async function createSale(params: {
       user: params.user,
       status,
       periodicity,
-      evidenceUrl: "https://www.google.com",
+      evidenceUrl: "https://picsum.photos/400",
     })
     .then((sale) => {
       return { sale };
