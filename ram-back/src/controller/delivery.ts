@@ -47,12 +47,17 @@ deliveriesRouter.get(
     const ds = await getDataSource();
     const id = req.params.id;
 
-    const delivery = await ds.manager.findOneOrFail(DeliveryEnt, {
+    const delivery = await ds.manager.findOne(DeliveryEnt, {
       where: {
         id,
       },
       relations: ["userDeliveries", "userDeliveries.user"],
     });
+
+    if (!delivery) {
+      res.status(404).json({ message: "Delivery not found" });
+      return;
+    }
 
     res.json(delivery);
   },
