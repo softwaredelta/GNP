@@ -12,9 +12,9 @@ const Wrapper = ({ children }: IWrapperProps): JSX.Element => {
   const { logout } = useAuthentication();
 
   return (
-    <main className="h-screen overflow-y-auto">
+    <main className="min-h-screen flex flex-col justify-between overflow-y-auto">
       <NavBar onLogout={logout} />
-      {children}
+      <div className="">{children}</div>
       <Foot />
     </main>
   );

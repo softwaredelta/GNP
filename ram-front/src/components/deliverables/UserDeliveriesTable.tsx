@@ -28,7 +28,7 @@ export function UserDeliveriesTable({ userDeliveries }: Props) {
               <UserDeliveryRow
                 key={index}
                 status={delivery.status}
-                fileURL={delivery.fileURL}
+                fileUrl={delivery.fileUrl}
                 dateDelivery={delivery.dateDelivery}
                 user={delivery.user}
               />

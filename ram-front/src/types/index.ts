@@ -40,7 +40,7 @@ export interface IDelivery {
 }
 
 export interface IUserDelivery {
-  fileURL: string;
+  fileUrl: string;
   dateDelivery: string;
   user?: IUser;
   status: DeliveryStatus;
