@@ -57,7 +57,7 @@ export class SellEnt {
   status!: string;
 
   @Column(MONEY_COLUMN)
-  amountInCents!: string;
+  amountInCents!: number;
 
   @Column(NAME_COLUMN)
   clientName!: string;

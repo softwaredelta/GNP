@@ -14,7 +14,7 @@ export async function createSale(params: {
   assuranceTypeId: string;
   userId: string;
   sellDate: Date;
-  amountInCents: string;
+  amountInCents: number;
   clientName: string;
   status?: string;
   periodicity?: string;
