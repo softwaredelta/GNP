@@ -57,8 +57,8 @@ salesRouter.post(
       sellDate,
       amountInCents,
       clientName,
-      assuranceType,
-      user: user,
+      assuranceTypeId: assuranceType.id,
+      userId: user.id,
     });
 
     if (error) {
@@ -93,11 +93,11 @@ salesRouter.get("/my-sales", authMiddleware(), async (req, res) => {
   const userId = req.user.id;
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
-    relations: { user: true, assuranceType: true },
-    where: { user: { id: userId } },
+    relations: { assuranceType: true, user: true },
+    where: { userId },
   });
 
-  res.json({ sales });
+  res.json(sales);
 });
 
 salesRouter.get("/verify-sales", authMiddleware(), async (req, res) => {

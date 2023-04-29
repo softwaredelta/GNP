@@ -23,7 +23,7 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
   }, [onDeleted, shouldUpdate]);
 
   return (
-    <div data-testid="Table" className="grid grid-row w-full pb-4 px-8">
+    <div data-testid="sales-table" className="grid grid-row w-full pb-4 px-8">
       <div className="row">
         <Link to="/new-sale">
           <div className="w-44 pb-8 float-right pr-8">

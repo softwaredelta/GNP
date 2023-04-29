@@ -11,6 +11,7 @@ import {
 import { AssuranceTypeEnt } from "./assurance-type.entity";
 import { UserEnt } from "./user.entity";
 import {
+  ID_COLUMN,
   MONEY_COLUMN,
   NAME_COLUMN,
   POLICY_NUMBER_COLUMN,
@@ -34,11 +35,20 @@ export class SellEnt {
   updatedtAt!: Date;
 
   @ManyToOne(() => AssuranceTypeEnt)
+  @JoinColumn({ name: "assurance_type_id" })
   assuranceType!: AssuranceTypeEnt;
 
-  @ManyToOne(() => UserEnt)
+  @Column(ID_COLUMN("assurance_type_id", { primary: false, nullable: true }))
+  assuranceTypeId!: string;
+
+  @ManyToOne(() => UserEnt, {
+    onDelete: "SET NULL",
+  })
   @JoinColumn({ name: "user_id" })
   user!: UserEnt;
+
+  @Column(ID_COLUMN("user_id", { primary: false, nullable: true }))
+  userId!: string;
 
   @Column(REQUIRED_DATE_COLUMN)
   sellDate!: Date;

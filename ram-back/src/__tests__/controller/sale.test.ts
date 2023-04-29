@@ -44,17 +44,13 @@ describe("controller:sale", () => {
 
     await createSale({
       policyNumber: "823456789",
-      assuranceType: {
-        id: "test-at-1",
-      },
+      assuranceTypeId: assurance.id,
       sellDate: new Date("2021-01-01"),
       amountInCents: "200000",
       clientName: "test-client",
       periodicity: "Anual",
       id: "test-case-sale-id",
-      user: {
-        id: "test-user",
-      },
+      userId: user.id,
     });
   });
 
@@ -109,7 +105,7 @@ describe("controller:sale", () => {
           expect(res.body).toHaveProperty("id");
           expect(res.body).toHaveProperty("policyNumber", data.policyNumber);
           expect(res.body).toHaveProperty("status");
-          expect(res.body).toHaveProperty("user");
+          expect(res.body).not.toHaveProperty("user");
         });
     });
 
@@ -239,6 +235,21 @@ describe("controller:sale", () => {
         .expect(200)
         .then((res) => {
           expect(res.body).toHaveProperty("changedSale");
+        });
+    });
+  });
+
+  describe("my sales endpoint", () => {
+    it("returns all user sales", async () => {
+      return request(app)
+        .get("/sales/my-sales")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .expect(200)
+        .then((res) => {
+          expect(res.body).toHaveLength(1);
+          expect(res.body[0]).toHaveProperty("id");
+          expect(res.body[0]).toHaveProperty("policyNumber");
+          expect(res.body[0]).toHaveProperty("status");
         });
     });
   });

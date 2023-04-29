@@ -28,7 +28,7 @@ export const useUpdateVerifiedSales = () => {
 
 export const allSales$ = selector<ISell[]>({
   key: "allSales$",
-  get: async ({ get }) => {
+  get: async ({ get }): Promise<ISell[]> => {
     get(updateSales$);
     const auth = get(authentication$);
     const headers = new Headers();
@@ -39,8 +39,34 @@ export const allSales$ = selector<ISell[]>({
     if (isTest) {
       return [
         {
-          id: "test-id",
-          clientname: "Test name",
+          id: "test-sale-1",
+          amountInCents: "100",
+          assuranceType: {
+            id: "test-assurance-type-1",
+            name: "Test assurance type 1",
+            description: "Test assurance type 1 description",
+          },
+          clientName: "Test client name 1",
+          evidenceUrl: "https://www.google.com",
+          periodicity: "mensual",
+          policyNumber: "1234567",
+          sellDate: new Date(),
+          status: "pending",
+        },
+        {
+          id: "test-sale-2",
+          amountInCents: "200",
+          assuranceType: {
+            id: "test-assurance-type-2",
+            name: "Test assurance type 2",
+            description: "Test assurance type 2 description",
+          },
+          clientName: "Test client name 2",
+          evidenceUrl: "https://www.google.com",
+          periodicity: "mensual",
+          policyNumber: "1234568",
+          sellDate: new Date(),
+          status: "pending",
         },
       ];
     }
