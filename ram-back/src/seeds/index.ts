@@ -197,7 +197,7 @@ export async function loadSeeds() {
     Array.from({ length: 10 }).map(async (p, i) => {
       const { sale, error } = await createSale({
         id: `test-sale-${i}`,
-        amountInCents: 2000 + i * 1000,
+        amountInCents: (2000 + i * 1000).toString(),
         assuranceTypeId: assuranceTypes[i % assuranceTypes.length].id,
         policyNumber: (i + 1000000).toString(),
         clientName: `test-client-${i}`,
