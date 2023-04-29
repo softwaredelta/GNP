@@ -31,6 +31,7 @@ export interface ISell {
 }
 
 export interface IDelivery {
+  imageUrl: string;
   id: string;
   deliveryName: string;
   description: string;
