@@ -3,9 +3,12 @@
 import { Table } from "flowbite-react";
 import { IUserDelivery } from "../../types";
 import { useMemo } from "react";
-import { ImCross, ImCheckmark } from "react-icons/im";
 import { RiFileSearchFill } from "react-icons/ri";
 import { type IconType } from "react-icons/lib";
+import { FcCheckmark } from "react-icons/fc";
+import { RxCross1 } from "react-icons/rx";
+import Swal from "sweetalert2";
+import useAxios from "../../hooks/useAxios";
 
 function ActionButton({
   color,
@@ -33,10 +36,19 @@ export function UserDeliveryRow({
   fileUrl,
   status,
   user,
+  deliveryId,
 }: IUserDelivery) {
   if (!user) {
     throw new Error("User is undefined");
   }
+
+  const idDelivery = deliveryId;
+
+  const { callback } = useAxios({
+    url: `deliveries/update-status/${idDelivery}`,
+    method: "POST",
+    body: {},
+  });
 
   const date = useMemo(() => {
     const dateFormatter = new Intl.RelativeTimeFormat("es", {
@@ -58,11 +70,37 @@ export function UserDeliveryRow({
     return dateString;
   }, [dateDelivery]);
 
+  async function handleUpdate(statusChange: string) {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "No podrás revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, aceptar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed && callback) {
+        const bool = statusChange === "aceptado" ? true : false;
+        callback({
+          statusChange: bool,
+          userId: user?.id,
+        });
+        Swal.fire(
+          `¡${statusChange}!`,
+          `El entregable ha sido ${statusChange}`,
+          "success",
+        ).then(() => {
+          console.log(user?.id, idDelivery);
+        });
+      }
+    });
+  }
+
   return (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
         <img
-          className="w-14 h-14 rounded-full"
+          className="w-10 h-10 rounded-full"
           src={user.imageURL}
           alt="Rounded avatar"
         />
@@ -79,28 +117,26 @@ export function UserDeliveryRow({
             url.searchParams.append("fileUrl", fileUrl);
             window.open(url.toString(), "_blank");
           }}
-          size={50}
+          size={30}
         />
       </Table.Cell>
       <Table.Cell>{date}</Table.Cell>
-      <Table.Cell className="items-center justify-center h-full">
-        <div className="flex flex-row gap-5 justify-around">
-          <ActionButton
-            color="text-green-500"
-            Icon={ImCheckmark}
-            onClick={() => {
-              alert("Aceptando...");
-            }}
-            size={20}
-          />
-          <ActionButton
-            color="text-red-500"
-            Icon={ImCross}
-            onClick={() => {
-              alert("Rechazando...");
-            }}
-            size={20}
-          />
+      <Table.Cell>
+        <div className="grid grid-cols-3 items-center justify-center ">
+          <div className="hover:scale-125 transition-all ease-in-out active:scale-95 cursor-pointer">
+            <FcCheckmark
+              size={20}
+              className="text-green-500"
+              onClick={() => handleUpdate("aceptado")}
+            />
+          </div>
+          <div className="hover:scale-125 transition-all ease-in-out active:scale-95 cursor-pointer">
+            <RxCross1
+              size={20}
+              className="text-red-500"
+              onClick={() => handleUpdate("rechazado")}
+            />
+          </div>
         </div>
       </Table.Cell>
     </Table.Row>

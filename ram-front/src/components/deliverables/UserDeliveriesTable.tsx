@@ -31,6 +31,7 @@ export function UserDeliveriesTable({ userDeliveries }: Props) {
                 fileUrl={delivery.fileUrl}
                 dateDelivery={delivery.dateDelivery}
                 user={delivery.user}
+                deliveryId={delivery.deliveryId}
               />
             );
           })}
