@@ -3,7 +3,7 @@
 import { Router } from "express";
 import { authMiddleware } from "./user";
 import { getDataSource } from "../arch/db-client";
-import { DeliveryEnt} from "../entities/delivery.entity";
+import { DeliveryEnt } from "../entities/delivery.entity";
 import {
   getUserDeliveriesbyGroup,
   updateDeliveryStatus,
