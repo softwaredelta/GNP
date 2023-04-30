@@ -4,10 +4,30 @@ import { Router } from "express";
 import { authMiddleware } from "./user";
 import { getDataSource } from "../arch/db-client";
 import { DeliveryEnt } from "../entities/delivery.entity";
-import { getUserDeliveriesbyGroup } from "../app/deliveries";
+import {
+  getUserDeliveriesbyGroup,
+  updateDeliveryStatus,
+} from "../app/deliveries";
 import { UserRole } from "../entities/user.entity";
+import { UserDeliveryEnt } from "../entities/user-delivery.entity";
+import * as j from "joi";
+import { RequestHandler } from "express";
 
 export const deliveriesRouter = Router();
+
+const updateParameters = j.object({
+  userId: j.string().required(),
+  statusChange: j.boolean().required(),
+});
+
+const updateParametersMiddleware: RequestHandler = (req, res, next) => {
+  const { error } = updateParameters.validate(req.body);
+  if (error) {
+    res.status(400).json({ message: "BAD_DATA", reason: error });
+    return;
+  }
+  next();
+};
 
 deliveriesRouter.get(
   "/my-deliveries/:groupId",
@@ -40,6 +60,13 @@ deliveriesRouter.get("/all", async (req, res) => {
   res.json({ deliveries });
 });
 
+deliveriesRouter.get("/all-user", async (req, res) => {
+  const db = await getDataSource();
+  const deliveries = await db.manager.find(UserDeliveryEnt);
+
+  res.json({ deliveries });
+});
+
 deliveriesRouter.get(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -60,5 +87,21 @@ deliveriesRouter.get(
     }
 
     res.json(delivery);
+  },
+);
+
+deliveriesRouter.post(
+  "/update-status/:id",
+  updateParametersMiddleware,
+  async (req, res) => {
+    const { userId, statusChange } = req.body;
+    const deliveryId = req.params.id;
+    const changedDelivery = await updateDeliveryStatus({
+      userId,
+      deliveryId,
+      statusChange,
+    });
+
+    res.json({ changedDelivery });
   },
 );
