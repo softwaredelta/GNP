@@ -108,14 +108,14 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
         const bool = statusChange === "aceptado" ? true : false;
         callback({
           statusChange: bool,
-          userId: user?.id,
+          userId: delivery.user?.id,
         });
         Swal.fire(
           `¡${statusChange}!`,
           `El entregable ha sido ${statusChange}`,
           "success",
         ).then(() => {
-          console.log(user?.id, idDelivery);
+          onUpdate();
         });
       }
     });
