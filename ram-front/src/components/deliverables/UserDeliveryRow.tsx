@@ -31,18 +31,17 @@ function ActionButton({
   );
 }
 
-export function UserDeliveryRow({
-  dateDelivery,
-  fileUrl,
-  status,
-  user,
-  deliveryId,
-}: IUserDelivery) {
-  if (!user) {
+type Props = {
+  delivery: IUserDelivery;
+  onUpdate: () => void;
+};
+
+export function UserDeliveryRow({ delivery, onUpdate }: Props) {
+  if (!delivery.user) {
     throw new Error("User is undefined");
   }
 
-  const idDelivery = deliveryId;
+  const idDelivery = delivery.deliveryId;
 
   const { callback } = useAxios({
     url: `deliveries/update-status/${idDelivery}`,
@@ -58,7 +57,7 @@ export function UserDeliveryRow({
 
     let dateString = dateFormatter.format(
       Math.floor(
-        (new Date(dateDelivery).getTime() - new Date().getTime()) /
+        (new Date(delivery.dateDelivery).getTime() - new Date().getTime()) /
           (1000 * 60 * 60 * 24),
       ),
       "day",
@@ -68,7 +67,7 @@ export function UserDeliveryRow({
     dateString = dateString.charAt(0).toUpperCase() + dateString.slice(1);
 
     return dateString;
-  }, [dateDelivery]);
+  }, [delivery.dateDelivery]);
 
   async function handleUpdate(statusChange: string) {
     Swal.fire({
@@ -83,14 +82,14 @@ export function UserDeliveryRow({
         const bool = statusChange === "aceptado" ? true : false;
         callback({
           statusChange: bool,
-          userId: user?.id,
+          userId: delivery.user?.id,
         });
         Swal.fire(
           `¡${statusChange}!`,
           `El entregable ha sido ${statusChange}`,
           "success",
         ).then(() => {
-          console.log(user?.id, idDelivery);
+          onUpdate();
         });
       }
     });
@@ -101,20 +100,20 @@ export function UserDeliveryRow({
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
         <img
           className="w-10 h-10 rounded-full"
-          src={user.imageURL}
+          src={delivery.user.imageURL}
           alt="Rounded avatar"
         />
       </Table.Cell>
-      <Table.Cell>{user.email}</Table.Cell>
+      <Table.Cell>{delivery.user.email}</Table.Cell>
 
-      <Table.Cell>{status}</Table.Cell>
+      <Table.Cell>{delivery.status}</Table.Cell>
       <Table.Cell>
         <ActionButton
           color="text-gnp-blue-700"
           Icon={RiFileSearchFill}
           onClick={() => {
             const url = new URL("http://localhost:8080/files");
-            url.searchParams.append("fileUrl", fileUrl);
+            url.searchParams.append("fileUrl", delivery.fileUrl);
             window.open(url.toString(), "_blank");
           }}
           size={30}

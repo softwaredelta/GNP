@@ -3,13 +3,13 @@
 import { Router } from "express";
 import { authMiddleware } from "./user";
 import { getDataSource } from "../arch/db-client";
-import { DeliveryEnt } from "../entities/delivery.entity";
+import { DeliveryEnt} from "../entities/delivery.entity";
 import {
   getUserDeliveriesbyGroup,
   updateDeliveryStatus,
 } from "../app/deliveries";
 import { UserRole } from "../entities/user.entity";
-import { UserDeliveryEnt } from "../entities/user-delivery.entity";
+import { UserDeliveryEnt, StatusUserDelivery } from "../entities/user-delivery.entity";
 import * as j from "joi";
 import { RequestHandler } from "express";
 
@@ -79,6 +79,64 @@ deliveriesRouter.get(
         id,
       },
       relations: ["userDeliveries", "userDeliveries.user"],
+    });
+
+    if (!delivery) {
+      res.status(404).json({ message: "Delivery not found" });
+      return;
+    }
+
+    res.json(delivery);
+  },
+);
+
+deliveriesRouter.get(
+  "/pending/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const ds = await getDataSource();
+    const id = req.params.id;
+
+    const delivery = await ds.manager.findOne(DeliveryEnt, {
+      relations: ["userDeliveries", "userDeliveries.user"],
+      where: {
+        id,
+        userDeliveries: {
+          status: StatusUserDelivery.withoutSending,
+        }
+      },
+    });
+
+    if (!delivery) {
+      res.status(404).json({ message: "Delivery not found" });
+      return;
+    }
+
+    res.json(delivery);
+  },
+);
+
+deliveriesRouter.get(
+  "/reviewed/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const ds = await getDataSource();
+    const id = req.params.id;
+
+    const delivery = await ds.manager.findOne(DeliveryEnt, {
+      relations: ["userDeliveries", "userDeliveries.user"],
+      where: [{
+        id,
+        userDeliveries: {
+          status: StatusUserDelivery.accepted
+        }
+      },
+      {
+        id,
+        userDeliveries: {
+          status: StatusUserDelivery.refused
+        }
+      },]
     });
 
     if (!delivery) {
