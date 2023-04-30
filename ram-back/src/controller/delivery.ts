@@ -3,13 +3,16 @@
 import { Router } from "express";
 import { authMiddleware } from "./user";
 import { getDataSource } from "../arch/db-client";
-import { DeliveryEnt} from "../entities/delivery.entity";
+import { DeliveryEnt } from "../entities/delivery.entity";
 import {
   getUserDeliveriesbyGroup,
   updateDeliveryStatus,
 } from "../app/deliveries";
 import { UserRole } from "../entities/user.entity";
-import { UserDeliveryEnt, StatusUserDelivery } from "../entities/user-delivery.entity";
+import {
+  UserDeliveryEnt,
+  StatusUserDelivery,
+} from "../entities/user-delivery.entity";
 import * as j from "joi";
 import { RequestHandler } from "express";
 
@@ -103,7 +106,7 @@ deliveriesRouter.get(
         id,
         userDeliveries: {
           status: StatusUserDelivery.withoutSending,
-        }
+        },
       },
     });
 
@@ -125,18 +128,20 @@ deliveriesRouter.get(
 
     const delivery = await ds.manager.findOne(DeliveryEnt, {
       relations: ["userDeliveries", "userDeliveries.user"],
-      where: [{
-        id,
-        userDeliveries: {
-          status: StatusUserDelivery.accepted
-        }
-      },
-      {
-        id,
-        userDeliveries: {
-          status: StatusUserDelivery.refused
-        }
-      },]
+      where: [
+        {
+          id,
+          userDeliveries: {
+            status: StatusUserDelivery.accepted,
+          },
+        },
+        {
+          id,
+          userDeliveries: {
+            status: StatusUserDelivery.refused,
+          },
+        },
+      ],
     });
 
     if (!delivery) {
