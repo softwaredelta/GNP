@@ -31,6 +31,7 @@ describe("app:sale", () => {
         amountInCents: "123456",
         clientName: "Juan Perez",
         evidenceUrl: "https://www.google.com",
+        periodicity: "mensual",
       });
 
       expect(error).toBeUndefined();

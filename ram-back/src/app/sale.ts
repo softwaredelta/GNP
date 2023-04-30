@@ -17,7 +17,7 @@ export async function createSale(params: {
   amountInCents: string;
   clientName: string;
   status?: string;
-  periodicity?: string;
+  periodicity: string;
   evidenceUrl?: string;
   id?: string;
 }): Promise<{ sale: SellEnt; error?: SaleError; reason?: Error }> {
@@ -25,7 +25,6 @@ export async function createSale(params: {
   const id = params.id || v4();
   // Static values not handled yet in frontend
   const status = params.status || "sin revisar";
-  const periodicity = "mensual";
 
   return ds.manager
     .save(
@@ -39,7 +38,7 @@ export async function createSale(params: {
         clientName: params.clientName,
         userId: params.userId,
         status,
-        periodicity,
+        periodicity: params.periodicity,
         evidenceUrl: "https://picsum.photos/400",
       }),
     )

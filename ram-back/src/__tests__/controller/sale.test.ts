@@ -66,6 +66,7 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
       };
 
       const fields = Object.keys(data);
@@ -94,6 +95,7 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
       };
 
       return request(app)
@@ -116,6 +118,7 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
         additionalField: "additional value",
       };
 
@@ -138,6 +141,7 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
       };
 
       await request(app)
@@ -165,6 +169,7 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
       };
 
       return request(app)
