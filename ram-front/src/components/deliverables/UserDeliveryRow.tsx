@@ -95,6 +95,32 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
     });
   }
 
+  async function handleUpdate(statusChange: string) {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "No podrás revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, aceptar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed && callback) {
+        const bool = statusChange === "aceptado" ? true : false;
+        callback({
+          statusChange: bool,
+          userId: user?.id,
+        });
+        Swal.fire(
+          `¡${statusChange}!`,
+          `El entregable ha sido ${statusChange}`,
+          "success",
+        ).then(() => {
+          console.log(user?.id, idDelivery);
+        });
+      }
+    });
+  }
+
   return (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
