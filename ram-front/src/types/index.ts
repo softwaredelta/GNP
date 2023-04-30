@@ -46,6 +46,7 @@ export interface IUserDelivery {
   status: DeliveryStatus;
   delivery?: IDelivery;
   group?: IGroup;
+  deliveryId: string;
 }
 
 export interface IUser {
