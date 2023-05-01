@@ -12,6 +12,7 @@ describe("ListDeliveries", () => {
           deliverables={[
             {
               dateDelivery: "2023-10-10",
+              deliveryId: "1",
               status: "Sin enviar",
               delivery: {
                 deliveryName: "Delivery 1",
@@ -20,7 +21,7 @@ describe("ListDeliveries", () => {
                 imageURL: "",
                 userDeliveries: [],
               },
-              fileURL: "https://www.google.com",
+              fileUrl: "https://www.google.com",
               group: {
                 id: "1",
                 deliveries: [],
@@ -39,6 +40,7 @@ describe("ListDeliveries", () => {
             },
             {
               dateDelivery: "2023-10-10",
+              deliveryId: "2",
               status: "Sin enviar",
               delivery: {
                 deliveryName: "Delivery 2",
@@ -47,7 +49,7 @@ describe("ListDeliveries", () => {
                 imageURL: "",
                 userDeliveries: [],
               },
-              fileURL: "https://www.google.com",
+              fileUrl: "https://www.google.com",
               group: {
                 id: "2",
                 deliveries: [],

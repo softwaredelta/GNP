@@ -3,19 +3,38 @@
 import { Router } from "express";
 import { getS3Api } from "../arch/s3-client";
 
-/**
- * When s3 is mocked locally, we need this route to serve files to the frontend.
- * No signed url is needed, just the file name.
- */
-
 export const filesRouter = Router();
 
-filesRouter.get("/:filename", async (req, res) => {
-  const s3 = await getS3Api();
-  const { filename } = req.params;
-  const isPdf = filename.toLowerCase().endsWith(".pdf");
+// Send user to file
+// 1. On full urls, redirect to the file
+// 2. On filename
+// 2.1. On mocked s3, send file ourselves
+// 2.2. On real s3, redirect to the file with a signed url (TODO)
+filesRouter.get("/", async (req, res) => {
+  const fileUrl = req.query.fileUrl;
+  if (!fileUrl || typeof fileUrl !== "string") {
+    res.status(400).json({ message: "Missing fileUrl" });
+    return;
+  }
 
-  const object = await s3.getObject(filename);
+  const isFullUrl = fileUrl.startsWith("http");
+  if (isFullUrl) {
+    res.redirect(fileUrl);
+    return;
+  }
+
+  const filename = fileUrl;
+  const s3 = await getS3Api();
+  const object = await s3.getObject(filename).catch((err) => {
+    res.status(404).json({ message: "File not found" });
+    return null;
+  });
+  if (!object) {
+    return;
+  }
+
+  const isPdf = filename.toLocaleLowerCase().endsWith(".pdf");
+
   if (isPdf) {
     res.setHeader("Content-Type", "application/pdf");
   }

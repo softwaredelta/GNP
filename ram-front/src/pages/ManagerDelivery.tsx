@@ -4,6 +4,7 @@ import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTa
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
 import { IDelivery } from "../types";
+import { Tabs } from "flowbite-react";
 
 export default function ManagerDeliveries(): JSX.Element {
   const { id } = useParams();
@@ -13,6 +14,21 @@ export default function ManagerDeliveries(): JSX.Element {
     method: "GET",
   });
 
+  const { response: ReviewedDeliveries } = useAxios<IDelivery>({
+    url: `deliveries/reviewed/${id}`,
+    method: "GET",
+  });
+
+  const { response: PendingDeliveries } = useAxios<IDelivery>({
+    url: `deliveries/pending/${id}`,
+    method: "GET",
+  });
+
+  // TODO: Hacer que el componente se actualice cuando haya un cambio
+  const handleChange = () => {
+    window.location.reload();
+  };
+
   return (
     <Wrapper>
       <div>
@@ -21,9 +37,28 @@ export default function ManagerDeliveries(): JSX.Element {
             {delivery?.deliveryName}
           </h1>
         </div>
-        {delivery && (
-          <UserDeliveriesTable userDeliveries={delivery.userDeliveries ?? []} />
-        )}
+        <Tabs.Group
+          aria-label="Default tabs"
+          className="px-8 pb-4"
+          style="default"
+        >
+          <Tabs.Item active={true} title="Sin Revisar">
+            {PendingDeliveries && (
+              <UserDeliveriesTable
+                onUpdate={() => handleChange()}
+                userDeliveries={PendingDeliveries.userDeliveries ?? []}
+              />
+            )}
+          </Tabs.Item>
+          <Tabs.Item title="Revisados">
+            {ReviewedDeliveries && (
+              <UserDeliveriesTable
+                onUpdate={() => handleChange()}
+                userDeliveries={ReviewedDeliveries.userDeliveries ?? []}
+              />
+            )}
+          </Tabs.Item>
+        </Tabs.Group>
       </div>
     </Wrapper>
   );

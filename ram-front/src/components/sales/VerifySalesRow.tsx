@@ -20,6 +20,7 @@ type Props = {
   sellDate: Date;
   status: string;
   policyNum: string;
+  evidenceUrl: string;
   onUpdated: () => void;
 };
 
@@ -32,6 +33,7 @@ export default function VerifySalesRow({
   sellDate,
   status,
   policyNum,
+  evidenceUrl,
   onUpdated,
 }: Props) {
   const { isOpen, toggleModal } = useModal();
@@ -87,7 +89,11 @@ export default function VerifySalesRow({
             <AiOutlineEye
               size={20}
               className="text-gray-500"
-              onClick={toggleModal}
+              onClick={() => {
+                const url = new URL("http://localhost:8080/files");
+                url.searchParams.append("fileUrl", evidenceUrl);
+                window.open(url.toString(), "_blank");
+              }}
             />
           </div>
 

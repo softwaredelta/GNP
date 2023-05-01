@@ -59,6 +59,18 @@ export async function loadSeeds() {
       id: "test-user-2",
     });
 
+    const user3 = await createUser({
+      email: "test3@delta.tec.mx",
+      password: "test-password-2",
+      id: "test-user-3",
+    });
+
+    const user4 = await createUser({
+      email: "test4@delta.tec.mx",
+      password: "test-password-2",
+      id: "test-user-4",
+    });
+
     const { regular } = await userSeeds();
 
     //GROUPS
@@ -135,6 +147,27 @@ export async function loadSeeds() {
     });
 
     await setDeliverieToUser({
+      idDeliverie: delivery1.delivery.id,
+      idUser: user2.user.id,
+      dateDelivery: new Date(),
+      fileUrl: "https://picsum.photos/400",
+    });
+
+    await setDeliverieToUser({
+      idDeliverie: delivery1.delivery.id,
+      idUser: user3.user.id,
+      dateDelivery: new Date(),
+      fileUrl: "https://picsum.photos/400",
+    });
+
+    await setDeliverieToUser({
+      idDeliverie: delivery1.delivery.id,
+      idUser: user4.user.id,
+      dateDelivery: new Date(),
+      fileUrl: "https://picsum.photos/400",
+    });
+
+    await setDeliverieToUser({
       idDeliverie: delivery2.delivery.id,
       idUser: user.user.id,
       dateDelivery: new Date(),
@@ -163,167 +196,53 @@ export async function loadSeeds() {
 
   // ASSURANCE TYPES
 
-  await createAssuranceType({
-    name: "test-assurance-type-1",
-    description: "test-assurance-type-1-description",
-    id: "test-at-1",
-  });
+  const assuranceTypes = await Promise.all(
+    [
+      {
+        name: "VIDA",
+        description: "Seguros de Vida",
+      },
+      {
+        name: "GMM",
+        description: "Seguros de Gastos Médicos Mayores",
+      },
+      {
+        name: "PYMES",
+        description: "Seguros para Pequeñas y Medianas Empresas",
+      },
+      {
+        name: "PATRIMONIAL",
+        description: "seguros de patrimonio",
+      },
+    ].map(async (p) => {
+      const { assuranceType, error } = await createAssuranceType(p);
+      if (error) {
+        throw new Error(error);
+      }
 
-  await createAssuranceType({
-    name: "VIDA",
-    description: "Seguros de Vida",
-  });
-
-  await createAssuranceType({
-    name: "GMM",
-    description: "Seguros de Gastos Médicos Mayores",
-  });
-
-  await createAssuranceType({
-    name: "PYMES",
-    description: "Seguros para Pequeñas y Medianas Empresas",
-  });
-
-  await createAssuranceType({
-    name: "PATRIMONIAL",
-    description: "seguros de patrimonio",
-  });
+      return assuranceType;
+    }),
+  );
 
   // SALES
 
-  await createSale({
-    policyNumber: "423456789",
-    assuranceType: {
-      id: "test-at-1",
-    },
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "100000",
-    clientName: "Mónica Ayala",
-    periodicity: "Anual",
-    id: "test-sale4",
-    user: {
-      id: "manager@delta.tec.mx",
-    },
-  });
+  await Promise.all(
+    Array.from({ length: 10 }).map(async (p, i) => {
+      const { sale, error } = await createSale({
+        id: `test-sale-${i}`,
+        amountInCents: (2000 + i * 1000).toString(),
+        assuranceTypeId: assuranceTypes[i % assuranceTypes.length].id,
+        policyNumber: (i + 1000000).toString(),
+        clientName: `test-client-${i}`,
+        sellDate: new Date("2021-01-01"),
+        userId: "regular@delta.tec.mx",
+        periodicity: "mensual",
+      });
+      if (error) {
+        throw new Error(error);
+      }
 
-  await createSale({
-    policyNumber: "423456789",
-    assuranceType: {
-      id: "test-at-1",
-    },
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "100000",
-    clientName: "Mónica Ayala",
-    periodicity: "Anual",
-    id: "test-sale4",
-    user: {
-      id: "manager@delta.tec.mx",
-    },
-  });
-
-  await createSale({
-    policyNumber: "423456789",
-    assuranceType: {
-      id: "test-at-1",
-    },
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "100000",
-    clientName: "Mónica Ayala",
-    periodicity: "Anual",
-    id: "test-sale4",
-    user: {
-      id: "manager@delta.tec.mx",
-    },
-  });
-
-  await createSale({
-    policyNumber: "223456789",
-    assuranceType: {
-      id: "test-at-1",
-    },
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "100000",
-    clientName: "Karen López Revisada",
-    periodicity: "Mensual",
-    id: "test-sale2",
-    user: {
-      id: "test-user",
-    },
-    status: "Revisada",
-  });
-
-  await createSale({
-    policyNumber: "123456789",
-    assuranceType: {
-      id: "test-at-1",
-    },
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "100000",
-    clientName: "Jordana",
-    periodicity: "Mensual",
-    id: "test-sale1",
-    user: {
-      id: "test-user",
-    },
-  });
-
-  await createSale({
-    policyNumber: "123456789",
-    assuranceType: {
-      id: "test-at-1",
-    },
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "100000",
-    clientName: "Olivia M",
-    periodicity: "Mensual",
-    id: "test-sale1",
-    user: {
-      id: "test-user-2",
-    },
-  });
-
-  await createSale({
-    policyNumber: "323456789",
-    assuranceType: {
-      id: "test-at-1",
-    },
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "400000",
-    clientName: "Renato",
-    periodicity: "Trimestral",
-    id: "test-sale3",
-    user: {
-      id: "test-user",
-    },
-  });
-
-  await createSale({
-    policyNumber: "423456789",
-    assuranceType: {
-      id: "test-at-1",
-    },
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "100000",
-    clientName: "Mónica Ayala",
-    periodicity: "Anual",
-    id: "test-sale4",
-    user: {
-      id: "test-user",
-    },
-  });
-
-  await createSale({
-    policyNumber: "823456789",
-    assuranceType: {
-      id: "test-at-1",
-    },
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "200000",
-    clientName: "Ian García",
-    periodicity: "Anual",
-    id: "test-sale5",
-    user: {
-      id: "test-user",
-    },
-  });
+      return sale;
+    }),
+  );
 }

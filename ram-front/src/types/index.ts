@@ -40,12 +40,13 @@ export interface IDelivery {
 }
 
 export interface IUserDelivery {
-  fileURL: string;
+  fileUrl: string;
   dateDelivery: string;
   user?: IUser;
   status: DeliveryStatus;
   delivery?: IDelivery;
   group?: IGroup;
+  deliveryId: string;
 }
 
 export interface IUser {

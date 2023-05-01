@@ -70,6 +70,7 @@ export const VerifySalesTable = ({ sales, onUpdated }: IListSalesProps) => {
                 sellDate={sale.sellDate}
                 status={sale.status}
                 policyNum={sale.policyNumber}
+                evidenceUrl={sale.evidenceUrl}
                 onUpdated={() => {
                   setShouldUpdate(true);
                 }}

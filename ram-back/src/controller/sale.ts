@@ -14,6 +14,7 @@ const saleParameters = j.object({
   amountInCents: j.string().required(),
   clientName: j.string().required(),
   assuranceType: j.object().required(),
+  periodicity: j.string().required(),
 });
 
 const saleUpdateParameters = j.object({
@@ -43,8 +44,14 @@ salesRouter.post(
   authMiddleware(),
   saleParametersMiddleware,
   async (req, res) => {
-    const { policyNumber, sellDate, amountInCents, clientName, assuranceType } =
-      req.body;
+    const {
+      policyNumber,
+      sellDate,
+      amountInCents,
+      clientName,
+      assuranceType,
+      periodicity,
+    } = req.body;
     const { user } = req;
 
     if (!user) {
@@ -57,8 +64,9 @@ salesRouter.post(
       sellDate,
       amountInCents,
       clientName,
-      assuranceType,
-      user: user,
+      assuranceTypeId: assuranceType.id,
+      userId: user.id,
+      periodicity,
     });
 
     if (error) {
@@ -93,11 +101,11 @@ salesRouter.get("/my-sales", authMiddleware(), async (req, res) => {
   const userId = req.user.id;
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
-    relations: { user: true, assuranceType: true },
-    where: { user: { id: userId } },
+    relations: { assuranceType: true, user: true },
+    where: { userId },
   });
 
-  res.json({ sales });
+  res.json(sales);
 });
 
 salesRouter.get("/verify-sales", authMiddleware(), async (req, res) => {
@@ -117,10 +125,10 @@ salesRouter.post(
   async (req, res) => {
     const { statusChange } = req.body;
     const db = await getDataSource();
-    const sales = await db.manager
+    await db.manager
       .createQueryBuilder()
       .update(SellEnt)
-      .set({ status: req.body.statusChange })
+      .set({ status: statusChange })
       .where("id = :id", { id: req.params.id })
       .execute();
 

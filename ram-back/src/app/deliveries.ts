@@ -109,3 +109,35 @@ export async function getUserDeliveriesbyGroup(params: {
     };
   }
 }
+
+export async function updateDeliveryStatus(params: {
+  userId: string;
+  deliveryId: string;
+  statusChange: boolean;
+}): Promise<{ changedDelivery: UserDeliveryEnt }> {
+  const db = await getDataSource();
+
+  if (params.statusChange) {
+    await db.manager
+      .createQueryBuilder()
+      .update(UserDeliveryEnt)
+      .set({ status: StatusUserDelivery.accepted })
+      .where("deliveryId = :id", { id: params.deliveryId })
+      .andWhere("userId = :userId", { userId: params.userId })
+      .execute();
+  } else {
+    await db.manager
+      .createQueryBuilder()
+      .update(UserDeliveryEnt)
+      .set({ status: StatusUserDelivery.refused })
+      .where("deliveryId = :id", { id: params.deliveryId })
+      .andWhere("userId = :userId", { userId: params.userId })
+      .execute();
+  }
+
+  const changedDelivery = await db.manager.findOne(UserDeliveryEnt, {
+    where: { deliveryId: params.deliveryId, userId: params.userId },
+  });
+
+  return { changedDelivery: changedDelivery as UserDeliveryEnt };
+}

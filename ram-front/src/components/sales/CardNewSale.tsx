@@ -31,25 +31,10 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     setPeriodicity(event.target.value);
   };
 
-  const { response, error, callback } = useAxios<{
-    data: {
-      group: {
-        id: string;
-        name: string;
-      };
-    };
-  }>({
+  const { response, error, callback } = useAxios({
     url: "sales/create",
     method: "POST",
-    body: {
-      policyNumber: policyNum,
-      sellDate: selectedDate,
-      assuranceType: {
-        id: assuranceType,
-      },
-      amountInCents: amount,
-      clientName: client,
-    },
+    body: {},
   });
 
   const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -182,7 +167,18 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             <div className="w-52">
               <button
                 className="btn-primary flex justify-center items-center h-12"
-                onClick={callback}
+                onClick={() => {
+                  if (callback) {
+                    callback({
+                      policyNumber: policyNum,
+                      amountInCents: amount,
+                      clientName: client,
+                      assuranceType: { id: assuranceType },
+                      sellDate: selectedDate,
+                      periodicity: periodicity,
+                    });
+                  }
+                }}
               >
                 <span className="font-semibold text-lg"> Enviar </span>
                 <TbSend size={20} className="ml-2" />

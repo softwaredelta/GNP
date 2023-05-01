@@ -2,16 +2,26 @@
 import { Table } from "flowbite-react";
 import { IUserDelivery } from "../../types";
 import { UserDeliveryRow } from "./UserDeliveryRow";
+import { useEffect, useState } from "react";
 
 interface Props {
   userDeliveries: IUserDelivery[];
+  onUpdate: () => void;
 }
 
-export function UserDeliveriesTable({ userDeliveries }: Props) {
-  if (userDeliveries.length === 0) return <h1>No hay entregables</h1>;
+export function UserDeliveriesTable({ userDeliveries, onUpdate }: Props) {
+  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (shouldUpdate) {
+      onUpdate();
+      setShouldUpdate(false);
+    }
+  }, [shouldUpdate]);
+
+  if (userDeliveries.length === 0) return <h1>No hay entregables</h1>;
   return (
-    <div data-testid="Table" className="w-full p-8">
+    <div data-testid="Table" className="w-full">
       <Table hoverable={true}>
         <Table.Head>
           <Table.HeadCell>Agente</Table.HeadCell>
@@ -27,10 +37,10 @@ export function UserDeliveriesTable({ userDeliveries }: Props) {
             return (
               <UserDeliveryRow
                 key={index}
-                status={delivery.status}
-                fileURL={delivery.fileURL}
-                dateDelivery={delivery.dateDelivery}
-                user={delivery.user}
+                delivery={delivery}
+                onUpdate={() => {
+                  setShouldUpdate(true);
+                }}
               />
             );
           })}

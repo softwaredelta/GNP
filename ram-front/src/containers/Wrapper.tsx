@@ -9,12 +9,17 @@ export interface IWrapperProps {
 }
 
 const Wrapper = ({ children }: IWrapperProps): JSX.Element => {
-  const { logout } = useAuthentication();
+  const { logout, auth } = useAuthentication();
 
   return (
-    <main className="h-screen overflow-y-auto">
-      <NavBar onLogout={logout} />
-      {children}
+    <main className="min-h-screen flex flex-col justify-between overflow-y-auto">
+      <NavBar
+        onLogout={logout}
+        username={auth?.username}
+        useremail={auth?.username}
+        role={auth?.roles[0]}
+      />
+      <div className="">{children}</div>
       <Foot />
     </main>
   );
