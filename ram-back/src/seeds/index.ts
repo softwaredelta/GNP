@@ -10,9 +10,9 @@ import { UserRole } from "../entities/user.entity";
 
 export async function userSeeds() {
   const userData = [
-    { email: "regular@delta.tec.mx", roles: [UserRole.REGULAR] },
-    { email: "manager@delta.tec.mx", roles: [UserRole.MANAGER] },
-    { email: "admin@delta.tec.mx", roles: [UserRole.ADMIN] },
+    { email: "agente@ram.mx", roles: [UserRole.REGULAR] },
+    { email: "claudiafdz@ram.mx", roles: [UserRole.MANAGER] },
+    { email: "admin@ram.mx", roles: [UserRole.ADMIN] },
     {
       email: "manager-admin@delta.tec.mx",
       roles: [UserRole.MANAGER, UserRole.ADMIN],
@@ -61,20 +61,20 @@ export async function loadSeeds() {
       roles: [UserRole.REGULAR],
     });
 
-    const user3 = await createUser({
+    const user5 = await createUser({
       email: "claudiafdz@ram.mx",
       password: "password",
       id: "3",
       roles: [UserRole.MANAGER],
     });
 
-    const user4 = await createUser({
+    const user3 = await createUser({
       email: "test3@delta.tec.mx",
       password: "test-password-2",
       id: "test-user-3",
     });
 
-    const user5 = await createUser({
+    const user4 = await createUser({
       email: "test4@delta.tec.mx",
       password: "test-password-2",
       id: "test-user-4",
