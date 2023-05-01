@@ -10,9 +10,9 @@ import { UserRole } from "../entities/user.entity";
 
 export async function userSeeds() {
   const userData = [
-    { email: "agente@ram.mx", roles: [UserRole.REGULAR] },
-    { email: "claudiafdz@ram.mx", roles: [UserRole.MANAGER] },
-    { email: "admin@ram.mx", roles: [UserRole.ADMIN] },
+    { email: "regular@delta.tec.mx", roles: [UserRole.REGULAR] },
+    { email: "manager@delta.tec.mx", roles: [UserRole.MANAGER] },
+    { email: "admin@delta.tec.mx", roles: [UserRole.ADMIN] },
     {
       email: "manager-admin@delta.tec.mx",
       roles: [UserRole.MANAGER, UserRole.ADMIN],
