@@ -11,8 +11,13 @@ import {
 import { getDataSource } from "../../arch/db-client";
 import { createDelivery, setDeliverieToUser } from "../../app/deliveries";
 import { userSeeds } from "../../seeds";
+import { UserRole } from "../../entities/user.entity";
+import { authenticateUser } from "../../app/user";
+import { truncate } from "fs";
 
 describe("controller:delivery", () => {
+  let accessToken: string;
+  let accessTokenInvalid: string;
   let deliveryId: string;
   beforeEach(async () => {
     const ds = await getDataSource();
@@ -72,6 +77,37 @@ describe("controller:delivery", () => {
       status: "Pendiente",
       fileUrl: "https://picsum.photos/400",
     });
+
+    const userRegular = await createUser({
+      email: "test@delta.tec.mx",
+      password: "12345678//",
+    });
+
+    const authRegular = await authenticateUser({
+      email: "test@delta.tec.mx",
+      password: "12345678//",
+    });
+
+    accessTokenInvalid = authRegular.auth.accessToken;
+
+    const { user, error: userError } = await createUser({
+      email: "test-2@delta.tec.mx",
+      password: "12345678//",
+      roles: [UserRole.MANAGER],
+    });
+    if (userError) {
+      throw new Error(userError);
+    }
+
+    const { auth, error: authError } = await authenticateUser({
+      email: "test-2@delta.tec.mx",
+      password: "12345678//",
+    });
+    if (authError) {
+      throw new Error(authError);
+    }
+
+    accessToken = auth.accessToken;
   });
 
   describe("get all register of a delivery ", () => {
@@ -106,6 +142,80 @@ describe("controller:delivery", () => {
           expect(res.body.userDeliveries[0].user).toHaveProperty("id");
           expect(res.body.userDeliveries[0].user).toHaveProperty("email");
           expect(res.body.userDeliveries[0].user).toHaveProperty("imageURL");
+        });
+    });
+  });
+
+  describe("Update endpoint", () => {
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .post(`/deliveries/update-status/${deliveryId}`)
+        .send()
+        .expect(401);
+    });
+
+    it("rejects bad data", async () => {
+      const data = {
+        statusChange: 12345,
+        userId: "1",
+      };
+
+      return request(app)
+        .post(`/deliveries/update-status/${deliveryId}`)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(data)
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toMatchObject({
+            message: "BAD_DATA",
+          });
+        });
+    });
+
+    it("rejects requests from regular user", async () => {
+      const data = {
+        statusChange: truncate,
+        userId: "1",
+      };
+
+      return request(app)
+        .post(`/deliveries/update-status/${deliveryId}`)
+        .set("Authorization", `Bearer ${accessTokenInvalid}`)
+        .send(data)
+        .expect(403);
+    });
+
+    it("rejects additional data", async () => {
+      const data = {
+        statusChange: true,
+        userId: "1",
+        additionalField: "additional value",
+      };
+
+      return request(app)
+        .post(`/deliveries/update-status/${deliveryId}`)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(data)
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toMatchObject({
+            message: "BAD_DATA",
+          });
+        });
+    });
+
+    it("updates status of delivery", async () => {
+      const data = {
+        statusChange: true,
+        userId: "1",
+      };
+      return request(app)
+        .post(`/deliveries/update-status/${deliveryId}`)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(data)
+        .expect(200)
+        .then((res) => {
+          expect(res.body).toBeDefined();
         });
     });
   });

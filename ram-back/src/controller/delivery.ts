@@ -155,6 +155,7 @@ deliveriesRouter.get(
 
 deliveriesRouter.post(
   "/update-status/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
   updateParametersMiddleware,
   async (req, res) => {
     const { userId, statusChange } = req.body;
