@@ -203,6 +203,7 @@ export async function loadSeeds() {
         clientName: `test-client-${i}`,
         sellDate: new Date("2021-01-01"),
         userId: "regular@delta.tec.mx",
+        periodicity: "mensual",
       });
       if (error) {
         throw new Error(error);
