@@ -1,10 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
-import axios from "axios";
 import { useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
+import useAxios, { IUseAxiosProps } from "../../hooks/useAxios";
 import useModal from "../../hooks/useModal";
-import { useAuthentication } from "../../lib/api/api-auth";
-import { apiBase$ } from "../../lib/api/api-base";
 import { IUserDelivery } from "../../types";
 import { Button } from "../button";
 import DropZone from "../generics/DropZone";
@@ -16,50 +13,33 @@ interface Props {
 }
 
 export default function ListDeliverables({ deliverables }: Props) {
-  const API_URL = useRecoilValue(apiBase$);
-  const { auth } = useAuthentication();
   const [id, setId] = useState<string>("");
 
   const { isOpen, toggleModal } = useModal();
   const modalFileInput = useRef<HTMLInputElement>(null);
-  const [uploadFileURL, setUploadFileURL] = useState<string | null>("");
-  const [fileName, setFileName] = useState<string>("");
 
   const handleModalOpen = (deliveryCardID: string): void => {
     setId(deliveryCardID);
     toggleModal();
   };
 
+  const { callback } = useAxios<IUseAxiosProps>({
+    url: `user-delivery/${id}/upload`,
+    method: "POST",
+  });
+
   const uploadFile = (): void => {
     const file: File | undefined = modalFileInput.current?.files?.[0];
-
     if (file) {
       const formData: FormData = new FormData();
-
       formData.append("file", file);
-
       try {
-        (async (): Promise<void> => {
-          const response = await axios.post(
-            `${API_URL}/user-delivery/${id}/upload`,
-
-            formData,
-
-            {
-              headers: {
-                Authorization: `Bearer ${auth?.accessToken}`,
-              },
-            },
-          );
-
-          console.debug(response);
-
-          setUploadFileURL(response.data); //Se guarda la url del archivo en el estado
-          setFileName(response.headers.filename); //Se guarda el nombre del archivo en el estado
-        })();
-      } catch (error) {
-        console.error(error);
+        callback?.(formData);
+      } catch (err) {
+        console.error(err);
       }
+    } else {
+      console.log("No se seleccionó ningún archivo");
     }
   };
 
@@ -75,6 +55,7 @@ export default function ListDeliverables({ deliverables }: Props) {
         return (
           <>
             <DeliveryCard
+              key={index}
               deliveryID={elem.delivery?.id ?? ""}
               onFileSubmit={() => handleModalOpen(elem.delivery?.id ?? "")}
               nameDelivery={elem.delivery.deliveryName}
