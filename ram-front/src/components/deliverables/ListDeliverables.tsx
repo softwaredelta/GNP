@@ -20,7 +20,7 @@ export default function ListDeliverables({ deliverables }: Props) {
           <DeliveryCard
             key={index}
             nameDelivery={elem.delivery.deliveryName}
-            image={elem.delivery.imageURL}
+            image={elem.delivery.imageUrl}
             color={index % 2 ? "orange" : "blue"}
             status={elem.status}
           />
