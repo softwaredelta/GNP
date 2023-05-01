@@ -2,67 +2,84 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { ManagerListGroupDeliveries } from "../components/deliverables/ListManagerDeliveries";
+import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
+import { RecoilRoot } from "recoil";
 
 describe("Manager deliveries card", () => {
-  it("renders all the deliveries", () => {
+  it("renders all the pending deliveries", () => {
     render(
-      <BrowserRouter>
-        <ManagerListGroupDeliveries
-          deliveries={[
-            {
-              id: "1",
-              deliveryName: "test-delivery-1",
-              description: "test-delivery-1",
-              imageURL: "https://picsum.photos/100",
-            },
-            {
-              id: "2",
-              deliveryName: "test-delivery-2",
-              description: "test-delivery-2",
-              imageURL: "https://picsum.photos/100",
-            },
-          ]}
-        />
-      </BrowserRouter>,
+      <RecoilRoot>
+        <BrowserRouter>
+          <UserDeliveriesTable
+            userDeliveries={[
+              {
+                fileUrl: "https://picsum.photos/100",
+                dateDelivery: "10-10-2021",
+                user: {
+                  id: "test-user",
+                  email: "test-email-1",
+                  imageURL: "https://picsum.photos/100",
+                },
+                status: "Sin enviar",
+                delivery: {
+                  id: "1",
+                  deliveryName: "test-delivery-1",
+                  description: "test-delivery-1",
+                  imageURL: "https://picsum.photos/100",
+                },
+                deliveryId: "test-delivery-id",
+              },
+            ]}
+            onUpdate={() => window.location.reload()}
+          />
+        </BrowserRouter>
+      </RecoilRoot>,
     );
 
-    const delivery1 = screen.getByText(/test-delivery-1/i);
-    expect(delivery1).toBeInTheDocument();
+    const user = screen.getByText("test-email-1");
+    expect(user).toBeInTheDocument();
 
-    const delivery2 = screen.getByText(/test-delivery-2/i);
-    expect(delivery2).toBeInTheDocument();
+    const status = screen.getByText("Sin enviar");
+    expect(status).toBeInTheDocument();
+
+    const image = screen.getByRole("img");
+    expect(image).toBeInTheDocument();
   });
 
-  it("renders a message when there are no deliveries", () => {
+  it("renders all the reviewed deliveries", () => {
     render(
-      <BrowserRouter>
-        <ManagerListGroupDeliveries deliveries={[]} />
-      </BrowserRouter>,
+      <RecoilRoot>
+        <BrowserRouter>
+          <UserDeliveriesTable
+            userDeliveries={[
+              {
+                fileUrl: "https://picsum.photos/100",
+                dateDelivery: "10-10-2021",
+                user: {
+                  id: "test-user",
+                  email: "test-email-2",
+                  imageURL: "https://picsum.photos/100",
+                },
+                status: "Aceptado",
+                delivery: {
+                  id: "1",
+                  deliveryName: "test-delivery-1",
+                  description: "test-delivery-1",
+                  imageURL: "https://picsum.photos/100",
+                },
+                deliveryId: "test-delivery-id",
+              },
+            ]}
+            onUpdate={() => window.location.reload()}
+          />
+        </BrowserRouter>
+      </RecoilRoot>,
     );
+    const user = screen.getByText("test-email-2");
+    expect(user).toBeInTheDocument();
 
-    const message = screen.getByText("No hay entregas para este grupo");
-    expect(message).toBeInTheDocument();
-  });
-
-  it("renders a delivery", () => {
-    render(
-      <BrowserRouter>
-        <ManagerListGroupDeliveries
-          deliveries={[
-            {
-              id: "1",
-              deliveryName: "test-delivery-1",
-              description: "test-delivery-1",
-              imageURL: "https://picsum.photos/100",
-            },
-          ]}
-        />
-      </BrowserRouter>,
-    );
-
-    const name = screen.getByText("test-delivery-1");
-    expect(name).toBeInTheDocument();
+    const status = screen.getByText("Aceptado");
+    expect(status).toBeInTheDocument();
 
     const image = screen.getByRole("img");
     expect(image).toBeInTheDocument();

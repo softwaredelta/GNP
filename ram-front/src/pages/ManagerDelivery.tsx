@@ -24,6 +24,7 @@ export default function ManagerDeliveries(): JSX.Element {
     method: "GET",
   });
 
+  // TODO: Hacer que el componente se actualice cuando haya un cambio
   const handleChange = () => {
     window.location.reload();
   };
