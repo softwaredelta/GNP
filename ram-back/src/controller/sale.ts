@@ -125,10 +125,10 @@ salesRouter.post(
   async (req, res) => {
     const { statusChange } = req.body;
     const db = await getDataSource();
-    const sales = await db.manager
+    await db.manager
       .createQueryBuilder()
       .update(SellEnt)
-      .set({ status: req.body.statusChange })
+      .set({ status: statusChange })
       .where("id = :id", { id: req.params.id })
       .execute();
 
