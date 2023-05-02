@@ -9,7 +9,6 @@ import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { IAssuranceType } from "../../types";
-import { CreateNewSale, SaleData } from "../../lib/api/api-sales";
 export interface IListAssuranceTypesProps {
   assuranceTypes: IAssuranceType[];
 }
