@@ -238,136 +238,136 @@ export async function loadSeeds() {
       status: StatusUserDelivery.sending,
       fileUrl: "https://picsum.photos/400",
     });
+
+    // ASSURANCE TYPES
+
+    await createAssuranceType({
+      name: "Gastos médicos mayores",
+      description:
+        "El seguro de gastos médicos mayores abarca los gastos de hospitalización, cirugía, medicamentos, estudios clínicos, honorarios médicos, entre otros.",
+      id: "1",
+    });
+
+    await createAssuranceType({
+      name: "Seguro de mascota",
+      description: "El seguro de mascotas abarca los gastos de veterinario",
+      id: "2",
+    });
+
+    await createAssuranceType({
+      name: "PYMES",
+      description: "Seguros para Pequeñas y Medianas Empresas",
+      id: "3",
+    });
+
+    await createAssuranceType({
+      name: "Patrimonial",
+      description: "Seguros de patrimonio",
+      id: "4",
+    });
+
+    // SALES
+
+    await createSale({
+      policyNumber: "423456789",
+      assuranceTypeId: "1",
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "100000",
+      clientName: "Mónica Ayala",
+      periodicity: "Anual",
+      id: "1",
+      userId: "1",
+    });
+
+    await createSale({
+      policyNumber: "423456789",
+      assuranceTypeId: "2",
+      sellDate: new Date("2021-02-01"),
+      amountInCents: "5000",
+      clientName: "Juan Pedro Reyes",
+      periodicity: "Anual",
+      id: "2",
+      userId: "1",
+    });
+
+    await createSale({
+      policyNumber: "423456789",
+      assuranceTypeId: "2",
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "34000",
+      clientName: "Enrique Bonilla",
+      periodicity: "Anual",
+      id: "3",
+      userId: "2",
+    });
+
+    await createSale({
+      policyNumber: "223456789",
+      assuranceTypeId: "3",
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "20000",
+      clientName: "Karen López",
+      periodicity: "Mensual",
+      id: "4",
+      userId: "2",
+      status: "Revisada",
+    });
+
+    await createSale({
+      policyNumber: "123456789",
+      assuranceTypeId: "4",
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "70000",
+      clientName: "Jordana Betancourt",
+      periodicity: "Mensual",
+      id: "5",
+      userId: "1",
+    });
+
+    await createSale({
+      policyNumber: "123456789",
+      assuranceTypeId: "2",
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "56000",
+      clientName: "Olivia Olivares",
+      periodicity: "Mensual",
+      id: "6",
+      userId: "1",
+    });
+
+    await createSale({
+      policyNumber: "323456789",
+      assuranceTypeId: "1",
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "400000",
+      clientName: "Renato Fernández",
+      periodicity: "Trimestral",
+      id: "7",
+      userId: "2",
+    });
+
+    await createSale({
+      policyNumber: "423456789",
+      assuranceTypeId: "2",
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "9000",
+      clientName: "Rodrigo Muñoz",
+      periodicity: "Anual",
+      id: "8",
+      userId: "2",
+    });
+
+    await createSale({
+      policyNumber: "823456789",
+      assuranceTypeId: "4",
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "28000",
+      clientName: "Ian García",
+      periodicity: "Anual",
+      id: "9",
+      userId: "2",
+    });
   } catch (e) {
     console.error(e);
   }
-
-  // ASSURANCE TYPES
-
-  await createAssuranceType({
-    name: "Gastos médicos mayores",
-    description:
-      "El seguro de gastos médicos mayores abarca los gastos de hospitalización, cirugía, medicamentos, estudios clínicos, honorarios médicos, entre otros.",
-    id: "1",
-  });
-
-  await createAssuranceType({
-    name: "Seguro de mascota",
-    description: "El seguro de mascotas abarca los gastos de veterinario",
-    id: "2",
-  });
-
-  await createAssuranceType({
-    name: "PYMES",
-    description: "Seguros para Pequeñas y Medianas Empresas",
-    id: "3",
-  });
-
-  await createAssuranceType({
-    name: "Patrimonial",
-    description: "Seguros de patrimonio",
-    id: "4",
-  });
-
-  // SALES
-
-  await createSale({
-    policyNumber: "423456789",
-    assuranceTypeId: "1",
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "100000",
-    clientName: "Mónica Ayala",
-    periodicity: "Anual",
-    id: "1",
-    userId: "1",
-  });
-
-  await createSale({
-    policyNumber: "423456789",
-    assuranceTypeId: "2",
-    sellDate: new Date("2021-02-01"),
-    amountInCents: "5000",
-    clientName: "Juan Pedro Reyes",
-    periodicity: "Anual",
-    id: "2",
-    userId: "1",
-  });
-
-  await createSale({
-    policyNumber: "423456789",
-    assuranceTypeId: "2",
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "34000",
-    clientName: "Enrique Bonilla",
-    periodicity: "Anual",
-    id: "3",
-    userId: "2",
-  });
-
-  await createSale({
-    policyNumber: "223456789",
-    assuranceTypeId: "3",
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "20000",
-    clientName: "Karen López",
-    periodicity: "Mensual",
-    id: "4",
-    userId: "2",
-    status: "Revisada",
-  });
-
-  await createSale({
-    policyNumber: "123456789",
-    assuranceTypeId: "4",
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "70000",
-    clientName: "Jordana Betancourt",
-    periodicity: "Mensual",
-    id: "5",
-    userId: "1",
-  });
-
-  await createSale({
-    policyNumber: "123456789",
-    assuranceTypeId: "2",
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "56000",
-    clientName: "Olivia Olivares",
-    periodicity: "Mensual",
-    id: "6",
-    userId: "1",
-  });
-
-  await createSale({
-    policyNumber: "323456789",
-    assuranceTypeId: "1",
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "400000",
-    clientName: "Renato Fernández",
-    periodicity: "Trimestral",
-    id: "7",
-    userId: "2",
-  });
-
-  await createSale({
-    policyNumber: "423456789",
-    assuranceTypeId: "2",
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "9000",
-    clientName: "Rodrigo Muñoz",
-    periodicity: "Anual",
-    id: "8",
-    userId: "2",
-  });
-
-  await createSale({
-    policyNumber: "823456789",
-    assuranceTypeId: "4",
-    sellDate: new Date("2021-01-01"),
-    amountInCents: "28000",
-    clientName: "Ian García",
-    periodicity: "Anual",
-    id: "9",
-    userId: "2",
-  });
 }

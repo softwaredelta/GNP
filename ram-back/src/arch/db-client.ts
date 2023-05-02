@@ -14,26 +14,21 @@ export async function getDataSource(): Promise<DataSource> {
     return dataSource;
   }
 
-  if (process.env.NODE_ENV === "remote") {
-    // remote architectures use PG env variables directly over docker
+  if (process.env.NODE_ENV === "fly") {
+    // fly.io uses a sqlite file database
     dataSource = new DataSource({
-      type: "postgres",
-      host: process.env.PGHOST,
-      port: parseInt(process.env.PGPORT || "5432"),
-      database: process.env.PGDATABASE,
-      username: process.env.PGUSER,
-      password: process.env.PGPASSWORD,
+      type: "sqlite",
+      database: "/data/db.sqlite3",
+      dropSchema: false,
       entities,
     });
 
-    await dataSource
-      .initialize()
-      .then(() => console.info("Using remote docker DataSource connection"));
+    await dataSource.initialize();
 
-    console.warn(
-      "This is a staging environment, forcing a database sync (docker)",
-    );
-    await dataSource.synchronize(true);
+    await dataSource.synchronize(false);
+
+    console.warn("Loading seeds for staging environment...");
+    await loadSeeds();
 
     return dataSource;
   }
@@ -54,7 +49,6 @@ export async function getDataSource(): Promise<DataSource> {
     if (!process.env.NODE_ENV) {
       // on local development we want to initialize the database with some data
       console.warn("Loading seeds for local development...");
-      console.log("\nIniciandole en el entorno de test...");
       await loadSeeds();
     }
 

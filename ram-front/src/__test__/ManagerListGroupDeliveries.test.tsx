@@ -14,13 +14,13 @@ describe("Manager deliveries card", () => {
               id: "1",
               deliveryName: "test-delivery-1",
               description: "test-delivery-1",
-              imageURL: "https://picsum.photos/100",
+              imageUrl: "https://picsum.photos/100",
             },
             {
               id: "2",
               deliveryName: "test-delivery-2",
               description: "test-delivery-2",
-              imageURL: "https://picsum.photos/100",
+              imageUrl: "https://picsum.photos/100",
             },
           ]}
         />
@@ -54,7 +54,7 @@ describe("Manager deliveries card", () => {
               id: "1",
               deliveryName: "test-delivery-1",
               description: "test-delivery-1",
-              imageURL: "https://picsum.photos/100",
+              imageUrl: "https://picsum.photos/100",
             },
           ]}
         />

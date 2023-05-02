@@ -1,33 +1,18 @@
 ####################################################################################
-FROM ubuntu AS base
+FROM node:16 AS base
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
-ENV TZ=America/Mexico_City
-ENV LANG=en_US.UTF-8
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y \
         --no-install-recommends \
-        curl \
         wget \
         supervisor \
-        locales \
-        tzdata \
-    && locale-gen en_US.UTF-8 \
-    && update-locale LANG=en_US.UTF-8 \
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
-    && echo $TZ > /etc/timezone \
-    && dpkg-reconfigure -f noninteractive tzdata \
-    && mkdir /checks \
-    && mkdir /scripts \
-    && mkdir /conf \
-    && mkdir /app \
-    && chmod 777 /checks
+    && mkdir /app
 
-# postgres setup
-RUN apt-get install -y \
-    --no-install-recommends \
-    postgresql \
-    postgresql-contrib
+RUN npm install -g \
+        serve
 
 # minio setup
 RUN cd /tmp && \
@@ -40,58 +25,17 @@ RUN cd /tmp && \
     mkdir -p /data/minio && \
     chown -R minio:minio /data/minio
 
-# configuration files
-WORKDIR /infra
-COPY ram-infra .
-RUN cp pg_hba.conf /etc/postgresql/14/main/pg_hba.conf \
-    && cp postgresql.conf /var/lib/postgresql/14/main/postgresql.conf \
-    && mkdir -p /var/lib/postgresql/14/main/conf.d \
-    && cp db-setup.sh /scripts/db-setup.sh
+COPY ./ram-front/ /app/frontend/
+RUN cd /app/frontend \
+    && yarn install \
+    && yarn build
+
+COPY ./ram-back/ /app/backend/
+RUN cd /app/backend \
+    && yarn install \
+    && yarn build
+
+COPY ./ram-infra/supervisord.conf /conf/supervisord.conf
+RUN chmod +x /conf/supervisord.conf
 
 CMD ["supervisord", "-c", "/conf/supervisord.conf"]
-
-####################################################################################
-FROM base as frontend
-
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
-WORKDIR /app/frontend
-COPY ram-front .
-RUN yarn \
-    && yarn build
-
-####################################################################################
-FROM base as backend
-
-WORKDIR /app/backend
-COPY ram-back .
-RUN yarn \
-    && yarn build
-
-####################################################################################
-FROM base as remote
-
-# node setup
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x  \
-    | bash - \
-    && apt-get install -y \
-        nodejs \
-        npm \
-    && npm install -g \
-        yarn \
-        serve
-
-COPY --from=frontend /app/frontend/dist /app/frontend/dist
-COPY --from=backend /app/backend/dist /app/backend/dist
-COPY --from=backend /app/backend/node_modules /app/backend/node_modules
-
-RUN cp /infra/supervisord.remote.conf /conf/supervisord.conf \
-    && chmod +x /scripts/*.sh
-
-####################################################################################
-FROM base as local
-
-ENV MINIO_ROOT_USER=root
-ENV MINIO_ROOT_PASSWORD=rootroot
-RUN cp /infra/supervisord.local.conf /conf/supervisord.conf \
-    && chmod +x /scripts/*.sh

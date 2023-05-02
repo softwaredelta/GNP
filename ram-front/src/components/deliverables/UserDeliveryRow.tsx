@@ -9,6 +9,7 @@ import { FcCheckmark } from "react-icons/fc";
 import { RxCross1 } from "react-icons/rx";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
+import { useOpenFile } from "../../lib/files";
 
 function ActionButton({
   color,
@@ -42,6 +43,8 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
   }
 
   const idDelivery = delivery.deliveryId;
+
+  const openFile = useOpenFile();
 
   const { callback } = useAxios({
     url: `deliveries/update-status/${idDelivery}`,
@@ -111,11 +114,7 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
         <ActionButton
           color="text-gnp-blue-700"
           Icon={RiFileSearchFill}
-          onClick={() => {
-            const url = new URL("http://localhost:8080/files");
-            url.searchParams.append("fileUrl", delivery.fileUrl);
-            window.open(url.toString(), "_blank");
-          }}
+          onClick={() => openFile(delivery.fileUrl)}
           size={30}
         />
       </Table.Cell>

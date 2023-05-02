@@ -84,7 +84,7 @@ export const verifySales$ = selector<ISell[]>({
     get(updateVerifiedSales$);
     const auth = get(authentication$);
     const headers = new Headers();
-    headers.append("Authorization", `Bearer ${auth.accessToken}`);
+    headers.append("Authorization", `Bearer ${auth?.accessToken}`);
     const isTest = get(isTest$);
     const apiBase = get(apiBase$);
 
