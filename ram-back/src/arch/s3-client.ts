@@ -142,7 +142,7 @@ async function getS3Client(): Promise<S3Config> {
     s3Config = makeTestS3Client();
   } else if (process.env.NODE_ENV === "aws") {
     s3Config = await makeAwsS3Client();
-  } else if (process.env.NODE_ENV === "remote") {
+  } else if (process.env.NODE_ENV === "fly") {
     s3Config = await makeMinioClient(
       process.env.MINIO_ROOT_USER || "",
       process.env.MINIO_ROOT_PASSWORD || "",

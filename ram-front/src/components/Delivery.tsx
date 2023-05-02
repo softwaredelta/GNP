@@ -21,6 +21,7 @@ function Delivery() {
   const API_URL = useRecoilValue(apiBase$);
   const { auth } = useAuthentication();
 
+  // FIX THIS: SHOULD USE RECOILD OR AXIOS HOOKS, STOP USING HARDCODED URLS
   useEffect(() => {
     axios.get("http://localhost:8080/user-delivery").then((response) => {
       setDeliveries(response.data);
@@ -80,7 +81,7 @@ function Delivery() {
           <div className="md:col-span-3 space-y-10 ">
             <DeliveryCard
               key="98759284375908"
-              deliveryID="test-delivery"
+              deliveryId="98759284375908"
               color="blue"
               nameDelivery="Nombre "
               onFileSubmit={() => handleModalOpen("test-delivery")}
@@ -106,7 +107,7 @@ function Delivery() {
                 Sube tu evidencia
               </h3>
               <div className="h-80">
-                <DropZone fileInputRef={modalFileInput} />
+                <DropZone file={null} setFile={() => {}} />
               </div>
               <div className="flex flex-col justify-end items-center">
                 <div className="my-2 w-2/5">

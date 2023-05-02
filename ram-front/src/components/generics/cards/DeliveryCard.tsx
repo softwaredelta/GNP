@@ -7,6 +7,7 @@ import {
 } from "react-icons/bs";
 import { FiEye, FiUpload } from "react-icons/fi";
 import { DeliveryStatus } from "../../../types";
+import { useOpenFile } from "../../../lib/files";
 
 export type Colors = "blue" | "orange";
 
@@ -41,11 +42,7 @@ export default function DeliveryCard({
     orange: "bg-gnp-orange-500",
   };
 
-  const openFileInNewTab = (filePath: string): void => {
-    const url = new URL("http://localhost:8080/files");
-    url.searchParams.append("fileUrl", filePath);
-    window.open(url.toString(), "_blank");
-  };
+  const openFileInNewTab = useOpenFile();
 
   return (
     <div

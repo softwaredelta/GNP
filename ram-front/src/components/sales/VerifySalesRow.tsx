@@ -12,6 +12,9 @@ import { NumericFormat } from "react-number-format";
 
 import Modal from "../generics/Modal";
 import useModal from "../../hooks/useModal";
+import { useRecoilValue } from "recoil";
+import { apiBase$ } from "../../lib/api/api-base";
+import { useOpenFile } from "../../lib/files";
 
 type Props = {
   id: string;
@@ -44,6 +47,8 @@ export default function VerifySalesRow({
     method: "POST",
     body: {},
   });
+
+  const openFile = useOpenFile();
 
   async function handleUpdate(statusChange: string) {
     Swal.fire({
@@ -101,11 +106,7 @@ export default function VerifySalesRow({
             <AiOutlineEye
               size={20}
               className="text-gray-500"
-              onClick={() => {
-                const url = new URL("http://localhost:8080/files");
-                url.searchParams.append("fileUrl", evidenceUrl);
-                window.open(url.toString(), "_blank");
-              }}
+              onClick={() => openFile(evidenceUrl)}
             />
           </div>
 

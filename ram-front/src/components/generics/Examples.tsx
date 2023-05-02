@@ -144,7 +144,7 @@ export default function Examples() {
         </DeliveryCard>
       </div>
       <div className="w-10/12">
-        <DropZone fileInputRef={null} />
+        <DropZone file={null} setFile={() => {}} />
       </div>
       <div className="w-7/12">
         <button

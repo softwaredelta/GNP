@@ -31,11 +31,10 @@ export interface ISell {
 }
 
 export interface IDelivery {
-  imageUrl: string;
   id: string;
   deliveryName: string;
   description: string;
-  imageURL: string;
+  imageUrl: string;
   userDeliveries?: IUserDelivery[];
   group?: IGroup;
 }
