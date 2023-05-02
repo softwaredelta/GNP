@@ -19,6 +19,7 @@ import SkeletonDiv from "./skeleton/SkeletonDiv";
 import useAlert from "../../hooks/useAlert";
 import useAxios from "../../hooks/useAxios";
 import ManagerDelivery from "./cards/info/ManagerDelivery";
+// import DeliveryCard from "./cards/DeliveryCard";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
   const { showAlert } = useAlert();
@@ -133,6 +134,8 @@ export default function Examples() {
       </div>
       <div className="md:col-span-3 ">
         <DeliveryCard
+          // deliveryID="test-delivery"
+          // onFileSubmit={() => {}}
           color="blue"
           nameDelivery="Nombre de la entrega"
           image="https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg"
@@ -141,7 +144,7 @@ export default function Examples() {
         </DeliveryCard>
       </div>
       <div className="w-10/12">
-        <DropZone />
+        <DropZone fileInputRef={null} />
       </div>
       <div className="w-7/12">
         <button

@@ -23,8 +23,13 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "prettier/prettier": ["error"],
-    "import/extensions": ["error", "never"],
+    "prettier/prettier": [
+      "error"
+    ],
+    "import/extensions": [
+      "error",
+      "never"
+    ],
     "notice/notice": [
       "error",
       {

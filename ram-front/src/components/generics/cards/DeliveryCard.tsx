@@ -1,20 +1,23 @@
 // (c) Delta Software 2023, rights reserved.
-import { FiUpload, FiEye } from "react-icons/fi";
 import {
-  BsSendPlus,
   BsSend,
-  BsSendExclamation,
   BsSendCheck,
+  BsSendExclamation,
+  BsSendPlus,
 } from "react-icons/bs";
+import { FiEye, FiUpload } from "react-icons/fi";
 import { DeliveryStatus } from "../../../types";
 
 export type Colors = "blue" | "orange";
 
 export interface DeliveryCardProps {
+  deliveryId: string;
   nameDelivery: string;
   image: string;
+  onFileSubmit: (id: string) => void;
   color: Colors;
   status: DeliveryStatus;
+  fileUrl?: string;
 }
 
 const iconList = {
@@ -25,15 +28,23 @@ const iconList = {
 };
 
 export default function DeliveryCard({
+  deliveryId,
   nameDelivery,
   image,
   color,
   status,
+  onFileSubmit,
+  fileUrl,
 }: DeliveryCardProps): JSX.Element {
   const colorOptions = {
     blue: "bg-gnp-blue-500",
     orange: "bg-gnp-orange-500",
   };
+
+  const openFileInNewTab = (url: string): void => {
+    window.open(url);
+  };
+
   return (
     <div
       className="w-full grid grid-cols-2  rounded-b-lg overflow-hidden bg-gnp-white shadow-lg"
@@ -56,12 +67,22 @@ export default function DeliveryCard({
           {status}
         </div>
         <div className="flex items-center text-center justify-center">
-          <div className="mr-4">
-            <FiEye color="gray" size={25} />
-          </div>
-          <div>
-            <FiUpload color="gray" size={25} />
-          </div>
+          {fileUrl && (
+            <button className="mr-4">
+              <FiEye
+                onClick={() => openFileInNewTab(fileUrl)}
+                color="gray"
+                size={25}
+              />
+            </button>
+          )}
+          <button>
+            <FiUpload
+              color="gray"
+              size={25}
+              onClick={() => onFileSubmit(deliveryId)}
+            />
+          </button>
         </div>
       </div>
     </div>

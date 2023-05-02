@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import axios, { AxiosError } from "axios";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuthentication } from "../lib/api/api-auth";
 import { apiBase$ } from "../lib/api/api-base";
 import { useRecoilValue } from "recoil";
@@ -33,7 +33,7 @@ export default function useAxios<T>({
   const [loading, setLoading] = useState<boolean>(false);
   const [mount, setMount] = useState(false);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
       const res = await axios({
@@ -53,7 +53,7 @@ export default function useAxios<T>({
     }
   }, [apiBase, auth, body, headers, method, url]);
 
-  useEffect(() => {
+  useEffect((): void => {
     if (method === "GET" && auth && !mount) {
       setMount(true);
       fetchData();

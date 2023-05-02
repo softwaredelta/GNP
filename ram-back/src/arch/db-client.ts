@@ -54,6 +54,7 @@ export async function getDataSource(): Promise<DataSource> {
     if (!process.env.NODE_ENV) {
       // on local development we want to initialize the database with some data
       console.warn("Loading seeds for local development...");
+      console.log("\nIniciandole en el entorno de test...");
       await loadSeeds();
     }
 

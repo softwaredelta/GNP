@@ -12,6 +12,7 @@ export default function Group(): JSX.Element {
     url: `deliveries/my-deliveries/${idGroup}`,
     method: "GET",
   });
+  console.log({ response });
 
   if (loading) return <h1>Loading...</h1>;
 
@@ -30,7 +31,6 @@ export default function Group(): JSX.Element {
                 {response && response[0].delivery?.group?.name}
               </h1>
             </div>
-
             <ListDeliverables deliverables={response} />
           </>
         ) : (
