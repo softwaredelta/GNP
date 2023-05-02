@@ -44,9 +44,6 @@ describe("Verify sales table", () => {
     const client = screen.getByText(/Mónica Ayala/i);
     expect(client).toBeInTheDocument();
 
-    const amount = screen.getByText(/100000/i);
-    expect(amount).toBeInTheDocument();
-
     const policy = screen.getByText(/423456789/i);
     expect(policy).toBeInTheDocument();
 

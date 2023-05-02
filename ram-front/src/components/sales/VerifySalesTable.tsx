@@ -29,21 +29,6 @@ export interface IListSalesProps {
     user: User;
     evidenceUrl: string;
   }[];
-  // sales: {
-  //   id: string;
-  //   policyNumber: string;
-  //   createdAt: Date;
-  //   updatedtAt: Date;
-  //   assuranceTypeId: string;
-  //   userId: string;
-  //   sellDate: Date;
-  //   status: string;
-  //   amountInCents: number;
-  //   clientName: string;
-  //   periodicity: string;
-  //   evidenceUrl: string;
-  //   user: User;
-  // }[];
   onUpdated?: () => void;
 }
 
