@@ -5,7 +5,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
-import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
 import { CreateNewSale, SaleData } from "../../lib/api/api-sales";
 export interface IListAssuranceTypesProps {
@@ -178,7 +177,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               <option> mensual </option>
               <option> anual </option>
             </select>
- 
+
             <input type="file" onChange={handleFileUpload} />
           </div>
 
