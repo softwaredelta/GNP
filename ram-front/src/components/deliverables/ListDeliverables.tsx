@@ -50,7 +50,6 @@ export default function ListDeliverables({ deliverables }: Props) {
         console.error(err);
       }
     } else {
-      
       console.log("No se seleccionó ningún archivo");
     }
   };
