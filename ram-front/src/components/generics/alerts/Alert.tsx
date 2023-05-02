@@ -59,7 +59,7 @@ export function AlertsContainer() {
   const { closeAlert, alerts } = useAlert();
 
   return ReactDOM.createPortal(
-    <li className="flex flex-col gap-4 fixed top-0 right-0 py-4 px-5 mt-10">
+    <li className="flex flex-col gap-4 fixed z-[90] top-0 right-0 py-4 px-5 mt-10">
       {alerts.map(({ id, description, message, type }) => (
         <Alert
           key={id}
