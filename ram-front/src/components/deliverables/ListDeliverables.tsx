@@ -25,7 +25,7 @@ export default function ListDeliverables({ deliverables }: Props) {
   };
 
   const { response, loading, error, callback } = useAxios({
-    url: `user-delivery/${id}/upload`,
+    url: `user-delivery/upload/${id}`,
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
