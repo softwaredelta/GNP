@@ -8,6 +8,7 @@ import { TbSend } from "react-icons/tb";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { IAssuranceType } from "../../types";
+import useAxios from "../../hooks/useAxios";
 
 export interface IListAssuranceTypesProps {
   assuranceTypes: IAssuranceType[];
