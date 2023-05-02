@@ -29,14 +29,29 @@ export interface IListSalesProps {
     user: User;
     evidenceUrl: string;
   }[];
-  onUpdated: () => void;
+  // sales: {
+  //   id: string;
+  //   policyNumber: string;
+  //   createdAt: Date;
+  //   updatedtAt: Date;
+  //   assuranceTypeId: string;
+  //   userId: string;
+  //   sellDate: Date;
+  //   status: string;
+  //   amountInCents: number;
+  //   clientName: string;
+  //   periodicity: string;
+  //   evidenceUrl: string;
+  //   user: User;
+  // }[];
+  onUpdated?: () => void;
 }
 
 export const VerifySalesTable = ({ sales, onUpdated }: IListSalesProps) => {
   const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
   useEffect(() => {
     if (shouldUpdate) {
-      onUpdated();
+      // onUpdated();
       setShouldUpdate(false);
     }
   }, [shouldUpdate]);
@@ -63,7 +78,7 @@ export const VerifySalesTable = ({ sales, onUpdated }: IListSalesProps) => {
               <VerifySalesRow
                 key={sale.id}
                 id={sale.id}
-                agentName={sale.user.id}
+                agentName={sale.user.email}
                 clientName={sale.clientName}
                 amountInCents={sale.amountInCents}
                 assuranceTypeName={sale.assuranceType.name}

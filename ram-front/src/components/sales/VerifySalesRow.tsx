@@ -7,6 +7,8 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FcCheckmark } from "react-icons/fc";
 import { RxCross1 } from "react-icons/rx";
 import Swal from "sweetalert2";
+import { NumericFormat } from "react-number-format";
+// import { capitalize } from "../../../utils/formats.ts";
 
 import Modal from "../generics/Modal";
 import useModal from "../../hooks/useModal";
@@ -66,6 +68,9 @@ export default function VerifySalesRow({
       }
     });
   }
+  const capitalize = (word: string): string => {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  };
 
   return (
     <Table.Row
@@ -79,10 +84,17 @@ export default function VerifySalesRow({
         {clientName}
       </Table.Cell>
       <Table.Cell>{policyNum}</Table.Cell>
-      <Table.Cell>{amountInCents}</Table.Cell>
+      <Table.Cell>
+        <NumericFormat
+          value={amountInCents}
+          displayType={"text"}
+          thousandSeparator={true}
+          prefix={"$"}
+        />
+      </Table.Cell>
       <Table.Cell>{assuranceTypeName}</Table.Cell>
       <Table.Cell>{new Date(sellDate).toLocaleDateString()}</Table.Cell>
-      <Table.Cell>{status}</Table.Cell>
+      <Table.Cell>{capitalize(status)}</Table.Cell>
       <Table.Cell>
         <div className="grid grid-cols-3 items-center justify-center ">
           <div className="hover:scale-125 transition-all ease-in-out active:scale-95 cursor-pointer">
