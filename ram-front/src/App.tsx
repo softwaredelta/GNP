@@ -1,11 +1,32 @@
 // (c) Delta Software 2023, rights reserved.
 
 import React from "react";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
 import { BrowserRouter } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
-import { ApiProvider } from "./lib/api";
-import { AuthenticationHandler } from "./lib/api/api-auth";
+import {
+  AuthenticationHandler,
+  AuthenticationInitializationHandler,
+  isAuthenticationReady$,
+} from "./lib/api/api-auth";
+import { HashProvider } from "./lib/api/api-hash";
+
+// makes sure app is only rendered once auth initialization is complete
+export function AuthWrapper({ children }: { children: React.ReactNode }) {
+  const isAuthenticationReady = useRecoilValue(isAuthenticationReady$);
+
+  return (
+    <>
+      <AuthenticationInitializationHandler />
+      {isAuthenticationReady && (
+        <>
+          <AuthenticationHandler />
+          {children}
+        </>
+      )}
+    </>
+  );
+}
 
 export function App({
   hash,
@@ -15,7 +36,7 @@ export function App({
   children?: React.ReactNode;
 }) {
   return (
-    <React.Suspense fallback={<p>loading site...</p>}>
+    <React.Suspense fallback={<p></p>}>
       <ErrorBoundary
         fallbackRender={({ error, resetErrorBoundary }) => (
           <div role="alert">
@@ -27,10 +48,9 @@ export function App({
       >
         <RecoilRoot>
           <BrowserRouter>
-            <ApiProvider hash={hash}>
-              <AuthenticationHandler />
-              {children}
-            </ApiProvider>
+            <HashProvider value={hash}>
+              <AuthWrapper>{children}</AuthWrapper>
+            </HashProvider>
           </BrowserRouter>
         </RecoilRoot>
       </ErrorBoundary>

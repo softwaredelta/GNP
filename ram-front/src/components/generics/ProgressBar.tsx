@@ -32,7 +32,7 @@ export default function ProgressBar({
         className={`rounded-full w-full  bg-opacity-50 ${colorOptions[color].back}`}
       >
         <div
-          style={{ width: `${progress}%` }}
+          style={{ width: `${progress < 12 ? 12 : progress}%` }}
           className={`text-xs font-bold text-white ${colorOptions[color].progress} text-center p-0.5 rounded-full`}
         >
           {progress}%

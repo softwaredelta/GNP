@@ -12,6 +12,7 @@ import {
 import { AssuranceTypeEnt } from "./assurance-type.entity";
 import {
   DESCRIPTION_COLUMN,
+  ID_COLUMN,
   NAME_COLUMN,
   REQUIRED_DATE_COLUMN,
 } from "./columns";
@@ -35,7 +36,7 @@ export class GoalEnt {
   @JoinColumn({ name: "assurance_type_id" })
   assuranceType!: AssuranceTypeEnt;
 
-  @Column({ name: "assurance_type_id", nullable: true })
+  @Column(ID_COLUMN("assurance_type_id"))
   assuranceTypeId!: string;
 
   @Column(NAME_COLUMN)

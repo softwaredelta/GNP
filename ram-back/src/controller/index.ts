@@ -26,6 +26,12 @@ app.use(cors());
 app.use(process.env.API_PREFIX || "/", router);
 
 app.use((req, res) => {
+  const appUrl = process.env.APP_URL || "/";
+
+  if (req.path === appUrl) {
+    return res.status(404).send("Not found");
+  }
+
   res.redirect(process.env.APP_URL || "/");
 });
 

@@ -38,3 +38,6 @@ jobs:
     - name: Test
       working-directory: ./ram-front
       run: yarn test
+    - name: Build
+      working-directory: ./ram-front
+      run: yarn build

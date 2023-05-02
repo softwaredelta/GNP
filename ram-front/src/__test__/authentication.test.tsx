@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Root, createRoot } from "react-dom/client";
-import { act, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import { AppRouter } from "../pages";
 import { RenderTest } from "./fixtures";
 import { LOCAL_STORAGE_REFRESK_TOKEN_KEY } from "../lib/api/api-auth";
@@ -201,6 +201,46 @@ describe("authentication", () => {
         expect(test.authentication).not.toBeNull();
         expect(test.authentication.isAuthenticated).toBe(true);
         expect(test.authentication.auth?.accessToken).not.toBe(oldAccessToken);
+      });
+    });
+  });
+
+  describe("logout button in navbar", () => {
+    it("logs out", async () => {
+      const test = new RenderTest("authentication-7", <AppRouter />, root);
+      await test.start();
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/login");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(false);
+      });
+
+      act(() => {
+        test.authentication.authenticate({
+          username: "test",
+          password: "test",
+        });
+      });
+
+      let logoutButton: Element | null = null;
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(true);
+
+        logoutButton = screen.getByTestId("logout-button");
+        expect(logoutButton).not.toBeNull();
+      });
+
+      act(() => {
+        logoutButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      });
+
+      await waitFor(() => {
+        expect(document.location.pathname).toBe("/login");
+        expect(test.authentication).not.toBeNull();
+        expect(test.authentication.isAuthenticated).toBe(false);
       });
     });
   });

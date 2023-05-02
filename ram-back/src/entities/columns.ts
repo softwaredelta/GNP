@@ -9,11 +9,27 @@ export const NAME_COLUMN: ColumnOptions = {
   nullable: false,
 };
 
-export const REQUIRED_STRING_COLUMN = (name: string): ColumnOptions => ({
+export const UNIQUE_NAME_COLUMN: ColumnOptions = {
+  name: "name",
+  type: "varchar",
+  length: 255,
+  nullable: false,
+  unique: true,
+};
+
+export const REQUIRED_STRING_COLUMN = (
+  name: string,
+  {
+    defaultValue,
+  }: {
+    defaultValue?: string;
+  } = {},
+): ColumnOptions => ({
   name,
   type: "varchar",
   length: 255,
   nullable: false,
+  default: defaultValue,
 });
 
 export const DESCRIPTION_COLUMN: ColumnOptions = {
@@ -68,3 +84,19 @@ export const MONEY_COLUMN: ColumnOptions = {
   type: "int",
   nullable: false,
 };
+
+export const ID_COLUMN = (
+  name: string,
+  {
+    nullable = false,
+    primary = true,
+  }: {
+    nullable?: boolean;
+    primary?: boolean;
+  } = {},
+): ColumnOptions => ({
+  name,
+  type: "uuid",
+  nullable,
+  primary,
+});

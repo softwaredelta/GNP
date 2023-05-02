@@ -24,7 +24,7 @@ const saleParametersMiddleware: RequestHandler = (req, res, next) => {
 
 assuranceTypeRouter.post(
   "/create",
-  authMiddleware,
+  authMiddleware(),
   saleParametersMiddleware,
   async (req, res) => {
     const { name, description } = req.body;
@@ -45,5 +45,5 @@ assuranceTypeRouter.post(
 assuranceTypeRouter.get("/all", async (req, res) => {
   const db = await getDataSource();
   const assuranceTypes = await db.manager.find(AssuranceTypeEnt);
-  res.json({ assuranceTypes });
+  res.json(assuranceTypes);
 });

@@ -4,15 +4,15 @@ import { FaWallet } from "react-icons/fa";
 import { NumericFormat } from "react-number-format";
 
 export interface ICardInfoAssuranceProps {
-  typeAssurance: string;
   total: number;
   color: "blue" | "orange";
+  assuranceName: string;
 }
 
 function CardInfoAssurence({
-  typeAssurance,
   total,
   color,
+  assuranceName,
 }: ICardInfoAssuranceProps): JSX.Element {
   const colorOptions = {
     blue: { icon: "fill-gnp-blue-500", text: "text-gnp-blue-500" },
@@ -20,9 +20,9 @@ function CardInfoAssurence({
   };
 
   return (
-    <div className="mt-3 h-full w-full items-center justify-center rounded rounded-xl bg-gnp-white">
+    <div className="mt-3 h-full w-full items-center justify-center rounded-xl bg-gnp-white">
       <h1 className=" text-center text-2xl font-bold text-black w-10/12 mx-auto">
-        {typeAssurance}
+        {assuranceName}
       </h1>
       <h2 className="text-center mt-2 font-bold text-md text-gnp-gray-black ">
         Monto Total Vendido:

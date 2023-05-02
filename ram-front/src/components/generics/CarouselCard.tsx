@@ -16,7 +16,7 @@ const CarouselCard = () => {
           icon={<IoPawSharp color="white" size={30} />}
         >
           <CardInfoTopFive
-            typeAssurance="Seguro de mascotas"
+            assuranceName="Seguro de mascotas"
             color="blue"
             top={[
               {
@@ -36,7 +36,7 @@ const CarouselCard = () => {
           icon={<IoPawSharp color="white" size={30} />}
         >
           <CardInfoTopFive
-            typeAssurance="Seguro de mascotas"
+            assuranceName="Seguro de mascotas"
             color="blue"
             top={[
               {
@@ -56,7 +56,7 @@ const CarouselCard = () => {
           icon={<IoPawSharp color="white" size={30} />}
         >
           <CardInfoTopFive
-            typeAssurance="Seguro de mascotas"
+            assuranceName="Seguro de mascotas"
             color="blue"
             top={[
               {

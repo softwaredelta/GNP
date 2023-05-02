@@ -2,13 +2,15 @@
 
 import {
   atom,
+  selector,
   selectorFamily,
   useRecoilState,
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useHash } from "./api-hash";
 
 export const LOCAL_STORAGE_REFRESK_TOKEN_KEY = "refreshToken";
 const DISABLE_FETCH = false; // set to true when backend is ready, set to false if you want mocked data
@@ -21,7 +23,7 @@ export interface Authentication {
   refreshToken: string;
   refreshTokenExpiresAt: number;
   username: string;
-  userRole: string;
+  roles: string[];
 }
 
 export interface AuthenticationError {
@@ -45,15 +47,9 @@ export interface AuthenticationApi {
   refresh: () => void;
 }
 
-export const AuthenticationContext = createContext({} as AuthenticationApi);
-
-export const useAuthentication = () => {
-  return useContext(AuthenticationContext);
-};
-
 // implementation
 
-const authentication$ = atom<Authentication | null>({
+export const authentication$ = atom<Authentication | null>({
   key: "authentication",
   default: null,
 });
@@ -101,10 +97,7 @@ async function refreshTokens({
   }
 }
 
-export const authenticationApi$ = selectorFamily<
-  AuthenticationApi,
-  { hash: string }
->({
+const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
   key: "authenticationApi",
   get:
     () =>
@@ -135,7 +128,7 @@ export const authenticationApi$ = selectorFamily<
                 refreshTokenExpiresAt:
                   new Date().getTime() + 24 * 60 * 60 * 1000,
                 username: "username",
-                userRole: "userRole",
+                roles: ["regular"],
               });
               set(authenticationError$, null);
 
@@ -185,8 +178,6 @@ export const authenticationApi$ = selectorFamily<
         }
 
         const { refreshToken, refreshTokenExpiresAt } = auth;
-
-        console.log("refreshing token", refreshToken, refreshTokenExpiresAt);
 
         if (isTest || DISABLE_FETCH) {
           if (refreshToken !== "refreshToken") {
@@ -239,57 +230,9 @@ export const authenticationApi$ = selectorFamily<
 });
 
 export function AuthenticationHandler() {
-  const isTest = useRecoilValue(isTest$);
-  const [authentication, setAuthentication] = useRecoilState(authentication$);
-  const setAuthenticationError = useSetRecoilState(authenticationError$);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const { refresh } = useAuthentication();
-  const apiBase = useRecoilValue(apiBase$);
-
-  useEffect(() => {
-    if (isInitialized) return;
-    setIsInitialized(true);
-
-    (async () => {
-      const storedToken = localStorage.getItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
-      if (!storedToken) {
-        return;
-      }
-      const { refreshToken, refreshTokenExpiresAt } = JSON.parse(storedToken);
-
-      if (isTest) {
-        if (refreshToken === "valid-refresh-token") {
-          setAuthentication({
-            accessToken: "accessToken",
-            accessTokenExpiresAt: 3600,
-            refreshToken: "refreshToken",
-            refreshTokenExpiresAt: 3600,
-            username: "username",
-            userRole: "userRole",
-          });
-        } else {
-          setAuthentication(null);
-          localStorage.removeItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
-        }
-
-        return;
-      }
-
-      refreshTokens({
-        refreshToken,
-        refreshTokenExpiresAt,
-        apiBase,
-        setAuthentication,
-        setAuthenticationError,
-      });
-    })();
-  }, [
-    apiBase,
-    isInitialized,
-    isTest,
-    setAuthentication,
-    setAuthenticationError,
-  ]);
+  const authentication = useRecoilValue(authentication$);
+  const hash = useHash();
+  const { refresh } = useRecoilValue(authenticationApi$({ hash }));
 
   useEffect(() => {
     if (!authentication) return;
@@ -313,3 +256,85 @@ export function AuthenticationHandler() {
 
   return <></>;
 }
+
+export const isAuthenticationReady$ = atom<boolean>({
+  key: "isAuthenticationReady",
+  default: false,
+});
+
+export function AuthenticationInitializationHandler() {
+  const [isInitialized, setIsInitialized] = useState(false);
+  const isTest = useRecoilValue(isTest$);
+  const setAuthentication = useSetRecoilState(authentication$);
+  const setAuthenticationError = useSetRecoilState(authenticationError$);
+  const apiBase = useRecoilValue(apiBase$);
+  const setIsAuthenticationReady = useSetRecoilState(isAuthenticationReady$);
+
+  useEffect(() => {
+    if (isInitialized) {
+      return;
+    }
+    setIsInitialized(true);
+
+    (async () => {
+      const storedToken = localStorage.getItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
+      if (!storedToken) {
+        setIsAuthenticationReady(true);
+        return;
+      }
+      const { refreshToken, refreshTokenExpiresAt } = JSON.parse(storedToken);
+
+      if (isTest) {
+        if (refreshToken === "valid-refresh-token") {
+          setAuthentication({
+            accessToken: "accessToken",
+            accessTokenExpiresAt: 3600,
+            refreshToken: "refreshToken",
+            refreshTokenExpiresAt: 3600,
+            username: "username",
+            roles: ["regular"],
+          });
+        } else {
+          setAuthentication(null);
+          localStorage.removeItem(LOCAL_STORAGE_REFRESK_TOKEN_KEY);
+        }
+
+        setIsAuthenticationReady(true);
+        return;
+      }
+
+      await refreshTokens({
+        refreshToken,
+        refreshTokenExpiresAt,
+        apiBase,
+        setAuthentication,
+        setAuthenticationError,
+      });
+
+      setIsAuthenticationReady(true);
+    })();
+  }, [
+    apiBase,
+    isInitialized,
+    isTest,
+    setAuthentication,
+    setAuthenticationError,
+    setIsAuthenticationReady,
+  ]);
+
+  return <></>;
+}
+
+export const useAuthentication = () => {
+  const hash = useHash();
+  const authenticationApi = useRecoilValue(authenticationApi$({ hash }));
+  return authenticationApi;
+};
+
+export const accessToken$ = selector({
+  key: "accessToken",
+  get: ({ get }) => {
+    const auth = get(authentication$);
+    return auth?.accessToken ?? null;
+  },
+});

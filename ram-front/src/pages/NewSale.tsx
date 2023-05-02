@@ -10,7 +10,7 @@ export default function NewSale() {
   return (
     <Wrapper>
       <div className="flex flex-col justify-center items-center pt-8">
-        <CardNewSale assuranceTypes={assuranceTypes.assuranceTypes} />
+        <CardNewSale assuranceTypes={assuranceTypes} />
       </div>
     </Wrapper>
   );

@@ -4,7 +4,7 @@ import { getDataSource } from "../arch/db-client";
 import { GroupUserStatus } from "../entities/group-user.entity";
 import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
-import { StatusUserDelivery } from "../entities/user-delivery";
+import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { DeliveryEnt } from "../entities/delivery.entity";
 
 export enum GroupError {
