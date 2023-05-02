@@ -1,6 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { AssuranceType, User, VerifySalesTable } from "../components/sales/VerifySalesTable";
+import {
+  AssuranceType,
+  User,
+  VerifySalesTable,
+} from "../components/sales/VerifySalesTable";
 import useAxios from "../hooks/useAxios";
 import Wrapper from "../containers/Wrapper";
 import { IListSalesProps } from "../components/sales/SalesTable";

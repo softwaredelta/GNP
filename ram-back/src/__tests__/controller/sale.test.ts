@@ -91,7 +91,7 @@ describe("controller:sale", () => {
     it("accepts valid data", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceType: assurance,
+        assuranceTypeId: assurance.id,
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
@@ -137,7 +137,7 @@ describe("controller:sale", () => {
     it("rejects duplicated policy number", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceType: assurance,
+        assuranceTypeId: assurance.id,
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
@@ -165,7 +165,7 @@ describe("controller:sale", () => {
     it("rejects invalid policy assurance type", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceType: { id: "invalid-id" },
+        assuranceTypeId: "invalid-id",
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
