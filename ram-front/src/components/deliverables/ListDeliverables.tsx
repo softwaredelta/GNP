@@ -7,6 +7,7 @@ import { Button } from "../button";
 import DropZone from "../generics/DropZone";
 import Modal from "../generics/Modal";
 import DeliveryCard from "../generics/cards/DeliveryCard";
+import useAlert from "../../hooks/useAlert";
 
 interface Props {
   deliverables: IUserDelivery[];
@@ -14,7 +15,7 @@ interface Props {
 
 export default function ListDeliverables({ deliverables }: Props) {
   const [id, setId] = useState<string>("");
-
+  const { showAlert } = useAlert();
   const { isOpen, toggleModal } = useModal();
   const modalFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -24,8 +25,14 @@ export default function ListDeliverables({ deliverables }: Props) {
     toggleModal();
   };
 
-  const { response, loading, error, callback } = useAxios({
-    url: `user-delivery/${id}/upload`,
+  const { response, loading, error, callback } = useAxios<{
+    dateDelivery: string;
+    deliveryId: string;
+    fileUrl: string;
+    status: string;
+    userId: string;
+  }>({
+    url: `user-delivery/upload/${id}`,
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
@@ -34,13 +41,36 @@ export default function ListDeliverables({ deliverables }: Props) {
 
   useEffect(() => {
     if (response) {
-      console.log("Se subió el archivo");
-      console.log(response);
+      showAlert(
+        {
+          type: "success",
+          message: "Archivo subido",
+          description: "Se subió el archivo",
+        },
+        5,
+      );
+
+      deliverables = deliverables.map((elem) => {
+        if (elem.deliveryId === response.deliveryId) {
+          elem.status = "Enviado";
+          elem.fileUrl = response.fileUrl;
+        }
+        return elem;
+      });
+    }
+    if (error) {
+      showAlert(
+        {
+          type: "error",
+          message: "Archivo no subido",
+          description: "No se subió el archivo",
+        },
+        5,
+      );
     }
   }, [response]);
 
   const uploadFile = (): void => {
-    console.log("El archivo que se sube es", file);
     if (file) {
       const formData: FormData = new FormData();
       formData.append("file", file);
@@ -49,8 +79,10 @@ export default function ListDeliverables({ deliverables }: Props) {
       } catch (err) {
         console.error(err);
       }
-    } else {
-      console.log("No se seleccionó ningún archivo");
+      setTimeout(() => {
+        toggleModal();
+        setFile(null);
+      }, 1200);
     }
   };
 
@@ -82,7 +114,7 @@ export default function ListDeliverables({ deliverables }: Props) {
                     Sube tu evidencia
                   </h3>
                   <div className="h-80">
-                    <DropZone fileInputRef={modalFileInput} setFile={setFile} />
+                    <DropZone file={file} setFile={setFile} />
                   </div>
                   <div className="flex flex-col justify-end items-center">
                     <div className="my-2 w-2/5">

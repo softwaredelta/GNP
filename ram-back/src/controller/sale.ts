@@ -9,11 +9,11 @@ import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
 
 const saleParameters = j.object({
-  policyNumber: j.string().required(),
+  policyNumber: j.number().required(),
   sellDate: j.string().required(),
-  amountInCents: j.string().required(),
+  amountInCents: j.number().required(),
   clientName: j.string().required(),
-  assuranceType: j.object().required(),
+  assuranceTypeId: j.string().required(),
   periodicity: j.string().required(),
 });
 
@@ -49,7 +49,7 @@ salesRouter.post(
       sellDate,
       amountInCents,
       clientName,
-      assuranceType,
+      assuranceTypeId,
       periodicity,
     } = req.body;
     const { user } = req;
@@ -64,7 +64,7 @@ salesRouter.post(
       sellDate,
       amountInCents,
       clientName,
-      assuranceTypeId: assuranceType.id,
+      assuranceTypeId,
       userId: user.id,
       periodicity,
     });

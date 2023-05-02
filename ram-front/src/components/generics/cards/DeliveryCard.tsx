@@ -41,8 +41,10 @@ export default function DeliveryCard({
     orange: "bg-gnp-orange-500",
   };
 
-  const openFileInNewTab = (url: string): void => {
-    window.open(url);
+  const openFileInNewTab = (filePath: string): void => {
+    const url = new URL("http://localhost:8080/files");
+    url.searchParams.append("fileUrl", filePath);
+    window.open(url.toString(), "_blank");
   };
 
   return (
@@ -67,7 +69,7 @@ export default function DeliveryCard({
           {status}
         </div>
         <div className="flex items-center text-center justify-center">
-          {fileUrl && (
+          {fileUrl && "Sin enviar" !== status && (
             <button className="mr-4">
               <FiEye
                 onClick={() => openFileInNewTab(fileUrl)}
@@ -76,13 +78,16 @@ export default function DeliveryCard({
               />
             </button>
           )}
-          <button>
-            <FiUpload
-              color="gray"
-              size={25}
-              onClick={() => onFileSubmit(deliveryId)}
-            />
-          </button>
+
+          {"Aceptado" !== status && (
+            <button>
+              <FiUpload
+                color="gray"
+                size={25}
+                onClick={() => onFileSubmit(deliveryId)}
+              />
+            </button>
+          )}
         </div>
       </div>
     </div>

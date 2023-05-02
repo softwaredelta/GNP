@@ -49,7 +49,6 @@ export async function createSale(params: {
       if (e.code === "23505") {
         return { sale: {} as SellEnt, error: SaleError.POLICY_NUM_DUPLICATED };
       }
-
       return { sale: {} as SellEnt, error: SaleError.SALE_ERROR, reason: e };
     });
 }

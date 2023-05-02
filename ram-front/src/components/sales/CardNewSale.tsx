@@ -1,13 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import { TbSend } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
-import FileUpload from "../upload";
+import { useForm } from "react-hook-form";
 import { IAssuranceType } from "../../types";
 export interface IListAssuranceTypesProps {
   assuranceTypes: IAssuranceType[];
@@ -15,21 +15,22 @@ export interface IListAssuranceTypesProps {
 
 const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [policyNum, setPolicyNum] = useState<string>("");
-  const [amount, setAmount] = useState<string>("");
-  const [client, setClient] = useState<string>("");
-  const [assuranceType, setAssuranceType] = useState<string>(
-    assuranceTypes[0].id,
-  );
-  const [periodicity, setPeriodicity] = useState<string>("");
 
-  const handleAssuranceTypeChange = (event: any) => {
-    setAssuranceType(event.target.value);
+  type FormValues = {
+    policyNumber: number;
+    amountInCents: number;
+    clientName: string;
+    assuranceTypeId: string;
+    periodicity: string;
+    selectedDate: Date;
   };
 
-  const handlePeriodicityTypeChange = (event: any) => {
-    setPeriodicity(event.target.value);
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>();
 
   const { response, error, callback } = useAxios({
     url: "sales/create",
@@ -37,11 +38,12 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     body: {},
   });
 
-  const handleInputCharacterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    const regex = /^[a-z A-Z ñ]*$/; // expresión regular que solo permite letras, números, guiones bajos y espacios
-    if (regex.test(inputValue)) {
-      setClient(inputValue);
+  const sendData = (data: FormValues) => {
+    if (callback) {
+      callback({
+        ...data,
+        sellDate: selectedDate,
+      });
     }
   };
 
@@ -52,10 +54,19 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
         text: "La venta se ha registrado correctamente.",
         icon: "success",
       });
+      reset({
+        policyNumber: 0,
+        amountInCents: 0,
+        clientName: "",
+        assuranceTypeId: "1",
+        periodicity: "Mensual",
+      });
+      setSelectedDate(new Date());
     } else if (error) {
       Swal.fire({
         title: "Error!",
-        text: "Ocurrió un error al registrar la venta.",
+        text: `Ocurrió un error al registrar la venta.\n
+        ${(error as any).response.data.message}`,
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -80,42 +91,60 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             </label>
             <input
               className="input-primary w-full"
-              type="text"
               placeholder="Ingrese el número de póliza"
-              value={policyNum}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setPolicyNum(e.target.value)
-              }
-              minLength={9}
-              maxLength={9}
-              required
+              type="number"
+              {...register("policyNumber", {
+                required: "El campo poliza es requerido",
+                minLength: {
+                  value: 9,
+                  message: "El número de póliza debe tener al menos 9 dígitos",
+                },
+                maxLength: {
+                  value: 9,
+                  message: "El número de póliza debe tener máximo 9 dígitos",
+                },
+              })}
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
               Monto
             </label>
             <input
               className="input-primary w-full"
-              type="text"
+              type="number"
               placeholder="Ingrese el monto de la venta"
-              value={amount}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setAmount(e.target.value)
-              }
-              minLength={2}
-              maxLength={7}
-              required
+              {...register("amountInCents", {
+                required: "El campo monto de venta es requerido",
+                minLength: {
+                  value: 2,
+                  message: "El monto debe tener al menos 2 dígitos",
+                },
+                maxLength: {
+                  value: 7,
+                  message: "El monto debe tener máximo 7 dígitos",
+                },
+                min: {
+                  value: 1,
+                  message: "El monto debe ser mayor a 0",
+                },
+              })}
             />
             <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
               Nombre del Cliente
             </label>
             <input
               className="input-primary w-full"
-              type="text"
-              data-testid="clientInput"
               placeholder="Ingrese el nombre del cliente"
-              value={client}
-              onChange={handleInputCharacterChange}
-              required
+              {...register("clientName", {
+                required: "El campo Nombre del cliente es requerido",
+                minLength: {
+                  value: 3,
+                  message: "El nombre debe tener al menos 3 caracteres",
+                },
+                maxLength: {
+                  value: 50,
+                  message: "El nombre debe tener máximo 50 caracteres",
+                },
+              })}
             />
           </div>
           <div className="md:col-span-2 col-span-4 px-8 pt-8">
@@ -140,8 +169,9 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             </label>
             <select
               className="input-primary w-full"
-              value={assuranceType}
-              onChange={handleAssuranceTypeChange}
+              {...register("assuranceTypeId", {
+                required: "El campo tipo de seguro es requerido",
+              })}
             >
               {assuranceTypes.map((at, index) => (
                 <option key={index} value={at.id}>
@@ -154,12 +184,13 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             </label>
             <select
               className="input-primary w-full"
-              value={periodicity}
-              onChange={handlePeriodicityTypeChange}
+              {...register("periodicity", {
+                required: "El campo periodicidad es requerido",
+              })}
             >
-              <option> semestral </option>
-              <option> mensual </option>
-              <option> anual </option>
+              <option value={"Semestral"}> Semestral </option>
+              <option value={"Mensual"}> Mensual </option>
+              <option value={"Anual"}> Anual </option>
             </select>
           </div>
 
@@ -167,18 +198,15 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             <div className="w-52">
               <button
                 className="btn-primary flex justify-center items-center h-12"
-                onClick={() => {
-                  if (callback) {
-                    callback({
-                      policyNumber: policyNum,
-                      amountInCents: amount,
-                      clientName: client,
-                      assuranceType: { id: assuranceType },
-                      sellDate: selectedDate,
-                      periodicity: periodicity,
-                    });
-                  }
-                }}
+                onClick={handleSubmit(sendData, (errorsFields) => {
+                  Swal.fire({
+                    title: "Error!",
+                    text: `Ocurrió un error al registrar la venta.\n
+                    ${Object.values(errorsFields).map((e) => e.message + " ")}`,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                  });
+                })}
               >
                 <span className="font-semibold text-lg"> Enviar </span>
                 <TbSend size={20} className="ml-2" />

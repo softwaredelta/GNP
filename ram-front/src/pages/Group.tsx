@@ -12,14 +12,8 @@ export default function Group(): JSX.Element {
     url: `deliveries/my-deliveries/${idGroup}`,
     method: "GET",
   });
-  console.log({ response });
 
   if (loading) return <h1>Loading...</h1>;
-
-  if (error) {
-    console.log({ error });
-    return <h1>Error...</h1>;
-  }
 
   return (
     <Wrapper>

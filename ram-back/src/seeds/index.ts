@@ -168,7 +168,7 @@ export async function loadSeeds() {
       idUser: user.user.id,
       dateDelivery: new Date(),
       fileUrl: "https://picsum.photos/400",
-      status: StatusUserDelivery.accepted,
+      status: StatusUserDelivery.withoutSending,
     });
 
     await setDeliverieToUser({
