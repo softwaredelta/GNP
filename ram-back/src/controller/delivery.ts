@@ -105,7 +105,7 @@ deliveriesRouter.get(
       where: {
         id,
         userDeliveries: {
-          status: StatusUserDelivery.withoutSending,
+          status: StatusUserDelivery.sending,
         },
       },
     });

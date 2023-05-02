@@ -18,8 +18,8 @@ export function ManagerListGroupDeliveries({ deliveries }: Props) {
             <Link to={`/delivery/${delivery.id}`}>
               <DeliveryCard
                 color="blue"
-                nameDelivery={delivery.description}
-                image={delivery.imageURL}
+                nameDelivery={delivery.deliveryName}
+                image={delivery.imageUrl}
               >
                 <ManagerDelivery
                   membersNumber={delivery.userDeliveries?.length ?? 0}
