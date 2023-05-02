@@ -1,7 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
-import ListGroup, { IGroup } from "../components/groups/ListGroup";
+import ListGroup from "../components/groups/ListGroup";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
+import { IGroup } from "../types";
 
 export default function Groups(): JSX.Element {
   const { response, loading, error } = useAxios<{

@@ -7,6 +7,7 @@ import { authenticateUser, createUser } from "../../app/user";
 import { createAssuranceType } from "../../app/assuranceType";
 import { AssuranceTypeEnt } from "../../entities/assurance-type.entity";
 import { SaleError } from "../../app/sale";
+import { createSale } from "../../app/sale";
 
 describe("controller:sale", () => {
   let accessToken: string;
@@ -40,6 +41,17 @@ describe("controller:sale", () => {
     assurance = assuranceType;
 
     accessToken = auth.accessToken;
+
+    await createSale({
+      policyNumber: "823456789",
+      assuranceTypeId: assurance.id,
+      sellDate: new Date("2021-01-01"),
+      amountInCents: "200000",
+      clientName: "test-client",
+      periodicity: "Anual",
+      id: "test-case-sale-id",
+      userId: user.id,
+    });
   });
 
   describe("creation endpoint", () => {
@@ -54,6 +66,7 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
       };
 
       const fields = Object.keys(data);
@@ -78,10 +91,11 @@ describe("controller:sale", () => {
     it("accepts valid data", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceType: assurance,
+        assuranceTypeId: assurance.id,
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
       };
 
       return request(app)
@@ -93,7 +107,7 @@ describe("controller:sale", () => {
           expect(res.body).toHaveProperty("id");
           expect(res.body).toHaveProperty("policyNumber", data.policyNumber);
           expect(res.body).toHaveProperty("status");
-          expect(res.body).toHaveProperty("user");
+          expect(res.body).not.toHaveProperty("user");
         });
     });
 
@@ -104,6 +118,7 @@ describe("controller:sale", () => {
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
         additionalField: "additional value",
       };
 
@@ -122,10 +137,11 @@ describe("controller:sale", () => {
     it("rejects duplicated policy number", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceType: assurance,
+        assuranceTypeId: assurance.id,
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
       };
 
       await request(app)
@@ -149,10 +165,11 @@ describe("controller:sale", () => {
     it("rejects invalid policy assurance type", async () => {
       const data = {
         policyNumber: "123456789",
-        assuranceType: { id: "invalid-id" },
+        assuranceTypeId: "invalid-id",
         sellDate: "2021-10-10",
         amountInCents: "100000",
         clientName: "john doe",
+        periodicity: "Anual",
       };
 
       return request(app)
@@ -164,6 +181,80 @@ describe("controller:sale", () => {
           expect(res.body).toMatchObject({
             message: SaleError.SALE_ERROR,
           });
+        });
+    });
+  });
+
+  describe("Update endpoint", () => {
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .post("/sales/update-status/test-case-sale-id")
+        .send()
+        .expect(401);
+    });
+
+    it("rejects bad data", async () => {
+      const data = {
+        statusChange: 123456789,
+      };
+
+      return request(app)
+        .post("/sales/update-status/test-case-sale-id")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(data)
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toMatchObject({
+            message: "BAD_DATA",
+          });
+        });
+    });
+
+    it("rejects additional data", async () => {
+      const data = {
+        statusChange: "aceptada",
+        additionalField: "additional value",
+      };
+
+      return request(app)
+        .post("/sales/update-status/test-case-sale-id")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(data)
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toMatchObject({
+            message: "BAD_DATA",
+          });
+        });
+    });
+
+    it("updates status of sale", async () => {
+      const data = {
+        statusChange: "aceptada",
+      };
+
+      return request(app)
+        .post("/sales/update-status/test-case-sale-id")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(data)
+        .expect(200)
+        .then((res) => {
+          expect(res.body).toHaveProperty("changedSale");
+        });
+    });
+  });
+
+  describe("my sales endpoint", () => {
+    it("returns all user sales", async () => {
+      return request(app)
+        .get("/sales/my-sales")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .expect(200)
+        .then((res) => {
+          expect(res.body).toHaveLength(1);
+          expect(res.body[0]).toHaveProperty("id");
+          expect(res.body[0]).toHaveProperty("policyNumber");
+          expect(res.body[0]).toHaveProperty("status");
         });
     });
   });

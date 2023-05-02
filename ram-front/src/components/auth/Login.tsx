@@ -4,7 +4,7 @@ import LoginForm from "./LoginForm";
 
 import LogoGNP from "../../assets/imgs/GNP_LOGO.png";
 import vivir from "../../assets/imgs/VIVIR.png";
-import waves from "../../assets/imgs/wavesRAM.png";
+import FooterAnimated from "../includes/Footer/FooterAnimated";
 
 export const LoginScreen = ({
   onLogin,
@@ -21,7 +21,9 @@ export const LoginScreen = ({
             <img className="w-48 " src={LogoGNP} alt="Logo GNP" />
             <img className="w-[25%] " src={vivir} alt="Vivir es increíble" />
           </div>
-          <img className="w-screen mx-auto" src={waves} alt="" />
+          <div className="w-full">
+            <FooterAnimated />
+          </div>
         </div>
         <div className="w-full">
           <LoginForm onLogin={onLogin} isLoading={isLoading} />

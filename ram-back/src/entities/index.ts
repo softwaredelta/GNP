@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { AssuranceTypeEnt } from "./assurance-type.entity";
-import { UserDeliveryEnt } from "./user-delivery";
+import { UserDeliveryEnt } from "./user-delivery.entity";
 import { DeliveryEnt } from "./delivery.entity";
 import { GoalEnt } from "./goal.entity";
 import { GroupUserEnt } from "./group-user.entity";

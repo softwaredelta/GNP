@@ -19,7 +19,7 @@ export default function Card({
   };
 
   return (
-    <div className="bg-gnp-white rounded-lg shadow-lg w-full grid grid-rows-2 grid-cols-1 overflow-hidden">
+    <div className="bg-gnp-white rounded-lg shadow-lg w-full grid grid-rows-2 grid-cols-1 overflow-hidden hover:scale-110 transition-all ease-in-out active:scale-95">
       <div className="w-full relative">
         <img src={image} className="w-full h-full aspect-video object-cover" />
         <div

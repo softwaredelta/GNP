@@ -19,6 +19,7 @@ import SkeletonDiv from "./skeleton/SkeletonDiv";
 import useAlert from "../../hooks/useAlert";
 import useAxios from "../../hooks/useAxios";
 import ManagerDelivery from "./cards/info/ManagerDelivery";
+// import DeliveryCard from "./cards/DeliveryCard";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
   const { showAlert } = useAlert();
@@ -82,7 +83,7 @@ export default function Examples() {
           icon={<BsHouses color="white" size={30} />}
         >
           <CardInfoAssurence
-            typeAssurance="Seguro de hogar"
+            assuranceName="Seguro de hogar"
             color="orange"
             total={2000000}
           />
@@ -95,7 +96,7 @@ export default function Examples() {
           icon={<IoPawSharp color="white" size={30} />}
         >
           <CardInfoTopFive
-            typeAssurance="Seguro de mascotas"
+            assuranceName="Seguro de mascotas"
             color="blue"
             top={[
               {
@@ -133,6 +134,8 @@ export default function Examples() {
       </div>
       <div className="md:col-span-3 ">
         <DeliveryCard
+          // deliveryID="test-delivery"
+          // onFileSubmit={() => {}}
           color="blue"
           nameDelivery="Nombre de la entrega"
           image="https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg"
@@ -141,7 +144,7 @@ export default function Examples() {
         </DeliveryCard>
       </div>
       <div className="w-10/12">
-        <DropZone />
+        <DropZone file={null} setFile={() => {}} />
       </div>
       <div className="w-7/12">
         <button

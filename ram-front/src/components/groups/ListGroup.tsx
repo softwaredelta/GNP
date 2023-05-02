@@ -2,15 +2,10 @@
 import { useNavigate } from "react-router-dom";
 import Card from "../generics/cards/base/Card";
 import CardInfoGroup from "../generics/cards/info/CardInfoGroup";
+import { IGroup } from "../../types";
 
 export interface IListGroupProps {
   groups: IGroup[];
-}
-export interface IGroup {
-  id: string;
-  name: string;
-  progress: number;
-  image: string;
 }
 
 export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
@@ -27,7 +22,7 @@ export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
               navigate(`/group/${group.id}`);
             }}
           >
-            <Card color={index % 2 ? "orange" : "blue"} image={group.image}>
+            <Card color={index % 2 ? "orange" : "blue"} image={group.imageURL}>
               <CardInfoGroup
                 color={index % 2 ? "orange" : "blue"}
                 nameGroup={group.name}

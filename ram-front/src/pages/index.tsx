@@ -2,44 +2,64 @@
 
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuthentication } from "../lib/api/api-auth";
-import { privateRoutes } from "../routes/privates";
-import { publicRoutes } from "../routes/public";
+import {
+  CommonUserRoutes,
+  ManagerUserRoutes,
+  RegularUserRoutes,
+} from "../routes/privates";
+import { PublicRoutes } from "../routes/public";
 import { AlertsContainer } from "../components/generics/alerts/Alert";
 import { useRecoilValue } from "recoil";
 import { isTest$ } from "../lib/api/api-base";
+import { useCallback, useMemo } from "react";
+import { IRoute } from "../types";
 
 export function AppRouter() {
-  const { isAuthenticated } = useAuthentication();
+  const { auth, isAuthenticated } = useAuthentication();
   const isTest = useRecoilValue(isTest$);
+
+  const hasRole = useCallback(
+    (role: string) => {
+      if (auth === null) return false;
+
+      return auth.roles.includes(role);
+    },
+    [auth],
+  );
+
+  const availableRoutes = useMemo((): IRoute[] => {
+    const routes: IRoute[] = [];
+
+    if (isAuthenticated) {
+      routes.push(...CommonUserRoutes);
+    } else {
+      routes.push(...PublicRoutes);
+      routes.push({ path: "*", Component: () => <Navigate to="/login" /> });
+    }
+
+    if (isAuthenticated && hasRole("regular")) {
+      routes.push(...RegularUserRoutes);
+    }
+
+    if (isAuthenticated && hasRole("manager")) {
+      routes.push(...ManagerUserRoutes);
+    }
+
+    if (isAuthenticated) {
+      routes.push({ path: "*", Component: () => <Navigate to="/" /> });
+    }
+
+    return routes;
+  }, [hasRole, isAuthenticated]);
 
   return (
     <>
       {isTest || <AlertsContainer />}
+
       <Routes>
-        {isAuthenticated ? (
-          <>
-            {privateRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={<route.component />}
-              />
-            ))}
-            <Route path="/login" element={<Navigate to="/" />} />
-          </>
-        ) : (
-          <>
-            {publicRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={<route.component />}
-              />
-            ))}
-            <Route path="/" element={<Navigate to="/login" />} />
-            <Route path="*" element={<h1>404</h1>} />
-          </>
-        )}
+        {availableRoutes.map(({ path, Component }) => (
+          <Route key={path} path={path} element={<Component />} />
+        ))}
       </Routes>
     </>
   );
