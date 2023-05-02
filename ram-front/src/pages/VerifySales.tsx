@@ -30,12 +30,6 @@ export default function VerifySales() {
 
   if (loading) return <h1>Loading...</h1>;
 
-  if (error) {
-    console.log("error", error);
-    throw error;
-  }
-  // const sales = useRecoilValue(verifySales$);
-  console.log("response", response);
   return (
     <>
       <Wrapper>

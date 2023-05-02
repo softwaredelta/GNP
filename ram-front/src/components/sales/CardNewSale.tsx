@@ -198,11 +198,11 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             <div className="w-52">
               <button
                 className="btn-primary flex justify-center items-center h-12"
-                onClick={handleSubmit(sendData, (errors) => {
+                onClick={handleSubmit(sendData, (errorsFields) => {
                   Swal.fire({
                     title: "Error!",
                     text: `Ocurrió un error al registrar la venta.\n
-                    ${Object.values(errors).map((e) => e.message + " ")}`,
+                    ${Object.values(errorsFields).map((e) => e.message + " ")}`,
                     icon: "error",
                     confirmButtonText: "OK",
                   });

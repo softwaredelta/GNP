@@ -37,8 +37,8 @@ function DropZone({ file, setFile }: DropZoneProps): JSX.Element {
           onChange={(e) => {
             e.preventDefault();
             if (e.target.files) {
-              const file = e.target.files[0];
-              setFile(file);
+              const newFile = e.target.files[0];
+              setFile(newFile);
             }
           }}
         />

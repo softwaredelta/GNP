@@ -15,10 +15,6 @@ export default function Group(): JSX.Element {
 
   if (loading) return <h1>Loading...</h1>;
 
-  if (error) {
-    throw error;
-  }
-
   return (
     <Wrapper>
       <div>

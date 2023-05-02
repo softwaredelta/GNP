@@ -41,9 +41,9 @@ export default function DeliveryCard({
     orange: "bg-gnp-orange-500",
   };
 
-  const openFileInNewTab = (fileUrl: string): void => {
+  const openFileInNewTab = (filePath: string): void => {
     const url = new URL("http://localhost:8080/files");
-    url.searchParams.append("fileUrl", fileUrl);
+    url.searchParams.append("fileUrl", filePath);
     window.open(url.toString(), "_blank");
   };
 
