@@ -4,9 +4,10 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 
 export interface DropZoneProps {
   fileInputRef: any | null;
+  setFile: (file: File) => void;
 }
 
-function DropZone({ fileInputRef }: DropZoneProps): JSX.Element {
+function DropZone({ fileInputRef, setFile }: DropZoneProps): JSX.Element {
   return (
     <div className=" w-full h-full flex flex-col items-center justify-center bg-white rounded-lg shadow-md">
       <label
@@ -21,7 +22,13 @@ function DropZone({ fileInputRef }: DropZoneProps): JSX.Element {
           id="dropzone-file"
           type="file"
           className="hidden"
-          ref={fileInputRef}
+          onChange={(e) => {
+            e.preventDefault();
+            if (e.target.files) {
+              const file = e.target.files[0];
+              setFile(file);
+            }
+          }}
         />
       </label>
     </div>

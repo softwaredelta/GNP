@@ -40,7 +40,7 @@ userDeliveryRouter.get(
         res.status(200).json(userDelivery);
       }
     } catch (error) {
-      console.error(error);
+      throw new Error(error as string);
     }
   },
 );
@@ -62,7 +62,7 @@ userDeliveryRouter.get(
 );
 
 userDeliveryRouter.post(
-  "/:id/upload",
+  "/upload/:id",
   authMiddleware({ neededRoles: [UserRole.REGULAR] }),
   upload.single("file"),
   async (req: Request, res: Response): Promise<void> => {
@@ -81,6 +81,8 @@ userDeliveryRouter.post(
           dateDelivery: new Date(),
         });
         res.status(201).json(createdUserDelivery);
+      } else {
+        res.status(400).json({ message: "BAD_DATA" });
       }
     } catch (error) {
       console.error(error);

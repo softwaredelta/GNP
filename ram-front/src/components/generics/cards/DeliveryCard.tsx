@@ -6,23 +6,18 @@ import {
   BsSendPlus,
 } from "react-icons/bs";
 import { FiEye, FiUpload } from "react-icons/fi";
-import { useRecoilValue } from "recoil";
-import {
-  IUserDelivery,
-  authenticatedUserDelivery$,
-} from "../../../lib/api/api-user-deliveries";
-
 import { DeliveryStatus } from "../../../types";
 
 export type Colors = "blue" | "orange";
 
 export interface DeliveryCardProps {
-  deliveryID: string;
+  deliveryId: string;
   nameDelivery: string;
   image: string;
   onFileSubmit: (id: string) => void;
   color: Colors;
   status: DeliveryStatus;
+  fileUrl?: string;
 }
 
 const iconList = {
@@ -33,21 +28,18 @@ const iconList = {
 };
 
 export default function DeliveryCard({
-  deliveryID,
+  deliveryId,
   nameDelivery,
   image,
   color,
+  status,
   onFileSubmit,
+  fileUrl,
 }: DeliveryCardProps): JSX.Element {
   const colorOptions = {
     blue: "bg-gnp-blue-500",
     orange: "bg-gnp-orange-500",
   };
-
-  const userDelivery: IUserDelivery | null =
-    useRecoilValue<IUserDelivery | null>(
-      authenticatedUserDelivery$({ deliveryID }),
-    );
 
   const openFileInNewTab = (url: string): void => {
     window.open(url);
@@ -71,24 +63,24 @@ export default function DeliveryCard({
       </div>
       <div className="grid grid-cols-3 border-l-2 border-l-gray-300">
         <div className="col-span-2 flex items-center text-center justify-center font-semibold">
-          <div className="mr-4">
-            {iconList[userDelivery?.status ?? "Sin enviar"]}
-          </div>
-          {userDelivery?.status ?? "Sin enviar"}
+          <div className="mr-4">{iconList[status]}</div>
+          {status}
         </div>
         <div className="flex items-center text-center justify-center">
-          <button className="mr-4">
-            <FiEye
-              onClick={() => openFileInNewTab(userDelivery?.fileUrl ?? "")}
-              color="gray"
-              size={25}
-            />
-          </button>
-          <button disabled={!userDelivery}>
+          {fileUrl && (
+            <button className="mr-4">
+              <FiEye
+                onClick={() => openFileInNewTab(fileUrl)}
+                color="gray"
+                size={25}
+              />
+            </button>
+          )}
+          <button>
             <FiUpload
               color="gray"
               size={25}
-              onClick={() => onFileSubmit(deliveryID)}
+              onClick={() => onFileSubmit(deliveryId)}
             />
           </button>
         </div>

@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
-import { useRef, useState } from "react";
-import useAxios, { IUseAxiosProps } from "../../hooks/useAxios";
+import { useEffect, useRef, useState } from "react";
+import useAxios from "../../hooks/useAxios";
 import useModal from "../../hooks/useModal";
 import { IUserDelivery } from "../../types";
 import { Button } from "../button";
@@ -17,19 +17,30 @@ export default function ListDeliverables({ deliverables }: Props) {
 
   const { isOpen, toggleModal } = useModal();
   const modalFileInput = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const handleModalOpen = (deliveryCardID: string): void => {
     setId(deliveryCardID);
     toggleModal();
   };
 
-  const { callback } = useAxios<IUseAxiosProps>({
+  const { response, loading, error, callback } = useAxios({
     url: `user-delivery/${id}/upload`,
     method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   });
 
+  useEffect(() => {
+    if (response) {
+      console.log("Se subió el archivo");
+      console.log(response);
+    }
+  }, [response]);
+
   const uploadFile = (): void => {
-    const file: File | undefined = modalFileInput.current?.files?.[0];
+    console.log("El archivo que se sube es", file);
     if (file) {
       const formData: FormData = new FormData();
       formData.append("file", file);
@@ -39,6 +50,7 @@ export default function ListDeliverables({ deliverables }: Props) {
         console.error(err);
       }
     } else {
+      
       console.log("No se seleccionó ningún archivo");
     }
   };
@@ -56,12 +68,13 @@ export default function ListDeliverables({ deliverables }: Props) {
           <>
             <DeliveryCard
               key={index}
-              deliveryID={elem.delivery?.id ?? ""}
-              onFileSubmit={() => handleModalOpen(elem.delivery?.id ?? "")}
+              deliveryId={elem.deliveryId}
+              onFileSubmit={() => handleModalOpen(elem.deliveryId)}
               nameDelivery={elem.delivery.deliveryName}
               image={elem.delivery.imageURL}
               color={index % 2 ? "orange" : "blue"}
               status={elem.status}
+              fileUrl={elem.fileUrl}
             />
             {isOpen && (
               <Modal closeModal={toggleModal}>
@@ -70,7 +83,7 @@ export default function ListDeliverables({ deliverables }: Props) {
                     Sube tu evidencia
                   </h3>
                   <div className="h-80">
-                    <DropZone fileInputRef={modalFileInput} />
+                    <DropZone fileInputRef={modalFileInput} setFile={setFile} />
                   </div>
                   <div className="flex flex-col justify-end items-center">
                     <div className="my-2 w-2/5">
