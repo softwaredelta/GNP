@@ -5,20 +5,25 @@ import { createGroup, getUserGroups } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
 import { Router } from "express";
+import { UserRole } from "../entities/user.entity";
 
 export const groupsRouter = Router();
 
-groupsRouter.get("/all", async (req, res) => {
-  const ds = await getDataSource();
-  const groups = await ds.manager.find(GroupEnt, {
-    select: ["id", "name", "imageURL", "groupUsers"],
-    relations: ["groupUsers"],
-  });
+groupsRouter.get(
+  "/all",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const ds = await getDataSource();
+    const groups = await ds.manager.find(GroupEnt, {
+      select: ["id", "name", "description", "imageURL", "groupUsers"],
+      relations: ["groupUsers"],
+    });
 
-  res.json({ groups });
-});
+    res.json(groups);
+  },
+);
 
-groupsRouter.get("/my-groups", authMiddleware, async (req, res) => {
+groupsRouter.get("/my-groups", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });
     return;
@@ -33,8 +38,8 @@ groupsRouter.get("/my-groups", authMiddleware, async (req, res) => {
 groupsRouter.get("/:id", async (req, res) => {
   const ds = await getDataSource();
   const groups = await ds.manager.findOne(GroupEnt, {
-    select: ["id", "name", "groupDeliveries", "groupDeliveries"],
-    relations: ["groupDeliveries.userDeliveries"],
+    select: ["id", "name", "deliveries"],
+    relations: ["deliveries", "deliveries.userDeliveries"],
     where: {
       id: req.params.id,
     },
@@ -43,7 +48,7 @@ groupsRouter.get("/:id", async (req, res) => {
   res.json(groups);
 });
 
-groupsRouter.post("/create", authMiddleware, async (req, res) => {
+groupsRouter.post("/create", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });
     return;

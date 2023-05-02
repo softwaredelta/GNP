@@ -4,31 +4,12 @@ import React, { useState, useEffect } from "react";
 
 import { Table } from "flowbite-react";
 import SalesRow from "./SalesRow";
+import { FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { ISell } from "../../types";
 
-export interface AssuranceType {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-}
 export interface IListSalesProps {
-  sales: {
-    id: string;
-    policyNumber: string;
-    assuranceType: AssuranceType;
-    sellDate: Date;
-    amountInCents: string;
-    clientName: string;
-    status: string;
-    periodicity: string;
-    user: User;
-    evidenceUrl: string;
-  }[];
+  sales: ISell[];
   onDeleted: () => void;
 }
 
@@ -39,11 +20,21 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
       onDeleted();
       setShouldUpdate(false);
     }
-  }, [shouldUpdate]);
+  }, [onDeleted, shouldUpdate]);
 
   return (
-    <div data-testid="Table" className="w-full p-8">
-      <Table hoverable={true}>
+    <div data-testid="sales-table" className="grid grid-row w-full pb-4 px-8">
+      <div className="row">
+        <Link to="/new-sale">
+          <div className="w-44 pb-8 float-right pr-8">
+            <button className="btn-primary flex justify-center items-center">
+              <span className="font-semibold"> Agregar </span>
+              <FaPlus size={15} className="ml-2" />
+            </button>
+          </div>
+        </Link>
+      </div>
+      <Table className="row" hoverable={true}>
         <Table.Head>
           <Table.HeadCell>Nombre del Cliente</Table.HeadCell>
           <Table.HeadCell>Póliza</Table.HeadCell>

@@ -5,7 +5,14 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import LogoRAM from "../../../assets/imgs/Ram_LogoInv.png";
 import { Link } from "react-router-dom";
 
-function NavBar() {
+interface Props {
+  onLogout: () => void;
+  username?: string;
+  useremail?: string;
+  role?: string;
+}
+
+function NavBar({ onLogout, useremail, username, role }: Props) {
   return (
     <Navbar
       className="shadow-md border border-black "
@@ -32,66 +39,112 @@ function NavBar() {
           }
         >
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
+            <span className="block text-sm">{username}</span>
             <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+              {useremail}
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Ver Perfil</Dropdown.Item>
-          <Dropdown.Item>Ayuda</Dropdown.Item>
+          <Link to="/">
+            <Dropdown.Item>Ver Perfil</Dropdown.Item>
+          </Link>
+          <Link to="/help">
+            <Dropdown.Item>Ayuda</Dropdown.Item>
+          </Link>
           <Dropdown.Divider />
-          <Dropdown.Item>Salir</Dropdown.Item>
+          <Dropdown.Item onClick={onLogout} data-testid="logout-button">
+            Salir
+          </Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
+        {role === "manager" ? (
+          <Navbar.Link
+            as={Link}
+            to="/"
+            className="text-lg mx-8 active:bg-amber-500"
+            active={true}
+          >
+            Home
+          </Navbar.Link>
+        ) : (
+          <Navbar.Link
+            as={Link}
+            to="/"
+            className="text-lg ml-2 active:bg-amber-500"
+            active={true}
+          >
+            Home
+          </Navbar.Link>
+        )}
         <Navbar.Link
           as={Link}
-          to="/"
-          className="text-lg ml-2 active:bg-amber-500"
-          active={true}
-        >
-          Home
-        </Navbar.Link>
-        <Navbar.Link
-          as={Link}
-          to="/my-groups"
+          to="/groups"
           className="text-lg  mx-8 text-gray-900 "
         >
           Grupos
         </Navbar.Link>
-
-        <div className="text-lg mx-8 text-gray-900">
-          <Dropdown label="Ventas" size="xl" inline={true}>
-            <Link to="/·">
-              <Dropdown.Item>Datos Generales</Dropdown.Item>
-            </Link>
-            <Link to="/new-sale">
-              <Dropdown.Item>Agregar Venta</Dropdown.Item>
-            </Link>
-            <Link to="/sales-history">
-              <Dropdown.Item>Mis ventas</Dropdown.Item>
-            </Link>
-          </Dropdown>
-        </div>
-
-        <Navbar.Link
-          as={Link}
-          to="/prospectos"
-          className="text-lg mx-8 text-gray-900"
-        >
-          Prospectos
-        </Navbar.Link>
-        <div className="text-lg mx-8 text-gray-900">
-          <Dropdown label="Metas" size="xl" inline={true}>
-            <Link to="/·">
-              <Dropdown.Item>Mis metas</Dropdown.Item>
-            </Link>
-            <Link to="/·">
-              <Dropdown.Item>Agregar Metas</Dropdown.Item>
-            </Link>
-          </Dropdown>
-        </div>
+        {role === "manager" ? (
+          <Navbar.Link
+            as={Link}
+            to="/verify-sales"
+            className="text-lg  mx-8 text-gray-900 "
+          >
+            Ventas
+          </Navbar.Link>
+        ) : (
+          <div className="text-lg mx-8 text-gray-900">
+            <Dropdown label="Ventas" size="xl" inline={true}>
+              <Link to="/my-sales-metrics">
+                <Dropdown.Item>Métricas de Ventas</Dropdown.Item>
+              </Link>
+              <Link to="/new-sale">
+                <Dropdown.Item>Agregar Venta</Dropdown.Item>
+              </Link>
+              <Link to="/sales-history">
+                <Dropdown.Item>Mis ventas</Dropdown.Item>
+              </Link>
+            </Dropdown>
+          </div>
+        )}
+        {role === "manager" ? (
+          <>
+            <Navbar.Link
+              as={Link}
+              to="/prospects"
+              className="text-lg mx-8 text-gray-900"
+            >
+              Prospectos
+            </Navbar.Link>
+            <Navbar.Link
+              as={Link}
+              to="/goals"
+              className="text-lg mx-8 text-gray-900"
+            >
+              Metas
+            </Navbar.Link>
+          </>
+        ) : (
+          <>
+            <Navbar.Link
+              as={Link}
+              to="/prospects"
+              className="text-lg mx-8 text-gray-900"
+            >
+              Prospectos
+            </Navbar.Link>
+            <div className="text-lg mx-8 text-gray-900">
+              <Dropdown label="Metas" size="xl" inline={true}>
+                <Link to="/new-goal">
+                  <Dropdown.Item>Mis metas</Dropdown.Item>
+                </Link>
+                <Link to="/goals-history">
+                  <Dropdown.Item>Agregar Metas</Dropdown.Item>
+                </Link>
+              </Dropdown>
+            </div>
+          </>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

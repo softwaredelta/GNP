@@ -14,13 +14,15 @@ describe("ListGroups", () => {
               id: "fdsf-fdsfsf",
               name: "Group 1",
               progress: 50,
-              image: "https://picsum.photos/200",
+              description: "test-delivery-1",
+              imageURL: "https://picsum.photos/200",
             },
             {
               id: "fdsf-fdsfsf-fddfs",
               name: "Group 2",
               progress: 80,
-              image: "https://picsum.photos/200",
+              description: "test-delivery-2",
+              imageURL: "https://picsum.photos/200",
             },
           ]}
         />
@@ -49,7 +51,8 @@ describe("ListGroups", () => {
               id: "fdsf-fdsfsf",
               name: "Group 1",
               progress: 50,
-              image: "https://picsum.photos/200",
+              description: "test-delivery-1",
+              imageURL: "https://picsum.photos/200",
             },
           ]}
         />

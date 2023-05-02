@@ -1,8 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { getS3Api } from "../arch/s3-client";
-import { getDataSource } from "../arch/db-client";
 import { Router } from "express";
+import { getDataSource } from "../arch/db-client";
+import { getS3Api } from "../arch/s3-client";
 import { UserEnt } from "../entities/user.entity";
 
 export const infraRouter = Router();

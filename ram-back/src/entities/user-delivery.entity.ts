@@ -1,8 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { UserEnt } from "./user.entity";
 import {
+  ID_COLUMN,
   REQUIRED_DATE_COLUMN,
   REQUIRED_STRING_COLUMN,
   URL_COLUMN,
@@ -26,7 +27,7 @@ export class UserDeliveryEnt {
   @JoinColumn({ name: "user_id" })
   user!: UserEnt;
 
-  @PrimaryColumn({ name: "user_id", nullable: false })
+  @Column(ID_COLUMN("user_id"))
   userId!: string;
 
   @ManyToOne(() => DeliveryEnt, {
@@ -37,16 +38,17 @@ export class UserDeliveryEnt {
   @JoinColumn({ name: "delivery_id" })
   delivery!: DeliveryEnt;
 
-  @PrimaryColumn({ name: "delivery_id", nullable: false })
+  @Column(ID_COLUMN("delivery_id"))
   deliveryId!: string;
 
   @Column(REQUIRED_DATE_COLUMN)
   dateDelivery!: Date;
 
-  @Column({
-    ...REQUIRED_STRING_COLUMN("status"),
-    default: StatusUserDelivery.withoutSending,
-  })
+  @Column(
+    REQUIRED_STRING_COLUMN("status", {
+      defaultValue: StatusUserDelivery.withoutSending,
+    }),
+  )
   status!: string;
 
   @Column(URL_COLUMN)

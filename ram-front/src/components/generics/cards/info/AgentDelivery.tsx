@@ -6,9 +6,10 @@ import {
   BsSendExclamation,
   BsSendCheck,
 } from "react-icons/bs";
+import { DeliveryStatus } from "../../../../types";
 
 export interface AgentDeliveryProps {
-  status: "Sin enviar" | "Enviado" | "Rechazado" | "Aceptado";
+  status: DeliveryStatus;
 }
 
 const iconList = {

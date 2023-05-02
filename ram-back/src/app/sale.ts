@@ -1,11 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { DeepPartial } from "typeorm";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { v4 } from "uuid";
-import { AssuranceTypeEnt } from "../entities/assurance-type.entity";
-import { UserEnt } from "../entities/user.entity";
 
 export enum SaleError {
   POLICY_NUM_DUPLICATED = "POLICY_NUM_DUPLICATED",
@@ -14,8 +11,8 @@ export enum SaleError {
 
 export async function createSale(params: {
   policyNumber: string;
-  assuranceType: DeepPartial<AssuranceTypeEnt>;
-  user: DeepPartial<UserEnt>;
+  assuranceTypeId: string;
+  userId: string;
   sellDate: Date;
   amountInCents: string;
   clientName: string;
@@ -23,26 +20,28 @@ export async function createSale(params: {
   periodicity?: string;
   evidenceUrl?: string;
   id?: string;
-}): Promise<{ sale: SellEnt; error?: SaleError }> {
+}): Promise<{ sale: SellEnt; error?: SaleError; reason?: Error }> {
   const ds = await getDataSource();
   const id = params.id || v4();
   // Static values not handled yet in frontend
-  const status = "sin revisar";
-  const periodicity = "mensual";
+  const status = params.status || "sin revisar";
 
   return ds.manager
-    .save(SellEnt, {
-      id,
-      policyNumber: params.policyNumber,
-      assuranceType: params.assuranceType,
-      sellDate: params.sellDate,
-      amountInCents: params.amountInCents,
-      clientName: params.clientName,
-      user: params.user,
-      status,
-      periodicity,
-      evidenceUrl: "https://www.google.com",
-    })
+    .save(
+      SellEnt,
+      ds.manager.create(SellEnt, {
+        id,
+        policyNumber: params.policyNumber,
+        assuranceTypeId: params.assuranceTypeId,
+        sellDate: params.sellDate,
+        amountInCents: params.amountInCents,
+        clientName: params.clientName,
+        userId: params.userId,
+        status,
+        periodicity: params.periodicity,
+        evidenceUrl: params.evidenceUrl,
+      }),
+    )
     .then((sale) => {
       return { sale };
     })
@@ -50,7 +49,6 @@ export async function createSale(params: {
       if (e.code === "23505") {
         return { sale: {} as SellEnt, error: SaleError.POLICY_NUM_DUPLICATED };
       }
-
-      return { sale: {} as SellEnt, error: SaleError.SALE_ERROR };
+      return { sale: {} as SellEnt, error: SaleError.SALE_ERROR, reason: e };
     });
 }

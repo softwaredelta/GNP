@@ -10,8 +10,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { DESCRIPTION_COLUMN, URL_COLUMN } from "./columns";
-import { UserDeliveryEnt } from "./user-delivery";
+import { DESCRIPTION_COLUMN, ID_COLUMN, URL_COLUMN } from "./columns";
+import { UserDeliveryEnt } from "./user-delivery.entity";
 import { GroupEnt } from "./group.entity";
 
 @Entity({ name: "delivery" })
@@ -26,7 +26,7 @@ export class DeliveryEnt {
   createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedtAt!: Date;
+  updatedAt!: Date;
 
   @Column(DESCRIPTION_COLUMN)
   description: string;
@@ -45,6 +45,6 @@ export class DeliveryEnt {
   @JoinColumn({ name: "group_id" })
   group!: GroupEnt;
 
-  @Column({ name: "group_id", nullable: false })
+  @Column(ID_COLUMN("group_id", { primary: false }))
   groupId!: string;
 }

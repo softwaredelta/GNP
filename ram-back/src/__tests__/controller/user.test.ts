@@ -100,7 +100,7 @@ describe("controller:user", () => {
           expect(response.body).toHaveProperty("refreshToken");
           expect(response.body).toHaveProperty("refreshTokenExpiresAt");
           expect(response.body).toHaveProperty("username");
-          expect(response.body).toHaveProperty("userRole");
+          expect(response.body).toHaveProperty("roles");
         });
     });
 
@@ -189,7 +189,7 @@ describe("controller:user", () => {
           expect(res.body).toHaveProperty("accessToken");
           expect(res.body).toHaveProperty("accessTokenExpiresAt");
           expect(res.body).toHaveProperty("username");
-          expect(res.body).toHaveProperty("userRole");
+          expect(res.body).toHaveProperty("roles");
           return res.body;
         });
 

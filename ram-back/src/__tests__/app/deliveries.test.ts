@@ -7,7 +7,7 @@ import {
 import { createGroup } from "../../app/groups";
 import { createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
-import { StatusUserDelivery } from "../../entities/user-delivery";
+import { StatusUserDelivery } from "../../entities/user-delivery.entity";
 
 describe("app:deliveries", () => {
   beforeEach(async () => {
