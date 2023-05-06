@@ -19,7 +19,6 @@ export function UserDeliveriesTable({ userDeliveries, onUpdate }: Props) {
     }
   }, [shouldUpdate]);
 
-  if (userDeliveries.length === 0) return <h1>No hay entregables</h1>;
   return (
     <div data-testid="Table" className="w-full">
       <Table hoverable={true}>

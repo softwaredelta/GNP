@@ -4,7 +4,8 @@ import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTa
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
 import { IDelivery } from "../types";
-import { Tabs } from "flowbite-react";
+import { Tabs, Alert } from "flowbite-react";
+import { AiFillWarning } from "react-icons/ai";
 
 export default function ManagerDeliveries(): JSX.Element {
   const { id } = useParams();
@@ -43,11 +44,22 @@ export default function ManagerDeliveries(): JSX.Element {
           style="default"
         >
           <Tabs.Item active={true} title="Sin Revisar">
-            {PendingDeliveries && (
+            {PendingDeliveries ? (
               <UserDeliveriesTable
                 onUpdate={() => handleChange()}
                 userDeliveries={PendingDeliveries.userDeliveries ?? []}
               />
+            ) : (
+              <div className="flex-grid flex justify-center">
+                <Alert
+                  color="info"
+                  icon={AiFillWarning}
+                  className="w-2/3 text-center font-bold"
+                >
+                  {" "}
+                  <h1 className="text-base"> No hay entregables sin revisar</h1>
+                </Alert>
+              </div>
             )}
           </Tabs.Item>
           <Tabs.Item title="Revisados">
