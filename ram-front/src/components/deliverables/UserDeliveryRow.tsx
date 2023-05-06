@@ -109,7 +109,17 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
       </Table.Cell>
       <Table.Cell>{delivery.user.email}</Table.Cell>
 
-      <Table.Cell>{delivery.status}</Table.Cell>
+      <Table.Cell>
+        {delivery.status === "Aceptado" ? (
+          <div className="bg-green-500 inline-block text-white font-bold py-1 px-2 rounded-full">
+            {delivery.status}
+          </div>
+        ) : (
+          <div className="bg-red-500 inline-block text-white font-bold py-1 px-2 rounded-full">
+            {delivery.status}
+          </div>
+        )}
+      </Table.Cell>
       <Table.Cell>
         <ActionButton
           color="text-gnp-blue-700"
