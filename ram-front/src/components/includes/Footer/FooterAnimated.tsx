@@ -4,7 +4,7 @@ import Wave from "./Wave";
 
 export default function FooterAnimated() {
   return (
-    <div className="w-full h-full">
+    <div className="h-full w-full">
       <Wave />
     </div>
   );

@@ -14,11 +14,11 @@ export default function CardInfoGroup({
   color,
 }: ICardInfoGroupProps): JSX.Element {
   return (
-    <div className=" grid grid-cols-1 grid-rows-2 h-full w-full">
-      <div className="w-full h-full flex items-center">
-        <h1 className="font-bold text-lg">{nameGroup}</h1>
+    <div className=" grid h-full w-full grid-cols-1 grid-rows-2">
+      <div className="flex h-full w-full items-center">
+        <h1 className="text-lg font-bold">{nameGroup}</h1>
       </div>
-      <div className="w-11/12 flex items-center mx-auto">
+      <div className="mx-auto flex w-11/12 items-center">
         <div className="w-full">
           <ProgressBar progress={progress} color={color} />
         </div>

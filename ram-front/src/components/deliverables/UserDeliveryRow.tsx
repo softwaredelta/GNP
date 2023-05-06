@@ -25,7 +25,7 @@ function ActionButton({
   return (
     <button onClick={onClick}>
       <Icon
-        className={`${color} hover:scale-125 transition-all ease-in-out duration-100`}
+        className={`${color} transition-all duration-100 ease-in-out hover:scale-125`}
         size={size}
       />
     </button>
@@ -102,7 +102,7 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
         <img
-          className="w-10 h-10 rounded-full"
+          className="h-10 w-10 rounded-full"
           src={delivery.user.imageURL}
           alt="Rounded avatar"
         />
@@ -121,14 +121,14 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
       <Table.Cell>{date}</Table.Cell>
       <Table.Cell>
         <div className="grid grid-cols-3 items-center justify-center ">
-          <div className="hover:scale-125 transition-all ease-in-out active:scale-95 cursor-pointer">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <FcCheckmark
               size={20}
               className="text-green-500"
               onClick={() => handleUpdate("aceptado")}
             />
           </div>
-          <div className="hover:scale-125 transition-all ease-in-out active:scale-95 cursor-pointer">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <RxCross1
               size={20}
               className="text-red-500"

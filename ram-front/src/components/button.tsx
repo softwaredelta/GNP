@@ -39,7 +39,7 @@ export function Button({
   // We can override class name like this
   return (
     <button
-      className={`${varclass}  w-full mx-auto bg-gnp-blue-500 text-white px-4 py-2 rounded shadow-lg hover:scale-x-105 hover:bg-gnp-blue-700 transition duration-300 ease-in-out active:scale-x-100 ${className}`}
+      className={`${varclass}  mx-auto w-full rounded bg-gnp-blue-500 px-4 py-2 text-white shadow-lg transition duration-300 ease-in-out hover:scale-x-105 hover:bg-gnp-blue-700 active:scale-x-100 ${className}`}
       type={type}
       {...rest}
     >

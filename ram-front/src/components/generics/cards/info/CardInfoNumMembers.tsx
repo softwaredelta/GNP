@@ -13,17 +13,17 @@ export default function CardInfoNumMembers({
   number,
 }: ICardInfoNumMembersProps): JSX.Element {
   return (
-    <div className=" grid grid-cols-1 grid-rows-2 h-full w-full">
+    <div className=" grid h-full w-full grid-cols-1 grid-rows-2">
       <div className="grid grid-cols-3 place-items-center">
         <div className="col-span-2">
-          <h1 className="font-bold text-semibold ">{nameGroup}</h1>
+          <h1 className="text-semibold font-bold ">{nameGroup}</h1>
         </div>
         <div
-          className="grid grid-cols-2 gap-2 top-0 basis-4/12 my-auto justify-end"
+          className="top-0 my-auto grid basis-4/12 grid-cols-2 justify-end gap-2"
           onClick={(e) => e.stopPropagation()}
         >
           <button
-            className="hover:scale-125 transition-all ease-in-out cursor-pointer"
+            className="cursor-pointer transition-all ease-in-out hover:scale-125"
             onClick={() => alert("Redireccionando a editar curso ...")}
           >
             <FiEdit
@@ -33,14 +33,14 @@ export default function CardInfoNumMembers({
             />
           </button>
           <button
-            className="hover:scale-125 transition-all ease-in-out cursor-pointer"
+            className="cursor-pointer transition-all ease-in-out hover:scale-125"
             onClick={() => alert("Redireccionando a eliminar curso ...")}
           >
             <FiTrash2 color="gray" size={20} className="hover:stroke-red-900" />
           </button>
         </div>
       </div>
-      <div className="w-11/12 flex items-center justify-end mx-auto">
+      <div className="mx-auto flex w-11/12 items-center justify-end">
         <div className="pr-2">
           <BsFillPeopleFill color="gray" />
         </div>

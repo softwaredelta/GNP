@@ -24,11 +24,11 @@ export default function AgentDelivery({
 }: AgentDeliveryProps): JSX.Element {
   return (
     <div className="grid grid-cols-3 border-l-2 border-l-gray-300">
-      <div className="col-span-2 flex items-center text-center justify-center font-semibold">
+      <div className="col-span-2 flex items-center justify-center text-center font-semibold">
         <div className="mr-4">{iconList[status]}</div>
         {status}
       </div>
-      <div className="flex items-center text-center justify-center">
+      <div className="flex items-center justify-center text-center">
         <div className="mr-4">
           <FiEye color="gray" size={25} />
         </div>
