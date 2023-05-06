@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { authMiddleware } from "./user";
-import { createGroup, getUserGroups } from "../app/groups";
+import { createGroup, deleteGroup, getUserGroups } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
 import { Router } from "express";
@@ -47,6 +47,18 @@ groupsRouter.get("/:id", async (req, res) => {
 
   res.json(groups);
 });
+
+groupsRouter.delete(
+  "/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    await deleteGroup({
+      groupId: req.params.id,
+    });
+
+    res.status(200).send();
+  },
+);
 
 groupsRouter.post("/create", authMiddleware(), async (req, res) => {
   if (!req.user) {
