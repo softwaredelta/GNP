@@ -1,27 +1,30 @@
 // (c) Delta Software 2023, rights reserved.
 
-import Card from "./cards/base/Card";
-import DeliveryCard from "./cards/base/DeliveryCard";
-import CardInfoAssurence from "./cards/info/CardInfoAssurence";
-import CardInfoTopFive from "./cards/info/CardInfoTopFive";
-import ProgressBar from "./ProgressBar";
-import DropZone from "./DropZone";
-import CardInfoGroup from "./cards/info/CardInfoGroup";
+import DropZone from "../components/generics/DropZone";
+import ProgressBar from "../components/generics/ProgressBar";
+import Card from "../components/generics/cards/base/Card";
+import DeliveryCard from "../components/generics/cards/base/DeliveryCard";
+import CardInfoAssurence from "../components/generics/cards/info/CardInfoAssurence";
+import CardInfoGroup from "../components/generics/cards/info/CardInfoGroup";
+import CardInfoTopFive from "../components/generics/cards/info/CardInfoTopFive";
 
 import { BsHouses } from "react-icons/bs";
-import { RiPencilFill } from "react-icons/ri";
 import { IoPawSharp } from "react-icons/io5";
-import Modal from "./Modal";
-import useModal from "../../hooks/useModal";
-import SkeletonCard from "./skeleton/SkeletonCard";
-import SkeletonText from "./skeleton/SkeletonText";
-import SkeletonDiv from "./skeleton/SkeletonDiv";
-import useAlert from "../../hooks/useAlert";
-import useAxios from "../../hooks/useAxios";
-import ManagerDelivery from "./cards/info/ManagerDelivery";
+import { RiPencilFill } from "react-icons/ri";
+import ModalGroupForm from "../components/forms/ModalGroupForm";
+import Modal from "../components/generics/Modal";
+import ManagerDelivery from "../components/generics/cards/info/ManagerDelivery";
+import SkeletonCard from "../components/generics/skeleton/SkeletonCard";
+import SkeletonDiv from "../components/generics/skeleton/SkeletonDiv";
+import SkeletonText from "../components/generics/skeleton/SkeletonText";
+import useAlert from "../hooks/useAlert";
+import useAxios from "../hooks/useAxios";
+import useModal from "../hooks/useModal";
 // import DeliveryCard from "./cards/DeliveryCard";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
+  const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
+    useModal();
   const { showAlert } = useAlert();
   const { response: me } = useAxios<{ email: string; id: string }>({
     url: "user/me",
@@ -209,6 +212,18 @@ export default function Examples() {
         >
           Abrir alerta
         </button>
+      </div>
+      <div className="w-11/12">
+        <button className="btn-primary" onClick={toggleModalGroupForm}>
+          Abrir modal Grupo
+        </button>
+        <ModalGroupForm
+          isOpenModal={isOpenGroupForm}
+          closeModal={toggleModalGroupForm}
+          handlePost={() => {
+            console.log("post..");
+          }}
+        />
       </div>
     </div>
   );
