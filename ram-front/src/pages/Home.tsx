@@ -22,7 +22,7 @@ export default function Home() {
           <li>
             <Link
               to="/infra"
-              className="underline text-red-500 hover:text-red-800"
+              className="text-red-500 underline hover:text-red-800"
             >
               infra test
             </Link>
@@ -30,7 +30,7 @@ export default function Home() {
           <li>
             <Link
               to="/components"
-              className="underline text-red-500 hover:text-red-800"
+              className="text-red-500 underline hover:text-red-800"
             >
               components
             </Link>
@@ -38,7 +38,7 @@ export default function Home() {
           <li>
             <Link
               to="/groups"
-              className="underline text-red-500 hover:text-red-800"
+              className="text-red-500 underline hover:text-red-800"
             >
               manager groups view
             </Link>
@@ -46,7 +46,7 @@ export default function Home() {
           <li>
             <Link
               to="/groups"
-              className="underline text-red-500 hover:text-red-800"
+              className="text-red-500 underline hover:text-red-800"
             >
               my groups
             </Link>
@@ -54,7 +54,7 @@ export default function Home() {
           <li>
             <Link
               to="/new-sale"
-              className="underline text-red-500 hover:text-red-800"
+              className="text-red-500 underline hover:text-red-800"
             >
               register new sale
             </Link>
@@ -62,7 +62,7 @@ export default function Home() {
           <li>
             <Link
               to="/sales-history"
-              className="underline text-red-500 hover:text-red-800"
+              className="text-red-500 underline hover:text-red-800"
             >
               all sales
             </Link>

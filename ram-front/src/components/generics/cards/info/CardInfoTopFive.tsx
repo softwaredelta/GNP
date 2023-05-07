@@ -24,12 +24,12 @@ export default function CardInfoTopFive({
       <h1 className=" text-center text-2xl font-bold text-black">
         {assuranceName}
       </h1>
-      <h2 className="text-center mt-2 font-bold text-xs text-gnp-gray-black">
+      <h2 className="mt-2 text-center text-xs font-bold text-gnp-gray-black">
         Top 5 vendedores por monto acumulado:
       </h2>
-      <div className="mt-2 mx-auto flex flex-col items-center justify-center text-sm w-10/12">
+      <div className="mx-auto mt-2 flex w-10/12 flex-col items-center justify-center text-sm">
         {top.map((item, index) => (
-          <div key={index} className="flex justify-between w-full">
+          <div key={index} className="flex w-full justify-between">
             <div className={`font-bold ${colorOptions[color]}`}>
               {index + 1}.-
             </div>

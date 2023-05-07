@@ -29,11 +29,11 @@ export default function ProgressBar({
         {textLabel}
       </div>
       <div
-        className={`rounded-full w-full  bg-opacity-50 ${colorOptions[color].back}`}
+        className={`w-full rounded-full  bg-opacity-50 ${colorOptions[color].back}`}
       >
         <div
           style={{ width: `${progress < 12 ? 12 : progress}%` }}
-          className={`text-xs font-bold text-white ${colorOptions[color].progress} text-center p-0.5 rounded-full`}
+          className={`text-xs font-bold text-white ${colorOptions[color].progress} rounded-full p-0.5 text-center`}
         >
           {progress}%
         </div>

@@ -23,7 +23,7 @@ export const SalesFilters = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   return (
     <div data-testid="Filters" className="grid grid-cols-5 gap-8">
       <div className="col-span-1">
-        <label className="block text-gray-700 ml-3 font-semibold mb-1">
+        <label className="ml-3 mb-1 block font-semibold text-gray-700">
           Póliza
         </label>
         <input
@@ -37,7 +37,7 @@ export const SalesFilters = ({ assuranceTypes }: IListAssuranceTypesProps) => {
         />
       </div>
       <div className="col-span-1">
-        <label className="block text-gray-700 ml-3 font-semibold mb-1">
+        <label className="ml-3 mb-1 block font-semibold text-gray-700">
           Nombre de cliente
         </label>
         <input
@@ -51,7 +51,7 @@ export const SalesFilters = ({ assuranceTypes }: IListAssuranceTypesProps) => {
         />
       </div>
       <div className="col-span-1">
-        <label className="block text-gray-700 ml-3 font-semibold mb-1">
+        <label className="ml-3 mb-1 block font-semibold text-gray-700">
           Tipo de seguro
         </label>
         <select
@@ -69,7 +69,7 @@ export const SalesFilters = ({ assuranceTypes }: IListAssuranceTypesProps) => {
       <div className="col-span-1">
         <label
           htmlFor="datePicker"
-          className="block text-gray-700 ml-3 font-semibold mb-1"
+          className="ml-3 mb-1 block font-semibold text-gray-700"
         >
           Fecha
         </label>
@@ -84,9 +84,9 @@ export const SalesFilters = ({ assuranceTypes }: IListAssuranceTypesProps) => {
           required
         />
       </div>
-      <div className="col-span-1 flex justify-center items-center">
+      <div className="col-span-1 flex items-center justify-center">
         <div className="w-40 pb-2">
-          <button className="btn-primary flex justify-center items-center">
+          <button className="btn-primary flex items-center justify-center">
             <span className="font-semibold"> Filtrar </span>
             <FaFilter size={15} className="ml-2" />
           </button>

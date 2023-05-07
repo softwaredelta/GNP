@@ -15,7 +15,7 @@ interface Props {
 function NavBar({ onLogout, useremail, username, role }: Props) {
   return (
     <Navbar
-      className="shadow-md border border-black "
+      className="border border-black shadow-md "
       fluid={true}
       style={{
         backgroundColor: "#e9e9e9",
@@ -23,7 +23,7 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
       }}
     >
       <Navbar.Brand href="#Home">
-        <img src={LogoRAM} className="h-20 ml-2" alt="Grupo Asesores Logo" />
+        <img src={LogoRAM} className="ml-2 h-20" alt="Grupo Asesores Logo" />
       </Navbar.Brand>
       <div className="flex md:order-2">
         <Dropdown
@@ -62,7 +62,7 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
           <Navbar.Link
             as={Link}
             to="/"
-            className="text-lg mx-8 active:bg-amber-500"
+            className="mx-8 text-lg active:bg-amber-500"
             active={true}
           >
             Home
@@ -71,7 +71,7 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
           <Navbar.Link
             as={Link}
             to="/"
-            className="text-lg ml-2 active:bg-amber-500"
+            className="ml-2 text-lg active:bg-amber-500"
             active={true}
           >
             Home
@@ -80,7 +80,7 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
         <Navbar.Link
           as={Link}
           to="/groups"
-          className="text-lg  mx-8 text-gray-900 "
+          className="mx-8  text-lg text-gray-900 "
         >
           Grupos
         </Navbar.Link>
@@ -88,12 +88,12 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
           <Navbar.Link
             as={Link}
             to="/verify-sales"
-            className="text-lg  mx-8 text-gray-900 "
+            className="mx-8  text-lg text-gray-900 "
           >
             Ventas
           </Navbar.Link>
         ) : (
-          <div className="text-lg mx-8 text-gray-900">
+          <div className="mx-8 text-lg text-gray-900">
             <Dropdown label="Ventas" size="xl" inline={true}>
               <Link to="/my-sales-metrics">
                 <Dropdown.Item>Métricas de Ventas</Dropdown.Item>
@@ -112,14 +112,14 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
             <Navbar.Link
               as={Link}
               to="/prospects"
-              className="text-lg mx-8 text-gray-900"
+              className="mx-8 text-lg text-gray-900"
             >
               Prospectos
             </Navbar.Link>
             <Navbar.Link
               as={Link}
               to="/goals"
-              className="text-lg mx-8 text-gray-900"
+              className="mx-8 text-lg text-gray-900"
             >
               Metas
             </Navbar.Link>
@@ -129,11 +129,11 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
             <Navbar.Link
               as={Link}
               to="/prospects"
-              className="text-lg mx-8 text-gray-900"
+              className="mx-8 text-lg text-gray-900"
             >
               Prospectos
             </Navbar.Link>
-            <div className="text-lg mx-8 text-gray-900">
+            <div className="mx-8 text-lg text-gray-900">
               <Dropdown label="Metas" size="xl" inline={true}>
                 <Link to="/new-goal">
                   <Dropdown.Item>Mis metas</Dropdown.Item>

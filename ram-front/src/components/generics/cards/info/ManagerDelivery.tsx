@@ -10,8 +10,8 @@ export default function ManagerDelivery({
   membersNumber,
 }: DeliveryCardProps): JSX.Element {
   return (
-    <div className="border-l-2 border-l-gray-300 flex items-center text-center justify-end  font-medium text-gnp-gray-black px-16">
-      <div className="w-full flex items-center text-center justify-end">
+    <div className="flex items-center justify-end border-l-2 border-l-gray-300 px-16  text-center font-medium text-gnp-gray-black">
+      <div className="flex w-full items-center justify-end text-center">
         <div className="p-2">
           <BsFillPeopleFill color="gray" size={20} />
         </div>

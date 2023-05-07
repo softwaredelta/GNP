@@ -102,7 +102,7 @@ export default function VerifySalesRow({
       <Table.Cell>{capitalize(status)}</Table.Cell>
       <Table.Cell>
         <div className="grid grid-cols-3 items-center justify-center ">
-          <div className="hover:scale-125 transition-all ease-in-out active:scale-95 cursor-pointer">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <AiOutlineEye
               size={20}
               className="text-gray-500"
@@ -121,14 +121,14 @@ export default function VerifySalesRow({
               </div>
             </Modal>
           )}
-          <div className="hover:scale-125 transition-all ease-in-out active:scale-95 cursor-pointer">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <FcCheckmark
               size={20}
               className="text-green-500"
               onClick={() => handleUpdate("aceptada")}
             />
           </div>
-          <div className="hover:scale-125 transition-all ease-in-out active:scale-95 cursor-pointer">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <RxCross1
               size={20}
               className="text-red-500"

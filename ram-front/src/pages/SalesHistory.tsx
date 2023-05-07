@@ -13,12 +13,12 @@ export default function SalesHistory() {
   return (
     <Wrapper>
       <div>
-        <div className="w-full flex items-center justify-start pt-8">
-          <h1 className=" font-bold py-3 px-20 bg-gnp-orange-500 text-white text-xl rounded-r-2xl">
+        <div className="flex w-full items-center justify-start pt-8">
+          <h1 className=" rounded-r-2xl bg-gnp-orange-500 py-3 px-20 text-xl font-bold text-white">
             Mis ventas
           </h1>
         </div>
-        <div className="flex flex-col mt-8 justify-center items-center">
+        <div className="mt-8 flex flex-col items-center justify-center">
           <SalesTable sales={sales} onDeleted={() => updateSales()} />
         </div>
       </div>

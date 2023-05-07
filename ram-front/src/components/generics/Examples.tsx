@@ -48,7 +48,7 @@ export default function Examples() {
   if (error) return <div>error:{JSON.stringify(error)}</div>;
 
   return (
-    <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center gap-10 py-20">
+    <div className="grid min-h-[50vh] w-full place-items-center gap-10 py-20 md:grid-cols-3">
       <div className="w-40">
         <button className="btn-primary" onClick={callback}>
           post
@@ -124,7 +124,7 @@ export default function Examples() {
         </Card>
       </div>
 
-      <div className=" w-full grid grid-cols-2 gap-10 p-12">
+      <div className=" grid w-full grid-cols-2 gap-10 p-12">
         <button className="floating-button-primary">
           {<RiPencilFill size={50} />}
         </button>
@@ -148,7 +148,7 @@ export default function Examples() {
       </div>
       <div className="w-7/12">
         <button
-          className="hover:scale-105 transition-all ease-in-out active:scale-95 cursor-pointer"
+          className="cursor-pointer transition-all ease-in-out hover:scale-105 active:scale-95"
           onClick={() => alert("Redireccionando al grupo ...")}
         >
           <Card
@@ -171,10 +171,10 @@ export default function Examples() {
         {isOpen && (
           <Modal closeModal={toggleModal}>
             <div>
-              <h1 className="text-2xl font-bold text-center">Hola mundo</h1>
+              <h1 className="text-center text-2xl font-bold">Hola mundo</h1>
               <p className="text-center">hola oli</p>
               <div>
-                <h3 className="font-bold text-center py-5">Miren un gatito:</h3>
+                <h3 className="py-5 text-center font-bold">Miren un gatito:</h3>
               </div>
               <img
                 src="https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg"
@@ -190,7 +190,7 @@ export default function Examples() {
       <div>
         <SkeletonText />
       </div>
-      <div className="w-32 h-32 rounded-full overflow-hidden">
+      <div className="h-32 w-32 overflow-hidden rounded-full">
         <SkeletonDiv />
       </div>
       <div className="w-11/12">

@@ -29,7 +29,7 @@ export function ManagerListGroupDeliveries({ deliveries }: Props) {
           </div>
         ))
       ) : (
-        <div className="h-56 text-xl flex items-center justify-center">
+        <div className="flex h-56 items-center justify-center text-xl">
           No hay entregas para este grupo
         </div>
       )}
