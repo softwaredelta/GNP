@@ -1,8 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
+import { useRef } from "react";
+import usePreviewImage from "../../hooks/usePreviewImage";
 import Modal from "../generics/Modal";
 
 export interface IModalGroupFormProps {
-  handlePost: VoidFunction;
+  handlePost: (image: File | null, name: string) => void;
   closeModal: VoidFunction;
   isOpenModal: boolean;
 }
@@ -12,16 +14,73 @@ export default function ModalGroupForm({
   closeModal,
   isOpenModal,
 }: IModalGroupFormProps) {
+  const { image, setPreviewImage, urlImage, imgRef } = usePreviewImage();
+  const nameRef = useRef<HTMLInputElement>(null);
+
   return (
     <>
       {
-        <Modal closeModal={closeModal}>
-          <div className="py-20 w-full mx-auto px-10 md:px-20  overflow-hidden overflow-y-scroll bg-gnp-white rounded-3xl custom-scroll">
-            <h1 className="apply my-10 w-full bg-gnp-orange-500 rounded-xl text-white p-4 text-2xl text-center font-semibold">
+        <Modal withModal={false}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className=" relative w-3/5 rounded-3xl bg-gnp-white p-10"
+          >
+            <h1 className="apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white">
               Agregar grupo
             </h1>
-            <label className="text-xl font-semibold">Nombre del grupo</label>
-            <input type="text" className="input-primary" />
+            <div className="justify-beetwen mt-10 flex grid grid-cols-2 grid-rows-2 place-items-center">
+              <div className="flex w-full flex-col items-center justify-center space-y-3">
+                <label className="text-xl font-semibold">
+                  Nombre del grupo
+                </label>
+                <input
+                  ref={nameRef}
+                  type="text"
+                  className="input-primary w-10/12"
+                />
+              </div>
+              <div className="row-span-2 w-9/12">
+                <div className="aspect-video w-full w-full overflow-hidden rounded-3xl border-4 border-gnp-orange-500">
+                  <img
+                    className="h-full w-full object-cover"
+                    src={urlImage}
+                    ref={imgRef}
+                  />
+                </div>
+              </div>
+              <div className="col-start-1 w-10/12 py-4">
+                <label
+                  className="mb-2 block text-sm font-bold text-gray-700"
+                  htmlFor="file_input"
+                >
+                  Selecciona una imagen
+                </label>
+                <input
+                  className="text-grat-700 focus-outline block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm"
+                  type="file"
+                  onChange={setPreviewImage}
+                  placeholder="Selecciona una imagen"
+                  accept=".jpg,.png,.jpeg"
+                />
+                <p className="mt-1 pl-3 text-sm text-gray-500">
+                  JPG, PNG o JPEG
+                </p>
+              </div>
+            </div>
+
+            <div className="mx-auto w-1/2 ">
+              <button
+                className="btn-primary"
+                onClick={() => {
+                  if (nameRef.current) {
+                    const nameGroup = nameRef.current.value.toString();
+                    handlePost(image, nameGroup);
+                  }
+                }}
+              >
+                Agregar
+              </button>
+            </div>
           </div>
         </Modal>
       }

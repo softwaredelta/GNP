@@ -220,8 +220,8 @@ export default function Examples() {
         <ModalGroupForm
           isOpenModal={isOpenGroupForm}
           closeModal={toggleModalGroupForm}
-          handlePost={() => {
-            console.log("post..");
+          handlePost={(image, name) => {
+            alert(`Nombre: ${name} Imagen: ${image}`);
           }}
         />
       </div>
