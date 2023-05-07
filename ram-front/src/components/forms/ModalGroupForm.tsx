@@ -14,13 +14,19 @@ export default function ModalGroupForm({
   closeModal,
   isOpenModal,
 }: IModalGroupFormProps) {
-  const { image, setPreviewImage, urlImage, imgRef } = usePreviewImage();
+  const { image, setPreviewImage, imgRef, resetImage } = usePreviewImage();
   const nameRef = useRef<HTMLInputElement>(null);
 
   return (
     <>
-      {
-        <Modal withModal={false}>
+      {isOpenModal && (
+        <Modal
+          withModal={false}
+          closeModal={() => {
+            closeModal();
+            resetImage();
+          }}
+        >
           <div
             onClick={(e) => e.stopPropagation()}
             className=" relative w-3/5 rounded-3xl bg-gnp-white p-10"
@@ -28,7 +34,7 @@ export default function ModalGroupForm({
             <h1 className="apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white">
               Agregar grupo
             </h1>
-            <div className="justify-beetwen mt-10 flex grid grid-cols-2 grid-rows-2 place-items-center">
+            <div className="justify-beetwen mt-10 flex grid grid-cols-2  place-items-center">
               <div className="flex w-full flex-col items-center justify-center space-y-3">
                 <label className="text-xl font-semibold">
                   Nombre del grupo
@@ -43,7 +49,7 @@ export default function ModalGroupForm({
                 <div className="aspect-video w-full w-full overflow-hidden rounded-3xl border-4 border-gnp-orange-500">
                   <img
                     className="h-full w-full object-cover"
-                    src={urlImage}
+                    src={"/default.jfif"}
                     ref={imgRef}
                   />
                 </div>
@@ -66,24 +72,34 @@ export default function ModalGroupForm({
                   JPG, PNG o JPEG
                 </p>
               </div>
-            </div>
-
-            <div className="mx-auto w-1/2 ">
-              <button
-                className="btn-primary"
-                onClick={() => {
-                  if (nameRef.current) {
-                    const nameGroup = nameRef.current.value.toString();
-                    handlePost(image, nameGroup);
-                  }
-                }}
-              >
-                Agregar
-              </button>
+              <div className="w-11/12 pt-5">
+                <button
+                  className="btn-border"
+                  onClick={() => {
+                    closeModal();
+                    resetImage();
+                  }}
+                >
+                  Cancelar
+                </button>
+              </div>
+              <div className="w-11/12 pt-5">
+                <button
+                  className="btn-primary"
+                  onClick={() => {
+                    if (nameRef.current) {
+                      const nameGroup = nameRef.current.value.toString();
+                      handlePost(image, nameGroup);
+                    }
+                  }}
+                >
+                  Agregar
+                </button>
+              </div>
             </div>
           </div>
         </Modal>
-      }
+      )}
     </>
   );
 }
