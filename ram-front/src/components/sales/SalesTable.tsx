@@ -52,10 +52,10 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
               <SalesRow
                 key={sale.id}
                 id={sale.id}
-                clientName={sale.clientName}
-                amountInCents={sale.amountInCents}
+                contractingClient={sale.contractingClient}
+                yearlyFee={sale.yearlyFee}
                 assuranceTypeName={sale.assuranceType.name}
-                sellDate={sale.sellDate}
+                paidDate={sale.paidDate}
                 status={sale.status}
                 policyNum={sale.policyNumber}
                 onDeleted={() => {
