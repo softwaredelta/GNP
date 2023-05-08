@@ -27,9 +27,9 @@ describe("app:sale", () => {
         policyNumber: "123456",
         assuranceTypeId: "test-at-1",
         userId: "test-user",
-        sellDate: new Date("2021/01/01"),
-        amountInCents: "123456",
-        clientName: "Juan Perez",
+        paidDate: new Date("2021/01/01"),
+        yearlyFee: "123456",
+        contractingClient: "Juan Perez",
         evidenceUrl: "https://www.google.com",
         periodicity: "mensual",
       });
@@ -37,8 +37,8 @@ describe("app:sale", () => {
       expect(error).toBeUndefined();
       expect(sale).toHaveProperty("id");
       expect(sale).toHaveProperty("policyNumber", "123456");
-      expect(sale).toHaveProperty("clientName", "Juan Perez");
-      expect(sale).toHaveProperty("amountInCents", "123456");
+      expect(sale).toHaveProperty("contractingClient", "Juan Perez");
+      expect(sale).toHaveProperty("yearlyFee", "123456");
     });
   });
 });

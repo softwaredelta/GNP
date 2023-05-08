@@ -21,9 +21,9 @@ export interface IListSalesProps {
     id: string;
     policyNumber: string;
     assuranceType: AssuranceType;
-    sellDate: Date;
-    amountInCents: string;
-    clientName: string;
+    paidDate: Date;
+    yearlyFee: string;
+    contractingClient: string;
     status: string;
     periodicity: string;
     user: User;
@@ -64,10 +64,10 @@ export const VerifySalesTable = ({ sales, onUpdated }: IListSalesProps) => {
                 key={sale.id}
                 id={sale.id}
                 agentName={sale.user.email}
-                clientName={sale.clientName}
-                amountInCents={sale.amountInCents}
+                contractingClient={sale.contractingClient}
+                yearlyFee={sale.yearlyFee}
                 assuranceTypeName={sale.assuranceType.name}
-                sellDate={sale.sellDate}
+                paidDate={sale.paidDate}
                 status={sale.status}
                 policyNum={sale.policyNumber}
                 evidenceUrl={sale.evidenceUrl}

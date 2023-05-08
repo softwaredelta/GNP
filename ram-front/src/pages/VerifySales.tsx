@@ -15,9 +15,9 @@ export default function VerifySales() {
       id: string;
       policyNumber: string;
       assuranceType: AssuranceType;
-      sellDate: Date;
-      amountInCents: string;
-      clientName: string;
+      paidDate: Date;
+      yearlyFee: string;
+      contractingClient: string;
       status: string;
       periodicity: string;
       user: User;
