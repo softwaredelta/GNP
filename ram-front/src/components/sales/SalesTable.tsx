@@ -23,11 +23,11 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
   }, [onDeleted, shouldUpdate]);
 
   return (
-    <div data-testid="sales-table" className="grid grid-row w-full pb-4 px-8">
+    <div data-testid="sales-table" className="grid-row grid w-full px-8 pb-4">
       <div className="row">
         <Link to="/new-sale">
-          <div className="w-44 pb-8 float-right pr-8">
-            <button className="btn-primary flex justify-center items-center">
+          <div className="float-right w-44 pb-8 pr-8">
+            <button className="btn-primary flex items-center justify-center">
               <span className="font-semibold"> Agregar </span>
               <FaPlus size={15} className="ml-2" />
             </button>

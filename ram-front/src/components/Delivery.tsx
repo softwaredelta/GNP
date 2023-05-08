@@ -77,8 +77,8 @@ function Delivery() {
   return (
     <Wrapper>
       <>
-        <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center gap-10 py-20">
-          <div className="md:col-span-3 space-y-10 ">
+        <div className="grid min-h-[50vh] w-full place-items-center gap-10 py-20 md:grid-cols-3">
+          <div className="space-y-10 md:col-span-3 ">
             <DeliveryCard
               key="98759284375908"
               deliveryId="98759284375908"
@@ -103,13 +103,13 @@ function Delivery() {
         {isOpen && (
           <Modal closeModal={toggleModal}>
             <div className="flex flex-col space-y-5">
-              <h3 className="text-4xl text-gnp-blue-600 font-bold my-4">
+              <h3 className="my-4 text-4xl font-bold text-gnp-blue-600">
                 Sube tu evidencia
               </h3>
               <div className="h-80">
                 <DropZone file={null} setFile={() => {}} />
               </div>
-              <div className="flex flex-col justify-end items-center">
+              <div className="flex flex-col items-center justify-end">
                 <div className="my-2 w-2/5">
                   <Button className="btn-primary" onClick={() => uploadFile()}>
                     Subir

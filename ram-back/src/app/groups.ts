@@ -11,6 +11,22 @@ export enum GroupError {
   UNHANDLED = "UNHANDLED",
 }
 
+export async function deleteGroup(params: {
+  groupId: string;
+}): Promise<{ error?: GroupError; reason?: Error }> {
+  const ds = await getDataSource();
+
+  return ds.manager
+    .delete(GroupEnt, params.groupId)
+    .then(() => ({}))
+    .catch((e) => {
+      return {
+        error: GroupError.UNHANDLED,
+        reason: e,
+      };
+    });
+}
+
 export async function createGroup(params: {
   name: string;
   imageURL?: string;

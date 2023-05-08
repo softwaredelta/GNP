@@ -13,12 +13,12 @@ export default function ManagerCourses() {
     <div>
       <Wrapper>
         <div>
-          <div className="w-full flex justify-end px-20 pt-10">
-            <div className="w-1/12 font-bold rounded-3xl overflow-hidden">
+          <div className="flex w-full justify-end px-20 pt-10">
+            <div className="w-1/12 overflow-hidden rounded-3xl font-bold">
               <button className="btn-primary">Agregar</button>
             </div>
           </div>
-          <div className="grid md:grid-cols-4 place-items-center">
+          <div className="grid place-items-center md:grid-cols-4">
             <ManagerListGroups groups={groups}></ManagerListGroups>
           </div>
         </div>

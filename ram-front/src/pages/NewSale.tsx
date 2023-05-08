@@ -9,7 +9,7 @@ export default function NewSale() {
   const assuranceTypes = useRecoilValue(allAssuranceTypes$);
   return (
     <Wrapper>
-      <div className="flex flex-col justify-center items-center pt-8">
+      <div className="flex flex-col items-center justify-center pt-8">
         <CardNewSale assuranceTypes={assuranceTypes} />
       </div>
     </Wrapper>

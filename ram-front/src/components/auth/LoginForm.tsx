@@ -19,9 +19,9 @@ function LoginForm({
   };
 
   return (
-    <div className="flex w-full h-full items-start bg-slate-200">
+    <div className="flex h-full w-full items-start bg-slate-200">
       <form
-        className="h-auto w-full flex flex-col items-center bg-slate-200 rounded-xl"
+        className="flex h-auto w-full flex-col items-center rounded-xl bg-slate-200"
         onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.currentTarget);
@@ -34,39 +34,39 @@ function LoginForm({
         <img
           src={LogoRAM}
           alt="Logo de Grupo Asesores RAM"
-          className="w-48 mb-4 mt-9"
+          className="mb-4 mt-9 w-48"
         />
 
         {/* Divider */}
-        <div className="border-b-2 border-gray-500 w-9/12 mx-auto mb-4  "></div>
-        <h1 className="text-xl text-gnp-blue-500 font-bold mb-9 ">
+        <div className="mx-auto mb-4 w-9/12 border-b-2 border-gray-500  "></div>
+        <h1 className="mb-9 text-xl font-bold text-gnp-blue-500 ">
           ¡Bienvenido al Portal de RAM!
         </h1>
-        <label className="text-[#424242] text-sm font-bold justify-between w-9/12 ">
+        <label className="w-9/12 justify-between text-sm font-bold text-[#424242] ">
           Nombre de Usuario
         </label>
         <input className="input-primary w-[79%]" type="email" name="username" />
 
-        <div className="flex justify-between w-9/12">
-          <label className=" text-[#424242] text-sm font-bold">
+        <div className="flex w-9/12 justify-between">
+          <label className=" text-sm font-bold text-[#424242]">
             Contraseña
           </label>
 
-          <a href="#" className="text-gray-600 text-xs ml-1 underline">
+          <a href="#" className="ml-1 text-xs text-gray-600 underline">
             ¿Olvidaste tu contraseña?
           </a>
         </div>
 
-        <div className="relative w-full flex justify-center">
+        <div className="relative flex w-full justify-center">
           <input
-            className="input-primary pr-10 w-[79%]"
+            className="input-primary w-[79%] pr-10"
             type={passwordVisible ? "text" : "password"}
             name="password"
           />
           <button
             type="button"
             onClick={handlePasswordVisibility}
-            className="focus:outline-none absolute right-[15%] top-3"
+            className="absolute right-[15%] top-3 focus:outline-none"
           >
             {passwordVisible ? (
               <AiFillEye size={20} color="#012356" />
@@ -77,7 +77,7 @@ function LoginForm({
         </div>
 
         <button
-          className="uppercase items-center justify-center mt-16 w-56 bg-gnp-blue-500 hover:bg-gnp-blue-700 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:shadow-lg transform transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 active:scale-95 active:translate-y- "
+          className="active:translate-y- mt-16 w-56 transform items-center justify-center rounded-xl bg-gnp-blue-500 py-2 px-4 font-bold uppercase text-white shadow-md transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gnp-blue-700 hover:shadow-lg active:scale-95 "
           type="submit"
           disabled={isLoading}
         >
@@ -85,10 +85,10 @@ function LoginForm({
         </button>
 
         {/* No tienes cuenta? */}
-        <div className=" w-56  mt-4">
-          <p className="text-black text-sm text-center">
+        <div className=" mt-4  w-56">
+          <p className="text-center text-sm text-black">
             ¿No tienes cuenta? Solicita una cuenta
-            <a href="#" className="text-gnp-blue-300 text-sm ml-1">
+            <a href="#" className="ml-1 text-sm text-gnp-blue-300">
               aquí.
             </a>{" "}
           </p>
