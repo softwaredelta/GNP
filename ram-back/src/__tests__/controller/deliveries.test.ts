@@ -69,7 +69,7 @@ describe("controller:deliveries", () => {
         imageUrl: "test-image-url-2",
       });
 
-      const userDelivery1 = await setDeliverieToUser({
+      await setDeliverieToUser({
         idUser: "1",
         idDeliverie: delivery1.delivery.id,
         dateDelivery: new Date("2023-04-25"),
