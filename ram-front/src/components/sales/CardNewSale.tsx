@@ -74,19 +74,19 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   }, [response, error]);
 
   return (
-    <div className="grid grid-cols-4 w-3/4 bg-gradient-to-t from-[#DBDFE6] to-[#FFEFDB] rounded-lg m-4 shadow-lg">
+    <div className="m-4 grid w-3/4 grid-cols-4 rounded-lg bg-gradient-to-t from-[#DBDFE6] to-[#FFEFDB] shadow-lg">
       <img
         src={moneyGrowth}
         alt="Imagen"
-        className="rounded-l-lg object-cover hidden md:block md:h-full"
+        className="hidden rounded-l-lg object-cover md:block md:h-full"
       />
-      <div className="col-span-4 w-full md:w-full md:col-span-3 rounded-l-lg grid grid-cols">
-        <div className="col bg-orange-500 flex justify-center p-4 items-center rounded-t-lg md:rounded-tr-lg">
-          <h1 className="text-3xl my-2 font-bold text-white">Agregar venta</h1>
+      <div className="grid-cols col-span-4 grid w-full rounded-l-lg md:col-span-3 md:w-full">
+        <div className="col flex items-center justify-center rounded-t-lg bg-orange-500 p-4 md:rounded-tr-lg">
+          <h1 className="my-2 text-3xl font-bold text-white">Agregar venta</h1>
         </div>
         <div className="col grid grid-cols-4 gap-4">
-          <div className="md:col-span-2 col-span-4 px-8 pt-8">
-            <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
+          <div className="col-span-4 px-8 pt-8 md:col-span-2">
+            <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
               Póliza
             </label>
             <input
@@ -105,7 +105,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
                 },
               })}
             />
-            <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
+            <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
               Monto
             </label>
             <input
@@ -128,7 +128,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
                 },
               })}
             />
-            <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
+            <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
               Nombre del Cliente
             </label>
             <input
@@ -147,10 +147,10 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               })}
             />
           </div>
-          <div className="md:col-span-2 col-span-4 px-8 pt-8">
+          <div className="col-span-4 px-8 pt-8 md:col-span-2">
             <label
               htmlFor="datePicker"
-              className="block text-gray-700 ml-3 text-lg font-bold mb-1"
+              className="ml-3 mb-1 block text-lg font-bold text-gray-700"
             >
               Fecha
             </label>
@@ -164,7 +164,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               placeholderText="dd/mm/aaaa"
               required
             />
-            <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
+            <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
               Tipo de seguro
             </label>
             <select
@@ -179,7 +179,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
                 </option>
               ))}
             </select>
-            <label className="block text-gray-700 ml-3 text-lg font-bold mb-1">
+            <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
               Periodicidad
             </label>
             <select
@@ -194,10 +194,10 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             </select>
           </div>
 
-          <div className="col-span-4 flex justify-center items-center pb-8">
+          <div className="col-span-4 flex items-center justify-center pb-8">
             <div className="w-52">
               <button
-                className="btn-primary flex justify-center items-center h-12"
+                className="btn-primary flex h-12 items-center justify-center"
                 onClick={handleSubmit(sendData, (errorsFields) => {
                   Swal.fire({
                     title: "Error!",
@@ -208,7 +208,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
                   });
                 })}
               >
-                <span className="font-semibold text-lg"> Enviar </span>
+                <span className="text-lg font-semibold"> Enviar </span>
                 <TbSend size={20} className="ml-2" />
               </button>
             </div>

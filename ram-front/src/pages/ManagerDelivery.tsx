@@ -33,8 +33,8 @@ export default function ManagerDeliveries(): JSX.Element {
   return (
     <Wrapper>
       <div>
-        <div className="w-full flex items-center justify-start py-8">
-          <h1 className=" font-bold py-3 px-20 bg-gnp-orange-500 text-white text-xl rounded-r-2xl">
+        <div className="flex w-full items-center justify-start py-8">
+          <h1 className=" rounded-r-2xl bg-gnp-orange-500 py-3 px-20 text-xl font-bold text-white">
             {delivery?.deliveryName}
           </h1>
         </div>
@@ -50,11 +50,11 @@ export default function ManagerDeliveries(): JSX.Element {
                 userDeliveries={PendingDeliveries.userDeliveries ?? []}
               />
             ) : (
-              <div className="flex flex-grid justify-center">
+              <div className="flex-grid flex justify-center">
                 <Alert
                   color="info"
                   icon={AiFillWarning}
-                  className="font-bold w-2/3 text-center"
+                  className="w-2/3 text-center font-bold"
                 >
                   {" "}
                   <h1 className="text-base"> No hay entregables sin revisar</h1>

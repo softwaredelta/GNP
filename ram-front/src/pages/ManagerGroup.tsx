@@ -19,7 +19,7 @@ export default function GroupDeliveries() {
       <Wrapper>
         <>
           <p className="title">{group?.name}</p>
-          <div className="w-full flex justify-center min-h-[26%] gap-10">
+          <div className="flex min-h-[26%] w-full justify-center gap-10">
             <div className="w-3/5">
               {group && (
                 <ManagerListGroupDeliveries

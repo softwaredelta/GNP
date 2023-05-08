@@ -16,13 +16,13 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload }) => {
 
   return (
     <div className="my-4">
-      <label className="block font-medium text-lg mb-2">
+      <label className="mb-2 block text-lg font-medium">
         Selecciona un archivo:
       </label>
       <input
         type="file"
         onChange={handleFileChange}
-        className="border rounded py-2 px-3"
+        className="rounded border py-2 px-3"
       />
     </div>
   );

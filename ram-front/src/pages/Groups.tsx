@@ -24,13 +24,13 @@ export default function Groups(): JSX.Element {
   return (
     <Wrapper>
       <div>
-        <div className="w-full flex items-center justify-start py-8">
-          <h1 className=" font-bold py-3 px-20 bg-gnp-orange-500 text-white text-xl rounded-r-2xl">
+        <div className="flex w-full items-center justify-start py-8">
+          <h1 className=" rounded-r-2xl bg-gnp-orange-500 py-3 px-20 text-xl font-bold text-white">
             Groups
           </h1>
         </div>
 
-        <div className=" grid sm:grid-cols-2 xl:grid-cols-4 place-items-center gap-10">
+        <div className=" grid place-items-center gap-10 sm:grid-cols-2 xl:grid-cols-4">
           {response && (
             <ListGroup
               groups={response?.data.groups.map(

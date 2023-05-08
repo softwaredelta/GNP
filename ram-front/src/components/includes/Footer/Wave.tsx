@@ -9,7 +9,7 @@ export default function Wave(): JSX.Element {
         id="svg"
         viewBox="0 0 1440 590"
         xmlns="http://www.w3.org/2000/svg"
-        className="transition duration-1000 ease-in-out delay-150"
+        className="transition delay-150 duration-1000 ease-in-out"
       >
         <style
           dangerouslySetInnerHTML={{
@@ -29,7 +29,7 @@ export default function Wave(): JSX.Element {
           strokeWidth={0}
           fill="url(#gradient)"
           fillOpacity="0.53"
-          className="transition-all duration-1000 ease-in-out delay-150 path-0"
+          className="path-0 transition-all delay-150 duration-1000 ease-in-out"
         />
         <style
           dangerouslySetInnerHTML={{
@@ -49,7 +49,7 @@ export default function Wave(): JSX.Element {
           strokeWidth={0}
           fill="url(#gradient)"
           fillOpacity={1}
-          className="transition-all duration-1000 ease-in-out delay-150 path-1"
+          className="path-1 transition-all delay-150 duration-1000 ease-in-out"
         />
       </svg>
     </>

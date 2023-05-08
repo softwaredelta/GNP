@@ -9,22 +9,22 @@ export default function PlaceholderHome() {
 
   return (
     <Wrapper>
-      <div className="leading-normal tracking-normal text-white bg-gradient-to-r from-gnp-blue-800 to-orange-500">
-        <div className="pt-24 px-28">
+      <div className="bg-gradient-to-r from-gnp-blue-800 to-orange-500 leading-normal tracking-normal text-white">
+        <div className="px-28 pt-24">
           <div className="container px-3">
-            <div className="w-full md:w-2/5 justify-center items-start text-center md:text-left">
-              <p className="uppercase tracking-loose w-full">
+            <div className="w-full items-start justify-center text-center md:w-2/5 md:text-left">
+              <p className="tracking-loose w-full uppercase">
                 Hola {auth?.username}
               </p>
               <h1 className="my-4 text-5xl font-bold leading-tight">
                 Bienvenido al portal de Grupo Asesores Ram
               </h1>
               {auth?.roles?.includes("manager") ? (
-                <p className="leading-normal text-2xl mb-8">
+                <p className="mb-8 text-2xl leading-normal">
                   Aquí podrás monitorizar el avance de los agentes
                 </p>
               ) : (
-                <p className="leading-normal text-2xl mb-8">
+                <p className="mb-8 text-2xl leading-normal">
                   Aquí podrás encontrar todo lo necesario para tu día a día como
                   agente.
                 </p>
