@@ -3,30 +3,34 @@
 @tailwind utilities;
 
 .btn-primary {
-  @apply w-full mx-auto bg-gnp-blue-500 text-white px-4 py-2 rounded shadow-lg hover:scale-105 hover:bg-gnp-blue-700 transition duration-300 ease-in-out active:scale-95;
+  @apply mx-auto w-full rounded bg-gnp-blue-500 px-4 py-2 font-bold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gnp-blue-700 active:scale-95;
 }
 
 .btn-secondary {
-  @apply w-full mx-auto bg-gnp-orange-500 text-white px-4 py-2 rounded shadow-lg hover:scale-105 hover:bg-gnp-orange-700 transition duration-300 ease-in-out active:scale-95;
+  @apply mx-auto w-full rounded bg-gnp-orange-500 px-4 py-2 font-bold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gnp-orange-700 active:scale-95;
 }
 
 .btn-disabled {
-  @apply w-full mx-auto bg-gray-500 text-white px-4 py-2 rounded shadow-lg cursor-not-allowed;
+  @apply mx-auto w-full cursor-not-allowed rounded bg-gray-500 px-4 py-2 font-bold text-white shadow-lg;
+}
+
+.btn-border {
+  @apply mx-auto w-full rounded border-2 border-gnp-blue-500 px-4 py-2 font-bold text-gnp-blue-500 shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gnp-blue-100 hover:text-gnp-blue-900 active:scale-95;
 }
 
 .input-primary {
-  @apply rounded-lg border-2 border-gnp-blue-500 shadow-lg pl-3 h-12 mb-8 text-base;
+  @apply mb-8 h-12 rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
 }
 
 .floating-button-primary {
-  @apply w-full aspect-square flex items-center justify-center bg-gnp-blue-500 text-white rounded-full shadow-lg hover:scale-105 hover:bg-gnp-blue-700 transition duration-300 ease-in-out active:scale-95;
+  @apply flex aspect-square w-full items-center justify-center rounded-full bg-gnp-blue-500 text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gnp-blue-700 active:scale-95;
 }
 .floating-button-secondary {
-  @apply w-full aspect-square flex items-center justify-center bg-gnp-orange-500 text-white rounded-full shadow-lg hover:scale-105 hover:bg-gnp-orange-700 transition duration-300 ease-in-out active:scale-95;
+  @apply flex aspect-square w-full items-center justify-center rounded-full bg-gnp-orange-500 text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gnp-orange-700 active:scale-95;
 }
 
 .title {
-  @apply my-10 w-72 bg-gnp-orange-500 rounded-r-3xl text-white p-4 text-2xl text-center font-semibold;
+  @apply my-10 w-72 rounded-r-3xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white;
 }
 
 .custom-scroll {
