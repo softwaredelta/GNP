@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { DESCRIPTION_COLUMN, NAME_COLUMN, URL_COLUMN } from "./columns";
+import { DESCRIPTION_COLUMN, UNIQUE_NAME_COLUMN, URL_COLUMN } from "./columns";
 import { GroupUserEnt } from "./group-user.entity";
 import { DeliveryEnt } from "./delivery.entity";
 
@@ -17,7 +17,7 @@ export class GroupEnt {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @Column(NAME_COLUMN)
+  @Column(UNIQUE_NAME_COLUMN)
   name!: string;
 
   @Column(DESCRIPTION_COLUMN)

@@ -166,6 +166,7 @@ export interface S3Api {
   listObjects(): Promise<string[]>;
   hasObject(objectName: string): Promise<boolean>;
   removeObject(objectName: string): Promise<void>;
+  getObjectPromise(objectName: string): Promise<Buffer>;
 }
 
 let s3Api: S3Api | null = null;
@@ -203,12 +204,22 @@ export async function getS3Api() {
     await client.removeObject(bucket, objectName);
   }
 
+  async function getObjectPromise(objectName: string): Promise<Buffer> {
+    const stream = await getObject(objectName);
+    const buf = [];
+    for await (const chunk of stream) {
+      buf.push(chunk);
+    }
+    return Buffer.concat(buf);
+  }
+
   s3Api = Object.freeze({
     putObject,
     getObject,
     listObjects,
     hasObject,
     removeObject,
+    getObjectPromise,
   });
 
   return s3Api;
