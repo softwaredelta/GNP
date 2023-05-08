@@ -17,7 +17,7 @@ export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
       {groups.map((group, index) => (
         <div className="w-11/12 lg:w-10/12" key={group.id} role="group">
           <button
-            className="w-full hover:scale-105 transition-all ease-in-out active:scale-95 cursor-pointer"
+            className="w-full cursor-pointer transition-all ease-in-out hover:scale-105 active:scale-95"
             onClick={() => {
               navigate(`/group/${group.id}`);
             }}

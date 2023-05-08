@@ -46,26 +46,26 @@ export default function DeliveryCard({
 
   return (
     <div
-      className="w-full grid grid-cols-2  rounded-b-lg overflow-hidden bg-gnp-white shadow-lg"
+      className="grid w-full grid-cols-2  overflow-hidden rounded-b-lg bg-gnp-white shadow-lg"
       role="delivery"
     >
       <div className="grid grid-cols-3 ">
         <div className="relative">
-          <img className="w-full h-20 object-cover" src={image} />
+          <img className="h-20 w-full object-cover" src={image} />
           <div
-            className={`absolute top-0 left-0 w-full h-full ${colorOptions[color]} bg-opacity-50`}
+            className={`absolute top-0 left-0 h-full w-full ${colorOptions[color]} bg-opacity-50`}
           ></div>
         </div>
-        <div className="col-span-2 flex items-center text-center justify-center font-semibold">
+        <div className="col-span-2 flex items-center justify-center text-center font-semibold">
           {nameDelivery}
         </div>
       </div>
       <div className="grid grid-cols-3 border-l-2 border-l-gray-300">
-        <div className="col-span-2 flex items-center text-center justify-center font-semibold">
+        <div className="col-span-2 flex items-center justify-center text-center font-semibold">
           <div className="mr-4">{iconList[status]}</div>
           {status}
         </div>
-        <div className="flex items-center text-center justify-center">
+        <div className="flex items-center justify-center text-center">
           {fileUrl && "Sin enviar" !== status && (
             <button className="mr-4">
               <FiEye

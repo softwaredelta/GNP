@@ -20,8 +20,8 @@ export default function Group(): JSX.Element {
       <div>
         {response && response.length ? (
           <>
-            <div className="w-full flex items-center justify-start py-8">
-              <h1 className=" font-bold py-3 px-20 bg-gnp-orange-500 text-white text-xl rounded-r-2xl">
+            <div className="flex w-full items-center justify-start py-8">
+              <h1 className=" rounded-r-2xl bg-gnp-orange-500 py-3 px-20 text-xl font-bold text-white">
                 {response && response[0].delivery?.group?.name}
               </h1>
             </div>

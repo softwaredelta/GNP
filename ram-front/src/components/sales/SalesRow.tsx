@@ -70,7 +70,7 @@ export default function SalesRow({
       <Table.Cell>
         <FaTrash
           onClick={handleDelete}
-          className=" hover:fill-red-500 hover:scale-105"
+          className=" hover:scale-105 hover:fill-red-500"
         />
       </Table.Cell>
     </Table.Row>

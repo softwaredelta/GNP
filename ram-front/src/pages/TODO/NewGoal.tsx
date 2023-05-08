@@ -8,10 +8,10 @@ export default function NewGoal() {
   return (
     <Wrapper>
       <div>
-        <div className="flex justify-center items-center p-4">
+        <div className="flex items-center justify-center p-4">
           <img
             src={wip_1}
-            className="h-1/2 md:h-1/5 md:w-1/5 w-1/2"
+            className="h-1/2 w-1/2 md:h-1/5 md:w-1/5"
             alt="Work in progress"
           />
         </div>

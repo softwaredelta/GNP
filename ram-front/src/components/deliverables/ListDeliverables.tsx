@@ -89,7 +89,7 @@ export default function ListDeliverables({ deliverables }: Props) {
   if (deliverables.length === 0) return <h1>No hay entregables</h1>;
 
   return (
-    <div className="grid grid-cols-1 gap-10 p-12 w-10/12 mx-auto">
+    <div className="mx-auto grid w-10/12 grid-cols-1 gap-10 p-12">
       {deliverables.map((elem, index) => {
         if (!elem.delivery) {
           throw new Error("No se encontró la entrega");
@@ -110,13 +110,13 @@ export default function ListDeliverables({ deliverables }: Props) {
             {isOpen && (
               <Modal closeModal={toggleModal}>
                 <div className="flex flex-col space-y-5">
-                  <h3 className="text-4xl text-gnp-blue-600 font-bold my-4">
+                  <h3 className="my-4 text-4xl font-bold text-gnp-blue-600">
                     Sube tu evidencia
                   </h3>
                   <div className="h-80">
                     <DropZone file={file} setFile={setFile} />
                   </div>
-                  <div className="flex flex-col justify-end items-center">
+                  <div className="flex flex-col items-center justify-end">
                     <div className="my-2 w-2/5">
                       <Button
                         className="btn-primary"

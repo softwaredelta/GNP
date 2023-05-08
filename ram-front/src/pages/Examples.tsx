@@ -1,27 +1,30 @@
 // (c) Delta Software 2023, rights reserved.
 
-import Card from "./cards/base/Card";
-import DeliveryCard from "./cards/base/DeliveryCard";
-import CardInfoAssurence from "./cards/info/CardInfoAssurence";
-import CardInfoTopFive from "./cards/info/CardInfoTopFive";
-import ProgressBar from "./ProgressBar";
-import DropZone from "./DropZone";
-import CardInfoGroup from "./cards/info/CardInfoGroup";
+import DropZone from "../components/generics/DropZone";
+import ProgressBar from "../components/generics/ProgressBar";
+import Card from "../components/generics/cards/base/Card";
+import DeliveryCard from "../components/generics/cards/base/DeliveryCard";
+import CardInfoAssurence from "../components/generics/cards/info/CardInfoAssurence";
+import CardInfoGroup from "../components/generics/cards/info/CardInfoGroup";
+import CardInfoTopFive from "../components/generics/cards/info/CardInfoTopFive";
 
 import { BsHouses } from "react-icons/bs";
-import { RiPencilFill } from "react-icons/ri";
 import { IoPawSharp } from "react-icons/io5";
-import Modal from "./Modal";
-import useModal from "../../hooks/useModal";
-import SkeletonCard from "./skeleton/SkeletonCard";
-import SkeletonText from "./skeleton/SkeletonText";
-import SkeletonDiv from "./skeleton/SkeletonDiv";
-import useAlert from "../../hooks/useAlert";
-import useAxios from "../../hooks/useAxios";
-import ManagerDelivery from "./cards/info/ManagerDelivery";
+import { RiPencilFill } from "react-icons/ri";
+import ModalGroupForm from "../components/forms/ModalGroupForm";
+import Modal from "../components/generics/Modal";
+import ManagerDelivery from "../components/generics/cards/info/ManagerDelivery";
+import SkeletonCard from "../components/generics/skeleton/SkeletonCard";
+import SkeletonDiv from "../components/generics/skeleton/SkeletonDiv";
+import SkeletonText from "../components/generics/skeleton/SkeletonText";
+import useAlert from "../hooks/useAlert";
+import useAxios from "../hooks/useAxios";
+import useModal from "../hooks/useModal";
 // import DeliveryCard from "./cards/DeliveryCard";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
+  const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
+    useModal();
   const { showAlert } = useAlert();
   const { response: me } = useAxios<{ email: string; id: string }>({
     url: "user/me",
@@ -48,7 +51,7 @@ export default function Examples() {
   if (error) return <div>error:{JSON.stringify(error)}</div>;
 
   return (
-    <div className="w-full min-h-[50vh] grid md:grid-cols-3 place-items-center gap-10 py-20">
+    <div className="grid min-h-[50vh] w-full place-items-center gap-10 py-20 md:grid-cols-3">
       <div className="w-40">
         <button className="btn-primary" onClick={callback}>
           post
@@ -124,7 +127,7 @@ export default function Examples() {
         </Card>
       </div>
 
-      <div className=" w-full grid grid-cols-2 gap-10 p-12">
+      <div className=" grid w-full grid-cols-2 gap-10 p-12">
         <button className="floating-button-primary">
           {<RiPencilFill size={50} />}
         </button>
@@ -148,7 +151,7 @@ export default function Examples() {
       </div>
       <div className="w-7/12">
         <button
-          className="hover:scale-105 transition-all ease-in-out active:scale-95 cursor-pointer"
+          className="cursor-pointer transition-all ease-in-out hover:scale-105 active:scale-95"
           onClick={() => alert("Redireccionando al grupo ...")}
         >
           <Card
@@ -171,10 +174,10 @@ export default function Examples() {
         {isOpen && (
           <Modal closeModal={toggleModal}>
             <div>
-              <h1 className="text-2xl font-bold text-center">Hola mundo</h1>
+              <h1 className="text-center text-2xl font-bold">Hola mundo</h1>
               <p className="text-center">hola oli</p>
               <div>
-                <h3 className="font-bold text-center py-5">Miren un gatito:</h3>
+                <h3 className="py-5 text-center font-bold">Miren un gatito:</h3>
               </div>
               <img
                 src="https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg"
@@ -190,7 +193,7 @@ export default function Examples() {
       <div>
         <SkeletonText />
       </div>
-      <div className="w-32 h-32 rounded-full overflow-hidden">
+      <div className="h-32 w-32 overflow-hidden rounded-full">
         <SkeletonDiv />
       </div>
       <div className="w-11/12">
@@ -209,6 +212,18 @@ export default function Examples() {
         >
           Abrir alerta
         </button>
+      </div>
+      <div className="w-11/12">
+        <button className="btn-primary" onClick={toggleModalGroupForm}>
+          Abrir modal Grupo
+        </button>
+        <ModalGroupForm
+          isOpenModal={isOpenGroupForm}
+          closeModal={toggleModalGroupForm}
+          handlePost={(image, name) => {
+            alert(`Nombre: ${name} Imagen: ${image}`);
+          }}
+        />
       </div>
     </div>
   );

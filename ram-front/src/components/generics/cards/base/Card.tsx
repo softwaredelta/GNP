@@ -19,21 +19,21 @@ export default function Card({
   };
 
   return (
-    <div className="bg-gnp-white rounded-lg shadow-lg w-full grid grid-rows-2 grid-cols-1 overflow-hidden hover:scale-110 transition-all ease-in-out active:scale-95">
-      <div className="w-full relative">
-        <img src={image} className="w-full h-full aspect-video object-cover" />
+    <div className="grid w-full grid-cols-1 grid-rows-2 overflow-hidden rounded-lg bg-gnp-white shadow-lg transition-all ease-in-out hover:scale-110 active:scale-95">
+      <div className="relative w-full">
+        <img src={image} className="aspect-video h-full w-full object-cover" />
         <div
-          className={`absolute top-0 left-0 w-full h-full ${colorOptions[color]} bg-opacity-30`}
+          className={`absolute top-0 left-0 h-full w-full ${colorOptions[color]} bg-opacity-30`}
         ></div>
         {icon && (
           <div
-            className={`absolute bottom-0 left-0 right-0 mx-auto translate-y-7 w-14 h-14 flex items-center  rounded-full ${colorOptions[color]} justify-center`}
+            className={`absolute bottom-0 left-0 right-0 mx-auto flex h-14 w-14 translate-y-7 items-center  rounded-full ${colorOptions[color]} justify-center`}
           >
             {icon}
           </div>
         )}
       </div>
-      <div className="bg-gnp-white p-4 w-full">{children}</div>
+      <div className="w-full bg-gnp-white p-4">{children}</div>
     </div>
   );
 }

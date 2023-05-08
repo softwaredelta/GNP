@@ -12,7 +12,7 @@ const Wrapper = ({ children }: IWrapperProps): JSX.Element => {
   const { logout, auth } = useAuthentication();
 
   return (
-    <main className="min-h-screen flex flex-col justify-between overflow-y-auto">
+    <main className="flex min-h-screen flex-col justify-between overflow-y-auto">
       <NavBar
         onLogout={logout}
         username={auth?.username}
