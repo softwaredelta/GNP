@@ -17,10 +17,10 @@ describe("Verify sales table", () => {
               {
                 id: "test-sale4",
                 policyNumber: "423456789",
-                sellDate: date,
+                paidDate: date,
                 status: "sin revisar",
-                amountInCents: "100000",
-                clientName: "Mónica Ayala",
+                yearlyFee: "100000",
+                contractingClient: "Mónica Ayala",
                 periodicity: "mensual",
                 evidenceUrl: "https://www.google.com",
                 user: {

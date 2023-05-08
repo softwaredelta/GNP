@@ -11,6 +11,7 @@ import {
 import { AssuranceTypeEnt } from "./assurance-type.entity";
 import { UserEnt } from "./user.entity";
 import {
+  CUSTOM_NAME_COLUMN,
   ID_COLUMN,
   MONEY_COLUMN,
   NAME_COLUMN,
@@ -51,16 +52,25 @@ export class SellEnt {
   userId!: string;
 
   @Column(REQUIRED_DATE_COLUMN)
-  sellDate!: Date;
+  paidDate!: Date;
+
+  @Column(REQUIRED_DATE_COLUMN)
+  emissionDate!: Date;
 
   @Column(REQUIRED_STRING_COLUMN("status"))
   status!: string;
 
   @Column(MONEY_COLUMN)
-  amountInCents!: string;
+  yearlyFee!: string;
+
+  @Column(MONEY_COLUMN)
+  paidFee!: string;
+
+  @Column(CUSTOM_NAME_COLUMN)
+  insuredCostumer!: string;
 
   @Column(NAME_COLUMN)
-  clientName!: string;
+  contractingClient!: string;
 
   @Column(REQUIRED_STRING_COLUMN("periodicity"))
   periodicity!: string;

@@ -40,32 +40,32 @@ export const allSales$ = selector<ISell[]>({
       return [
         {
           id: "test-sale-1",
-          amountInCents: "100",
+          yearlyFee: "100",
           assuranceType: {
             id: "test-assurance-type-1",
             name: "Test assurance type 1",
             description: "Test assurance type 1 description",
           },
-          clientName: "Test client name 1",
+          contractingClient: "Test client name 1",
           evidenceUrl: "https://www.google.com",
           periodicity: "mensual",
           policyNumber: "1234567",
-          sellDate: new Date(),
+          paidDate: new Date(),
           status: "pending",
         },
         {
           id: "test-sale-2",
-          amountInCents: "200",
+          yearlyFee: "200",
           assuranceType: {
             id: "test-assurance-type-2",
             name: "Test assurance type 2",
             description: "Test assurance type 2 description",
           },
-          clientName: "Test client name 2",
+          contractingClient: "Test client name 2",
           evidenceUrl: "https://www.google.com",
           periodicity: "mensual",
           policyNumber: "1234568",
-          sellDate: new Date(),
+          paidDate: new Date(),
           status: "pending",
         },
       ];
@@ -92,7 +92,7 @@ export const verifySales$ = selector<ISell[]>({
       return [
         {
           id: "test-id",
-          clientname: "Test name",
+          contractingClient: "Test name",
         },
       ];
     }
@@ -106,12 +106,12 @@ export const verifySales$ = selector<ISell[]>({
 
 export type SaleData = {
   policyNumber: string;
-  sellDate: Date | null;
+  paidDate: Date | null;
   assuranceType: {
     id: string;
   };
-  amountInCents: string;
-  clientName: string;
+  yearlyFee: string;
+  contractingClient: string;
   periodicity: string;
 };
 

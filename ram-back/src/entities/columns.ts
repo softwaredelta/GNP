@@ -9,6 +9,13 @@ export const NAME_COLUMN: ColumnOptions = {
   nullable: false,
 };
 
+export const CUSTOM_NAME_COLUMN: ColumnOptions = {
+  name: "custom_name",
+  type: "varchar",
+  length: 255,
+  nullable: false,
+};
+
 export const UNIQUE_NAME_COLUMN: ColumnOptions = {
   name: "name",
   type: "varchar",
