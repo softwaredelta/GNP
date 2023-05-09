@@ -32,6 +32,9 @@ describe("app:sale", () => {
         contractingClient: "Juan Perez",
         evidenceUrl: "https://www.google.com",
         periodicity: "mensual",
+        emissionDate: new Date("2021/01/01"),
+        insuredCostumer: "Juan Perez",
+        paidFee: "123456",
       });
 
       expect(error).toBeUndefined();
