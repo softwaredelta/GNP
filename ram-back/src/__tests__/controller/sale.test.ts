@@ -51,6 +51,9 @@ describe("controller:sale", () => {
       periodicity: "Anual",
       id: "test-case-sale-id",
       userId: user.id,
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "test-client",
+      paidFee: "200000",
     });
   });
 
@@ -67,6 +70,9 @@ describe("controller:sale", () => {
         yearlyFee: "100000",
         contractingClient: "john doe",
         periodicity: "Anual",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "bad data",
       };
 
       const fields = Object.keys(data);
@@ -96,6 +102,9 @@ describe("controller:sale", () => {
         yearlyFee: "100000",
         contractingClient: "john doe",
         periodicity: "Anual",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "200000",
       };
 
       return request(app)
@@ -120,6 +129,9 @@ describe("controller:sale", () => {
         contractingClient: "john doe",
         periodicity: "Anual",
         additionalField: "additional value",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "200000",
       };
 
       return request(app)
@@ -142,6 +154,9 @@ describe("controller:sale", () => {
         yearlyFee: "100000",
         contractingClient: "john doe",
         periodicity: "Anual",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "200000",
       };
 
       await request(app)
@@ -170,6 +185,9 @@ describe("controller:sale", () => {
         yearlyFee: "100000",
         contractingClient: "john doe",
         periodicity: "Anual",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "200000",
       };
 
       return request(app)
