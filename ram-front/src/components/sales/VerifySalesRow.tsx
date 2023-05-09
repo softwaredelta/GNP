@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState } from "react";
+import React from "react";
 import { Table } from "flowbite-react";
 import useAxios from "../../hooks/useAxios";
 import { AiOutlineEye } from "react-icons/ai";
@@ -12,8 +12,6 @@ import { NumericFormat } from "react-number-format";
 
 import Modal from "../generics/Modal";
 import useModal from "../../hooks/useModal";
-import { useRecoilValue } from "recoil";
-import { apiBase$ } from "../../lib/api/api-base";
 import { useOpenFile } from "../../lib/files";
 
 type Props = {

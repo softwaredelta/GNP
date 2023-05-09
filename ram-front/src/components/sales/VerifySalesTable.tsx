@@ -32,7 +32,7 @@ export interface IListSalesProps {
   onUpdated?: () => void;
 }
 
-export const VerifySalesTable = ({ sales, onUpdated }: IListSalesProps) => {
+export const VerifySalesTable = ({ sales }: IListSalesProps) => {
   const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
   useEffect(() => {
     if (shouldUpdate) {

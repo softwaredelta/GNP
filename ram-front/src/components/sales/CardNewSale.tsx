@@ -25,12 +25,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     paidDate: Date;
   };
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormValues>();
+  const { register, handleSubmit, reset } = useForm<FormValues>();
 
   const { response, error, callback } = useAxios({
     url: "sales/create",
