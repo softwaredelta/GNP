@@ -1,10 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
 
+import { DataSource } from "typeorm";
 import { setDeliverieToUser } from "../../app/deliveries";
 import { createDelivery } from "../../app/deliveries";
 import {
   addUserToGroup,
   createGroup,
+  createGroupWithFile,
   deleteGroup,
   getUserGroups,
 } from "../../app/groups";
@@ -18,24 +20,54 @@ import {
 import { GroupEnt } from "../../entities/group.entity";
 import { UserDeliveryEnt } from "../../entities/user-delivery.entity";
 import { UserEnt } from "../../entities/user.entity";
+import { getS3Api } from "../../arch/s3-client";
 
 describe("app:groups", () => {
+  let ds: DataSource;
   beforeEach(async () => {
-    const ds = await getDataSource();
+    ds = await getDataSource();
     await ds.synchronize(true);
   });
 
-  it("creates groups successfully", async () => {
-    const groupNames = Array.from({ length: 5 }, (_, i) => `group/${i}`);
+  describe("create", () => {
+    it("creates groups successfully", async () => {
+      const groupNames = Array.from({ length: 5 }, (_, i) => `group/${i}`);
 
-    await Promise.all(
-      groupNames.map((name) =>
-        createGroup({
-          name,
-          imageURL: "",
-        }),
-      ),
-    );
+      await Promise.all(
+        groupNames.map((name) =>
+          createGroup({
+            name,
+            imageURL: "",
+          }),
+        ),
+      );
+
+      await ds.manager.find(GroupEnt).then((groups) => {
+        expect(groups).toHaveLength(5);
+        expect(groups[0].imageURL).toBe("");
+      });
+    });
+
+    it("uploads file contents successfully", async () => {
+      const file = {
+        buffer: Buffer.from("file contents"),
+        originalname: "file.png",
+        encoding: "utf-8",
+        mimetype: "image/png",
+      } as Express.Multer.File;
+
+      const { group, error } = await createGroupWithFile({
+        name: "group",
+        description: "description",
+        imageFile: file,
+      });
+      expect(error).toBeUndefined();
+      expect(group.imageURL).toMatch(/\d+\.png/);
+
+      const s3 = await getS3Api();
+      const fileContents = await s3.getObjectPromise(group.imageURL);
+      expect(fileContents.toString()).toBe("file contents");
+    });
   });
 
   describe("when users and groups exist", () => {
@@ -161,7 +193,6 @@ describe("app:groups", () => {
     });
 
     it("setup is done correctly", async () => {
-      const ds = await getDataSource();
       const createdGroup = await ds.manager.findOne(GroupEnt, {
         where: { id: group.id },
         relations: {
@@ -184,7 +215,6 @@ describe("app:groups", () => {
     });
 
     it("deletes group", async () => {
-      const ds = await getDataSource();
       await deleteGroup({ groupId: group.id });
 
       const deletedGroup = await ds.manager.findOne(GroupEnt, {
@@ -203,7 +233,6 @@ describe("app:groups", () => {
     it("deletes group deliveries", async () => {
       await deleteGroup({ groupId: group.id });
 
-      const ds = await getDataSource();
       const deletedDeliveries = await ds.manager.find(DeliveryEnt);
       expect(deletedDeliveries).toHaveLength(0);
     });
@@ -217,7 +246,6 @@ describe("app:groups", () => {
     it("deletes group user-deliveries", async () => {
       await deleteGroup({ groupId: group.id });
 
-      const ds = await getDataSource();
       const deletedUserDeliveries = await ds.manager.find(UserDeliveryEnt);
       expect(deletedUserDeliveries).toHaveLength(0);
     });
@@ -231,7 +259,6 @@ describe("app:groups", () => {
     it("deletes group user associations", async () => {
       await deleteGroup({ groupId: group.id });
 
-      const ds = await getDataSource();
       const deletedGroupUsers = await ds.manager.find(GroupUserEnt);
       expect(deletedGroupUsers).toHaveLength(0);
     });
@@ -239,7 +266,6 @@ describe("app:groups", () => {
     it("does not delete users", async () => {
       await deleteGroup({ groupId: group.id });
 
-      const ds = await getDataSource();
       const users = await ds.manager.find(UserEnt);
       expect(users).toHaveLength(1);
     });
