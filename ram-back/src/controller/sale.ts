@@ -15,6 +15,9 @@ const saleParameters = j.object({
   contractingClient: j.string().required(),
   assuranceTypeId: j.string().required(),
   periodicity: j.string().required(),
+  emissionDate: j.string().required(),
+  insuredCostumer: j.string().required(),
+  paidFee: j.number().required(),
 });
 
 const saleUpdateParameters = j.object({
@@ -51,6 +54,9 @@ salesRouter.post(
       contractingClient,
       assuranceTypeId,
       periodicity,
+      emissionDate,
+      insuredCostumer,
+      paidFee,
     } = req.body;
     const { user } = req;
 
@@ -67,6 +73,9 @@ salesRouter.post(
       assuranceTypeId,
       userId: user.id,
       periodicity,
+      emissionDate,
+      insuredCostumer,
+      paidFee,
     });
 
     if (error) {

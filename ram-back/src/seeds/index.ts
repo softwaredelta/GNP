@@ -475,6 +475,9 @@ export async function loadSeeds() {
       periodicity: "Anual",
       id: "1",
       userId: "1",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
@@ -486,6 +489,9 @@ export async function loadSeeds() {
       periodicity: "Anual",
       id: "2",
       userId: "1",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
@@ -497,6 +503,9 @@ export async function loadSeeds() {
       periodicity: "Anual",
       id: "3",
       userId: "2",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
@@ -509,6 +518,9 @@ export async function loadSeeds() {
       id: "4",
       userId: "2",
       status: "Revisada",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
@@ -520,6 +532,9 @@ export async function loadSeeds() {
       periodicity: "Mensual",
       id: "5",
       userId: "1",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
@@ -531,6 +546,9 @@ export async function loadSeeds() {
       periodicity: "Mensual",
       id: "6",
       userId: "1",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
@@ -542,6 +560,9 @@ export async function loadSeeds() {
       periodicity: "Trimestral",
       id: "7",
       userId: "2",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
@@ -553,6 +574,9 @@ export async function loadSeeds() {
       periodicity: "Anual",
       id: "8",
       userId: "2",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
@@ -564,6 +588,9 @@ export async function loadSeeds() {
       periodicity: "Anual",
       id: "9",
       userId: "2",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
   } catch (e) {
     console.error(e);

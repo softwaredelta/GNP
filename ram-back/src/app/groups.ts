@@ -6,9 +6,12 @@ import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
 import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { DeliveryEnt } from "../entities/delivery.entity";
+import { getS3Api } from "../arch/s3-client";
+import path from "path";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",
+  CONFLICT = "CONFLICT",
 }
 
 export async function deleteGroup(params: {
@@ -29,14 +32,27 @@ export async function deleteGroup(params: {
 
 export async function createGroup(params: {
   name: string;
+  description?: string;
   imageURL?: string;
 }): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
   const ds = await getDataSource();
+
+  // check for existing duplicate name
+  const existingGroup = await ds.manager.findOne(GroupEnt, {
+    where: { name: params.name },
+  });
+  if (existingGroup) {
+    return {
+      error: GroupError.CONFLICT,
+      group: {} as GroupEnt,
+    };
+  }
 
   return ds.manager
     .save(
       ds.manager.create(GroupEnt, {
         name: params.name,
+        description: params.description,
         imageURL: params.imageURL,
       }),
     )
@@ -48,6 +64,29 @@ export async function createGroup(params: {
       errorReason: e,
       group: {} as GroupEnt,
     }));
+}
+
+export async function createGroupWithFile(params: {
+  name: string;
+  description?: string;
+  imageFile: Express.Multer.File;
+}): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
+  const s3 = await getS3Api();
+
+  const filename: string =
+    Date.now() + path.extname(params.imageFile.originalname);
+  await s3.putObject(filename, params.imageFile.buffer).catch((e) => {
+    return {
+      error: GroupError.UNHANDLED,
+      errorReason: e,
+      group: {} as GroupEnt,
+    };
+  });
+  return createGroup({
+    name: params.name,
+    description: params.description,
+    imageURL: filename,
+  });
 }
 
 export async function addUserToGroup(params: {
