@@ -65,14 +65,3 @@ export async function getAuthUserDelivery(
     };
   }
 }
-
-export async function uploadUserDelivery(
-  id: string,
-): Promise<UserDeliveryEnt[]> {
-  try {
-    return [];
-  } catch (error) {
-    console.error(error);
-  }
-  return [];
-}

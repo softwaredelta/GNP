@@ -61,7 +61,7 @@ export async function loadSeeds() {
       roles: [UserRole.REGULAR],
     });
 
-    const user5 = await createUser({
+    await createUser({
       email: "claudiafdz@ram.mx",
       password: "password",
       id: "3",
@@ -233,7 +233,7 @@ export async function loadSeeds() {
         "https://cdn.pixabay.com/photo/2017/05/28/16/55/coffee-2351436__340.jpg",
     });
 
-    const deliveryWeek3Task1 = await createDelivery({
+    await createDelivery({
       deliveryName: "Pasar sus exámenes con 80% minimo",
       description: "Lorem ipsum",
       idGroup: groupNovelWeek3.group.id,

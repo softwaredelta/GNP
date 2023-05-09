@@ -2,7 +2,6 @@
 
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-// import { AiOutlineFileProtect } from "react-icons/ai";
 import { useRecoilValue } from "recoil";
 import Wrapper from "../containers/Wrapper";
 import useModal from "../hooks/useModal";
@@ -12,8 +11,6 @@ import { Button } from "./button";
 import DropZone from "./generics/DropZone";
 import Modal from "./generics/Modal";
 import DeliveryCard from "./generics/cards/DeliveryCard";
-
-// import useAxios from "../hooks/useAxios";
 
 function Delivery() {
   // Get data using axios from http://localhost:8080/user-delivery
@@ -32,9 +29,9 @@ function Delivery() {
   const { isOpen, toggleModal } = useModal();
   const modalFileInput = useRef<HTMLInputElement>(null);
 
-  const [uploadFileURL, setUploadFileURL] = useState<string | null>("");
+  const [, setUploadFileURL] = useState<string | null>("");
 
-  const [fileName, setFileName] = useState<string>("");
+  const [, setFileName] = useState<string>("");
 
   const handleModalOpen = (deliveryCardID: string): void => {
     setId(deliveryCardID);
@@ -65,12 +62,6 @@ function Delivery() {
       } catch (error) {
         console.error(error);
       }
-    }
-  };
-
-  const openFileInNewTab = (): void => {
-    if (uploadFileURL) {
-      window.open(uploadFileURL);
     }
   };
 

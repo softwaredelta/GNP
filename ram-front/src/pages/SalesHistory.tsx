@@ -2,7 +2,6 @@
 
 import { SalesTable } from "../components/sales/SalesTable";
 import Wrapper from "../containers/Wrapper";
-import { Pagination } from "flowbite-react";
 import { allSales$, useUpdateSales } from "../lib/api/api-sales";
 import { useRecoilValue } from "recoil";
 

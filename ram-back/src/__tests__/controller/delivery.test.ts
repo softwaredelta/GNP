@@ -78,7 +78,7 @@ describe("controller:delivery", () => {
       fileUrl: "https://picsum.photos/400",
     });
 
-    const userRegular = await createUser({
+    await createUser({
       email: "test@delta.tec.mx",
       password: "12345678//",
     });
@@ -90,7 +90,7 @@ describe("controller:delivery", () => {
 
     accessTokenInvalid = authRegular.auth.accessToken;
 
-    const { user, error: userError } = await createUser({
+    const { error: userError } = await createUser({
       email: "test-2@delta.tec.mx",
       password: "12345678//",
       roles: [UserRole.MANAGER],
