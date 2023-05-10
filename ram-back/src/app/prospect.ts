@@ -4,7 +4,6 @@ import { getDataSource } from "../arch/db-client";
 import { ProspectEnt } from "../entities/prospect.entity";
 import { StatusEnt, StatusNames } from "../entities/status.entity";
 import { ProspectStatusEnt } from "../entities/prospect-status.entity";
-import { log } from "console";
 
 export enum ProspectError {
   PROSPECT_ERROR = "DEFAULT_ERROR",
@@ -44,6 +43,7 @@ export async function createProspect(params: {
         where: { id: prospect.id },
         relations: { prospectStatus: { status: true } },
       });
+
       return { prospect: prospectRelations as ProspectEnt };
     });
   } catch (e) {

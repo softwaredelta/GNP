@@ -10,7 +10,6 @@ import { UserRole } from "../entities/user.entity";
 import { createStatus } from "../app/status";
 import { StatusNames } from "../entities/status.entity";
 import { createProspect } from "../app/prospect";
-import { setStatusToProspect } from "../app/satus-prospect";
 
 export async function userSeeds() {
   const userData = [
@@ -610,7 +609,7 @@ export async function loadSeeds() {
       statusName: StatusNames.RETIRED,
     });
 
-    const prospect1 = await createProspect({
+    await createProspect({
       name: "Juan",
       firstSurname: "Perez",
       secondSurname: "Juarez",
@@ -630,7 +629,7 @@ export async function loadSeeds() {
       statusName: StatusNames.RETIRED,
     });
 
-    const prospect1 = await createProspect({
+    await createProspect({
       name: "Juan",
       firstSurname: "Perez",
       secondSurname: "Juarez",

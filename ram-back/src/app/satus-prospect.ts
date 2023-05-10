@@ -1,6 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { v4 } from "uuid";
 import { getDataSource } from "../arch/db-client";
 import { ProspectStatusEnt } from "../entities/prospect-status.entity";
 
