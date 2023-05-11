@@ -613,7 +613,49 @@ export async function loadSeeds() {
       name: "Juan",
       firstSurname: "Perez",
       secondSurname: "Juarez",
-      userId: user.user.id,
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Pedro",
+      firstSurname: "Perez",
+      secondSurname: "Juarez",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Angelazo",
+      firstSurname: "Rico",
+      secondSurname: "Hernández",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Roberto",
+      firstSurname: "Gonzales",
+      secondSurname: "Gloria",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Axel",
+      firstSurname: "Hernandez",
+      secondSurname: "Mave",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Irving",
+      firstSurname: "Rodriguez",
+      secondSurname: "Calva",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Yasodhara",
+      firstSurname: "Diaz",
+      secondSurname: "Arellano",
+      userId: regular.id,
     });
   } catch (e) {
     console.error(e);
