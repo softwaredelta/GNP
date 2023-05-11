@@ -113,7 +113,6 @@ export default function ModalDeliveryForm({
                   Agregar
                 </button>
               </div>
-              {/* </div> */}
             </div>
           </div>
         </Modal>
