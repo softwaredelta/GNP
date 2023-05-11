@@ -4,12 +4,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { NAME_COLUMN } from "./columns";
+import { ID_COLUMN, NAME_COLUMN } from "./columns";
 import { ProspectStatusEnt } from "./prospect-status.entity";
+import { UserEnt } from "./user.entity";
 
 @Entity({ name: "prospect" })
 export class ProspectEnt {
@@ -36,4 +39,15 @@ export class ProspectEnt {
 
   @UpdateDateColumn()
   updatedtAt!: Date;
+
+  @ManyToOne(() => UserEnt, {
+    nullable: false,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn({ name: "user_id" })
+  user!: UserEnt;
+
+  @Column(ID_COLUMN("user_id", { primary: false }))
+  userId!: string;
 }
