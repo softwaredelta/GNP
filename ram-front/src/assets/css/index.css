@@ -22,9 +22,14 @@
   @apply mb-8 h-12 rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
 }
 
+.text-area-primary {
+  @apply mb-8 h-20 rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
+}
+
 .floating-button-primary {
   @apply flex aspect-square w-full items-center justify-center rounded-full bg-gnp-blue-500 text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gnp-blue-700 active:scale-95;
 }
+
 .floating-button-secondary {
   @apply flex aspect-square w-full items-center justify-center rounded-full bg-gnp-orange-500 text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gnp-orange-700 active:scale-95;
 }
@@ -37,14 +42,17 @@
   scrollbar-width: thin;
   scrollbar-color: #07080b #e5e7eb;
 }
+
 .custom-scroll::-webkit-scrollbar {
   width: 6px;
 }
+
 .custom-scroll::-webkit-scrollbar-track {
   background: #e5e7eb;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 20px; 
 }
+
 .custom-scroll::-webkit-scrollbar-thumb {
   background-color: #07080b;
   border-radius: 6px;
