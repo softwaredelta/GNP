@@ -9,6 +9,7 @@ import { salesRouter } from "./sale";
 import { assuranceTypeRouter } from "./assuranceType";
 import { filesRouter } from "./files";
 import { userDeliveryRouter } from "./user-delivery";
+import { prospectRouter } from "./prospect";
 
 export const router = Router();
 
@@ -20,3 +21,4 @@ router.use("/deliveries", deliveriesRouter);
 router.use("/sales", salesRouter);
 router.use("/assurance-types", assuranceTypeRouter);
 router.use("/files", filesRouter);
+router.use("/prospect", prospectRouter);
