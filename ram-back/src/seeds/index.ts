@@ -61,7 +61,7 @@ export async function loadSeeds() {
       roles: [UserRole.REGULAR],
     });
 
-    const user5 = await createUser({
+    await createUser({
       email: "claudiafdz@ram.mx",
       password: "password",
       id: "3",
@@ -233,7 +233,7 @@ export async function loadSeeds() {
         "https://cdn.pixabay.com/photo/2017/05/28/16/55/coffee-2351436__340.jpg",
     });
 
-    const deliveryWeek3Task1 = await createDelivery({
+    await createDelivery({
       deliveryName: "Pasar sus exámenes con 80% minimo",
       description: "Lorem ipsum",
       idGroup: groupNovelWeek3.group.id,
@@ -469,101 +469,128 @@ export async function loadSeeds() {
     await createSale({
       policyNumber: "423456789",
       assuranceTypeId: "1",
-      sellDate: new Date("2021-01-01"),
-      amountInCents: "100000",
-      clientName: "Mónica Ayala",
+      paidDate: new Date("2021-01-01"),
+      yearlyFee: "100000",
+      contractingClient: "Mónica Ayala",
       periodicity: "Anual",
       id: "1",
       userId: "1",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
       policyNumber: "423456789",
       assuranceTypeId: "2",
-      sellDate: new Date("2021-02-01"),
-      amountInCents: "5000",
-      clientName: "Juan Pedro Reyes",
+      paidDate: new Date("2021-02-01"),
+      yearlyFee: "5000",
+      contractingClient: "Juan Pedro Reyes",
       periodicity: "Anual",
       id: "2",
       userId: "1",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
       policyNumber: "423456789",
       assuranceTypeId: "2",
-      sellDate: new Date("2021-01-01"),
-      amountInCents: "34000",
-      clientName: "Enrique Bonilla",
+      paidDate: new Date("2021-01-01"),
+      yearlyFee: "34000",
+      contractingClient: "Enrique Bonilla",
       periodicity: "Anual",
       id: "3",
       userId: "2",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
       policyNumber: "223456789",
       assuranceTypeId: "3",
-      sellDate: new Date("2021-01-01"),
-      amountInCents: "20000",
-      clientName: "Karen López",
+      paidDate: new Date("2021-01-01"),
+      yearlyFee: "20000",
+      contractingClient: "Karen López",
       periodicity: "Mensual",
       id: "4",
       userId: "2",
       status: "Revisada",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
       policyNumber: "123456789",
       assuranceTypeId: "4",
-      sellDate: new Date("2021-01-01"),
-      amountInCents: "70000",
-      clientName: "Jordana Betancourt",
+      paidDate: new Date("2021-01-01"),
+      yearlyFee: "70000",
+      contractingClient: "Jordana Betancourt",
       periodicity: "Mensual",
       id: "5",
       userId: "1",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
       policyNumber: "123456789",
       assuranceTypeId: "2",
-      sellDate: new Date("2021-01-01"),
-      amountInCents: "56000",
-      clientName: "Olivia Olivares",
+      paidDate: new Date("2021-01-01"),
+      yearlyFee: "56000",
+      contractingClient: "Olivia Olivares",
       periodicity: "Mensual",
       id: "6",
       userId: "1",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
       policyNumber: "323456789",
       assuranceTypeId: "1",
-      sellDate: new Date("2021-01-01"),
-      amountInCents: "400000",
-      clientName: "Renato Fernández",
+      paidDate: new Date("2021-01-01"),
+      yearlyFee: "400000",
+      contractingClient: "Renato Fernández",
       periodicity: "Trimestral",
       id: "7",
       userId: "2",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
       policyNumber: "423456789",
       assuranceTypeId: "2",
-      sellDate: new Date("2021-01-01"),
-      amountInCents: "9000",
-      clientName: "Rodrigo Muñoz",
+      paidDate: new Date("2021-01-01"),
+      yearlyFee: "9000",
+      contractingClient: "Rodrigo Muñoz",
       periodicity: "Anual",
       id: "8",
       userId: "2",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
 
     await createSale({
       policyNumber: "823456789",
       assuranceTypeId: "4",
-      sellDate: new Date("2021-01-01"),
-      amountInCents: "28000",
-      clientName: "Ian García",
+      paidDate: new Date("2021-01-01"),
+      yearlyFee: "28000",
+      contractingClient: "Ian García",
       periodicity: "Anual",
       id: "9",
       userId: "2",
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "Mónica Ayala",
+      paidFee: "100000",
     });
   } catch (e) {
     console.error(e);

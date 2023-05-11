@@ -25,7 +25,7 @@ filesRouter.get("/", async (req, res) => {
 
   const filename = fileUrl;
   const s3 = await getS3Api();
-  const object = await s3.getObject(filename).catch((err) => {
+  const object = await s3.getObject(filename).catch(() => {
     res.status(404).json({ message: "File not found" });
     return null;
   });

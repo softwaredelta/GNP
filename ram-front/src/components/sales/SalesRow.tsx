@@ -9,10 +9,10 @@ import Swal from "sweetalert2";
 
 type Props = {
   id: string;
-  clientName: string;
-  amountInCents: string;
+  contractingClient: string;
+  yearlyFee: string;
   assuranceTypeName: string;
-  sellDate: Date;
+  paidDate: Date;
   status: string;
   policyNum: string;
   onDeleted: () => void;
@@ -20,15 +20,15 @@ type Props = {
 
 export default function SalesRow({
   id,
-  clientName,
-  amountInCents,
+  contractingClient,
+  yearlyFee,
   assuranceTypeName,
-  sellDate,
+  paidDate,
   status,
   policyNum,
   onDeleted,
 }: Props) {
-  const { response, error, callback } = useAxios({
+  const { callback } = useAxios({
     url: `sales/delete/${id}`,
     method: "POST",
     body: {},
@@ -60,12 +60,12 @@ export default function SalesRow({
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        {clientName}
+        {contractingClient}
       </Table.Cell>
       <Table.Cell>{policyNum}</Table.Cell>
-      <Table.Cell>{amountInCents}</Table.Cell>
+      <Table.Cell>{yearlyFee}</Table.Cell>
       <Table.Cell>{assuranceTypeName}</Table.Cell>
-      <Table.Cell>{new Date(sellDate).toLocaleDateString()}</Table.Cell>
+      <Table.Cell>{new Date(paidDate).toLocaleDateString()}</Table.Cell>
       <Table.Cell>{status}</Table.Cell>
       <Table.Cell>
         <FaTrash

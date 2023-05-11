@@ -45,12 +45,15 @@ describe("controller:sale", () => {
     await createSale({
       policyNumber: "823456789",
       assuranceTypeId: assurance.id,
-      sellDate: new Date("2021-01-01"),
-      amountInCents: "200000",
-      clientName: "test-client",
+      paidDate: new Date("2021-01-01"),
+      yearlyFee: "200000",
+      contractingClient: "test-client",
       periodicity: "Anual",
       id: "test-case-sale-id",
       userId: user.id,
+      emissionDate: new Date("2021-01-01"),
+      insuredCostumer: "test-client",
+      paidFee: "200000",
     });
   });
 
@@ -63,10 +66,13 @@ describe("controller:sale", () => {
       const data = {
         policyNumber: "123456789",
         assuranceType: assurance.id,
-        sellDate: "2021-10-10",
-        amountInCents: "100000",
-        clientName: "john doe",
+        paidDate: "2021-10-10",
+        yearlyFee: "100000",
+        contractingClient: "john doe",
         periodicity: "Anual",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "bad data",
       };
 
       const fields = Object.keys(data);
@@ -92,10 +98,13 @@ describe("controller:sale", () => {
       const data = {
         policyNumber: "123456789",
         assuranceTypeId: assurance.id,
-        sellDate: "2021-10-10",
-        amountInCents: "100000",
-        clientName: "john doe",
+        paidDate: "2021-10-10",
+        yearlyFee: "100000",
+        contractingClient: "john doe",
         periodicity: "Anual",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "200000",
       };
 
       return request(app)
@@ -115,11 +124,14 @@ describe("controller:sale", () => {
       const data = {
         policyNumber: "123456789",
         assuranceType: assurance,
-        sellDate: "2021-10-10",
-        amountInCents: "100000",
-        clientName: "john doe",
+        paidDate: "2021-10-10",
+        yearlyFee: "100000",
+        contractingClient: "john doe",
         periodicity: "Anual",
         additionalField: "additional value",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "200000",
       };
 
       return request(app)
@@ -138,10 +150,13 @@ describe("controller:sale", () => {
       const data = {
         policyNumber: "123456789",
         assuranceTypeId: assurance.id,
-        sellDate: "2021-10-10",
-        amountInCents: "100000",
-        clientName: "john doe",
+        paidDate: "2021-10-10",
+        yearlyFee: "100000",
+        contractingClient: "john doe",
         periodicity: "Anual",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "200000",
       };
 
       await request(app)
@@ -166,10 +181,13 @@ describe("controller:sale", () => {
       const data = {
         policyNumber: "123456789",
         assuranceTypeId: "invalid-id",
-        sellDate: "2021-10-10",
-        amountInCents: "100000",
-        clientName: "john doe",
+        paidDate: "2021-10-10",
+        yearlyFee: "100000",
+        contractingClient: "john doe",
         periodicity: "Anual",
+        emissionDate: new Date("2021-01-01"),
+        insuredCostumer: "test-client",
+        paidFee: "200000",
       };
 
       return request(app)

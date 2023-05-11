@@ -10,11 +10,14 @@ import { authMiddleware } from "./user";
 
 const saleParameters = j.object({
   policyNumber: j.number().required(),
-  sellDate: j.string().required(),
-  amountInCents: j.number().required(),
-  clientName: j.string().required(),
+  paidDate: j.string().required(),
+  yearlyFee: j.number().required(),
+  contractingClient: j.string().required(),
   assuranceTypeId: j.string().required(),
   periodicity: j.string().required(),
+  emissionDate: j.string().required(),
+  insuredCostumer: j.string().required(),
+  paidFee: j.number().required(),
 });
 
 const saleUpdateParameters = j.object({
@@ -46,11 +49,14 @@ salesRouter.post(
   async (req, res) => {
     const {
       policyNumber,
-      sellDate,
-      amountInCents,
-      clientName,
+      paidDate,
+      yearlyFee,
+      contractingClient,
       assuranceTypeId,
       periodicity,
+      emissionDate,
+      insuredCostumer,
+      paidFee,
     } = req.body;
     const { user } = req;
 
@@ -61,12 +67,15 @@ salesRouter.post(
 
     const { sale, error } = await createSale({
       policyNumber,
-      sellDate,
-      amountInCents,
-      clientName,
+      paidDate,
+      yearlyFee,
+      contractingClient,
       assuranceTypeId,
       userId: user.id,
       periodicity,
+      emissionDate,
+      insuredCostumer,
+      paidFee,
     });
 
     if (error) {

@@ -1,5 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import useModal from "../../hooks/useModal";
 import { IUserDelivery } from "../../types";
@@ -17,7 +17,6 @@ export default function ListDeliverables({ deliverables }: Props) {
   const [id, setId] = useState<string>("");
   const { showAlert } = useAlert();
   const { isOpen, toggleModal } = useModal();
-  const modalFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
 
   const handleModalOpen = (deliveryCardID: string): void => {
@@ -25,7 +24,7 @@ export default function ListDeliverables({ deliverables }: Props) {
     toggleModal();
   };
 
-  const { response, loading, error, callback } = useAxios<{
+  const { response, error, callback } = useAxios<{
     dateDelivery: string;
     deliveryId: string;
     fileUrl: string;

@@ -8,7 +8,7 @@ import { IUserDelivery } from "../types";
 export default function Group(): JSX.Element {
   const { id: idGroup } = useParams();
 
-  const { response, error, loading } = useAxios<IUserDelivery[]>({
+  const { response, loading } = useAxios<IUserDelivery[]>({
     url: `deliveries/my-deliveries/${idGroup}`,
     method: "GET",
   });

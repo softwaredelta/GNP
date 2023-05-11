@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState } from "react";
+import React from "react";
 import { Table } from "flowbite-react";
 import useAxios from "../../hooks/useAxios";
 import { AiOutlineEye } from "react-icons/ai";
@@ -12,17 +12,15 @@ import { NumericFormat } from "react-number-format";
 
 import Modal from "../generics/Modal";
 import useModal from "../../hooks/useModal";
-import { useRecoilValue } from "recoil";
-import { apiBase$ } from "../../lib/api/api-base";
 import { useOpenFile } from "../../lib/files";
 
 type Props = {
   id: string;
   agentName?: string;
-  clientName: string;
-  amountInCents: string;
+  contractingClient: string;
+  yearlyFee: string;
   assuranceTypeName: string;
-  sellDate: Date;
+  paidDate: Date;
   status: string;
   policyNum: string;
   evidenceUrl: string;
@@ -32,10 +30,10 @@ type Props = {
 export default function VerifySalesRow({
   id,
   agentName,
-  clientName,
-  amountInCents,
+  contractingClient,
+  yearlyFee,
   assuranceTypeName,
-  sellDate,
+  paidDate,
   status,
   policyNum,
   evidenceUrl,
@@ -86,19 +84,19 @@ export default function VerifySalesRow({
         {agentName ? agentName : "Sin agente"}
       </Table.Cell>
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        {clientName}
+        {contractingClient}
       </Table.Cell>
       <Table.Cell>{policyNum}</Table.Cell>
       <Table.Cell>
         <NumericFormat
-          value={amountInCents}
+          value={yearlyFee}
           displayType={"text"}
           thousandSeparator={true}
           prefix={"$"}
         />
       </Table.Cell>
       <Table.Cell>{assuranceTypeName}</Table.Cell>
-      <Table.Cell>{new Date(sellDate).toLocaleDateString()}</Table.Cell>
+      <Table.Cell>{new Date(paidDate).toLocaleDateString()}</Table.Cell>
       <Table.Cell>{capitalize(status)}</Table.Cell>
       <Table.Cell>
         <div className="grid grid-cols-3 items-center justify-center ">

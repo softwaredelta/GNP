@@ -15,23 +15,18 @@ export interface IListAssuranceTypesProps {
 
 
 const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [paidDate, setPaidDate] = useState<Date | null>(null);
 
   type FormValues = {
     policyNumber: number;
-    amountInCents: number;
-    clientName: string;
+    yearlyFee: number;
+    contractingClient: string;
     assuranceTypeId: string;
     periodicity: string;
-    selectedDate: Date;
+    paidDate: Date;
   };
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormValues>();
+  const { register, handleSubmit, reset } = useForm<FormValues>();
 
   const { response, error, callback } = useAxios({
     url: "sales/create",
@@ -43,7 +38,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     if (callback) {
       callback({
         ...data,
-        sellDate: selectedDate,
+        paidDate: paidDate,
       });
     }
   };
@@ -58,12 +53,12 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
       });
       reset({
         policyNumber: 0,
-        amountInCents: 0,
-        clientName: "",
+        yearlyFee: 0,
+        contractingClient: "",
         assuranceTypeId: "1",
         periodicity: "Mensual",
       });
-      setSelectedDate(new Date());
+      setPaidDate(new Date());
     } else if (error) {
       Swal.fire({
         title: "Error!",
@@ -114,7 +109,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               className="input-primary w-full"
               type="number"
               placeholder="Ingrese el monto de la venta"
-              {...register("amountInCents", {
+              {...register("yearlyFee", {
                 required: "El campo monto de venta es requerido",
                 minLength: {
                   value: 2,
@@ -136,7 +131,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             <input
               className="input-primary w-full"
               placeholder="Ingrese el nombre del cliente"
-              {...register("clientName", {
+              {...register("contractingClient", {
                 required: "El campo Nombre del cliente es requerido",
                 minLength: {
                   value: 3,
@@ -157,10 +152,10 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               Fecha
             </label>
             <DatePicker
-              selected={selectedDate}
+              selected={paidDate}
               name="datePicker"
               id="datePicker"
-              onChange={(date: Date | null) => setSelectedDate(date)}
+              onChange={(date: Date | null) => setPaidDate(date)}
               dateFormat="dd/MM/yyyy"
               className="input-primary w-full"
               placeholderText="dd/mm/aaaa"

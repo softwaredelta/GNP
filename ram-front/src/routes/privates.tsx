@@ -3,7 +3,6 @@
 import { lazy } from "react";
 import { IRoute } from "../types";
 
-const Home = lazy(async () => import("../pages/Home"));
 const Components = lazy(async () => import("../pages/Examples"));
 const Infra = lazy(async () => import("../pages/InfraTest"));
 

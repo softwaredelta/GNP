@@ -7,17 +7,16 @@ import {
 } from "../components/sales/VerifySalesTable";
 import useAxios from "../hooks/useAxios";
 import Wrapper from "../containers/Wrapper";
-import { IListSalesProps } from "../components/sales/SalesTable";
 
 export default function VerifySales() {
-  const { response, error, loading } = useAxios<{
+  const { response, loading } = useAxios<{
     sales: {
       id: string;
       policyNumber: string;
       assuranceType: AssuranceType;
-      sellDate: Date;
-      amountInCents: string;
-      clientName: string;
+      paidDate: Date;
+      yearlyFee: string;
+      contractingClient: string;
       status: string;
       periodicity: string;
       user: User;

@@ -13,18 +13,22 @@ export async function createSale(params: {
   policyNumber: string;
   assuranceTypeId: string;
   userId: string;
-  sellDate: Date;
-  amountInCents: string;
-  clientName: string;
+  paidDate: Date;
+  yearlyFee: string;
+  contractingClient: string;
   status?: string;
   periodicity: string;
   evidenceUrl?: string;
   id?: string;
+  paidFee: string;
+  insuredCostumer: string;
+  emissionDate: Date;
 }): Promise<{ sale: SellEnt; error?: SaleError; reason?: Error }> {
   const ds = await getDataSource();
   const id = params.id || v4();
   // Static values not handled yet in frontend
   const status = params.status || "sin revisar";
+  const evidenceUrl = params.evidenceUrl || "https://picsum.photos/400";
 
   return ds.manager
     .save(
@@ -33,13 +37,16 @@ export async function createSale(params: {
         id,
         policyNumber: params.policyNumber,
         assuranceTypeId: params.assuranceTypeId,
-        sellDate: params.sellDate,
-        amountInCents: params.amountInCents,
-        clientName: params.clientName,
+        paidDate: params.paidDate,
+        yearlyFee: params.yearlyFee,
+        contractingClient: params.contractingClient,
         userId: params.userId,
         status,
         periodicity: params.periodicity,
-        evidenceUrl: "https://picsum.photos/400",
+        evidenceUrl: evidenceUrl,
+        emissionDate: params.emissionDate,
+        insuredCostumer: params.insuredCostumer,
+        paidFee: params.paidFee,
       }),
     )
     .then((sale) => {

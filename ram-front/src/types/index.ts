@@ -21,9 +21,9 @@ export interface ISell {
   id: string;
   policyNumber: string;
   assuranceType: IAssuranceType;
-  sellDate: Date;
-  amountInCents: string;
-  clientName: string;
+  paidDate: Date;
+  yearlyFee: string;
+  contractingClient: string;
   status: string;
   periodicity: string;
   user?: IUser;
