@@ -24,7 +24,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
   type FormValues = {
     policyNumber: number;
     assuranceTypeId: string;
-    userId: string;
     paidDate: Date;
     yearlyFee: number;
     contractingClient: string;
@@ -47,7 +46,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
       formData.append("file", file);
       formData.append("policyNumber", data.policyNumber.toString());
       formData.append("assuranceTypeId", data.assuranceTypeId.toString());
-      formData.append("userId", data.userId);
       formData.append("paidDate", paidDate?.toString() as string);
       formData.append("yearlyFee", data.yearlyFee.toString());
       formData.append("contractingClient", data.contractingClient);
