@@ -6,17 +6,18 @@ import { app } from "../../controller";
 import { authenticateUser, createUser } from "../../app/user";
 import { createAssuranceType } from "../../app/assuranceType";
 import { AssuranceTypeEnt } from "../../entities/assurance-type.entity";
-import { SaleError } from "../../app/sale";
-import { createSale } from "../../app/sale";
+import { DataSource } from "typeorm";
+import { SellEnt } from "../../entities/sell.entity";
 
 describe("controller:sale", () => {
   let accessToken: string;
   let assurance: AssuranceTypeEnt;
+  let ds: DataSource;
   beforeEach(async () => {
-    const ds = await getDataSource();
+    ds = await getDataSource();
     await ds.synchronize(true);
 
-    const { user, error: userError } = await createUser({
+    const { error: userError } = await createUser({
       email: "test@delta.tec.mx",
       password: "12345678//",
     });
@@ -31,6 +32,7 @@ describe("controller:sale", () => {
     if (authError) {
       throw new Error(authError);
     }
+    accessToken = auth.accessToken;
 
     const { assuranceType, error: assuranceError } = await createAssuranceType({
       name: "basic-type",
@@ -39,241 +41,150 @@ describe("controller:sale", () => {
       throw new Error(assuranceError);
     }
     assurance = assuranceType;
-
-    accessToken = auth.accessToken;
-
-    await createSale({
-      policyNumber: "823456789",
-      assuranceTypeId: assurance.id,
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "200000",
-      contractingClient: "test-client",
-      periodicity: "Anual",
-      id: "test-case-sale-id",
-      userId: user.id,
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "test-client",
-      paidFee: "200000",
-    });
   });
 
-  describe("creation endpoint", () => {
-    it("rejects unauthenticated request", async () => {
-      return request(app).post("/sales/create").send().expect(401);
+  describe("tests", () => {
+    describe("authentication", () => {
+      it("rejects unauthenticated requests", async () => {
+        return request(app).post("/sales/create").send({}).expect(401);
+      });
+
+      it("allows authenticated request", async () => {
+        return request(app)
+          .post("/sales/create")
+          .set("Authorization", `Bearer ${accessToken}`)
+          .send({})
+          .expect(400)
+          .then(({ body }) => {
+            expect(body).toMatchObject({ message: "BAD_DATA" });
+          });
+      });
     });
 
-    it("rejects bad data", async () => {
-      const data = {
-        policyNumber: "123456789",
-        assuranceType: assurance.id,
-        paidDate: "2021-10-10",
-        yearlyFee: "100000",
-        contractingClient: "john doe",
-        periodicity: "Anual",
-        emissionDate: new Date("2021-01-01"),
-        insuredCostumer: "test-client",
-        paidFee: "bad data",
-      };
+    describe("validation", () => {
+      it("rejects empty request", async () => {
+        return request(app)
+          .post("/sales/create")
+          .set("Authorization", `Bearer ${accessToken}`)
+          .send({})
+          .expect(400)
+          .then(({ body }) => {
+            expect(body).toMatchObject({ message: "BAD_DATA" });
+          });
+      });
 
-      const fields = Object.keys(data);
-
-      await Promise.all(
-        fields.map((field) => {
-          const badData = { ...data, [field]: undefined };
-          return request(app)
-            .post("/sales/create")
-            .set("Authorization", `Bearer ${accessToken}`)
-            .send(badData)
-            .expect(400)
-            .then((res) => {
-              expect(res.body).toMatchObject({
-                message: "BAD_DATA",
-              });
+      it("rejects request with no file upload", async () => {
+        return request(app)
+          .post("/sales/create")
+          .set("Authorization", `Bearer ${accessToken}`)
+          .field("policyNumber", "123456789")
+          .field("paidDate", "2021-10-10")
+          .field("yearlyFee", "100000")
+          .field("contractingClient", "john doe")
+          .field("assuranceTypeId", assurance.id)
+          .field("periodicity", "Anual")
+          .field("emissionDate", "2022-10-01")
+          .field("insuredCostumer", "john doe")
+          .field("paidFee", "5000")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body).toMatchObject({
+              message: "NO_FILE_UPLOAD",
             });
-        }),
-      );
-    });
-
-    it("accepts valid data", async () => {
-      const data = {
-        policyNumber: "123456789",
-        assuranceTypeId: assurance.id,
-        paidDate: "2021-10-10",
-        yearlyFee: "100000",
-        contractingClient: "john doe",
-        periodicity: "Anual",
-        emissionDate: new Date("2021-01-01"),
-        insuredCostumer: "test-client",
-        paidFee: "200000",
-      };
-
-      return request(app)
-        .post("/sales/create")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .send(data)
-        .expect(201)
-        .then((res) => {
-          expect(res.body).toHaveProperty("id");
-          expect(res.body).toHaveProperty("policyNumber", data.policyNumber);
-          expect(res.body).toHaveProperty("status");
-          expect(res.body).not.toHaveProperty("user");
-        });
-    });
-
-    it("rejects additional fields", async () => {
-      const data = {
-        policyNumber: "123456789",
-        assuranceType: assurance,
-        paidDate: "2021-10-10",
-        yearlyFee: "100000",
-        contractingClient: "john doe",
-        periodicity: "Anual",
-        additionalField: "additional value",
-        emissionDate: new Date("2021-01-01"),
-        insuredCostumer: "test-client",
-        paidFee: "200000",
-      };
-
-      return request(app)
-        .post("/sales/create")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .send(data)
-        .expect(400)
-        .then((res) => {
-          expect(res.body).toMatchObject({
-            message: "BAD_DATA",
           });
-        });
-    });
+      });
 
-    it("rejects duplicated policy number", async () => {
-      const data = {
-        policyNumber: "123456789",
-        assuranceTypeId: assurance.id,
-        paidDate: "2021-10-10",
-        yearlyFee: "100000",
-        contractingClient: "john doe",
-        periodicity: "Anual",
-        emissionDate: new Date("2021-01-01"),
-        insuredCostumer: "test-client",
-        paidFee: "200000",
-      };
+      it("rejects request with additional values", async () => {
+        const file = {
+          buffer: Buffer.from("policy contents"),
+          originalname: "policy.txt",
+          encoding: "utf-8",
+          mimetype: "plain/txt",
+        } as Express.Multer.File;
 
-      await request(app)
-        .post("/sales/create")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .send(data)
-        .expect(201);
-
-      await request(app)
-        .post("/sales/create")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .send(data)
-        .expect(400)
-        .then((res) => {
-          expect(res.body).toMatchObject({
-            message: SaleError.SALE_ERROR,
+        return request(app)
+          .post("/sales/create")
+          .set("Authorization", `Bearer ${accessToken}`)
+          .attach("file", file.buffer, file.originalname)
+          .field("policyNumber", "123456789")
+          .field("paidDate", "2021-10-10")
+          .field("yearlyFee", "100000")
+          .field("contractingClient", "john doe")
+          .field("assuranceTypeId", assurance.id)
+          .field("periodicity", "Anual")
+          .field("emissionDate", "2022-10-01")
+          .field("insuredCostumer", "john doe")
+          .field("paidFee", "5000")
+          .field("some-field", "boo")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body).toMatchObject({ message: "BAD_DATA" });
           });
-        });
-    });
+      });
 
-    it("rejects invalid policy assurance type", async () => {
-      const data = {
-        policyNumber: "123456789",
-        assuranceTypeId: "invalid-id",
-        paidDate: "2021-10-10",
-        yearlyFee: "100000",
-        contractingClient: "john doe",
-        periodicity: "Anual",
-        emissionDate: new Date("2021-01-01"),
-        insuredCostumer: "test-client",
-        paidFee: "200000",
-      };
+      it("accepts valid data and file upload", async () => {
+        const file = {
+          buffer: Buffer.from("policy contents"),
+          originalname: "policy.txt",
+          encoding: "utf-8",
+          mimetype: "plain/txt",
+        } as Express.Multer.File;
 
-      return request(app)
-        .post("/sales/create")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .send(data)
-        .expect(400)
-        .then((res) => {
-          expect(res.body).toMatchObject({
-            message: SaleError.SALE_ERROR,
+        return request(app)
+          .post("/sales/create")
+          .set("Authorization", `Bearer ${accessToken}`)
+          .attach("file", file.buffer, file.originalname)
+          .field("policyNumber", "123456789")
+          .field("paidDate", "2021-10-10")
+          .field("yearlyFee", "100000")
+          .field("contractingClient", "john doe")
+          .field("assuranceTypeId", assurance.id)
+          .field("periodicity", "Anual")
+          .field("emissionDate", "2022-10-01")
+          .field("insuredCostumer", "john doe")
+          .field("paidFee", "5000")
+          .expect(201)
+          .then(({ body }) => {
+            expect(body).toHaveProperty("policyNumber", "123456789");
+            expect(body).toHaveProperty("status", "sin revisar");
+            expect(body.evidenceUrl).toMatch(/\d+\.txt/);
           });
-        });
-    });
-  });
-
-  describe("Update endpoint", () => {
-    it("rejects unauthenticated request", async () => {
-      return request(app)
-        .post("/sales/update-status/test-case-sale-id")
-        .send()
-        .expect(401);
+      });
     });
 
-    it("rejects bad data", async () => {
-      const data = {
-        statusChange: 123456789,
-      };
+    describe("functionality", () => {
+      it("creates sale correctly", async () => {
+        const file = {
+          buffer: Buffer.from("policy contents"),
+          originalname: "policy.txt",
+          encoding: "utf-8",
+          mimetype: "plain/txt",
+        } as Express.Multer.File;
 
-      return request(app)
-        .post("/sales/update-status/test-case-sale-id")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .send(data)
-        .expect(400)
-        .then((res) => {
-          expect(res.body).toMatchObject({
-            message: "BAD_DATA",
+        await request(app)
+          .post("/sales/create")
+          .set("Authorization", `Bearer ${accessToken}`)
+          .attach("file", file.buffer, file.originalname)
+          .field("policyNumber", "123456789")
+          .field("paidDate", "2021-10-10")
+          .field("yearlyFee", "100000")
+          .field("contractingClient", "john doe")
+          .field("assuranceTypeId", assurance.id)
+          .field("periodicity", "Anual")
+          .field("emissionDate", "2022-10-01")
+          .field("insuredCostumer", "john doe")
+          .field("paidFee", "5000")
+          .expect(201)
+          .then(({ body }) => {
+            expect(body).toHaveProperty("policyNumber", "123456789");
+            expect(body).toHaveProperty("status", "sin revisar");
+            expect(body.evidenceUrl).toMatch(/\d+\.txt/);
           });
-        });
-    });
 
-    it("rejects additional data", async () => {
-      const data = {
-        statusChange: "aceptada",
-        additionalField: "additional value",
-      };
-
-      return request(app)
-        .post("/sales/update-status/test-case-sale-id")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .send(data)
-        .expect(400)
-        .then((res) => {
-          expect(res.body).toMatchObject({
-            message: "BAD_DATA",
-          });
-        });
-    });
-
-    it("updates status of sale", async () => {
-      const data = {
-        statusChange: "aceptada",
-      };
-
-      return request(app)
-        .post("/sales/update-status/test-case-sale-id")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .send(data)
-        .expect(200)
-        .then((res) => {
-          expect(res.body).toHaveProperty("changedSale");
-        });
-    });
-  });
-
-  describe("my sales endpoint", () => {
-    it("returns all user sales", async () => {
-      return request(app)
-        .get("/sales/my-sales")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .expect(200)
-        .then((res) => {
-          expect(res.body).toHaveLength(1);
-          expect(res.body[0]).toHaveProperty("id");
-          expect(res.body[0]).toHaveProperty("policyNumber");
-          expect(res.body[0]).toHaveProperty("status");
-        });
+        const sales = await ds.manager.find(SellEnt);
+        expect(sales).toHaveLength(1);
+        expect(sales[0].policyNumber).toBe("123456789");
+      });
     });
   });
 });

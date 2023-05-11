@@ -7,6 +7,9 @@ import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { createAssuranceType } from "../app/assuranceType";
 import { createSale } from "../app/sale";
 import { UserRole } from "../entities/user.entity";
+import { createStatus } from "../app/status";
+import { StatusNames } from "../entities/status.entity";
+import { createProspect } from "../app/prospect";
 
 export async function userSeeds() {
   const userData = [
@@ -591,6 +594,26 @@ export async function loadSeeds() {
       emissionDate: new Date("2021-01-01"),
       insuredCostumer: "Mónica Ayala",
       paidFee: "100000",
+    });
+
+    await createStatus({
+      statusName: StatusNames.NEW,
+    });
+    await createStatus({
+      statusName: StatusNames.CALL,
+    });
+    await createStatus({
+      statusName: StatusNames.CONTRACT,
+    });
+    await createStatus({
+      statusName: StatusNames.RETIRED,
+    });
+
+    await createProspect({
+      name: "Juan",
+      firstSurname: "Perez",
+      secondSurname: "Juarez",
+      userId: user.user.id,
     });
   } catch (e) {
     console.error(e);
