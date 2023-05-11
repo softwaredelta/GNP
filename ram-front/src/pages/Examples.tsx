@@ -11,6 +11,7 @@ import CardInfoTopFive from "../components/generics/cards/info/CardInfoTopFive";
 import { BsHouses } from "react-icons/bs";
 import { IoPawSharp } from "react-icons/io5";
 import { RiPencilFill } from "react-icons/ri";
+import ModalDeliveryForm from "../components/forms/ModalDeliveryForm";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
 import Modal from "../components/generics/Modal";
 import ManagerDelivery from "../components/generics/cards/info/ManagerDelivery";
@@ -24,6 +25,9 @@ import useModal from "../hooks/useModal";
 export default function Examples() {
   const { isOpen, toggleModal } = useModal();
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
+    useModal();
+
+  const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
     useModal();
   const { showAlert } = useAlert();
   const { response: me } = useAxios<{ email: string; id: string }>({
@@ -127,7 +131,7 @@ export default function Examples() {
         </Card>
       </div>
 
-      <div className=" grid w-full grid-cols-2 gap-10 p-12">
+      <div className="grid w-full grid-cols-2 gap-10 p-12">
         <button className="floating-button-primary">
           {<RiPencilFill size={50} />}
         </button>
@@ -193,7 +197,7 @@ export default function Examples() {
       <div>
         <SkeletonText />
       </div>
-      <div className="h-32 w-32 overflow-hidden rounded-full">
+      <div className="h-32 w-32 overflow-hidden  rounded-full">
         <SkeletonDiv />
       </div>
       <div className="w-11/12">
@@ -222,6 +226,20 @@ export default function Examples() {
           closeModal={toggleModalGroupForm}
           handlePost={(image, name) => {
             alert(`Nombre: ${name} Imagen: ${image}`);
+          }}
+        />
+      </div>
+      <div className="w-11/12">
+        <button className="btn-primary" onClick={toggleModalDeliveryForm}>
+          Abrir modal Entregable
+        </button>
+        <ModalDeliveryForm
+          isOpenModal={isOpenDeliveryForm}
+          closeModal={toggleModalDeliveryForm}
+          handlePost={(image, name, description) => {
+            alert(
+              `Nombre: ${name} Imagen: ${image} Description: ${description}`,
+            );
           }}
         />
       </div>
