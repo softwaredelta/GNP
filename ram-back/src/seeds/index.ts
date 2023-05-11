@@ -615,26 +615,6 @@ export async function loadSeeds() {
       secondSurname: "Juarez",
       userId: user.user.id,
     });
-
-    await createStatus({
-      statusName: StatusNames.NEW,
-    });
-    await createStatus({
-      statusName: StatusNames.CALL,
-    });
-    await createStatus({
-      statusName: StatusNames.CONTRACT,
-    });
-    await createStatus({
-      statusName: StatusNames.RETIRED,
-    });
-
-    await createProspect({
-      name: "Juan",
-      firstSurname: "Perez",
-      secondSurname: "Juarez",
-      userId: user.user.id,
-    });
   } catch (e) {
     console.error(e);
   }
