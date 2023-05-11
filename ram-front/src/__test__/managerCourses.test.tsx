@@ -1,8 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 import "@testing-library/jest-dom/extend-expect";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
+import Groups from "../pages/Groups";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
@@ -89,5 +90,19 @@ describe("Manager courses card", () => {
 
     const image = screen.getByRole("img");
     expect(image).toBeInTheDocument();
+  });
+});
+
+describe("Add new group", () => {
+  it("renders add new group modal", () => {
+    render(<Groups />);
+
+    const button = screen.getByText("Agregar");
+
+    expect(screen.getByText("Agregar grupo")).toBeNull();
+
+    fireEvent.click(button);
+
+    expect(screen.getByText("Agregar grupo")).toBeInTheDocument();
   });
 });
