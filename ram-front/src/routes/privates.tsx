@@ -24,6 +24,7 @@ const Help = lazy(async () => import("../pages/TODO/Help"));
 const PlaceholderHome = lazy(
   async () => import("../pages/TODO/PlaceholderHome"),
 );
+const EditGroup = lazy(async () => import("../pages/EditGroup"));
 
 export const CommonUserRoutes: IRoute[] = [
   {
@@ -87,6 +88,10 @@ export const ManagerUserRoutes: IRoute[] = [
   {
     path: "/group/:id",
     Component: () => <ManagerGroup />,
+  },
+  {
+    path: "/group/edit/:id",
+    Component: () => <EditGroup />,
   },
   {
     path: "/delivery/:id",

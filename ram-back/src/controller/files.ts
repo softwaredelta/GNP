@@ -23,6 +23,11 @@ filesRouter.get("/", async (req, res) => {
     return;
   }
 
+  if (fileUrl === "undefined") {
+    res.redirect("https://picsum.photos/400");
+    return;
+  }
+
   const filename = fileUrl;
   const s3 = await getS3Api();
   const object = await s3.getObject(filename).catch(() => {

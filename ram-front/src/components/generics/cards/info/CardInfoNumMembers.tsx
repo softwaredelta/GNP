@@ -1,17 +1,21 @@
 // (c) Delta Software 2023, rights reserved.
 import { BsFillPeopleFill } from "react-icons/bs";
 import { FiTrash2, FiEdit } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export interface ICardInfoNumMembersProps {
   nameGroup: string;
   number: number;
   color: "blue" | "orange";
+  groupId: string;
 }
 
 export default function CardInfoNumMembers({
   nameGroup,
   number,
+  groupId,
 }: ICardInfoNumMembersProps): JSX.Element {
+  const navigate = useNavigate();
   return (
     <div className=" grid h-full w-full grid-cols-1 grid-rows-2">
       <div className="grid grid-cols-3 place-items-center">
@@ -24,7 +28,9 @@ export default function CardInfoNumMembers({
         >
           <button
             className="cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={() => alert("Redireccionando a editar curso ...")}
+            onClick={() => {
+              navigate(`/group/edit/${groupId}`);
+            }}
           >
             <FiEdit
               color="gray"
