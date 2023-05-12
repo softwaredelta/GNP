@@ -69,19 +69,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
     }
   };
 
-  // const sendData = (data: FormValues) => {
-
-  //   if (callback) {
-  //     callback({
-  //       ...data,
-  //       paidDate: paidDate,
-  //       emissionDate: emissionDate,
-
-  //     });
-  //   }
-  //   }
-  // };
-
   useEffect(() => {
     if (response) {
       Swal.fire({

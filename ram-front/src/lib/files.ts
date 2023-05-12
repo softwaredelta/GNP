@@ -16,3 +16,16 @@ export function useOpenFile() {
     [apiBase],
   );
 }
+
+export function useUrlFile() {
+  const apiBase = useRecoilValue(apiBase$);
+
+  return useCallback(
+    (filePath: string): string => {
+      const url = new URL(apiBase + "/files");
+      url.searchParams.append("fileUrl", filePath);
+      return url.toString();
+    },
+    [apiBase],
+  );
+}
