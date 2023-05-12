@@ -5,6 +5,7 @@ import { authMiddleware } from "./user";
 import { getDataSource } from "../arch/db-client";
 import { DeliveryEnt } from "../entities/delivery.entity";
 import {
+  createDelivery,
   getUserDeliveriesbyGroup,
   updateDeliveryStatus,
 } from "../app/deliveries";
@@ -167,5 +168,26 @@ deliveriesRouter.post(
     });
 
     res.json({ changedDelivery });
+  },
+);
+
+deliveriesRouter.post(
+  "/create-delivery/:groupId",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const { deliveryName, description, imageUrl } = req.body;
+    const groupId = req.params.groupId;
+    const { delivery, error, errorReason } = await createDelivery({
+      idGroup: groupId,
+      deliveryName,
+      description,
+      imageUrl,
+    });
+
+    if (error) {
+      res.status(400).json({ message: error, reason: errorReason });
+      return;
+    }
+    res.status(201).json(delivery);
   },
 );
