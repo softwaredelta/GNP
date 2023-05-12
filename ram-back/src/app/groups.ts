@@ -6,8 +6,7 @@ import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
 import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { DeliveryEnt } from "../entities/delivery.entity";
-import { getS3Api } from "../arch/s3-client";
-import path from "path";
+import { uploadFile } from "./file";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",
@@ -71,17 +70,7 @@ export async function createGroupWithFile(params: {
   description?: string;
   imageFile: Express.Multer.File;
 }): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
-  const s3 = await getS3Api();
-
-  const filename: string =
-    Date.now() + path.extname(params.imageFile.originalname);
-  await s3.putObject(filename, params.imageFile.buffer).catch((e) => {
-    return {
-      error: GroupError.UNHANDLED,
-      errorReason: e,
-      group: {} as GroupEnt,
-    };
-  });
+  const filename = await uploadFile({ file: params.imageFile });
   return createGroup({
     name: params.name,
     description: params.description,

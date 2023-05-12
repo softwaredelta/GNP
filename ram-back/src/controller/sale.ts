@@ -7,6 +7,10 @@ import * as j from "joi";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
+import multer from "multer";
+import { uploadFile } from "../app/file";
+
+const upload = multer();
 
 const saleParameters = j.object({
   policyNumber: j.number().required(),
@@ -25,7 +29,9 @@ const saleUpdateParameters = j.object({
 });
 
 const saleParametersMiddleware: RequestHandler = (req, res, next) => {
-  const { error } = saleParameters.validate(req.body);
+  const { error } = saleParameters.validate(req.body, {
+    abortEarly: false,
+  });
   if (error) {
     res.status(400).json({ message: "BAD_DATA", reason: error });
     return;
@@ -45,6 +51,7 @@ const saleUpdateParametersMiddleware: RequestHandler = (req, res, next) => {
 salesRouter.post(
   "/create",
   authMiddleware(),
+  upload.single("file"),
   saleParametersMiddleware,
   async (req, res) => {
     const {
@@ -60,26 +67,30 @@ salesRouter.post(
     } = req.body;
     const { user } = req;
 
-    if (!user) {
-      res.status(401).json({ message: "BAD_DATA" });
+    if (!req.file) {
+      res.status(400).json({ message: "NO_FILE_UPLOAD" });
       return;
     }
 
-    const { sale, error } = await createSale({
+    const evidenceUrl: string = await uploadFile({ file: req.file });
+
+    const { sale, error, reason } = await createSale({
       policyNumber,
       paidDate,
       yearlyFee,
       contractingClient,
       assuranceTypeId,
-      userId: user.id,
+      userId: user!.id,
       periodicity,
       emissionDate,
       insuredCostumer,
       paidFee,
+      evidenceUrl,
     });
 
     if (error) {
-      res.status(400).json({ message: error });
+      res.status(500).json({ message: error });
+      console.error(reason);
       return;
     }
 
