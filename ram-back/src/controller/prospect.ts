@@ -3,7 +3,6 @@ import { authMiddleware } from "./user";
 import { getDataSource } from "../arch/db-client";
 import { ProspectEnt } from "../entities/prospect.entity";
 import { UserRole } from "../entities/user.entity";
-import { UserEnt } from "../entities/user.entity";
 
 import * as j from "joi";
 import { RequestHandler } from "express";
@@ -11,23 +10,30 @@ import { RequestHandler } from "express";
 export const prospectsRouter = Router();
 
 
-// const updateParameters = j.object({
-//     userId: j.string().required(),
-//     statusChange: j.boolean().required(),
-//   });
+const updateParameters = j.object({
+    userId: j.string().required(),
+    statusChange: j.boolean().required(),
+  });
 
-//   prospectsRouter.get("/agents", authMiddleware(), async (req, res) => {
-//     if (!req.user) {
-//       res.status(401).json({ message: "No user" });
-//       return;
-//     }
-//     const userId = req.user.id;
-//     const db = await getDataSource();
-//     const sales = await db.manager.find(SellEnt, {
-//       relations: { assuranceType: true, user: true },
-//       where: { userId },
-//     });
+prospectsRouter.get(
+    "/reviewed/:id",
+    authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+    async (req, res) => {
+      const ds = await getDataSource();
+      const id = req.params.id;
   
-//     res.json(sales);
-//   });
+      const delivery = await ds.manager.findOne(ProspectEnt, {
+        relations: ["userDeliveries", "userDeliveries.user"],
+        where: [
+          
+        ],
+      });
   
+      if (!delivery) {
+        res.status(404).json({ message: "Delivery not found" });
+        return;
+      }
+  
+      res.json(delivery);
+    },
+  );
