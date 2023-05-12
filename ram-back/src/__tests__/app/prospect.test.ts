@@ -43,7 +43,7 @@ describe("prospect", () => {
     expect(prospect1.prospectStatus[0].status.statusName).toBe(StatusNames.NEW);
   });
 
-  test("gets correct prospect with status", async () => {
+  it("gets correct prospect with status", async () => {
     const user2 = await createUser({
       email: "test-email-1",
       password: "test-password-1",
