@@ -16,6 +16,9 @@ import {
 } from "../entities/user-delivery.entity";
 import * as j from "joi";
 import { RequestHandler } from "express";
+import { getS3Api } from "../arch/s3-client";
+import path from "path";
+import multer from "multer";
 
 export const deliveriesRouter = Router();
 
@@ -23,6 +26,8 @@ const updateParameters = j.object({
   userId: j.string().required(),
   statusChange: j.boolean().required(),
 });
+
+const upload = multer();
 
 const updateParametersMiddleware: RequestHandler = (req, res, next) => {
   const { error } = updateParameters.validate(req.body);
@@ -174,20 +179,36 @@ deliveriesRouter.post(
 deliveriesRouter.post(
   "/create-delivery/:groupId",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  upload.single("image"),
   async (req, res) => {
-    const { deliveryName, description, imageUrl } = req.body;
-    const groupId = req.params.groupId;
-    const { delivery, error, errorReason } = await createDelivery({
-      idGroup: groupId,
-      deliveryName,
-      description,
-      imageUrl,
-    });
+    const { deliveryName, description } = req.body;
+    const file = req.file;
+    let data;
+    if (file) {
+      const s3 = await getS3Api();
+      const filename: string = Date.now() + path.extname(file.originalname);
+      await s3.putObject(filename, file.buffer);
 
-    if (error) {
-      res.status(400).json({ message: error, reason: errorReason });
-      return;
+      data = await createDelivery({
+        idGroup: req.params.groupId,
+        deliveryName,
+        description,
+        imageUrl: filename,
+      });
+    } else {
+      data = await createDelivery({
+        idGroup: req.params.groupId,
+        deliveryName,
+        description,
+        imageUrl: "undefined",
+      });
     }
-    res.status(201).json(delivery);
+
+    const { delivery, error } = data;
+    if (error) {
+      res.status(500).json({ error });
+    } else {
+      res.status(201).json({ delivery });
+    }
   },
 );
