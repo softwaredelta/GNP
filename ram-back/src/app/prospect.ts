@@ -56,14 +56,14 @@ export async function createProspect(params: {
 }
 
 export async function getProspectStatus(params: { userId: string }): Promise<{
-  prospect: ProspectEnt[];
+  prospects: ProspectEnt[];
   error?: ProspectError;
   errorReason?: Error;
 }> {
   const ds = await getDataSource();
 
   try {
-    const prospect = await ds.manager.find(ProspectEnt, {
+    const prospects = await ds.manager.find(ProspectEnt, {
       relations: {
         prospectStatus: {
           status: true,
@@ -72,12 +72,12 @@ export async function getProspectStatus(params: { userId: string }): Promise<{
       where: { userId: params.userId },
     });
 
-    return { prospect };
+    return { prospects };
   } catch (e) {
     return {
       error: ProspectError.PROSPECT_ERROR,
       errorReason: e as Error,
-      prospect: [],
+      prospects: [],
     };
   }
 }
