@@ -130,7 +130,7 @@ export async function loadSeeds() {
         "Los agentes tendrán un calendario en donde podrán ver sus citas y espacios disponibles",
       idGroup: group1.group.id,
       imageUrl:
-        "data:image/png;base64,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",
+        "https://osbsoftware.com.br/upload/fabricante/you%20canbook%20me.png",
     });
 
     const delivery2 = await createDelivery({
@@ -613,7 +613,49 @@ export async function loadSeeds() {
       name: "Juan",
       firstSurname: "Perez",
       secondSurname: "Juarez",
-      userId: user.user.id,
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Pedro",
+      firstSurname: "Perez",
+      secondSurname: "Juarez",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Angelazo",
+      firstSurname: "Rico",
+      secondSurname: "Hernández",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Roberto",
+      firstSurname: "Gonzales",
+      secondSurname: "Gloria",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Axel",
+      firstSurname: "Hernandez",
+      secondSurname: "Mave",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Irving",
+      firstSurname: "Rodriguez",
+      secondSurname: "Calva",
+      userId: regular.id,
+    });
+
+    await createProspect({
+      name: "Yasodhara",
+      firstSurname: "Diaz",
+      secondSurname: "Arellano",
+      userId: regular.id,
     });
   } catch (e) {
     console.error(e);

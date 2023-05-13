@@ -18,11 +18,56 @@ import ManagerDelivery from "../components/generics/cards/info/ManagerDelivery";
 import SkeletonCard from "../components/generics/skeleton/SkeletonCard";
 import SkeletonDiv from "../components/generics/skeleton/SkeletonDiv";
 import SkeletonText from "../components/generics/skeleton/SkeletonText";
+import SearchAgentTable from "../components/tables/SearchAgentTable";
+import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import useAlert from "../hooks/useAlert";
 import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
+
 // import DeliveryCard from "./cards/DeliveryCard";
 export default function Examples() {
+  const listDeliveries = [
+    {
+      id: "1",
+      deliveryName: "Entregable 1",
+      description: "Nel",
+      imageUrl: "https://www.kayum.mx/wp-content/uploads/2019/09/logo-GNP.jpeg",
+    },
+    {
+      id: "2",
+      deliveryName: "Entregable 2",
+      description: "Nel",
+      imageUrl: "https://www.kayum.mx/wp-content/uploads/2019/09/logo-GNP.jpeg",
+    },
+  ];
+
+  const listAgents = [
+    {
+      id: "1",
+      email: "user-tets@tec.mx",
+      imageURL:
+        "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
+      name: "Juan",
+      lastName: "Velasco",
+    },
+    {
+      email: "user-tets@tec.mx",
+      imageURL:
+        "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
+      id: "2",
+      name: "Juan",
+      lastName: "Pedro",
+    },
+    {
+      email: "user-tets@tec.mx",
+      imageURL:
+        "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
+      id: "3",
+      name: "Pedro",
+      lastName: "Pascal",
+    },
+  ];
+
   const { isOpen, toggleModal } = useModal();
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
@@ -242,6 +287,12 @@ export default function Examples() {
             );
           }}
         />
+      </div>
+      <div className="col-span-3 ">
+        <SearchAgentTable agents={listAgents}></SearchAgentTable>
+      </div>
+      <div className="col-span-3 ">
+        <SearchDeliveryTable deliveries={listDeliveries}></SearchDeliveryTable>
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ export function ManagerListGroups({ groups }: Props) {
                   color="blue"
                   nameGroup={group.name}
                   number={group.groupUsers?.length ?? 0}
+                  groupId={group.id}
                 />
               </Card>
             </Link>
