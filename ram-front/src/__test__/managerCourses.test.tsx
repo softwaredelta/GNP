@@ -1,8 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
+
+import { Root, createRoot } from "react-dom/client";
 import "@testing-library/jest-dom/extend-expect";
-import { render, screen } from "@testing-library/react";
+import { screen, render, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
+import { RenderTest } from "./fixtures";
+import ManagerCourses from "../pages/ManagerGroups";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
@@ -89,5 +93,30 @@ describe("Manager courses card", () => {
 
     const image = screen.getByRole("img");
     expect(image).toBeInTheDocument();
+  });
+});
+
+describe("Add new group", () => {
+  let root: Root;
+  let container: HTMLDivElement;
+  beforeEach(() => {
+    container = document.createElement("div");
+    document.body.appendChild(container);
+
+    root = createRoot(container);
+  });
+  afterEach(() => {
+    document.body.removeChild(container);
+    container.remove();
+  });
+
+  it("renders add new group button", async () => {
+    const test = new RenderTest("not-open-modal", <ManagerCourses />, root);
+    await test.start();
+
+    await waitFor(() => {
+      const button = screen.getByText("Agregar");
+      expect(button).toBeInTheDocument();
+    });
   });
 });
