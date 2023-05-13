@@ -30,6 +30,7 @@ export default function ModalGroupForm({
           <div
             onClick={(e) => e.stopPropagation()}
             className=" relative w-3/5 rounded-3xl bg-gnp-white p-10"
+            data-testid="modal-group"
           >
             <h1 className="apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white">
               Agregar grupo
@@ -93,7 +94,7 @@ export default function ModalGroupForm({
                     }
                   }}
                 >
-                  Agregar
+                  Guardar
                 </button>
               </div>
             </div>
