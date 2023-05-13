@@ -10,6 +10,8 @@ const prospectParameters = j.object({
   name: j.string().required(),
   firstSurname: j.string().required(),
   secondSurname: j.string().required(),
+  comentary: j.string().optional(),
+  statusId: j.string().optional(),
 });
 const prospectParametersMiddleware: RequestHandler = (req, res, next) => {
   const { error } = prospectParameters.validate(req.body);
@@ -25,7 +27,7 @@ prospectRouter.post(
   authMiddleware(),
   prospectParametersMiddleware,
   async (req, res) => {
-    const { name, firstSurname, secondSurname } = req.body;
+    const { name, firstSurname, secondSurname, comentary, statusId } = req.body;
     const { user } = req;
 
     if (!user) {
@@ -37,6 +39,8 @@ prospectRouter.post(
       name,
       firstSurname,
       secondSurname,
+      comentary,
+      statusId,
       userId: user.id,
     });
 

@@ -13,11 +13,14 @@ export async function createProspect(params: {
   name: string;
   firstSurname: string;
   secondSurname: string;
+  comentary?: string;
+  statusId?: string;
   userId: string;
 }): Promise<{ prospect: ProspectEnt; error?: ProspectError; reason?: Error }> {
   const ds = await getDataSource();
 
-  const { name, firstSurname, secondSurname, userId } = params;
+  const { name, firstSurname, secondSurname, userId, comentary, statusId } =
+    params;
 
   try {
     return await ds.manager.transaction(async (manager) => {
@@ -29,6 +32,22 @@ export async function createProspect(params: {
           userId,
         }),
       );
+
+      if (statusId) {
+        await manager.save(
+          manager.create(ProspectStatusEnt, {
+            prospectId: prospect.id,
+            statusId,
+            statusComment: comentary,
+          }),
+        );
+        const prospectRelations = await manager.findOne(ProspectEnt, {
+          where: { id: prospect.id },
+          relations: { prospectStatus: { status: true } },
+        });
+
+        return { prospect: prospectRelations as ProspectEnt };
+      }
       const status = await manager.findOne(StatusEnt, {
         where: { statusName: StatusNames.NEW },
       });

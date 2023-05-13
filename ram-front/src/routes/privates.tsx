@@ -19,7 +19,7 @@ const ManagerDelivery = lazy(async () => import("../pages/ManagerDelivery"));
 const MySalesMetrics = lazy(async () => import("../pages/TODO/MySalesMetrics"));
 const GoalsHistory = lazy(async () => import("../pages/TODO/GoalsHistory"));
 const NewGoal = lazy(async () => import("../pages/TODO/NewGoal"));
-const Prospects = lazy(async () => import("../pages/TODO/Prospects"));
+const Prospects = lazy(async () => import("../pages/Prospects"));
 const Help = lazy(async () => import("../pages/TODO/Help"));
 const PlaceholderHome = lazy(
   async () => import("../pages/TODO/PlaceholderHome"),
