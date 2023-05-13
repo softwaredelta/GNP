@@ -93,7 +93,7 @@ export default function ModalGroupForm({
                     }
                   }}
                 >
-                  Agregar
+                  Guardar
                 </button>
               </div>
             </div>
