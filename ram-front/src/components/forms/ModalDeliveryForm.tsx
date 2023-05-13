@@ -1,5 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import Modal from "../generics/Modal";
 import { useForm } from "react-hook-form";
@@ -67,6 +67,7 @@ export default function ModalDeliveryForm({
         name: "",
         description: "",
       });
+      closeModal();
     } else if (error) {
       console.log({ error });
       Swal.fire({
