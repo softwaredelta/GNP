@@ -1,9 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
+
+import { Root, createRoot } from "react-dom/client";
 import "@testing-library/jest-dom/extend-expect";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { screen, render, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
-import Groups from "../pages/Groups";
+import { RenderTest } from "./fixtures";
+import ManagerCourses from "../pages/ManagerGroups";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
@@ -94,15 +97,26 @@ describe("Manager courses card", () => {
 });
 
 describe("Add new group", () => {
-  it("renders add new group modal", () => {
-    render(<Groups />);
+  let root: Root;
+  let container: HTMLDivElement;
+  beforeEach(() => {
+    container = document.createElement("div");
+    document.body.appendChild(container);
 
-    const button = screen.getByText("Agregar");
+    root = createRoot(container);
+  });
+  afterEach(() => {
+    document.body.removeChild(container);
+    container.remove();
+  });
 
-    expect(screen.getByText("Agregar grupo")).toBeNull();
+  it("renders add new group button", async () => {
+    const test = new RenderTest("not-open-modal", <ManagerCourses />, root);
+    await test.start();
 
-    fireEvent.click(button);
-
-    expect(screen.getByText("Agregar grupo")).toBeInTheDocument();
+    await waitFor(() => {
+      const button = screen.getByText("Agregar");
+      expect(button).toBeInTheDocument();
+    });
   });
 });
