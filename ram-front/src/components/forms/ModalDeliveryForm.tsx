@@ -151,7 +151,7 @@ export default function ModalDeliveryForm({
                     onChange={(e) => {
                       if (e.target.files) {
                         setFile(e.target.files[0]);
-                        // setPreviewImage(e.target.files[0]);
+                        setPreviewImage(e);
                       } else setFile(null);
                     }}
                     placeholder="Selecciona una imagen"
