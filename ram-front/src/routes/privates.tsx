@@ -2,9 +2,6 @@
 
 import { lazy } from "react";
 import { IRoute } from "../types";
-const ManagerModifyGroup = lazy(
-  async () => import("../pages/ManagerModifyGroup"),
-);
 
 const Components = lazy(async () => import("../pages/Examples"));
 const Infra = lazy(async () => import("../pages/InfraTest"));
@@ -53,10 +50,6 @@ export const RegularUserRoutes: IRoute[] = [
   {
     path: "/group/:id",
     Component: () => <Group />,
-  },
-  {
-    path: "/modigy-group/:id",
-    Component: () => <ManagerModifyGroup />,
   },
   {
     path: "/sales-history",
