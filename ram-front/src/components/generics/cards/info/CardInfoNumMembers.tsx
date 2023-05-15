@@ -2,19 +2,48 @@
 import { BsFillPeopleFill } from "react-icons/bs";
 import { FiTrash2, FiEdit } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import useAxios from "../../../../hooks/useAxios";
 
 export interface ICardInfoNumMembersProps {
   nameGroup: string;
   number: number;
   color: "blue" | "orange";
   groupId: string;
+  onDeleted: () => void;
 }
 
 export default function CardInfoNumMembers({
   nameGroup,
   number,
   groupId,
+  onDeleted,
 }: ICardInfoNumMembersProps): JSX.Element {
+  const { callback } = useAxios({
+    url: `groups/${groupId}`,
+    method: "DELETE",
+    body: {},
+  });
+
+  function handleDelete() {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "No podrás revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed && callback) {
+        callback();
+        Swal.fire("Eliminado", "El grupo ha sido eliminado", "success").then(
+          () => {
+            onDeleted();
+          },
+        );
+      }
+    });
+  }
   const navigate = useNavigate();
   return (
     <div className=" grid h-full w-full grid-cols-1 grid-rows-2">
@@ -23,7 +52,7 @@ export default function CardInfoNumMembers({
           <h1 className="text-semibold font-bold ">{nameGroup}</h1>
         </div>
         <div
-          className="top-0 my-auto grid basis-4/12 grid-cols-2 justify-end gap-2"
+          className="top-0 my-auto grid grid-cols-2 justify-end gap-2"
           onClick={(e) => e.stopPropagation()}
         >
           <button
@@ -38,11 +67,13 @@ export default function CardInfoNumMembers({
               className="hover:stroke-gnp-blue-900"
             />
           </button>
-          <button
-            className="cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={() => alert("Redireccionando a eliminar curso ...")}
-          >
-            <FiTrash2 color="gray" size={20} className="hover:stroke-red-900" />
+          <button className="cursor-pointer transition-all ease-in-out hover:scale-125">
+            <FiTrash2
+              color="gray"
+              size={20}
+              className="hover:stroke-red-900"
+              onClick={() => handleDelete()}
+            />
           </button>
         </div>
       </div>
