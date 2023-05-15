@@ -8,23 +8,26 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  OneToMany,
 } from "typeorm";
-import { OriginEnt } from "./origin.entity";
-import { StateEnt } from "./state.entity";
 import {
   DATE_COLUMN,
+  LAST_NAME_COLUMN,
+  NAME_COLUMN,
   PASSWORD_COLUMN,
   REQUIRED_STRING_COLUMN,
   TELEPHONE_COLUMN,
   URL_COLUMN,
   USERNAME_COLUMN,
 } from "./columns";
-import { UserLevelEnt } from "./user-level.entity";
+import { GroupUserEnt } from "./group-user.entity";
+import { OriginEnt } from "./origin.entity";
 import { SellEnt } from "./sell.entity";
+import { StateEnt } from "./state.entity";
+import { UserLevelEnt } from "./user-level.entity";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -62,6 +65,12 @@ export class UserEnt {
   @Column(USERNAME_COLUMN)
   email = "";
 
+  @Column(NAME_COLUMN)
+  name = "";
+
+  @Column(LAST_NAME_COLUMN)
+  lastName = "";
+
   @Column(PASSWORD_COLUMN)
   password = "";
 
@@ -70,6 +79,9 @@ export class UserEnt {
 
   @OneToMany(() => SellEnt, (sell) => sell.user)
   sell!: SellEnt[];
+
+  @OneToMany(() => GroupUserEnt, (groupUser) => groupUser.user)
+  groupUsers: GroupUserEnt[];
 
   @Column(TELEPHONE_COLUMN)
   phone!: number;
