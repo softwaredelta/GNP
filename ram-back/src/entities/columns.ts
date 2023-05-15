@@ -15,6 +15,12 @@ export const CUSTOM_NAME_COLUMN: ColumnOptions = {
   length: 255,
   nullable: false,
 };
+export const LAST_NAME_COLUMN: ColumnOptions = {
+  name: "last_name",
+  type: "varchar",
+  length: 255,
+  nullable: false,
+};
 
 export const UNIQUE_NAME_COLUMN: ColumnOptions = {
   name: "name",
