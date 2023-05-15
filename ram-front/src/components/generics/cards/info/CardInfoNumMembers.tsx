@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 import { BsFillPeopleFill } from "react-icons/bs";
-import { FiTrash2, FiEdit } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAxios from "../../../../hooks/useAxios";
 
@@ -44,7 +44,6 @@ export default function CardInfoNumMembers({
       }
     });
   }
-  const navigate = useNavigate();
   return (
     <div className=" grid h-full w-full grid-cols-1 grid-rows-2">
       <div className="grid grid-cols-3 place-items-center">
@@ -55,18 +54,15 @@ export default function CardInfoNumMembers({
           className="top-0 my-auto grid grid-cols-2 justify-end gap-2"
           onClick={(e) => e.stopPropagation()}
         >
-          <button
-            className="cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={() => {
-              navigate(`/group/edit/${groupId}`);
-            }}
-          >
-            <FiEdit
-              color="gray"
-              size={20}
-              className="hover:stroke-gnp-blue-900"
-            />
-          </button>
+          <Link to={`/group/edit/${groupId}`}>
+            <button className="cursor-pointer pt-1 transition-all ease-in-out hover:scale-125">
+              <FiEdit
+                color="gray"
+                size={20}
+                className="hover:stroke-gnp-blue-900"
+              />
+            </button>
+          </Link>
           <button className="cursor-pointer transition-all ease-in-out hover:scale-125">
             <FiTrash2
               color="gray"
