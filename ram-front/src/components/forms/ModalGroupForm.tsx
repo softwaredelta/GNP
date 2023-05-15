@@ -1,7 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import Modal from "../generics/Modal";
+import useAxios from "../../hooks/useAxios";
+import useAlert from "../../hooks/useAlert";
+
 export interface IModalGroupFormProps {
   handlePost: (image: File | null, name: string) => void;
   closeModal: VoidFunction;
@@ -15,6 +18,31 @@ export default function ModalGroupForm({
 }: IModalGroupFormProps) {
   const { image, setPreviewImage, imgRef, resetImage } = usePreviewImage();
   const nameRef = useRef<HTMLInputElement>(null);
+  const { showAlert } = useAlert();
+
+  const { response, error, callback } = useAxios<{
+    image: File;
+    name: string;
+  }>({
+    url: "groups/create",
+    method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  useEffect(() => {
+    if (response) {
+      showAlert(
+        {
+          type: "success",
+          message: "Grupo creado",
+          description: "Se creó el grupo",
+        },
+        5,
+      );
+    }
+  });
 
   return (
     <>

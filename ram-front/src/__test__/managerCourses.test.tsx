@@ -2,7 +2,11 @@
 
 import { Root, createRoot } from "react-dom/client";
 import "@testing-library/jest-dom/extend-expect";
+<<<<<<< HEAD
 import { screen, render, waitFor, fireEvent } from "@testing-library/react";
+=======
+import { screen, render, waitFor, act } from "@testing-library/react";
+>>>>>>> 61bfaa8 ([FRONT] Modified modal test)
 import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import { RenderTest } from "./fixtures";
