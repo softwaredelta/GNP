@@ -112,7 +112,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
         </div>
         <div className="col grid grid-cols-3">
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
-            {/* 1st column */}
             <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
               Póliza
             </label>
@@ -169,7 +168,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               })}
             />
           </div>
-          {/* 2nd column */}
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
             <label
               htmlFor="datePicker"
@@ -225,7 +223,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               <option value={"Anual"}> Anual </option>
             </select>
           </div>
-          {/* 3rd column */}
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
             <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
               Fecha Pago
@@ -280,9 +277,7 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             </select>
           </div>
 
-          {/* 4th column */}
           <div className="col-span-2 mb-4 px-6 pt-8 ">
-            {/* File zone */}
             <FileInput
               id="file"
               onChange={(e) => {
