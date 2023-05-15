@@ -67,7 +67,7 @@ export default function ListDeliverables({ deliverables }: Props) {
         5,
       );
     }
-  }, [response]);
+  }, [response, deliverables]);
 
   const uploadFile = (): void => {
     if (file) {
