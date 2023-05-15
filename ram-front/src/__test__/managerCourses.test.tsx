@@ -2,11 +2,12 @@
 
 import { Root, createRoot } from "react-dom/client";
 import "@testing-library/jest-dom/extend-expect";
-import { screen, render, waitFor, act } from "@testing-library/react";
+import { screen, render, waitFor, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import { RenderTest } from "./fixtures";
 import ManagerCourses from "../pages/ManagerGroups";
+import ModalGroupForm from "../components/forms/ModalGroupForm";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
@@ -101,7 +102,11 @@ describe("Add new group", () => {
   let container: HTMLDivElement;
   beforeEach(() => {
     container = document.createElement("div");
+    const portal = document.createElement("div");
+
+    portal.setAttribute("id", "modal-root");
     document.body.appendChild(container);
+    document.body.appendChild(portal);
 
     root = createRoot(container);
   });
@@ -121,22 +126,30 @@ describe("Add new group", () => {
   });
 
   it("renders add group modal", async () => {
-    const test = new RenderTest("open-modal", <ManagerCourses />, root);
+    const mockPostHandler = jest.fn();
+    const mockToggleHandler = jest.fn();
+
+    const test = new RenderTest(
+      "add-group-modal",
+      (
+        <ModalGroupForm
+          handlePost={mockPostHandler}
+          isOpenModal={true}
+          closeModal={mockToggleHandler}
+        />
+      ),
+      root,
+    );
     await test.start();
 
-    let addButton: Element | null = null;
-    await waitFor(() => {
-      addButton = screen.getByText("Agregar");
-      expect(addButton).not.toBeNull();
-    });
+    const title = screen.getByText("Agregar grupo");
+    expect(title).toBeInTheDocument();
 
-    act(() => {
-      addButton?.dispatchEvent(new MouseEvent("click"));
-    });
+    const buttonClose = screen.getByText("Cancelar");
+    expect(buttonClose).toBeInTheDocument();
 
-    await waitFor(() => {
-      const modal = screen.getByTestId("modal-group");
-      expect(modal).toBeDefined();
-    });
+    fireEvent.click(buttonClose);
+
+    expect(mockToggleHandler).toBeCalled();
   });
 });
