@@ -7,6 +7,7 @@ import { GroupEnt } from "../entities/group.entity";
 import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { DeliveryEnt } from "../entities/delivery.entity";
 import { uploadFile } from "./file";
+import { UserEnt } from "../entities/user.entity";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",
@@ -99,6 +100,17 @@ export async function addUserToGroup(params: {
       error: GroupError.UNHANDLED,
       errorReason: e,
     }));
+}
+
+export async function getUsersByGroup(groupId: string): Promise<UserEnt[]> {
+  const ds = await getDataSource();
+
+  const groupUsers = await ds.manager.find(GroupUserEnt, {
+    where: { groupId },
+    relations: ["user"],
+  });
+
+  return groupUsers.map((groupUser) => groupUser.user);
 }
 
 export async function addDeliveryToGroup(params: {
