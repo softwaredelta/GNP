@@ -12,9 +12,8 @@ import {
   getUsersByGroup,
 } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
-import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
-import { UserEnt, UserRole } from "../entities/user.entity";
+import { UserRole } from "../entities/user.entity";
 import { authMiddleware } from "./user";
 
 export const groupsRouter = Router();
@@ -59,14 +58,18 @@ groupsRouter.get("/:id", async (req, res) => {
   res.json(groups);
 });
 
-groupsRouter.get("/users/:id", async (req, res) => {
-  try {
-    const groupUsers = await getUsersByGroup(req.params.id);
-    res.json(groupUsers);
-  } catch (error) {
-    res.status(500).json({ message: "Error retrieving group users", error });
-  }
-});
+groupsRouter.get(
+  "/users/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    try {
+      const groupUsers = await getUsersByGroup(req.params.id);
+      res.json(groupUsers);
+    } catch (error) {
+      res.status(500).json({ message: "Error retrieving group users", error });
+    }
+  },
+);
 
 groupsRouter.delete(
   "/:id",
