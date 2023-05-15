@@ -3,11 +3,11 @@ import { Checkbox, Table } from "flowbite-react";
 import { RxCross1 } from "react-icons/rx";
 import { IUserName } from "../../types";
 
-export interface IListSalesProps {
+export interface IListSearchProps {
   agent: IUserName;
 }
 
-export const SearchAgentRow = ({ agent }: IListSalesProps) => {
+export const SearchAgentRow = ({ agent }: IListSearchProps) => {
   return (
     <>
       <Table.Row key={agent.id} className="border-2 border-gray-300">
