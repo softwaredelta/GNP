@@ -11,6 +11,7 @@ const Group = lazy(async () => import("../pages/Group"));
 const NewSale = lazy(async () => import("../pages/NewSale"));
 const SalesHistory = lazy(async () => import("../pages/SalesHistory"));
 const VerifySales = lazy(async () => import("../pages/VerifySales"));
+const FunnelProspects = lazy(async () => import("../pages/ProspectsFunnel"));
 
 const ManagerGroup = lazy(async () => import("../pages/ManagerGroup"));
 const ManagerGroups = lazy(async () => import("../pages/ManagerGroups"));
@@ -103,15 +104,11 @@ export const ManagerUserRoutes: IRoute[] = [
   },
   {
     path: "/prospects",
-    Component: () => <Prospects />,
+    Component: () => <FunnelProspects />,
   },
   {
     path: "/help",
     Component: () => <Help />,
-  },
-  {
-    path: "/prospects",
-    Component: () => <Prospects />,
   },
   {
     path: "/help",

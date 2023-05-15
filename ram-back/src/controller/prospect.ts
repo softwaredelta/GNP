@@ -5,6 +5,8 @@ export const prospectRouter = Router();
 import * as j from "joi";
 import { authMiddleware } from "./user";
 import { createProspect } from "../app/prospect";
+import { getDataSource } from "../arch/db-client";
+import { ProspectEnt } from "../entities/prospect.entity";
 
 const prospectParameters = j.object({
   name: j.string().required(),
@@ -52,3 +54,13 @@ prospectRouter.post(
     res.status(201).json(prospect);
   },
 );
+prospectRouter.get("/count-prospects-new/:id", async (req, res) => {
+  const db = await getDataSource();
+  const id = req.params.id;
+  const agents = await db.manager.count(ProspectEnt, {
+    where: {
+      userId: id,
+    },
+  });
+  res.json(agents);
+});
