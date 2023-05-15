@@ -16,6 +16,10 @@ export interface IAssuranceType {
   name: string;
   description: string;
 }
+export interface IStatus {
+  id: string;
+  statusName: string;
+}
 
 export interface ISell {
   id: string;

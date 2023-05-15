@@ -596,18 +596,13 @@ export async function loadSeeds() {
       paidFee: "100000",
     });
 
-    await createStatus({
-      statusName: StatusNames.NEW,
-    });
-    await createStatus({
-      statusName: StatusNames.CALL,
-    });
-    await createStatus({
-      statusName: StatusNames.CONTRACT,
-    });
-    await createStatus({
-      statusName: StatusNames.RETIRED,
-    });
+    await Promise.all(
+      Object.values(StatusNames).map((statusName) => {
+        return createStatus({
+          statusName: statusName as StatusNames,
+        });
+      }),
+    );
 
     await createProspect({
       name: "Juan",
