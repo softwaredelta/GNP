@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form";
 import Modal from "../generics/Modal";
 import Swal from "sweetalert2";
+import { IStatus } from "../../types";
 
 export interface FormValues {
   name: string;
@@ -16,10 +17,7 @@ export interface IModalProspectFormProps {
   closeModal: VoidFunction;
   isOpenModal: boolean;
   isEdit?: boolean;
-  listStatus?: {
-    id: string;
-    name: string;
-  }[];
+  listStatus?: IStatus[];
 }
 
 export default function ModalProspectForm({
@@ -27,9 +25,9 @@ export default function ModalProspectForm({
   closeModal,
   isOpenModal,
   listStatus = [
-    { id: "1", name: "Nuevo Prospecto" },
-    { id: "2", name: "Contactado" },
-    { id: "3", name: "No Contactado" },
+    { id: "1", statusName: "Nuevo Prospecto" },
+    { id: "2", statusName: "Contactado" },
+    { id: "3", statusName: "No Contactado" },
   ],
   isEdit = false,
 }: IModalProspectFormProps) {
@@ -105,7 +103,7 @@ export default function ModalProspectForm({
                   {listStatus?.map((status) => (
                     <option key={status.id} value={status.id}>
                       {" "}
-                      {status.name}{" "}
+                      {status.statusName}{" "}
                     </option>
                   ))}
                 </select>
