@@ -12,6 +12,7 @@ import {
   getUsersByGroup,
 } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
+import { GroupUserEnt } from "../entities/group-user.entity";
 import { GroupEnt } from "../entities/group.entity";
 import { UserRole } from "../entities/user.entity";
 import { authMiddleware } from "./user";
