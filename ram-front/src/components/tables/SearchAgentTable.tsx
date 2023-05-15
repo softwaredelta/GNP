@@ -4,11 +4,11 @@ import { IUserName } from "../../types";
 import { SearchAgentRow } from "./SearchAgentRow";
 // (c) Delta Software 2023, rights reserved.>
 
-export interface IListSalesProps {
+export interface IListSearchProps {
   agents: IUserName[];
 }
 
-export default function SearchAgentTable({ agents }: IListSalesProps) {
+export default function SearchAgentTable({ agents }: IListSearchProps) {
   const [search, setSearch] = useState("");
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
