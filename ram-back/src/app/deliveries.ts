@@ -141,3 +141,12 @@ export async function updateDeliveryStatus(params: {
 
   return { changedDelivery: changedDelivery as UserDeliveryEnt };
 }
+
+export async function deleteDelivery(params: {
+  deliveryId: string;
+}): Promise<{ error?: DeliveryError; reason?: Error }> {
+  const ds = await getDataSource();
+
+  await ds.manager.delete(DeliveryEnt, params.deliveryId);
+  return {};
+}
