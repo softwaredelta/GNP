@@ -272,25 +272,35 @@ describe("app:groups", () => {
     });
 
     it("updates group", async () => {
-      await updateGroup({
+      const updatedGroup = await updateGroup({
         groupId: group.id,
         name: "test-group-001-updated",
         description: "test-group-001-description-updated",
         imageURL: "test-group-001-image-url-updated",
       });
 
-      const updatedGroup = await ds.manager.find(GroupEnt, {
-        where: { id: group.id },
-      });
-      expect(updatedGroup).toHaveProperty("name", "test-group-001-updated");
-      expect(updatedGroup).toHaveProperty(
+      expect(updatedGroup.group).toHaveProperty(
+        "name",
+        "test-group-001-updated",
+      );
+      expect(updatedGroup.group).toHaveProperty(
         "description",
         "test-group-001-description-updated",
       );
-      expect(updatedGroup).toHaveProperty(
+      expect(updatedGroup.group).toHaveProperty(
         "imageURL",
         "test-group-001-image-url-updated",
       );
+    });
+
+    it("does not update non existing group", async () => {
+      const updatedGroup = await updateGroup({
+        groupId: "some-bad-id",
+        name: "test-group-001-updated",
+        description: "test-group-001-description-updated",
+        imageURL: "test-group-001-image-url-updated",
+      });
+      expect(updatedGroup.error).toBe("NOT_FOUND");
     });
   });
 });
