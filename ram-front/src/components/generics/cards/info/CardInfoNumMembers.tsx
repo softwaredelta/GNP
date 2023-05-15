@@ -55,7 +55,7 @@ export default function CardInfoNumMembers({
           onClick={(e) => e.stopPropagation()}
         >
           <Link to={`/group/edit/${groupId}`}>
-            <button className="cursor-pointer transition-all ease-in-out hover:scale-125">
+            <button className="cursor-pointer pt-1 transition-all ease-in-out hover:scale-125">
               <FiEdit
                 color="gray"
                 size={20}
