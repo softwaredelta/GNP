@@ -9,6 +9,7 @@ import {
   createGroupWithFile,
   deleteGroup,
   getUserGroups,
+  updateGroup,
 } from "../../app/groups";
 import { createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
@@ -268,6 +269,28 @@ describe("app:groups", () => {
 
       const users = await ds.manager.find(UserEnt);
       expect(users).toHaveLength(1);
+    });
+
+    it("updates group", async () => {
+      await updateGroup({
+        groupId: group.id,
+        name: "test-group-001-updated",
+        description: "test-group-001-description-updated",
+        imageURL: "test-group-001-image-url-updated",
+      });
+
+      const updatedGroup = await ds.manager.find(GroupEnt, {
+        where: { id: group.id },
+      });
+      expect(updatedGroup).toHaveProperty("name", "test-group-001-updated");
+      expect(updatedGroup).toHaveProperty(
+        "description",
+        "test-group-001-description-updated",
+      );
+      expect(updatedGroup).toHaveProperty(
+        "imageURL",
+        "test-group-001-image-url-updated",
+      );
     });
   });
 });
