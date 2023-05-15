@@ -7,45 +7,49 @@ import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import { RenderTest } from "./fixtures";
 import ManagerCourses from "../pages/ManagerGroups";
+import { RecoilRoot } from "recoil";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
     render(
-      <BrowserRouter>
-        <ManagerListGroups
-          onDeleted={() => {}}
-          groups={[
-            {
-              id: "1",
-              name: "test-group-1",
-              description: "test-delivery-1",
-              progress: 0,
-              imageURL: "https://picsum.photos/100",
-              groupUsers: [
-                {
-                  email: "test-user1",
-                  id: "1",
-                  imageURL: "",
-                },
-              ],
-            },
-            {
-              id: "2",
-              name: "test-group-2",
-              description: "test-delivery-2",
-              progress: 0,
-              imageURL: "https://picsum.photos/100",
-              groupUsers: [
-                {
-                  email: "test-user2",
-                  id: "2",
-                  imageURL: "",
-                },
-              ],
-            },
-          ]}
-        ></ManagerListGroups>
-      </BrowserRouter>,
+      <RecoilRoot>
+        <BrowserRouter>
+          <ManagerListGroups
+            onDeleted={() => {}}
+            groups={[
+              {
+                id: "1",
+                name: "test-group-1",
+                description: "test-delivery-1",
+                progress: 0,
+                imageURL: "https://picsum.photos/100",
+                groupUsers: [
+                  {
+                    email: "test-user1",
+                    id: "1",
+                    imageURL: "",
+                  },
+                ],
+              },
+              {
+                id: "2",
+                name: "test-group-2",
+                description: "test-delivery-2",
+                progress: 0,
+                imageURL: "https://picsum.photos/100",
+                groupUsers: [
+                  {
+                    email: "test-user2",
+                    id: "2",
+                    imageURL: "",
+                  },
+                ],
+              },
+            ]}
+          ></ManagerListGroups>
+        </BrowserRouter>
+        ,
+      </RecoilRoot>,
     );
 
     const group1 = screen.getByText(/test-group-1/i);
@@ -57,9 +61,14 @@ describe("Manager courses card", () => {
 
   it("renders a message when there are no groups", () => {
     render(
-      <BrowserRouter>
-        <ManagerListGroups onDeleted={() => {}} groups={[]}></ManagerListGroups>
-      </BrowserRouter>,
+      <RecoilRoot>
+        <BrowserRouter>
+          <ManagerListGroups
+            onDeleted={() => {}}
+            groups={[]}
+          ></ManagerListGroups>
+        </BrowserRouter>
+      </RecoilRoot>,
     );
     const message = screen.getByText("No hay grupos registrados");
     expect(message).toBeInTheDocument();
@@ -67,27 +76,29 @@ describe("Manager courses card", () => {
 
   it("renders a group", () => {
     render(
-      <BrowserRouter>
-        <ManagerListGroups
-          onDeleted={() => {}}
-          groups={[
-            {
-              id: "1",
-              name: "test-group-1",
-              description: "test-delivery-1",
-              progress: 0,
-              imageURL: "https://picsum.photos/100",
-              groupUsers: [
-                {
-                  email: "test-user1",
-                  id: "1",
-                  imageURL: "",
-                },
-              ],
-            },
-          ]}
-        ></ManagerListGroups>
-      </BrowserRouter>,
+      <RecoilRoot>
+        <BrowserRouter>
+          <ManagerListGroups
+            onDeleted={() => {}}
+            groups={[
+              {
+                id: "1",
+                name: "test-group-1",
+                description: "test-delivery-1",
+                progress: 0,
+                imageURL: "https://picsum.photos/100",
+                groupUsers: [
+                  {
+                    email: "test-user1",
+                    id: "1",
+                    imageURL: "",
+                  },
+                ],
+              },
+            ]}
+          ></ManagerListGroups>
+        </BrowserRouter>
+      </RecoilRoot>,
     );
 
     const name = screen.getByText("test-group-1");
