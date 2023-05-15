@@ -13,6 +13,7 @@ describe("Manager courses card", () => {
     render(
       <BrowserRouter>
         <ManagerListGroups
+          onDeleted={() => {}}
           groups={[
             {
               id: "1",
@@ -57,7 +58,7 @@ describe("Manager courses card", () => {
   it("renders a message when there are no groups", () => {
     render(
       <BrowserRouter>
-        <ManagerListGroups groups={[]}></ManagerListGroups>
+        <ManagerListGroups onDeleted={() => {}} groups={[]}></ManagerListGroups>
       </BrowserRouter>,
     );
     const message = screen.getByText("No hay grupos registrados");
@@ -68,6 +69,7 @@ describe("Manager courses card", () => {
     render(
       <BrowserRouter>
         <ManagerListGroups
+          onDeleted={() => {}}
           groups={[
             {
               id: "1",
