@@ -8,7 +8,6 @@ import { createProspect, getProspectStatus } from "../app/prospect";
 import { getDataSource } from "../arch/db-client";
 import { ProspectEnt } from "../entities/prospect.entity";
 
-
 const prospectParameters = j.object({
   name: j.string().required(),
   firstSurname: j.string().required(),
@@ -85,5 +84,4 @@ prospectRouter.get("/count-prospects-new/:id", async (req, res) => {
     },
   });
   res.json(agents);
-
 });
