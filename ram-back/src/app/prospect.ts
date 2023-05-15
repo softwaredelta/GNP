@@ -73,3 +73,30 @@ export async function createProspect(params: {
     };
   }
 }
+
+export async function getProspectStatus(params: { userId: string }): Promise<{
+  prospects: ProspectEnt[];
+  error?: ProspectError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+
+  try {
+    const prospects = await ds.manager.find(ProspectEnt, {
+      relations: {
+        prospectStatus: {
+          status: true,
+        },
+      },
+      where: { userId: params.userId },
+    });
+
+    return { prospects };
+  } catch (e) {
+    return {
+      error: ProspectError.PROSPECT_ERROR,
+      errorReason: e as Error,
+      prospects: [],
+    };
+  }
+}
