@@ -7,8 +7,6 @@ import { authMiddleware } from "./user";
 import { createProspect } from "../app/prospect";
 import { getDataSource } from "../arch/db-client";
 import { ProspectEnt } from "../entities/prospect.entity";
-// import { StatusNames } from "../entities/status.entity";
-// import { ProspectStatusEnt } from "../entities/prospect-status.entity";
 
 const prospectParameters = j.object({
   name: j.string().required(),
@@ -59,16 +57,10 @@ prospectRouter.post(
 prospectRouter.get("/count-prospects-new/:id", async (req, res) => {
   const db = await getDataSource();
   const id = req.params.id;
-  // const status = StatusNames.NEW;
-  const sales = await db.manager.count(ProspectEnt, {
-    // relations: ["prospect_status", "prospect_status.prospect"],
+  const agents = await db.manager.count(ProspectEnt, {
     where: {
       userId: id,
-      // prospectStatus: StatusNames.NEW,
-      // prospect_status:{
-      //   statusId: StatusNames.NEW
-      // }
     },
   });
-  res.json(sales);
+  res.json(agents);
 });
