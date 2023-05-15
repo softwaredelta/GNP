@@ -11,10 +11,11 @@ type Props = {
 };
 
 export default function FunnelRow({ id, email }: Props) {
-  const { response: prospects } = useAxios({
+  const { response: prospects } = useAxios<number>({
     url: `prospect/count-prospects-new/${id}`,
     method: "GET",
   });
+
   const cellStyle = {
     backgroundColor:
       prospects < 50 ? "red" : prospects >= 50 ? "green" : undefined,
@@ -61,7 +62,6 @@ export default function FunnelRow({ id, email }: Props) {
     borderRadius: "70px",
     color: "white",
   };
-
   return (
     <Table.Row
       key={id}
