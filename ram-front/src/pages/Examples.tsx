@@ -281,11 +281,6 @@ export default function Examples() {
         <ModalDeliveryForm
           isOpenModal={isOpenDeliveryForm}
           closeModal={toggleModalDeliveryForm}
-          handlePost={(image, name, description) => {
-            alert(
-              `Nombre: ${name} Imagen: ${image} Description: ${description}`,
-            );
-          }}
         />
       </div>
       <div className="col-span-3 ">
