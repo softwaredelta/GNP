@@ -106,6 +106,17 @@ authRouter.get(
   },
 );
 
+authRouter.get("/all-agents", async (req, res) => {
+  const db = await getDataSource();
+  const sales = await db.manager.find(UserEnt, {
+    where: {
+      rolesString: UserRole.REGULAR,
+    },
+    select: ["id", "email"],
+  });
+  res.json(sales);
+});
+
 // this is purely an example and currently serves no purpose for the app
 // see tests
 authRouter.get(
