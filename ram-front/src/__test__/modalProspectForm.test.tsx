@@ -5,6 +5,7 @@ import { screen, fireEvent } from "@testing-library/react";
 import ModalProspectForm from "../components/forms/ModalProspectForm";
 import { Root, createRoot } from "react-dom/client";
 import { RenderTest } from "./fixtures";
+import { IStatus } from "../types";
 
 describe("Tests Modal Prospect", () => {
   let container: HTMLDivElement;
@@ -27,14 +28,14 @@ describe("Tests Modal Prospect", () => {
     const mockPostHandler = jest.fn();
     const mockToggleHandler = jest.fn();
 
-    const exampleListStatus = [
+    const exampleListStatus: IStatus[] = [
       {
         id: "1",
-        name: "example1",
+        statusName: "example1",
       },
       {
         id: "2",
-        name: "example2",
+        statusName: "example2",
       },
     ];
 
@@ -57,7 +58,7 @@ describe("Tests Modal Prospect", () => {
     expect(title).toBeInTheDocument();
 
     exampleListStatus.forEach((status) => {
-      const statusName = screen.getByText(status.name);
+      const statusName = screen.getByText(status.statusName);
       expect(statusName).toBeInTheDocument();
     });
 

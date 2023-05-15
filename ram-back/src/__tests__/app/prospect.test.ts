@@ -6,8 +6,6 @@ import { createStatus } from "../../app/status";
 import { createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { StatusNames } from "../../entities/status.entity";
-import { isIdentifier } from "typescript";
-import { ProspectEnt } from "../../entities/prospect.entity";
 
 describe("prospect", () => {
   let ds: DataSource;
@@ -85,7 +83,9 @@ describe("prospect", () => {
     prospects.forEach((prospect) => {
       expect(prospect.prospectStatus).toHaveLength(1);
       expect(prospect.prospectStatus[0].statusComment).toBe("Nuevo prospecto");
-      expect(prospect.prospectStatus[0].status.statusName).toBe("Nuevo");
+      expect(prospect.prospectStatus[0].status.statusName).toBe(
+        StatusNames.NEW,
+      );
     });
   });
 });
