@@ -1,29 +1,42 @@
 // (c) Delta Software 2023, rights reserved.
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Card from "../generics/cards/base/Card";
 import CardInfoNumMembers from "../generics/cards/info/CardInfoNumMembers";
 import { IGroup } from "../../types";
+import { useState, useEffect } from "react";
 
 interface Props {
   groups: IGroup[];
+  onDeleted: () => void;
 }
 
-export function ManagerListGroups({ groups }: Props) {
+export function ManagerListGroups({ groups, onDeleted }: Props) {
+  const navigate = useNavigate();
+
+  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
+  useEffect(() => {
+    if (shouldUpdate) {
+      onDeleted();
+      setShouldUpdate(false);
+    }
+  }, [onDeleted, shouldUpdate]);
+
   return (
     <>
       {groups.length > 0 ? (
         groups.map((group) => (
           <div className=" p-10" key={group.id}>
-            <Link to={`/group/${group.id}`}>
+            <div onClick={() => navigate(`/group/${group.id}`)}>
               <Card color="blue" image={group.imageURL}>
                 <CardInfoNumMembers
                   color="blue"
                   nameGroup={group.name}
                   number={group.groupUsers?.length ?? 0}
                   groupId={group.id}
+                  onDeleted={() => setShouldUpdate(true)}
                 />
               </Card>
-            </Link>
+            </div>
           </div>
         ))
       ) : (
