@@ -83,7 +83,9 @@ describe("prospect", () => {
     prospects.forEach((prospect) => {
       expect(prospect.prospectStatus).toHaveLength(1);
       expect(prospect.prospectStatus[0].statusComment).toBe("Nuevo prospecto");
-      expect(prospect.prospectStatus[0].status.statusName).toBe("Nuevo");
+      expect(prospect.prospectStatus[0].status.statusName).toBe(
+        StatusNames.NEW,
+      );
     });
   });
 });
