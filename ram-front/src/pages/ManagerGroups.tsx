@@ -20,11 +20,7 @@ export default function ManagerCourses() {
         <div>
           <div className="flex w-full justify-end px-20 pt-10">
             <div className="w-1/12 overflow-hidden rounded-3xl font-bold">
-              <button
-                onClick={toggleModalGroupForm}
-                className="btn-primary"
-                data-testid="button-modal"
-              >
+              <button onClick={toggleModalGroupForm} className="btn-primary">
                 Agregar
               </button>
               <ModalGroupForm
