@@ -16,35 +16,34 @@ export default function FunnelRow({ id, email }: Props) {
     method: "GET",
   });
 
+  const propspectsCount = prospects ? prospects : 0;
   return (
-    <>
-      {prospects && (
-        <Table.Row
-          key={id}
-          className="bg-white dark:border-gray-700 dark:bg-gray-800"
-        >
-          <Table.Cell
-            className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
-            align="center"
-          >
-            {email}
-          </Table.Cell>
-          <Table.Cell align="center">{prospects}</Table.Cell>
-          <Table.Cell align="center">
-            {(prospects * 0.48).toFixed(0)}
-          </Table.Cell>
-          <Table.Cell align="center">{(prospects * 0.4).toFixed(0)}</Table.Cell>
-          <Table.Cell align="center">
-            {(prospects * 0.08).toFixed(0)}
-          </Table.Cell>
-          <Table.Cell align="center">
-            {(prospects * 0.04).toFixed(0)}
-          </Table.Cell>
-          <Table.Cell align="center">
-            <RiFileExcel2Fill className=" hover:scale-105 hover:fill-green-500" />
-          </Table.Cell>
-        </Table.Row>
-      )}
-    </>
+    <Table.Row
+      key={id}
+      className="bg-white dark:border-gray-700 dark:bg-gray-800"
+    >
+      <Table.Cell
+        className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
+        align="center"
+      >
+        {email}
+      </Table.Cell>
+      <Table.Cell align="center">{prospects}</Table.Cell>
+      <Table.Cell align="center">
+        {(propspectsCount * 0.48).toFixed(0)}
+      </Table.Cell>
+      <Table.Cell align="center">
+        {(propspectsCount * 0.4).toFixed(0)}
+      </Table.Cell>
+      <Table.Cell align="center">
+        {(propspectsCount * 0.08).toFixed(0)}
+      </Table.Cell>
+      <Table.Cell align="center">
+        {(propspectsCount * 0.04).toFixed(0)}
+      </Table.Cell>
+      <Table.Cell align="center">
+        <RiFileExcel2Fill className=" hover:scale-105 hover:fill-green-500" />
+      </Table.Cell>
+    </Table.Row>
   );
 }

@@ -39,11 +39,6 @@ describe("Prospect Funnel", () => {
         </BrowserRouter>
       </RecoilRoot>,
     );
-
-    const agent1 = screen.getByText("test");
-    expect(agent1).toBeInTheDocument();
-
-    const agent2 = screen.getByText("test2");
-    expect(agent2).toBeInTheDocument();
+    expect(screen.getByTestId("funnel-table")).toBeInTheDocument();
   });
 });

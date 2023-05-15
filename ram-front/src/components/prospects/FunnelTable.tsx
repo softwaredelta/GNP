@@ -29,7 +29,7 @@ const FunnelProspect = ({ agents }: Props) => {
             <Table.HeadCell align="center">PP200</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {agents?.map((agent: any) => {
+            {agents.map((agent) => {
               return (
                 <FunnelRow key={agent.id} id={agent.id} email={agent.email} />
               );

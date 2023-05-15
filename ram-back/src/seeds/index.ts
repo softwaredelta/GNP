@@ -165,7 +165,7 @@ export async function loadSeeds() {
         "https://cdn.pixabay.com/photo/2017/05/28/16/55/coffee-2351436__340.jpg",
     });
     const deliveryWeek1Task2 = await createDelivery({
-      deliveryName: "Entrega: Kit de arranque",
+      deliveryName: "Entrega del kit de arranque",
       description: "Lorem ipsum",
       idGroup: groupNovelWeek1.group.id,
       imageUrl:
