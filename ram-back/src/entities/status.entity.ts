@@ -2,11 +2,14 @@
 
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ProspectStatusEnt } from "./prospect-status.entity";
+import { REQUIRED_STRING_COLUMN } from "./columns";
 
 export enum StatusNames {
-  NEW = "Nuevo",
-  CALL = "Llamada agendada",
-  CONTRACT = "Contrato",
+  NEW = "Nuevo prospecto",
+  MEETING_ADDED = "Cita agendada",
+  MEEETING_SUCCESSFUL = "Cita efectiva",
+  REQUEST = "Solicitud de seguro",
+  POLICY_PAID = "Poliza pagada",
   RETIRED = "Retirado",
 }
 
@@ -15,8 +18,8 @@ export class StatusEnt {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @Column()
-  statusName!: string;
+  @Column(REQUIRED_STRING_COLUMN("statusName"))
+  statusName!: StatusNames;
 
   @OneToMany(
     () => ProspectStatusEnt,

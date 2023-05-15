@@ -6,8 +6,6 @@ import { createStatus } from "../../app/status";
 import { createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { StatusNames } from "../../entities/status.entity";
-import { isIdentifier } from "typescript";
-import { ProspectEnt } from "../../entities/prospect.entity";
 
 describe("prospect", () => {
   let ds: DataSource;
