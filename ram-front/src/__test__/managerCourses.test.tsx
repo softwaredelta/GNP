@@ -2,7 +2,7 @@
 
 import { Root, createRoot } from "react-dom/client";
 import "@testing-library/jest-dom/extend-expect";
-import { screen, render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor, act } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import { RenderTest } from "./fixtures";
@@ -123,8 +123,28 @@ describe("Add new group", () => {
     await test.start();
 
     await waitFor(() => {
-      const button = screen.getByText("Agregar");
-      expect(button).toBeInTheDocument();
+      const addButton = screen.getByText("Agregar");
+      expect(addButton).toBeInTheDocument();
+    });
+  });
+
+  it("renders add group modal", async () => {
+    const test = new RenderTest("open-modal", <ManagerCourses />, root);
+    await test.start();
+
+    let addButton: Element | null = null;
+    await waitFor(() => {
+      addButton = screen.getByText("Agregar");
+      expect(addButton).not.toBeNull();
+    });
+
+    act(() => {
+      addButton?.dispatchEvent(new MouseEvent("click"));
+    });
+
+    await waitFor(() => {
+      const modal = screen.getByTestId("modal-group");
+      expect(modal).toBeDefined();
     });
   });
 });
