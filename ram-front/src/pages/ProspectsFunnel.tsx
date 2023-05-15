@@ -2,8 +2,14 @@
 
 import Wrapper from "../containers/Wrapper";
 import FunnelProspect from "../components/prospects/FunnelTable";
-
+import { IUser } from "../types";
+import useAxios from "../hooks/useAxios";
 export default function FunnelProspects() {
+  const { response: agents } = useAxios<IUser[]>({
+    url: `user/all-agents`,
+    method: "GET",
+  });
+
   return (
     <Wrapper>
       <div>
@@ -13,7 +19,7 @@ export default function FunnelProspects() {
           </h1>
         </div>
         <div className="mt-8 flex flex-col items-center justify-center">
-          <FunnelProspect />
+          {agents && <FunnelProspect agents={agents} />}
         </div>
       </div>
     </Wrapper>

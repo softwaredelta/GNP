@@ -108,7 +108,6 @@ authRouter.get(
 
 authRouter.get("/all-agents", async (req, res) => {
   const db = await getDataSource();
-  // const sales = await db.manager.find(SellEnt);
   const sales = await db.manager.find(UserEnt, {
     where: {
       rolesString: UserRole.REGULAR,

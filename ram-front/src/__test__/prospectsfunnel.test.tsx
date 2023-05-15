@@ -1,36 +1,49 @@
 // (c) Delta Software 2023, rights reserved.
 
 import "@testing-library/jest-dom/extend-expect";
-import FunnelProspects from "../pages/ProspectsFunnel";
-import { Root, createRoot } from "react-dom/client";
-import { RenderTest } from "./fixtures";
-import { screen, waitFor } from "@testing-library/dom";
+import { screen } from "@testing-library/dom";
+import { render } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import FunnelTable from "../components/prospects/FunnelTable";
+import { RecoilRoot } from "recoil";
 
-describe("SalesHistory", () => {
+describe("Prospect Funnel", () => {
   let container: HTMLDivElement;
-  let root: Root;
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
-
-    root = createRoot(container);
   });
   afterEach(() => {
     document.body.removeChild(container);
     container.remove();
   });
 
-  it("renders correctly", async () => {
-    const test = new RenderTest("funnel-prospect-0", <FunnelProspects />, root);
-    await test.start();
+  it("renders all the agents", () => {
+    render(
+      <RecoilRoot>
+        <BrowserRouter>
+          <FunnelTable
+            agents={[
+              {
+                id: "1",
+                email: "test",
+                imageURL: "",
+              },
+              {
+                id: "2",
+                email: "test2",
+                imageURL: "",
+              },
+            ]}
+          ></FunnelTable>
+        </BrowserRouter>
+      </RecoilRoot>,
+    );
 
-    await waitFor(async () => {
-      expect(screen.getByTestId("funnel-table")).toBeInTheDocument();
+    const agent1 = screen.getByText("test");
+    expect(agent1).toBeInTheDocument();
 
-      const agent1 = "Test Agent 1";
-      const agent2 = "Test Agent 2";
-      expect(screen.getByText(agent1)).toBeInTheDocument();
-      expect(screen.getByText(agent2)).toBeInTheDocument();
-    });
+    const agent2 = screen.getByText("test2");
+    expect(agent2).toBeInTheDocument();
   });
 });

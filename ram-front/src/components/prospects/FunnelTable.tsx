@@ -3,21 +3,17 @@
 import "react-datepicker/dist/react-datepicker.css";
 import { Table } from "flowbite-react";
 import { IUser } from "../../types";
-import useAxios from "../../hooks/useAxios";
 import FunnelRow from "./FunnelRow";
 
-const FunnelProspect = () => {
-  // const [agents, setAgents] =  useState<Array<Prosp>>([])
+interface Props {
+  agents: IUser[];
+}
 
-  const { response: agents } = useAxios<IUser[]>({
-    url: `user/all-agents`,
-    method: "GET",
-  });
-
+const FunnelProspect = ({ agents }: Props) => {
   return (
     <div className="mt-8 flex flex-col items-center justify-center">
       <div
-        data-testid="funnet-table"
+        data-testid="funnel-table"
         className="grid-row grid w-full px-8 pb-4"
       >
         <Table className="row" hoverable={true}>
