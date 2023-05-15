@@ -8,44 +8,16 @@ import { IGroup } from "../types";
 import { RiAddBoxFill } from "react-icons/ri";
 import ModalDeliveryForm from "../components/forms/ModalDeliveryForm";
 import useModal from "../hooks/useModal";
-import { useState } from "react";
 
 export default function EditGroup() {
   const { id } = useParams();
   const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
     useModal();
-  const [file, setFile] = useState<File | null>(null);
 
   const { response: group } = useAxios<IGroup>({
     url: `groups/${id}`,
     method: "GET",
   });
-
-  const { callback } = useAxios({
-    url: `deliveries/create-delivery/${id}`,
-    method: "POST",
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-
-  const uploadFile = (name: string, description: string): void => {
-    if (file) {
-      const formData: FormData = new FormData();
-      formData.append("image", file);
-      formData.append("deliveryName", name);
-      formData.append("description", description);
-      try {
-        callback?.(formData);
-      } catch (err) {
-        console.error(err);
-      }
-      setTimeout(() => {
-        toggleModalDeliveryForm();
-        setFile(null);
-      }, 1200);
-    }
-  };
 
   return (
     <div>
@@ -67,10 +39,6 @@ export default function EditGroup() {
             <ModalDeliveryForm
               isOpenModal={isOpenDeliveryForm}
               closeModal={toggleModalDeliveryForm}
-              handlePost={(image, name, description) => {
-                setFile(image);
-                uploadFile(name, description);
-              }}
             />
           </div>
           <div className="flex min-h-[26%] w-full justify-center gap-10">

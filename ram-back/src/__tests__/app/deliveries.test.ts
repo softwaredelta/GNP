@@ -1,13 +1,18 @@
 // (c) Delta Software 2023, rights reserved.
 import {
   createDelivery,
+  deleteDelivery,
   getUserDeliveriesbyGroup,
   setDeliverieToUser,
 } from "../../app/deliveries";
 import { createGroup } from "../../app/groups";
 import { createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
-import { StatusUserDelivery } from "../../entities/user-delivery.entity";
+import { DeliveryEnt } from "../../entities/delivery.entity";
+import {
+  StatusUserDelivery,
+  UserDeliveryEnt,
+} from "../../entities/user-delivery.entity";
 
 describe("app:deliveries", () => {
   beforeEach(async () => {
@@ -121,6 +126,78 @@ describe("app:deliveries", () => {
       });
 
       expect(data.userDeliveries).toHaveLength(3);
+    });
+  });
+
+  describe("delete function", () => {
+    it("handles non existing delivery", async () => {
+      const ds = await getDataSource();
+      const deliveries = await ds.manager.find(DeliveryEnt);
+      expect(deliveries).toHaveLength(0);
+      await deleteDelivery({ deliveryId: "non-existing-delivery-id" });
+      expect(deliveries).toHaveLength(0);
+    });
+
+    it("deletes delivery correctly", async () => {
+      const ds = await getDataSource();
+
+      const { group } = await createGroup({
+        name: "test-group-1",
+        description: "test-description-1",
+      });
+      const { delivery } = await createDelivery({
+        deliveryName: "test-delivery-1",
+        description: "test-description-1",
+        idGroup: group.id,
+        imageUrl: "",
+      });
+
+      let deliveries = await ds.manager.find(DeliveryEnt);
+      expect(deliveries).toHaveLength(1);
+      expect(deliveries[0]).toHaveProperty("id");
+      expect(deliveries[0]).toHaveProperty("deliveryName", "test-delivery-1");
+
+      await deleteDelivery({ deliveryId: delivery.id });
+      deliveries = await ds.manager.find(DeliveryEnt);
+      expect(deliveries).toHaveLength(0);
+    });
+
+    it("deletes associated user deliveries", async () => {
+      const ds = await getDataSource();
+
+      const { group } = await createGroup({
+        name: "test-group-1",
+        description: "test-description-1",
+      });
+      const { user } = await createUser({
+        email: "test-email-1@delta.tec.mx",
+        password: "password",
+      });
+      const { delivery } = await createDelivery({
+        deliveryName: "test-delivery-1",
+        description: "test-description-1",
+        idGroup: group.id,
+        imageUrl: "",
+      });
+      await setDeliverieToUser({
+        idUser: user.id,
+        idDeliverie: delivery.id,
+        dateDelivery: new Date("2021-01-01"),
+        fileUrl: "",
+      });
+
+      let deliveries = await ds.manager.find(DeliveryEnt);
+      expect(deliveries).toHaveLength(1);
+      expect(deliveries[0]).toHaveProperty("id");
+      expect(deliveries[0]).toHaveProperty("deliveryName", "test-delivery-1");
+      let userDeliveries = await ds.manager.find(UserDeliveryEnt);
+      expect(userDeliveries).toHaveLength(1);
+
+      await deleteDelivery({ deliveryId: delivery.id });
+      deliveries = await ds.manager.find(DeliveryEnt);
+      userDeliveries = await ds.manager.find(UserDeliveryEnt);
+      expect(deliveries).toHaveLength(0);
+      expect(userDeliveries).toHaveLength(0);
     });
   });
 });

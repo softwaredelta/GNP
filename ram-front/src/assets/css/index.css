@@ -23,7 +23,7 @@
 }
 
 .text-area-primary {
-  @apply mb-8 w-full h-full rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
+  @apply mb-8 h-full rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
 }
 
 .floating-button-primary {
@@ -50,7 +50,7 @@
 .custom-scroll::-webkit-scrollbar-track {
   background: #e5e7eb;
   margin-top: 20px;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {

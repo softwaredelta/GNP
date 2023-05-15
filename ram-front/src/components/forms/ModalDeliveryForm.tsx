@@ -1,22 +1,84 @@
 // (c) Delta Software 2023, rights reserved.
-import { useRef } from "react";
+import { useState, useEffect } from "react";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import Modal from "../generics/Modal";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
+import useAxios from "../../hooks/useAxios";
 
 export interface IModalDeliveryFormProps {
-  handlePost: (image: File | null, name: string, description: string) => void;
   closeModal: VoidFunction;
   isOpenModal: boolean;
 }
 
 export default function ModalDeliveryForm({
-  handlePost,
   closeModal,
   isOpenModal,
 }: IModalDeliveryFormProps) {
-  const { image, setPreviewImage, imgRef, resetImage } = usePreviewImage();
-  const nameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const { setPreviewImage, imgRef, resetImage } = usePreviewImage();
+  const { id } = useParams();
+  const [file, setFile] = useState<File | null>(null);
+
+  const { response, error, callback } = useAxios({
+    url: `deliveries/create-delivery/${id}`,
+    method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  type FormValues = {
+    name: string;
+    description: string;
+  };
+
+  const { register, handleSubmit, reset } = useForm<FormValues>();
+
+  const uploadFile = (data: FormValues) => {
+    if (file) {
+      const formData: FormData = new FormData();
+      formData.append("image", file);
+      formData.append("deliveryName", data.name);
+      formData.append("description", data.description);
+      try {
+        callback?.(formData);
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      Swal.fire({
+        title: "Error!",
+        text: `No seleccionaste archivo.`,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (response) {
+      Swal.fire({
+        title: "Success!",
+        text: "El entregable se ha registrado correctamente.",
+        icon: "success",
+      });
+      reset({
+        name: "",
+        description: "",
+      });
+      closeModal();
+    } else if (error) {
+      console.log({ error });
+      Swal.fire({
+        title: "Error!",
+        text: `Ocurrió un error al registrar el entregable.\n
+        ${(error as any).response.data.message}`,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  }, [response, error]);
 
   return (
     <>
@@ -43,9 +105,19 @@ export default function ModalDeliveryForm({
                   </label>
                 </div>
                 <input
-                  ref={nameRef}
                   type="text"
                   className="input-primary w-10/12"
+                  {...register("name", {
+                    required: "El campo nombre del entregable requerido.",
+                    minLength: {
+                      value: 3,
+                      message: "El nombre debe tener al menos 3 caracteres",
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: "El nombre debe tener máximo 50 caracteres",
+                    },
+                  })}
                 />
                 <div className="w-9/12 ">
                   <label className="text-left text-xl font-semibold">
@@ -53,8 +125,8 @@ export default function ModalDeliveryForm({
                   </label>
                 </div>
                 <textarea
-                  ref={descriptionRef}
                   className="text-area-primary w-10/12 resize-none"
+                  {...register("description", {})}
                 />
               </div>
 
@@ -76,7 +148,12 @@ export default function ModalDeliveryForm({
                   <input
                     className="text-grat-700 focus-outline block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm"
                     type="file"
-                    onChange={setPreviewImage}
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setFile(e.target.files[0]);
+                        setPreviewImage(e);
+                      } else setFile(null);
+                    }}
                     placeholder="Selecciona una imagen"
                     accept=".jpg,.png,.jpeg"
                   />
@@ -99,16 +176,17 @@ export default function ModalDeliveryForm({
               <div className="w-11/12">
                 <button
                   className="btn-primary"
-                  onClick={() => {
-                    if (nameRef.current) {
-                      const nameGroup = nameRef.current.value.toString();
-                      handlePost(
-                        image,
-                        nameGroup,
-                        descriptionRef.current?.value.toString() || "",
-                      );
-                    }
-                  }}
+                  onClick={handleSubmit(uploadFile, (errorsFields) => {
+                    Swal.fire({
+                      title: "Error!",
+                      text: `Ocurrió un error al registrar la venta.\n
+                        ${Object.values(errorsFields).map(
+                          (e) => e.message + " ",
+                        )}`,
+                      icon: "error",
+                      confirmButtonText: "OK",
+                    });
+                  })}
                 >
                   Agregar
                 </button>

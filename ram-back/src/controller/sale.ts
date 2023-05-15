@@ -67,6 +67,11 @@ salesRouter.post(
     } = req.body;
     const { user } = req;
 
+    if (!user) {
+      res.status(401).json({ message: "BAD_DATA" });
+      return;
+    }
+
     if (!req.file) {
       res.status(400).json({ message: "NO_FILE_UPLOAD" });
       return;
@@ -80,7 +85,7 @@ salesRouter.post(
       yearlyFee,
       contractingClient,
       assuranceTypeId,
-      userId: user!.id,
+      userId: user.id,
       periodicity,
       emissionDate,
       insuredCostumer,
