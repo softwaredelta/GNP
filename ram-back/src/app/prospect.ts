@@ -77,7 +77,7 @@ export async function createProspect(params: {
 export async function getProspectStatus(params: { userId: string }): Promise<{
   prospects: ProspectEnt[];
   error?: ProspectError;
-  errorReason?: Error;
+  reason?: Error;
 }> {
   const ds = await getDataSource();
 
@@ -95,7 +95,7 @@ export async function getProspectStatus(params: { userId: string }): Promise<{
   } catch (e) {
     return {
       error: ProspectError.PROSPECT_ERROR,
-      errorReason: e as Error,
+      reason: e as Error,
       prospects: [],
     };
   }
