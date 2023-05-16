@@ -2,12 +2,14 @@
 import { useRef } from "react";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import Modal from "../generics/Modal";
+import { IGroup } from "../../types";
+
 export interface IModalGroupFormProps {
   handlePost: (image: File | null, name: string) => void;
   closeModal: VoidFunction;
   isOpenModal: boolean;
   title: string;
-  initialValues: string;
+  initialValues: string | IGroup[];
 }
 
 export default function ModalGroupForm({

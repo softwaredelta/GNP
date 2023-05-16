@@ -2,14 +2,15 @@
 
 import { RiAddBoxFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
+import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
 import ModalDeliveryForm from "../components/forms/ModalDeliveryForm";
+import ModalGroupForm from "../components/forms/ModalGroupForm";
 import SearchAgentTable from "../components/tables/SearchAgentTable";
 import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
 import { IGroup, IUser } from "../types";
-import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
 
 export default function EditGroup() {
   const id = useParams().id as string;
@@ -29,6 +30,8 @@ export default function EditGroup() {
     method: "GET",
   });
 
+  const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
+    useModal();
   return (
     <div>
       <Wrapper>
@@ -38,6 +41,22 @@ export default function EditGroup() {
               {"Editando: " + group?.name}
             </h1>
             <div className="flex w-auto pr-8">
+              <button
+                onClick={toggleModalGroupForm}
+                className="btn-primary"
+                data-testid="button-modal"
+              >
+                Agregar
+              </button>
+              <ModalGroupForm
+                isOpenModal={isOpenGroupForm}
+                closeModal={toggleModalGroupForm}
+                handlePost={(image, name) => {
+                  alert(`Nombre: ${name} Imagen: ${image}`);
+                }}
+                title="Editar Grupo"
+                initialValues={group?.name}
+              />
               <button
                 onClick={toggleModalDeliveryForm}
                 className="btn-primary flex-grid flex items-center"
