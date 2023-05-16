@@ -6,6 +6,7 @@ import { getDataSource } from "../arch/db-client";
 import { DeliveryEnt } from "../entities/delivery.entity";
 import {
   createDelivery,
+  deleteDelivery,
   getUserDeliveriesbyGroup,
   updateDeliveryStatus,
 } from "../app/deliveries";
@@ -210,5 +211,23 @@ deliveriesRouter.post(
     } else {
       res.status(201).json({ delivery });
     }
+  },
+);
+
+deliveriesRouter.delete(
+  "/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const { error, reason } = await deleteDelivery({
+      deliveryId: req.params.id,
+    });
+
+    if (error) {
+      console.error(reason);
+      res.status(500).json({ error, reason });
+      return;
+    }
+
+    res.status(200).json({ message: "Delivery deleted" });
   },
 );
