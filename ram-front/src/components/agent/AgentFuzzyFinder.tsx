@@ -10,6 +10,7 @@ import { useLoadable } from "../../lib/loadable";
 import { IUser } from "../../types";
 import { accessToken$ } from "../../lib/api/api-auth";
 import { apiBase$ } from "../../lib/api/api-base";
+import { useUpdateGroups } from "../../lib/api/api-courses";
 
 const TIMER_DELAY = 150;
 
@@ -51,6 +52,7 @@ export default function AgentFuzzyFinder({
   const [selectedItem, setSelectedItem] = useState<null | number>(null);
   const accessToken = useRecoilValue(accessToken$);
   const apiBase = useRecoilValue(apiBase$);
+  const updateGroups = useUpdateGroups();
 
   const updateQuery = useCallback(
     (query: string) => {
@@ -81,7 +83,7 @@ export default function AgentFuzzyFinder({
         },
       );
     },
-    [accessToken, apiBase],
+    [accessToken, apiBase, groupId],
   );
 
   const handleKeyDown = useCallback(
@@ -110,11 +112,12 @@ export default function AgentFuzzyFinder({
           (async () => {
             await addUser(userId);
             onReloadAgents();
+            updateGroups();
           })();
         }
       }
     },
-    [addUser, onReloadAgents, selectedItem, users],
+    [addUser, onReloadAgents, selectedItem, updateGroups, users],
   );
 
   return (
