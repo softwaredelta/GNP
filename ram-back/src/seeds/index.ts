@@ -1,15 +1,15 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { addUserToGroup, createGroup } from "../app/groups";
-import { createUser } from "../app/user";
-import { createDelivery, setDeliverieToUser } from "../app/deliveries";
-import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { createAssuranceType } from "../app/assuranceType";
-import { createSale } from "../app/sale";
-import { UserRole } from "../entities/user.entity";
-import { createStatus } from "../app/status";
-import { StatusNames } from "../entities/status.entity";
+import { createDelivery, setDeliverieToUser } from "../app/deliveries";
+import { addUserToGroup, createGroup } from "../app/groups";
 import { createProspect } from "../app/prospect";
+import { createSale } from "../app/sale";
+import { createStatus } from "../app/status";
+import { createUser } from "../app/user";
+import { StatusNames } from "../entities/status.entity";
+import { StatusUserDelivery } from "../entities/user-delivery.entity";
+import { UserRole } from "../entities/user.entity";
 
 export async function userSeeds() {
   const userData = [
@@ -52,6 +52,8 @@ export async function loadSeeds() {
     // USERS
     const user = await createUser({
       email: "luisferrmz@ram.mx",
+      name: "Luis Fernando",
+      lastName: "Martínez",
       password: "password",
       id: "1",
       roles: [UserRole.REGULAR],
@@ -59,6 +61,8 @@ export async function loadSeeds() {
 
     const user2 = await createUser({
       email: "juancarlosgmz@ram.mx",
+      name: "Juan Carlos",
+      lastName: "González",
       password: "password",
       id: "2",
       roles: [UserRole.REGULAR],
@@ -66,6 +70,8 @@ export async function loadSeeds() {
 
     await createUser({
       email: "claudiafdz@ram.mx",
+      name: "Claudia",
+      lastName: "Fernández",
       password: "password",
       id: "3",
       roles: [UserRole.MANAGER],

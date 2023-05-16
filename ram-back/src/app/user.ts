@@ -29,6 +29,8 @@ export interface UserAuthentication {
 export async function createUser(params: {
   email: string;
   password: string;
+  name?: string;
+  lastName?: string;
   id?: string;
   roles?: UserRole[];
   iamgeURL?: string;
@@ -46,6 +48,8 @@ export async function createUser(params: {
       ds.manager.create(UserEnt, {
         id,
         email: params.email,
+        name: params.name,
+        lastName: params.lastName,
         password: hashedPassword,
         rolesString: buildRoleString(roles),
         imageURL: params.iamgeURL ?? "https://picsum.photos/200",
