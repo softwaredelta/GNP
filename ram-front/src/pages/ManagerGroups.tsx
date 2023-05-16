@@ -8,7 +8,7 @@ import useModal from "../hooks/useModal";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
 import { IGroup } from "../types";
 import useAxios from "../hooks/useAxios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 // Manager view that list all groups
@@ -16,6 +16,7 @@ export default function ManagerCourses() {
   const groups = useRecoilValue(allCourses$);
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
+  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
 
   const { response, loading, error, callback } = useAxios<IGroup[]>({
     url: "groups/create",
@@ -39,7 +40,12 @@ export default function ManagerCourses() {
       });
       groups.concat(response);
     }
-  }, [error, response]);
+
+    if (shouldUpdate) {
+      setShouldUpdate(false);
+      
+    }
+  }, [error, response, shouldUpdate]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -71,13 +77,14 @@ export default function ManagerCourses() {
                     data.append("image", image);
                     data.append("name", name);
                     callback(data);
+                    setShouldUpdate(true);
                   }
                 }}
               />
             </div>
           </div>
           <div className="grid place-items-center md:grid-cols-4">
-            <ManagerListGroups groups={groups}></ManagerListGroups>
+            <ManagerListGroups groups={groups} />
           </div>
         </div>
       </Wrapper>
