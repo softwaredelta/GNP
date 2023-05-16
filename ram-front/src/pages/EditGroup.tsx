@@ -8,10 +8,11 @@ import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
-import { IGroup, IUserName } from "../types";
+import { IGroup, IUser } from "../types";
+import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
 
 export default function EditGroup() {
-  const { id } = useParams();
+  const id = useParams().id as string;
   const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
     useModal();
 
@@ -19,7 +20,9 @@ export default function EditGroup() {
     url: `groups/${id}`,
     method: "GET",
   });
-  const { response: groupAgents } = useAxios<IUserName[]>({
+  const { response: groupAgents, callback: updateGroupAgents } = useAxios<
+    IUser[]
+  >({
     url: `groups/users/${id}`,
     method: "GET",
   });
@@ -49,6 +52,11 @@ export default function EditGroup() {
           <div className="flex min-h-[26%] w-full justify-center gap-10">
             <div className="col-span-3">
               {groupAgents && <SearchAgentTable agents={groupAgents ?? []} />}
+              <AgentFuzzyFinder
+                groupId={id}
+                onReloadAgents={() => updateGroupAgents()}
+                groupAgents={groupAgents ?? []}
+              />
             </div>
             <div className="col-span-3">
               {group && (

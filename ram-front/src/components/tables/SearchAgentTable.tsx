@@ -1,11 +1,11 @@
 import { Table } from "flowbite-react";
 import { useState } from "react";
-import { IUserName } from "../../types";
+import { IUser } from "../../types";
 import { SearchAgentRow } from "./SearchAgentRow";
 // (c) Delta Software 2023, rights reserved.>
 
 export interface IListSearchProps {
-  agents: IUserName[];
+  agents: IUser[];
 }
 
 export default function SearchAgentTable({ agents }: IListSearchProps) {

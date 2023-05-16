@@ -6,6 +6,7 @@ import * as j from "joi";
 import multer from "multer";
 import {
   GroupError,
+  addUserToGroup,
   createGroup,
   createGroupWithFile,
   deleteGroup,
@@ -195,5 +196,29 @@ groupsRouter.post(
     } else {
       res.json(group);
     }
+  },
+);
+
+groupsRouter.post(
+  "/:id/add-user",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res, next) => {
+    const schema = J.object({
+      userId: J.string().required(),
+    });
+    const { error: validationError } = schema.validate(req.query);
+    if (validationError) {
+      res.status(400).json({ message: validationError.message });
+      return;
+    }
+
+    next();
+  },
+  async (req, res) => {
+    const userId = req.query.userId as string;
+    const groupId = req.params.id;
+
+    await addUserToGroup({ groupId, userId });
+    res.status(200).send();
   },
 );
