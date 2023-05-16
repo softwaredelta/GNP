@@ -46,7 +46,7 @@ export default function ManagerCourses() {
         updateGroups();
       }
     }
-  }, [error, groups, response]);
+  }, [error, response]);
 
   if (loading) {
     return <p>Loading...</p>;
