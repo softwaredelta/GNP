@@ -15,7 +15,6 @@ describe("Manager courses card", () => {
       <RecoilRoot>
         <BrowserRouter>
           <ManagerListGroups
-            onDeleted={() => {}}
             groups={[
               {
                 id: "1",
@@ -63,10 +62,7 @@ describe("Manager courses card", () => {
     render(
       <RecoilRoot>
         <BrowserRouter>
-          <ManagerListGroups
-            onDeleted={() => {}}
-            groups={[]}
-          ></ManagerListGroups>
+          <ManagerListGroups groups={[]}></ManagerListGroups>
         </BrowserRouter>
       </RecoilRoot>,
     );
@@ -79,7 +75,6 @@ describe("Manager courses card", () => {
       <RecoilRoot>
         <BrowserRouter>
           <ManagerListGroups
-            onDeleted={() => {}}
             groups={[
               {
                 id: "1",

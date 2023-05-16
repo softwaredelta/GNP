@@ -3,23 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Card from "../generics/cards/base/Card";
 import CardInfoNumMembers from "../generics/cards/info/CardInfoNumMembers";
 import { IGroup } from "../../types";
-import { useState, useEffect } from "react";
 
 interface Props {
   groups: IGroup[];
-  onDeleted: () => void;
 }
 
-export function ManagerListGroups({ groups, onDeleted }: Props) {
+export function ManagerListGroups({ groups }: Props) {
   const navigate = useNavigate();
-
-  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
-  useEffect(() => {
-    if (shouldUpdate) {
-      onDeleted();
-      setShouldUpdate(false);
-    }
-  }, [onDeleted, shouldUpdate]);
 
   return (
     <>
@@ -33,7 +23,6 @@ export function ManagerListGroups({ groups, onDeleted }: Props) {
                   nameGroup={group.name}
                   number={group.groupUsers?.length ?? 0}
                   groupId={group.id}
-                  onDeleted={() => setShouldUpdate(true)}
                 />
               </Card>
             </div>
