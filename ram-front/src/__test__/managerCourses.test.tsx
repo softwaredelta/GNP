@@ -7,7 +7,6 @@ import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import { RenderTest } from "./fixtures";
 import ManagerCourses from "../pages/ManagerGroups";
-import ModalGroupForm from "../components/forms/ModalGroupForm";
 import { RecoilRoot } from "recoil";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
 
