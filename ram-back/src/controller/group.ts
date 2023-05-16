@@ -152,7 +152,8 @@ groupsRouter.post(
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
   updateParametersMiddleware,
   async (req, res) => {
-    const { groupId, name, description } = req.body;
+    const groupId=req.params.id;
+    const {  name, description } = req.body;
     const file = req.file;
 
     let data;
@@ -182,7 +183,7 @@ groupsRouter.post(
       }
       res.status(500).json({ error });
     } else {
-      res.status(201).json(group);
+      res.status(200).json(group);
     }
   },
 );
