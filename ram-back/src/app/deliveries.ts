@@ -9,6 +9,7 @@ import {
 
 export enum DeliveryError {
   UNHANDLED = "UNHANDLED",
+  NOT_FOUND = "NOT_FOUND",
 }
 
 export async function createDelivery(params: {
@@ -76,7 +77,7 @@ export async function updateDelivery(params: {
   if (!delivery) {
     return {
       delivery: {} as DeliveryEnt,
-      error: DeliveryError.UNHANDLED,
+      error: DeliveryError.NOT_FOUND,
       errorReason: new Error("No delivery found"),
     };
   }
