@@ -272,6 +272,8 @@ export default function Examples() {
           handlePost={(image, name) => {
             alert(`Nombre: ${name} Imagen: ${image}`);
           }}
+          title="Modificar grupo"
+          initialValues=""
         />
       </div>
       <div className="w-11/12">
