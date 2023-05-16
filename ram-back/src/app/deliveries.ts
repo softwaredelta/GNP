@@ -42,6 +42,48 @@ export async function createDelivery(params: {
     }));
 }
 
+export async function updateDelivery(params: {
+  deliveryId: string;
+  deliveryName?: string;
+  description?: string;
+  imageUrl?: string;
+}): Promise<{
+  delivery: DeliveryEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  if (!params.deliveryName && !params.description && !params.imageUrl) {
+    return {
+      delivery: {} as DeliveryEnt,
+      error: DeliveryError.UNHANDLED,
+      errorReason: new Error("No fields to update"),
+    };
+  }
+
+  const ds = await getDataSource();
+  const query = ds.createQueryBuilder().update(DeliveryEnt);
+  (["deliveryName", "description", "imageUrl"] as const).forEach((field) => {
+    if (params[field]) {
+      query.set({ [field]: params[field] });
+    }
+  });
+
+  await query.where("id = :id", { id: params.deliveryId }).execute();
+
+  const delivery = await ds.manager.findOne(DeliveryEnt, {
+    where: { id: params.deliveryId },
+  });
+  if (!delivery) {
+    return {
+      delivery: {} as DeliveryEnt,
+      error: DeliveryError.UNHANDLED,
+      errorReason: new Error("No delivery found"),
+    };
+  }
+
+  return { delivery };
+}
+
 export async function setDeliverieToUser(params: {
   idUser: string;
   idDeliverie: string;
