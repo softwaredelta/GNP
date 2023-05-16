@@ -1,10 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 import { Checkbox, Table } from "flowbite-react";
 import { RxCross1 } from "react-icons/rx";
-import { IUserName } from "../../types";
+import { IUser } from "../../types";
 
 export interface IListSearchProps {
-  agent: IUserName;
+  agent: IUser;
 }
 
 export const SearchAgentRow = ({ agent }: IListSearchProps) => {

@@ -8,7 +8,7 @@ import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
-import { IGroup, IUserName } from "../types";
+import { IGroup, IUser } from "../types";
 import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
 
 export default function EditGroup() {
@@ -20,7 +20,7 @@ export default function EditGroup() {
     url: `groups/${id}`,
     method: "GET",
   });
-  const { response: groupAgents } = useAxios<IUserName[]>({
+  const { response: groupAgents } = useAxios<IUser[]>({
     url: `groups/users/${id}`,
     method: "GET",
   });

@@ -57,12 +57,6 @@ export interface IUser {
   id: string;
   email: string;
   imageURL: string;
-}
-
-export interface IUserName {
-  id: string;
-  email: string;
-  imageURL: string;
   name: string;
   lastName: string;
 }
