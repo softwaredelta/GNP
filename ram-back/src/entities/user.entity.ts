@@ -1,8 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
 
 import {
+  AfterInsert,
   AfterLoad,
   AfterUpdate,
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -41,6 +44,19 @@ export function buildRoleString(roles: UserRole[]): string {
 
 export function rolesFromString(roles: string): UserRole[] {
   return roles.split(",") as UserRole[];
+}
+
+export function normalizeString(str: string): string {
+  let newStr = str.toLowerCase().trim();
+  newStr = newStr.replace(/\s\s+/g, " ");
+  return newStr;
+}
+
+export function capitalizeString(str: string): string {
+  const parts = str.split(" ");
+  return parts
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 @Entity({ name: "user" })
@@ -103,14 +119,38 @@ export class UserEnt {
 
   roles!: UserRole[];
 
+  @BeforeInsert()
+  async beforeInsert() {
+    this.email = normalizeString(this.email);
+    this.name = normalizeString(this.name);
+    this.lastName = normalizeString(this.lastName);
+  }
+
+  @AfterInsert()
+  async afterInsert() {
+    this.name = capitalizeString(this.name);
+    this.lastName = capitalizeString(this.lastName);
+  }
+
+  @BeforeUpdate()
+  async beforeUpdate() {
+    this.email = normalizeString(this.email);
+    this.name = normalizeString(this.name);
+    this.lastName = normalizeString(this.lastName);
+  }
+
   @AfterLoad()
   async afterLoad() {
     this.roles = this.rolesString ? rolesFromString(this.rolesString) : [];
+    this.name = capitalizeString(this.name);
+    this.lastName = capitalizeString(this.lastName);
   }
 
   @AfterUpdate()
   async afterUpdate() {
     this.roles = this.rolesString ? rolesFromString(this.rolesString) : [];
+    this.name = capitalizeString(this.name);
+    this.lastName = capitalizeString(this.lastName);
   }
 
   hasRole(role: UserRole): boolean {

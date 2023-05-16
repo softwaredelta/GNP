@@ -184,3 +184,22 @@ export async function validateUserToken(params: {
 
   return { user };
 }
+
+export async function fuzzySearchUsers(params: {
+  query: string;
+}): Promise<UserEnt[]> {
+  const ds = await getDataSource();
+  const users = await ds
+    .createQueryBuilder()
+    .from(UserEnt, "UserEnt")
+    .select(["UserEnt.id", "UserEnt.name", "UserEnt.lastName"])
+    .where("UserEnt.name LIKE :query", {
+      query: `%${params.query.toLowerCase()}%`,
+    })
+    .orWhere("UserEnt.lastName LIKE :query", {
+      query: `%${params.query.toLowerCase()}%`,
+    })
+    .getMany();
+
+  return users;
+}
