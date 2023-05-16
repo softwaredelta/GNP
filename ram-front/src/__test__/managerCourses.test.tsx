@@ -26,6 +26,8 @@ describe("Manager courses card", () => {
                   {
                     email: "test-user1",
                     id: "1",
+                    name: "test-user1",
+                    lastName: "test-user1",
                     imageURL: "",
                   },
                 ],
@@ -40,6 +42,8 @@ describe("Manager courses card", () => {
                   {
                     email: "test-user2",
                     id: "2",
+                    name: "test-user2",
+                    lastName: "test-user2",
                     imageURL: "",
                   },
                 ],
@@ -86,6 +90,8 @@ describe("Manager courses card", () => {
                   {
                     email: "test-user1",
                     id: "1",
+                    name: "test-user1",
+                    lastName: "test-user1",
                     imageURL: "",
                   },
                 ],
