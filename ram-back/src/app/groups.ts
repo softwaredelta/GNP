@@ -103,6 +103,26 @@ export async function addUserToGroup(params: {
     }));
 }
 
+export async function removeUserFromGroup(params: {
+  userId: string;
+  groupId: string;
+}): Promise<{ error?: GroupError; errorReason?: Error }> {
+  const ds = await getDataSource();
+
+  return ds
+    .createQueryBuilder()
+    .delete()
+    .from(GroupUserEnt)
+    .where("group_id = :groupId", { groupId: params.groupId })
+    .andWhere("user_id = :userId", { userId: params.userId })
+    .execute()
+    .then(() => ({}))
+    .catch((e) => ({
+      error: GroupError.UNHANDLED,
+      errorReason: e,
+    }));
+}
+
 export async function getUsersByGroup(groupId: string): Promise<UserEnt[]> {
   const ds = await getDataSource();
 
@@ -223,4 +243,19 @@ export async function updateGroup(params: {
       errorReason: e,
       group: {} as GroupEnt,
     }));
+}
+
+export async function updateGroupWithFile(params: {
+  groupId: string;
+  name?: string;
+  description?: string;
+  imageFile: Express.Multer.File;
+}): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
+  const filename = await uploadFile({ file: params.imageFile });
+  return updateGroup({
+    groupId: params.groupId,
+    name: params.name,
+    description: params.description,
+    imageURL: filename,
+  });
 }

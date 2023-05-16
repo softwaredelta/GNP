@@ -57,12 +57,6 @@ export interface IUser {
   id: string;
   email: string;
   imageURL: string;
-}
-
-export interface IUserName {
-  id: string;
-  email: string;
-  imageURL: string;
   name: string;
   lastName: string;
 }
@@ -70,7 +64,7 @@ export interface IUserName {
 export interface IGroup {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   imageURL: string;
   progress: number;
   groupUsers?: IUser[];

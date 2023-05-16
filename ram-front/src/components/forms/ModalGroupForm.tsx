@@ -2,7 +2,6 @@
 import { useRef } from "react";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import Modal from "../generics/Modal";
-
 export interface IModalGroupFormProps {
   handlePost: (image: File | null, name: string) => void;
   closeModal: VoidFunction;

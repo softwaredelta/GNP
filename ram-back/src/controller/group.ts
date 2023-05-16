@@ -1,15 +1,20 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import * as J from "joi";
+import * as j from "joi";
 import multer from "multer";
 import {
   GroupError,
+  addUserToGroup,
   createGroup,
   createGroupWithFile,
   deleteGroup,
   getUserGroups,
   getUsersByGroup,
+  removeUserFromGroup,
+  updateGroup,
+  updateGroupWithFile,
 } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
@@ -18,6 +23,21 @@ import { authMiddleware } from "./user";
 
 export const groupsRouter = Router();
 const upload = multer();
+
+const updateParameters = j.object({
+  name: j.string(),
+  description: j.string(),
+  imageUrl: j.string(),
+});
+
+const updateParametersMiddleware: RequestHandler = (req, res, next) => {
+  const { error } = updateParameters.validate(req.body);
+  if (error) {
+    res.status(400).json({ message: "BAD_DATA", reason: error });
+    return;
+  }
+  next();
+};
 
 groupsRouter.get(
   "/all",
@@ -90,7 +110,7 @@ groupsRouter.post(
   async (req, res) => {
     const schema = J.object({
       name: J.string().min(3).required(),
-      description: J.string().allow("").required(),
+      description: J.string().allow("").optional(),
     });
 
     const { error: validationError } = schema.validate(req.body);
@@ -126,5 +146,113 @@ groupsRouter.post(
     } else {
       res.status(201).json(group);
     }
+  },
+);
+
+groupsRouter.post(
+  "/update/:groupId",
+  updateParametersMiddleware,
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  upload.single("image"),
+  async (req, res) => {
+    const { groupId } = req.params;
+
+    const schema = J.object({
+      name: J.string().min(3).optional(),
+      description: J.string().allow("").optional(),
+    });
+
+    const { error: validationError } = schema.validate(req.body);
+    if (validationError) {
+      res.status(400).json({ message: validationError.message });
+      return;
+    }
+
+    const { name, description } = req.body;
+    const file = req.file;
+
+    let data;
+    if (file) {
+      data = await updateGroupWithFile({
+        groupId,
+        name,
+        description,
+        imageFile: file,
+      });
+    } else {
+      data = await updateGroup({
+        groupId,
+        name,
+        description,
+      });
+    }
+
+    const { group, error, errorReason } = data;
+    if (error) {
+      if (error === GroupError.NOT_FOUND) {
+        res.status(404).json({ message: "Group not found" });
+      } else {
+        res.status(500).json({ error, errorReason });
+      }
+    } else {
+      res.json(group);
+    }
+  },
+);
+
+groupsRouter.post(
+  "/:id/add-user",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res, next) => {
+    const schema = J.object({
+      userId: J.string().required(),
+    });
+    const { error: validationError } = schema.validate(req.query);
+    if (validationError) {
+      res.status(400).json({ message: validationError.message });
+      return;
+    }
+
+    next();
+  },
+  async (req, res) => {
+    const userId = req.query.userId as string;
+    const groupId = req.params.id;
+
+    await addUserToGroup({ groupId, userId });
+    res.status(200).send();
+  },
+);
+
+groupsRouter.post(
+  "/:id/remove-user",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res, next) => {
+    const schema = J.object({
+      userId: J.string().required(),
+    });
+    const { error: validationError } = schema.validate(req.query);
+    if (validationError) {
+      res.status(400).json({ message: validationError.message });
+      return;
+    }
+
+    next();
+  },
+  async (req, res) => {
+    const userId = req.query.userId as string;
+    const groupId = req.params.id;
+
+    const { error, errorReason } = await removeUserFromGroup({
+      groupId,
+      userId,
+    });
+    if (error) {
+      res.status(500).json({ error, errorReason });
+      console.error(errorReason);
+      return;
+    }
+
+    res.status(200).send();
   },
 );

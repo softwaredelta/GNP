@@ -284,7 +284,11 @@ export default function Examples() {
         />
       </div>
       <div className="col-span-3 ">
-        <SearchAgentTable agents={listAgents}></SearchAgentTable>
+        <SearchAgentTable
+          groupId={""}
+          onReloadAgents={() => {}}
+          agents={listAgents}
+        ></SearchAgentTable>
       </div>
       <div className="col-span-3 ">
         <SearchDeliveryTable deliveries={listDeliveries}></SearchDeliveryTable>
