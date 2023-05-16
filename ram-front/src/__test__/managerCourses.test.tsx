@@ -8,7 +8,6 @@ import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import { RenderTest } from "./fixtures";
 import ManagerCourses from "../pages/ManagerGroups";
 import { RecoilRoot } from "recoil";
-import ModalGroupForm from "../components/forms/ModalGroupForm";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
