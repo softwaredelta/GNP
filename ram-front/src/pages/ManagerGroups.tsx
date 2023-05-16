@@ -6,6 +6,10 @@ import { allCourses$ } from "../lib/api/api-courses";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import useModal from "../hooks/useModal";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
+import { IGroup } from "../types";
+import useAxios from "../hooks/useAxios";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 // Manager view that list all groups
 export default function ManagerCourses() {
@@ -13,6 +17,34 @@ export default function ManagerCourses() {
 
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
+
+  const { response, loading, error, callback } = useAxios<IGroup[]>({
+    url: "groups/create",
+    method: "POST",
+  });
+
+  useEffect(() => {
+    if (error) {
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo registrar el grupo",
+        icon: "error",
+      });
+    }
+
+    if (response) {
+      Swal.fire({
+        title: "Grupo agregado",
+        text: "Grupo agregado exitosamente",
+        icon: "error",
+      });
+      groups.concat(response);
+    }
+  }, [error, response]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -27,7 +59,20 @@ export default function ManagerCourses() {
                 isOpenModal={isOpenGroupForm}
                 closeModal={toggleModalGroupForm}
                 handlePost={(image, name) => {
-                  alert(`Nombre: ${name} Imagen: ${image}`);
+                  if (!image) {
+                    Swal.fire({
+                      title: "Imagen faltante",
+                      text: "Inserte una imagen en el campo",
+                      icon: "error",
+                    });
+                    return;
+                  }
+                  if (callback) {
+                    const data: FormData = new FormData();
+                    data.append("image", image);
+                    data.append("name", name);
+                    callback(data);
+                  }
                 }}
               />
             </div>

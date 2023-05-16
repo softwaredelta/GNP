@@ -108,7 +108,7 @@ groupsRouter.post(
   async (req, res) => {
     const schema = J.object({
       name: J.string().min(3).required(),
-      description: J.string().allow("").required(),
+      description: J.string().allow("").optional(),
     });
 
     const { error: validationError } = schema.validate(req.body);
