@@ -288,7 +288,6 @@ describe("controller:groups", () => {
           .field("description", "description")
           .expect(200)
           .then((res) => {
-            expect(res.body).toHaveProperty("imageUrl");
             expect(res.body.imageURL).toMatch(/\d+\.png/);
             expect(res.body.imageURL).not.toMatch(/http/);
           });

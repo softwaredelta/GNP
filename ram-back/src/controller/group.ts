@@ -2,6 +2,7 @@
 
 import { RequestHandler, Router } from "express";
 import * as J from "joi";
+import * as j from "joi";
 import multer from "multer";
 import {
   GroupError,
@@ -17,7 +18,6 @@ import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
 import { UserRole } from "../entities/user.entity";
 import { authMiddleware } from "./user";
-import * as j from "joi";
 
 export const groupsRouter = Router();
 const upload = multer();
@@ -148,12 +148,25 @@ groupsRouter.post(
 );
 
 groupsRouter.post(
-  "/update/:id",
-  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  "/update/:groupId",
   updateParametersMiddleware,
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  upload.single("image"),
   async (req, res) => {
-    const groupId=req.params.id;
-    const {  name, description } = req.body;
+    const { groupId } = req.params;
+
+    const schema = J.object({
+      name: J.string().min(3).optional(),
+      description: J.string().allow("").optional(),
+    });
+
+    const { error: validationError } = schema.validate(req.body);
+    if (validationError) {
+      res.status(400).json({ message: validationError.message });
+      return;
+    }
+
+    const { name, description } = req.body;
     const file = req.file;
 
     let data;
@@ -172,18 +185,15 @@ groupsRouter.post(
       });
     }
 
-    const { group, error } = data;
+    const { group, error, errorReason } = data;
     if (error) {
       if (error === GroupError.NOT_FOUND) {
-        res.status(404).json({ message: "Group does not exist" });
-        return;
-      } else if (error === GroupError.UNHANDLED) {
-        res.status(404).json({ message: "Something went wrong" });
-        return;
+        res.status(404).json({ message: "Group not found" });
+      } else {
+        res.status(500).json({ error, errorReason });
       }
-      res.status(500).json({ error });
     } else {
-      res.status(200).json(group);
+      res.json(group);
     }
   },
 );
