@@ -12,6 +12,7 @@ import {
   deleteGroup,
   getUserGroups,
   getUsersByGroup,
+  removeUserFromGroup,
   updateGroup,
   updateGroupWithFile,
 } from "../app/groups";
@@ -219,6 +220,39 @@ groupsRouter.post(
     const groupId = req.params.id;
 
     await addUserToGroup({ groupId, userId });
+    res.status(200).send();
+  },
+);
+
+groupsRouter.post(
+  "/:id/remove-user",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res, next) => {
+    const schema = J.object({
+      userId: J.string().required(),
+    });
+    const { error: validationError } = schema.validate(req.query);
+    if (validationError) {
+      res.status(400).json({ message: validationError.message });
+      return;
+    }
+
+    next();
+  },
+  async (req, res) => {
+    const userId = req.query.userId as string;
+    const groupId = req.params.id;
+
+    const { error, errorReason } = await removeUserFromGroup({
+      groupId,
+      userId,
+    });
+    if (error) {
+      res.status(500).json({ error, errorReason });
+      console.error(errorReason);
+      return;
+    }
+
     res.status(200).send();
   },
 );

@@ -5,9 +5,10 @@ import { IUser } from "../../types";
 
 export interface IListSearchProps {
   agent: IUser;
+  deleteAgent: () => void;
 }
 
-export const SearchAgentRow = ({ agent }: IListSearchProps) => {
+export const SearchAgentRow = ({ agent, deleteAgent }: IListSearchProps) => {
   return (
     <>
       <Table.Row key={agent.id} className="border-2 border-gray-300">
@@ -29,6 +30,7 @@ export const SearchAgentRow = ({ agent }: IListSearchProps) => {
             size={20}
             color="#A11A1A"
             className="cursor-pointer transition-all ease-in-out hover:scale-150"
+            onClick={deleteAgent}
           />
         </Table.Cell>
       </Table.Row>

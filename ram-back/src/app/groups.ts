@@ -103,6 +103,26 @@ export async function addUserToGroup(params: {
     }));
 }
 
+export async function removeUserFromGroup(params: {
+  userId: string;
+  groupId: string;
+}): Promise<{ error?: GroupError; errorReason?: Error }> {
+  const ds = await getDataSource();
+
+  return ds
+    .createQueryBuilder()
+    .delete()
+    .from(GroupUserEnt)
+    .where("group_id = :groupId", { groupId: params.groupId })
+    .andWhere("user_id = :userId", { userId: params.userId })
+    .execute()
+    .then(() => ({}))
+    .catch((e) => ({
+      error: GroupError.UNHANDLED,
+      errorReason: e,
+    }));
+}
+
 export async function getUsersByGroup(groupId: string): Promise<UserEnt[]> {
   const ds = await getDataSource();
 

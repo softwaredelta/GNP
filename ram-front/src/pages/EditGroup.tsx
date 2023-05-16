@@ -51,7 +51,13 @@ export default function EditGroup() {
           </div>
           <div className="flex min-h-[26%] w-full justify-center gap-10">
             <div className="col-span-3">
-              {groupAgents && <SearchAgentTable agents={groupAgents ?? []} />}
+              {groupAgents && (
+                <SearchAgentTable
+                  onReloadAgents={() => updateGroupAgents()}
+                  groupId={id}
+                  agents={groupAgents ?? []}
+                />
+              )}
               <AgentFuzzyFinder
                 groupId={id}
                 onReloadAgents={() => updateGroupAgents()}
