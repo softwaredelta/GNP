@@ -59,7 +59,7 @@ export default function VerifySalesRow({
     }).then((result) => {
       if (result.isConfirmed && callback) {
         callback({
-            statusChange,
+          statusChange,
         });
         Swal.fire(
           `¡${statusChange}!`,
