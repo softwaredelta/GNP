@@ -5,7 +5,7 @@ import {
   fuzzyFinderQuery$,
   fuzzyFinderUsers$,
 } from "../../lib/api/api-agent-fuzzy-finder";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useLoadable } from "../../lib/loadable";
 import { IUser } from "../../types";
 import { accessToken$ } from "../../lib/api/api-auth";
@@ -32,12 +32,19 @@ function FuzzyFinderUser({
 export default function AgentFuzzyFinder({
   onReloadAgents,
   groupId,
+  groupAgents,
 }: {
   onReloadAgents: () => void;
   groupId: string;
+  groupAgents: IUser[];
 }) {
   const setQuery = useSetRecoilState(fuzzyFinderQuery$);
-  const [users /*, state*/] = useLoadable([], fuzzyFinderUsers$);
+  const [allUsers /*, state*/] = useLoadable([], fuzzyFinderUsers$);
+  const users = useMemo(() => {
+    return allUsers.filter((user) => {
+      return !groupAgents.some((groupAgent) => groupAgent.id === user.id);
+    });
+  }, [allUsers, groupAgents]);
   const [timer, setTimer] = useState<null | ReturnType<typeof setTimeout>>(
     null,
   );
@@ -63,7 +70,9 @@ export default function AgentFuzzyFinder({
   const addUser = useCallback(
     async (userId: string) => {
       await fetch(
-        `${apiBase}/groups/${groupId}/add-user?userId=${encodeURIComponent(userId)}`,
+        `${apiBase}/groups/${groupId}/add-user?userId=${encodeURIComponent(
+          userId,
+        )}`,
         {
           method: "POST",
           headers: {

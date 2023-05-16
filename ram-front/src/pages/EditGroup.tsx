@@ -55,6 +55,7 @@ export default function EditGroup() {
               <AgentFuzzyFinder
                 groupId={id}
                 onReloadAgents={() => updateGroupAgents()}
+                groupAgents={groupAgents ?? []}
               />
             </div>
             <div className="col-span-3">
