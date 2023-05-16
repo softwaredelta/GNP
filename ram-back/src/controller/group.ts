@@ -10,6 +10,8 @@ import {
   deleteGroup,
   getUserGroups,
   getUsersByGroup,
+  updateGroup,
+  updateGroupWithFile,
 } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
@@ -120,6 +122,60 @@ groupsRouter.post(
     if (error) {
       if (error === GroupError.CONFLICT) {
         res.status(409).json({ message: "Group already exists" });
+        return;
+      }
+      res.status(500).json({ error });
+    } else {
+      res.status(201).json(group);
+    }
+  },
+);
+
+groupsRouter.post(
+  "/update",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  upload.single("image"),
+  async (req, res) => {
+    const schema = J.object({
+      groupId: J.string().required(),
+      name: J.string().min(3),
+      description: J.string().allow(""),
+    });
+
+    const { error: validationError } = schema.validate(req.body);
+    if (validationError) {
+      res.status(400).json({ message: validationError.message });
+      return;
+    }
+
+    const { groupId, name, description } = req.body;
+    const file = req.file;
+
+    let data;
+    if (file) {
+      data = await updateGroupWithFile({
+        groupId,
+        name,
+        description,
+        imageFile: file,
+      });
+    } else {
+      data = await updateGroup({
+        groupId,
+        name,
+        description,
+      });
+    }
+
+    const { group, error } = data;
+    if (error) {
+      if (error === GroupError.NOT_FOUND) {
+        res.status(404).json({ message: "Group does not exist" });
+        return;
+      }
+      else if(error === GroupError.UNHANDLED
+      ){
+        res.status(404).json({ message: "Something went wrong" });
         return;
       }
       res.status(500).json({ error });
