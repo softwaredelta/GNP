@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import * as J from "joi";
 import multer from "multer";
 import {
@@ -17,9 +17,25 @@ import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
 import { UserRole } from "../entities/user.entity";
 import { authMiddleware } from "./user";
+import * as j from "joi";
 
 export const groupsRouter = Router();
 const upload = multer();
+
+const updateParameters = j.object({
+  name: j.string(),
+  description: j.string(),
+  imageUrl: j.string(),
+});
+
+const updateParametersMiddleware: RequestHandler = (req, res, next) => {
+  const { error } = updateParameters.validate(req.body);
+  if (error) {
+    res.status(400).json({ message: "BAD_DATA", reason: error });
+    return;
+  }
+  next();
+};
 
 groupsRouter.get(
   "/all",
@@ -132,22 +148,10 @@ groupsRouter.post(
 );
 
 groupsRouter.post(
-  "/update",
+  "/update/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
-  upload.single("image"),
+  updateParametersMiddleware,
   async (req, res) => {
-    const schema = J.object({
-      groupId: J.string().required(),
-      name: J.string().min(3),
-      description: J.string().allow(""),
-    });
-
-    const { error: validationError } = schema.validate(req.body);
-    if (validationError) {
-      res.status(400).json({ message: validationError.message });
-      return;
-    }
-
     const { groupId, name, description } = req.body;
     const file = req.file;
 
@@ -172,9 +176,7 @@ groupsRouter.post(
       if (error === GroupError.NOT_FOUND) {
         res.status(404).json({ message: "Group does not exist" });
         return;
-      }
-      else if(error === GroupError.UNHANDLED
-      ){
+      } else if (error === GroupError.UNHANDLED) {
         res.status(404).json({ message: "Something went wrong" });
         return;
       }
