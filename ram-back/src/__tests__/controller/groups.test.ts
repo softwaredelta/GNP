@@ -206,4 +206,93 @@ describe("controller:groups", () => {
       });
     });
   });
+
+  describe("update group endpoint", () => {
+    describe("autentication", () => {
+      it("rejects unauthenticated requests", async () => {
+        return request(app)
+          .post(`/groups/update/${group.id}`)
+          .send({
+            name: "group/1",
+            description: "description",
+          })
+          .expect(401);
+      });
+
+      it("rejects requests from non-managers", async () => {
+        return request(app)
+          .post(`/groups/update/${group.id}`)
+          .set("Authorization", `Bearer ${regularAccessToken}`)
+          .send({
+            name: "group/1",
+            description: "description",
+          })
+          .expect(403);
+      });
+
+      it("accepts manager requests", async () => {
+        return request(app)
+          .post(`/groups/update/${group.id}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .send({
+            name: "group-updated",
+            description: "description-updated",
+          })
+          .expect(200);
+      });
+    });
+
+    describe("validation", () => {
+      it("rejects non existing group update", async () => {
+        return request(app)
+          .post(`/groups/update/sombad-id`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .send({
+            name: "group-updated",
+            description: "description-updated",
+          })
+          .expect(404);
+      });
+
+      it("accepts update without image", async () => {
+        return request(app)
+          .post(`/groups/update/${group.id}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .send({
+            name: "group-updated",
+            description: "description-updated",
+          })
+          .expect(200);
+      });
+    });
+
+    describe("image file handling", () => {
+      it("uploads image file", async () => {
+        // keeps file extension
+        // saves file contents correctly
+        // fileURL is only filename, no path
+        const fileContents = "file contents";
+        const fileName = "file.png";
+        const file = {
+          buffer: Buffer.from(fileContents),
+          originalname: fileName,
+          encoding: "utf-8",
+          mimetype: "image/png",
+        } as Express.Multer.File;
+
+        await request(app)
+          .post(`/groups/update/${group.id}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .attach("image", file.buffer, file.originalname)
+          .field("name", "group/1")
+          .field("description", "description")
+          .expect(200)
+          .then((res) => {
+            expect(res.body).toHaveProperty("imageUrl");
+            expect(res.body.imageURL).toMatch(/\d+\.png/);
+            expect(res.body.imageURL).not.toMatch(/http/);
+          });
+      });
+    });
+  });
 });
