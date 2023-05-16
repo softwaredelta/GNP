@@ -224,3 +224,18 @@ export async function updateGroup(params: {
       group: {} as GroupEnt,
     }));
 }
+
+export async function updateGroupWithFile(params: {
+  groupId: string;
+  name?: string;
+  description?: string;
+  imageFile: Express.Multer.File;
+}): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
+  const filename = await uploadFile({ file: params.imageFile });
+  return updateGroup({
+    groupId: params.groupId,
+    name: params.name,
+    description: params.description,
+    imageURL: filename,
+  });
+}

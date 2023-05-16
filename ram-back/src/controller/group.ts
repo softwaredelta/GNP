@@ -1,7 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import * as J from "joi";
+import * as j from "joi";
 import multer from "multer";
 import {
   GroupError,
@@ -10,6 +11,8 @@ import {
   deleteGroup,
   getUserGroups,
   getUsersByGroup,
+  updateGroup,
+  updateGroupWithFile,
 } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
@@ -18,6 +21,21 @@ import { authMiddleware } from "./user";
 
 export const groupsRouter = Router();
 const upload = multer();
+
+const updateParameters = j.object({
+  name: j.string(),
+  description: j.string(),
+  imageUrl: j.string(),
+});
+
+const updateParametersMiddleware: RequestHandler = (req, res, next) => {
+  const { error } = updateParameters.validate(req.body);
+  if (error) {
+    res.status(400).json({ message: "BAD_DATA", reason: error });
+    return;
+  }
+  next();
+};
 
 groupsRouter.get(
   "/all",
@@ -125,6 +143,57 @@ groupsRouter.post(
       res.status(500).json({ error });
     } else {
       res.status(201).json(group);
+    }
+  },
+);
+
+groupsRouter.post(
+  "/update/:groupId",
+  updateParametersMiddleware,
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  upload.single("image"),
+  async (req, res) => {
+    const { groupId } = req.params;
+
+    const schema = J.object({
+      name: J.string().min(3).optional(),
+      description: J.string().allow("").optional(),
+    });
+
+    const { error: validationError } = schema.validate(req.body);
+    if (validationError) {
+      res.status(400).json({ message: validationError.message });
+      return;
+    }
+
+    const { name, description } = req.body;
+    const file = req.file;
+
+    let data;
+    if (file) {
+      data = await updateGroupWithFile({
+        groupId,
+        name,
+        description,
+        imageFile: file,
+      });
+    } else {
+      data = await updateGroup({
+        groupId,
+        name,
+        description,
+      });
+    }
+
+    const { group, error, errorReason } = data;
+    if (error) {
+      if (error === GroupError.NOT_FOUND) {
+        res.status(404).json({ message: "Group not found" });
+      } else {
+        res.status(500).json({ error, errorReason });
+      }
+    } else {
+      res.json(group);
     }
   },
 );
