@@ -64,7 +64,7 @@ export interface IUser {
 export interface IGroup {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   imageURL: string;
   progress: number;
   groupUsers?: IUser[];

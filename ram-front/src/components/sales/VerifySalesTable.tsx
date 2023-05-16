@@ -36,7 +36,6 @@ export const VerifySalesTable = ({ sales }: IListSalesProps) => {
   const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
   useEffect(() => {
     if (shouldUpdate) {
-      // onUpdated();
       setShouldUpdate(false);
     }
   }, [shouldUpdate]);

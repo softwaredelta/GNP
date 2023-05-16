@@ -2,12 +2,13 @@
 
 import { Root, createRoot } from "react-dom/client";
 import "@testing-library/jest-dom/extend-expect";
-import { screen, render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import { RenderTest } from "./fixtures";
 import ManagerCourses from "../pages/ManagerGroups";
 import { RecoilRoot } from "recoil";
+import ModalGroupForm from "../components/forms/ModalGroupForm";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
@@ -115,7 +116,11 @@ describe("Add new group", () => {
   let container: HTMLDivElement;
   beforeEach(() => {
     container = document.createElement("div");
+    const portal = document.createElement("div");
+
+    portal.setAttribute("id", "modal-root");
     document.body.appendChild(container);
+    document.body.appendChild(portal);
 
     root = createRoot(container);
   });
@@ -129,8 +134,36 @@ describe("Add new group", () => {
     await test.start();
 
     await waitFor(() => {
-      const button = screen.getByText("Agregar");
-      expect(button).toBeInTheDocument();
+      const addButton = screen.getByText("Agregar");
+      expect(addButton).toBeInTheDocument();
     });
+  });
+
+  it("renders add group modal", async () => {
+    const mockPostHandler = jest.fn();
+    const mockToggleHandler = jest.fn();
+
+    const test = new RenderTest(
+      "add-group-modal",
+      (
+        <ModalGroupForm
+          handlePost={mockPostHandler}
+          isOpenModal={true}
+          closeModal={mockToggleHandler}
+        />
+      ),
+      root,
+    );
+    await test.start();
+
+    const title = screen.getByText("Agregar grupo");
+    expect(title).toBeInTheDocument();
+
+    const buttonClose = screen.getByText("Cancelar");
+    expect(buttonClose).toBeInTheDocument();
+
+    fireEvent.click(buttonClose);
+
+    expect(mockToggleHandler).toBeCalled();
   });
 });
