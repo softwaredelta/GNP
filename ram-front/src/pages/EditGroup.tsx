@@ -12,7 +12,7 @@ import { IGroup, IUser } from "../types";
 import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
 
 export default function EditGroup() {
-  const { id } = useParams();
+  const id = useParams().id as string;
   const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
     useModal();
 
@@ -20,7 +20,9 @@ export default function EditGroup() {
     url: `groups/${id}`,
     method: "GET",
   });
-  const { response: groupAgents } = useAxios<IUser[]>({
+  const { response: groupAgents, callback: updateGroupAgents } = useAxios<
+    IUser[]
+  >({
     url: `groups/users/${id}`,
     method: "GET",
   });
@@ -50,7 +52,10 @@ export default function EditGroup() {
           <div className="flex min-h-[26%] w-full justify-center gap-10">
             <div className="col-span-3">
               {groupAgents && <SearchAgentTable agents={groupAgents ?? []} />}
-              <AgentFuzzyFinder />
+              <AgentFuzzyFinder
+                groupId={id}
+                onReloadAgents={() => updateGroupAgents()}
+              />
             </div>
             <div className="col-span-3">
               {group && (

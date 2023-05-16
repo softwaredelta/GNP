@@ -17,7 +17,7 @@ export interface IUseAxiosReturn<T> {
   response: T | null;
   error?: AxiosError | unknown;
   loading?: boolean;
-  callback?: (newBody?: object) => void;
+  callback: (newBody?: object) => void;
 }
 
 export default function useAxios<T>({

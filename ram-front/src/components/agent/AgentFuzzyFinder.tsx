@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   fuzzyFinderQuery$,
   fuzzyFinderUsers$,
@@ -8,6 +8,8 @@ import {
 import { useCallback, useState } from "react";
 import { useLoadable } from "../../lib/loadable";
 import { IUser } from "../../types";
+import { accessToken$ } from "../../lib/api/api-auth";
+import { apiBase$ } from "../../lib/api/api-base";
 
 const TIMER_DELAY = 300;
 
@@ -27,13 +29,21 @@ function FuzzyFinderUser({
   );
 }
 
-export default function AgentFuzzyFinder() {
+export default function AgentFuzzyFinder({
+  onReloadAgents,
+  groupId,
+}: {
+  onReloadAgents: () => void;
+  groupId: string;
+}) {
   const setQuery = useSetRecoilState(fuzzyFinderQuery$);
   const [users /*, state*/] = useLoadable([], fuzzyFinderUsers$);
   const [timer, setTimer] = useState<null | ReturnType<typeof setTimeout>>(
     null,
   );
   const [selectedItem, setSelectedItem] = useState<null | number>(null);
+  const accessToken = useRecoilValue(accessToken$);
+  const apiBase = useRecoilValue(apiBase$);
 
   const updateQuery = useCallback(
     (query: string) => {
@@ -48,6 +58,21 @@ export default function AgentFuzzyFinder() {
       setTimer(newTimer);
     },
     [setQuery, timer],
+  );
+
+  const addUser = useCallback(
+    async (userId: string) => {
+      await fetch(
+        `${apiBase}/groups/${groupId}/add-user?userId=${encodeURIComponent(userId)}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+    },
+    [accessToken, apiBase],
   );
 
   const handleKeyDown = useCallback(
@@ -72,11 +97,15 @@ export default function AgentFuzzyFinder() {
         event.preventDefault();
         // Handle selection on pressing Enter
         if (selectedItem !== null) {
-          // console.log({ selected: users[selectedItem] });
+          const userId = users[selectedItem].id;
+          (async () => {
+            await addUser(userId);
+            onReloadAgents();
+          })();
         }
       }
     },
-    [selectedItem, users],
+    [addUser, onReloadAgents, selectedItem, users],
   );
 
   return (
