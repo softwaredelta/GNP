@@ -58,6 +58,7 @@ export default function EditGroup() {
                   agents={groupAgents ?? []}
                 />
               )}
+              <div className="mt-4" />
               <AgentFuzzyFinder
                 groupId={id}
                 onReloadAgents={() => updateGroupAgents()}
