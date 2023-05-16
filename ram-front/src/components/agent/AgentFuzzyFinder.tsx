@@ -11,7 +11,7 @@ import { IUser } from "../../types";
 import { accessToken$ } from "../../lib/api/api-auth";
 import { apiBase$ } from "../../lib/api/api-base";
 
-const TIMER_DELAY = 300;
+const TIMER_DELAY = 150;
 
 function FuzzyFinderUser({
   selected,
