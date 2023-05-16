@@ -17,16 +17,22 @@ const TIMER_DELAY = 150;
 function FuzzyFinderUser({
   selected,
   user,
+  onClick,
 }: {
   selected: boolean;
   user: IUser;
+  onClick: () => void;
 }) {
-  const selectedClass = selected ? "bg-blue-500 border-blue-700 border-1" : "";
+  const selectedClass = selected
+    ? "text-white bg-gnp-blue-200 border-blue-700 border-1"
+    : "";
 
   return (
-    <div className={`${selectedClass}`}>
-      {user.name} {user.lastName}
-    </div>
+    <li className={`${selectedClass} border-b-2 px-4 py-1`}>
+      <button onClick={onClick}>
+        {user.name} {user.lastName}
+      </button>
+    </li>
   );
 }
 
@@ -121,20 +127,31 @@ export default function AgentFuzzyFinder({
   );
 
   return (
-    <>
+    <div className="flex flex-col">
       <input
         type="text"
+        placeholder="Agregar agente. Comienza a escribir un nombre..."
         onChange={(e) => updateQuery(e.target.value)}
         onKeyDown={handleKeyDown}
+        className="rounded-lg shadow-md"
       />
       {/* <p>{state}</p> */}
-      {users.map((user, index) => (
-        <FuzzyFinderUser
-          key={user.id}
-          selected={selectedItem !== null && selectedItem === index}
-          user={user}
-        />
-      ))}
-    </>
+      <div className="relative w-full">
+        <ul className="absolute top-0 w-full bg-white">
+          {users.map((user, index) => (
+            <FuzzyFinderUser
+              key={user.id}
+              selected={selectedItem !== null && selectedItem === index}
+              user={user}
+              onClick={async () => {
+                await addUser(user.id);
+                onReloadAgents();
+                updateGroups();
+              }}
+            />
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }
