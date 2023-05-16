@@ -1,11 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
 
-import Wrapper from "../containers/Wrapper";
 import { useRecoilValue } from "recoil";
-import { allCourses$ } from "../lib/api/api-courses";
-import { ManagerListGroups } from "../components/groups/ManagerListGroups";
-import useModal from "../hooks/useModal";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
+import { ManagerListGroups } from "../components/groups/ManagerListGroups";
+import Wrapper from "../containers/Wrapper";
+import useModal from "../hooks/useModal";
+import { allCourses$ } from "../lib/api/api-courses";
 
 // Manager view that list all groups
 export default function ManagerCourses() {
@@ -33,6 +33,8 @@ export default function ManagerCourses() {
                 handlePost={(image, name) => {
                   alert(`Nombre: ${name} Imagen: ${image}`);
                 }}
+                title="Agregar Grupo"
+                initialValues=""
               />
             </div>
           </div>
