@@ -19,6 +19,7 @@ export default function ManagerCourses() {
 
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
+  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
 
   const { response, loading, error, callback } = useAxios<IGroup[]>({
     url: "groups/create",
@@ -46,7 +47,12 @@ export default function ManagerCourses() {
         updateGroups();
       }
     }
-  }, [error, response]);
+
+    if (shouldUpdate) {
+      setShouldUpdate(false);
+      
+    }
+  }, [error, response, shouldUpdate]);
 
   if (loading) {
     return <p>Loading...</p>;
