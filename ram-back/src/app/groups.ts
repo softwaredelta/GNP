@@ -7,10 +7,12 @@ import { GroupEnt } from "../entities/group.entity";
 import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { DeliveryEnt } from "../entities/delivery.entity";
 import { uploadFile } from "./file";
+import { UserEnt } from "../entities/user.entity";
 
 export enum GroupError {
   UNHANDLED = "UNHANDLED",
   CONFLICT = "CONFLICT",
+  NOT_FOUND = "NOT_FOUND",
 }
 
 export async function deleteGroup(params: {
@@ -101,6 +103,17 @@ export async function addUserToGroup(params: {
     }));
 }
 
+export async function getUsersByGroup(groupId: string): Promise<UserEnt[]> {
+  const ds = await getDataSource();
+
+  const groupUsers = await ds.manager.find(GroupUserEnt, {
+    where: { groupId },
+    relations: ["user"],
+  });
+
+  return groupUsers.map((groupUser) => groupUser.user);
+}
+
 export async function addDeliveryToGroup(params: {
   deliveryID: string;
   groupID: string;
@@ -174,4 +187,40 @@ export async function getUserGroups(params: {
       groups: [],
     };
   }
+}
+
+export async function updateGroup(params: {
+  groupId: string;
+  name?: string;
+  description?: string;
+  imageURL?: string;
+}): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
+  const ds = await getDataSource();
+
+  const existingGroup = await ds.manager.findOne(GroupEnt, {
+    where: { id: params.groupId },
+  });
+  if (!existingGroup) {
+    return {
+      error: GroupError.NOT_FOUND,
+      group: {} as GroupEnt,
+    };
+  }
+  return ds.manager
+    .update(GroupEnt, params.groupId, {
+      name: params.name,
+      description: params.description,
+      imageURL: params.imageURL,
+    })
+    .then(async () => {
+      const group = await ds.manager.findOneOrFail(GroupEnt, {
+        where: { id: params.groupId },
+      });
+      return { group };
+    })
+    .catch((e) => ({
+      error: GroupError.UNHANDLED,
+      errorReason: e,
+      group: {} as GroupEnt,
+    }));
 }

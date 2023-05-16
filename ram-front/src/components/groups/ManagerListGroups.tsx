@@ -1,5 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Card from "../generics/cards/base/Card";
 import CardInfoNumMembers from "../generics/cards/info/CardInfoNumMembers";
 import { IGroup } from "../../types";
@@ -9,12 +9,14 @@ interface Props {
 }
 
 export function ManagerListGroups({ groups }: Props) {
+  const navigate = useNavigate();
+
   return (
     <>
       {groups.length > 0 ? (
         groups.map((group) => (
           <div className=" p-10" key={group.id}>
-            <Link to={`/group/${group.id}`}>
+            <div onClick={() => navigate(`/group/${group.id}`)}>
               <Card color="blue" image={group.imageURL}>
                 <CardInfoNumMembers
                   color="blue"
@@ -23,7 +25,7 @@ export function ManagerListGroups({ groups }: Props) {
                   groupId={group.id}
                 />
               </Card>
-            </Link>
+            </div>
           </div>
         ))
       ) : (

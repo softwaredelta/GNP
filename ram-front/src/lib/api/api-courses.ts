@@ -1,13 +1,24 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { selector } from "recoil";
+import { atom, selector, useSetRecoilState } from "recoil";
 import { apiBase$, isTest$ } from "./api-base";
 import { accessToken$ } from "./api-auth";
 import { IGroup } from "../../types";
 
+const updateGroups$ = atom<number>({
+  key: "updateGroups",
+  default: 0,
+});
+
+export const useUpdateGroups = () => {
+  const setUpdateGroups = useSetRecoilState(updateGroups$);
+  return () => setUpdateGroups((n) => n + 1);
+};
+
 export const allCourses$ = selector<IGroup[]>({
   key: "allCourses$",
   get: async ({ get }): Promise<IGroup[]> => {
+    get(updateGroups$);
     const isTest = get(isTest$);
     const apiBase = get(apiBase$);
     const accessToken = get(accessToken$);

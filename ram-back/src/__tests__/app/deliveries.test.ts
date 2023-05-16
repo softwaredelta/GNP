@@ -4,6 +4,7 @@ import {
   deleteDelivery,
   getUserDeliveriesbyGroup,
   setDeliverieToUser,
+  updateDelivery,
 } from "../../app/deliveries";
 import { createGroup } from "../../app/groups";
 import { createUser } from "../../app/user";
@@ -38,6 +39,49 @@ describe("app:deliveries", () => {
       expect(delivery).toHaveProperty("description", "test-description-1");
       expect(delivery).toHaveProperty("imageUrl", "test-image-1");
       expect(delivery).toHaveProperty("groupId", group.group.id);
+    });
+  });
+
+  describe("udpate function", () => {
+    it("handles invalid delivery id", async () => {
+      const { error } = await updateDelivery({
+        deliveryId: "invalid-id",
+        deliveryName: "test-delivery-1",
+      });
+
+      expect(error).toBe("NOT_FOUND");
+    });
+
+    it("updates values correctly", async () => {
+      const group = await createGroup({
+        name: "test-group-1",
+      });
+      const delivery = await createDelivery({
+        idGroup: group.group.id,
+        deliveryName: "test-delivery-1",
+        description: "test-description-1",
+        imageUrl: "test-image-1",
+      });
+
+      const ds = await getDataSource();
+      expect(await ds.manager.find(DeliveryEnt)).toHaveLength(1);
+
+      const updated = await updateDelivery({
+        deliveryId: delivery.delivery.id,
+        deliveryName: "test-delivery-2",
+      });
+      expect(updated).toHaveProperty(
+        "delivery.deliveryName",
+        "test-delivery-2",
+      );
+      expect(await ds.manager.find(DeliveryEnt)).toHaveLength(1);
+
+      const updatedInDb = await ds.manager.findOneOrFail(DeliveryEnt, {
+        where: { id: delivery.delivery.id },
+      });
+      expect(updatedInDb).toHaveProperty("deliveryName", "test-delivery-2");
+      expect(updatedInDb).toHaveProperty("description", "test-description-1");
+      expect(updatedInDb).toHaveProperty("imageUrl", "test-image-1");
     });
   });
 

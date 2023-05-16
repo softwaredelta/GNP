@@ -58,6 +58,7 @@ export interface IUser {
   email: string;
   imageURL: string;
 }
+
 export interface IUserName {
   id: string;
   email: string;

@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 // Manager view that list all groups
 export default function ManagerCourses() {
   const groups = useRecoilValue(allCourses$);
+
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
   const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);

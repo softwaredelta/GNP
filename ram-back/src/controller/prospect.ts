@@ -4,7 +4,9 @@ import { RequestHandler, Router } from "express";
 export const prospectRouter = Router();
 import * as j from "joi";
 import { authMiddleware } from "./user";
-import { createProspect } from "../app/prospect";
+import { createProspect, getProspectStatus } from "../app/prospect";
+import { getDataSource } from "../arch/db-client";
+import { ProspectEnt } from "../entities/prospect.entity";
 
 const prospectParameters = j.object({
   name: j.string().required(),
@@ -52,3 +54,34 @@ prospectRouter.post(
     res.status(201).json(prospect);
   },
 );
+
+prospectRouter.get("/my-prospects", authMiddleware(), async (req, res) => {
+  const { user } = req;
+  if (!user) {
+    res.status(401).json({ message: "No user" });
+    return;
+  }
+
+  const userId = user.id;
+
+  const { prospects, error, reason } = await getProspectStatus({ userId });
+
+  if (error) {
+    res.status(400).json({ message: error, reason });
+    return;
+  }
+
+  res.status(200).json({ prospects });
+  return;
+});
+
+prospectRouter.get("/count-prospects-new/:id", async (req, res) => {
+  const db = await getDataSource();
+  const id = req.params.id;
+  const agents = await db.manager.count(ProspectEnt, {
+    where: {
+      userId: id,
+    },
+  });
+  res.json(agents);
+});

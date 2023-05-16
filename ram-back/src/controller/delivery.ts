@@ -5,8 +5,11 @@ import { authMiddleware } from "./user";
 import { getDataSource } from "../arch/db-client";
 import { DeliveryEnt } from "../entities/delivery.entity";
 import {
+  DeliveryError,
   createDelivery,
+  deleteDelivery,
   getUserDeliveriesbyGroup,
+  updateDelivery,
   updateDeliveryStatus,
 } from "../app/deliveries";
 import { UserRole } from "../entities/user.entity";
@@ -19,6 +22,7 @@ import { RequestHandler } from "express";
 import { getS3Api } from "../arch/s3-client";
 import path from "path";
 import multer from "multer";
+import { uploadFile } from "../app/file";
 
 export const deliveriesRouter = Router();
 
@@ -210,5 +214,72 @@ deliveriesRouter.post(
     } else {
       res.status(201).json({ delivery });
     }
+  },
+);
+
+deliveriesRouter.patch(
+  "/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  upload.single("image"),
+  async (req, res) => {
+    const schema = j.object({
+      deliveryName: j.string().optional(),
+      description: j.string().optional(),
+    });
+    const { error: validationError } = schema.validate(req.body);
+    if (validationError) {
+      res.status(400).json({ message: "BAD_DATA", reason: validationError });
+      return;
+    }
+    const body = req.body;
+    const file = req.file;
+    const id = req.params.id;
+
+    if (!file && !body.deliveryName && !body.description) {
+      res.status(400).json({ message: "BAD_DATA" });
+      return;
+    }
+
+    const imageUrl = await (async () => {
+      if (!file) return undefined;
+      return uploadFile({ file });
+    })();
+
+    const { delivery, error, errorReason } = await updateDelivery({
+      deliveryId: id,
+      deliveryName: body.deliveryName,
+      description: body.description,
+      imageUrl,
+    });
+
+    if (error && error === DeliveryError.NOT_FOUND) {
+      res.status(404).json({ error });
+      return;
+    }
+    if (error) {
+      res.status(500).json({ error: validationError, errorReason });
+      console.error(errorReason);
+      return;
+    }
+
+    res.json(delivery);
+  },
+);
+
+deliveriesRouter.delete(
+  "/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const { error, reason } = await deleteDelivery({
+      deliveryId: req.params.id,
+    });
+
+    if (error) {
+      console.error(reason);
+      res.status(500).json({ error, reason });
+      return;
+    }
+
+    res.status(200).json({ message: "Delivery deleted" });
   },
 );

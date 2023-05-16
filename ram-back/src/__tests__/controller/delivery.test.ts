@@ -14,6 +14,8 @@ import { userSeeds } from "../../seeds";
 import { UserRole } from "../../entities/user.entity";
 import { authenticateUser } from "../../app/user";
 import { truncate } from "fs";
+import { getS3Api } from "../../arch/s3-client";
+import { DeliveryEnt } from "../../entities/delivery.entity";
 
 let managerAccessToken: string;
 let accessToken: string;
@@ -159,7 +161,7 @@ describe("get all register of a delivery ", () => {
   });
 });
 
-describe("Update endpoint", () => {
+describe("Update status endpoint", () => {
   it("rejects unauthenticated request", async () => {
     return request(app)
       .post(`/deliveries/update-status/${deliveryId}`)
@@ -253,6 +255,131 @@ describe("Update endpoint", () => {
         .then((res) => {
           expect(res.body).toBeDefined();
         });
+    });
+  });
+
+  describe("update delivery data endpoint", () => {
+    describe("authentication", () => {
+      it("rejects unauthenticated request", async () => {
+        return request(app)
+          .patch(`/deliveries/${deliveryId}`)
+          .send()
+          .expect(401);
+      });
+
+      it("rejects non-manager request", async () => {
+        return request(app)
+          .patch(`/deliveries/${deliveryId}`)
+          .set("Authorization", `Bearer ${accessTokenInvalid}`)
+          .send()
+          .expect(403);
+      });
+
+      it("accepts manager request", async () => {
+        return request(app)
+          .patch(`/deliveries/${deliveryId}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .send({
+            deliveryName: "new name",
+          })
+          .expect(200);
+      });
+    });
+
+    describe("validation", () => {
+      it("rejects empty request", async () => {
+        return request(app)
+          .patch(`/deliveries/${deliveryId}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .send({})
+          .expect(400);
+      });
+
+      it("accepts request that only changes some field", async () => {
+        return request(app)
+          .patch(`/deliveries/${deliveryId}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .send({
+            description: "new description",
+          })
+          .expect(200);
+      });
+
+      it("accepts request that sends fields and image file", async () => {
+        const fileContents = "file contents";
+        const fileName = "file.png";
+        const file = {
+          buffer: Buffer.from(fileContents),
+          originalname: fileName,
+          encoding: "utf-8",
+          mimetype: "image/png",
+        } as Express.Multer.File;
+
+        return request(app)
+          .patch(`/deliveries/${deliveryId}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .attach("image", file.buffer, file.originalname)
+          .field("deliveryName", "new name")
+          .field("description", "new description")
+          .expect(200);
+      });
+    });
+
+    describe("functionality", () => {
+      it("handles invalid delivery id", async () => {
+        return request(app)
+          .patch(`/deliveries/12345`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .send({
+            deliveryName: "new name",
+          })
+          .expect(404);
+      });
+
+      it("uploads file data correctly", async () => {
+        const fileContents = "file contents";
+        const fileName = "file.png";
+        const file = {
+          buffer: Buffer.from(fileContents),
+          originalname: fileName,
+          encoding: "utf-8",
+          mimetype: "image/png",
+        } as Express.Multer.File;
+
+        const response = await request(app)
+          .patch(`/deliveries/${deliveryId}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .attach("image", file.buffer, file.originalname)
+          .field("deliveryName", "new name")
+          .field("description", "new description")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body).toHaveProperty("imageUrl");
+            expect(body.imageUrl).toMatch(/\d+\.png/);
+            return body;
+          });
+
+        const s3 = await getS3Api();
+        const uploadedFile = await s3.getObjectPromise(response.imageUrl);
+        expect(uploadedFile.toString()).toBe("file contents");
+      });
+
+      it("updates fields correctly", async () => {
+        await request(app)
+          .patch(`/deliveries/${deliveryId}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .send({
+            description: "new description",
+          })
+          .expect(200);
+
+        const ds = await getDataSource();
+        const delivery = await ds.manager.findOneOrFail(DeliveryEnt, {
+          where: { id: deliveryId },
+        });
+        expect(delivery.description).toBe("new description");
+        expect(delivery.deliveryName).toBe("test_delivery");
+      });
     });
   });
 });

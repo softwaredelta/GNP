@@ -1,19 +1,20 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { authMiddleware } from "./user";
+import { Router } from "express";
+import * as J from "joi";
+import multer from "multer";
 import {
   GroupError,
   createGroup,
   createGroupWithFile,
-  getUserGroups,
   deleteGroup,
+  getUserGroups,
+  getUsersByGroup,
 } from "../app/groups";
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
-import { Router } from "express";
 import { UserRole } from "../entities/user.entity";
-import * as J from "joi";
-import multer from "multer";
+import { authMiddleware } from "./user";
 
 export const groupsRouter = Router();
 const upload = multer();
@@ -56,6 +57,19 @@ groupsRouter.get("/:id", async (req, res) => {
 
   res.json(groups);
 });
+
+groupsRouter.get(
+  "/users/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    try {
+      const groupUsers = await getUsersByGroup(req.params.id);
+      res.json(groupUsers);
+    } catch (error) {
+      res.status(500).json({ message: "Error retrieving group users", error });
+    }
+  },
+);
 
 groupsRouter.delete(
   "/:id",
