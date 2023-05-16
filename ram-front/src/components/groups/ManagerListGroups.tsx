@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Card from "../generics/cards/base/Card";
 import CardInfoNumMembers from "../generics/cards/info/CardInfoNumMembers";
 import { IGroup } from "../../types";
+import { useUrlFile } from "../../lib/files";
 
 interface Props {
   groups: IGroup[];
 }
 
 export function ManagerListGroups({ groups }: Props) {
+  const fileUrl = useUrlFile();
   const navigate = useNavigate();
 
   return (
@@ -17,7 +19,7 @@ export function ManagerListGroups({ groups }: Props) {
         groups.map((group) => (
           <div className=" p-10" key={group.id}>
             <div onClick={() => navigate(`/group/${group.id}`)}>
-              <Card color="blue" image={group.imageURL}>
+              <Card color="blue" image={fileUrl(group.imageURL)}>
                 <CardInfoNumMembers
                   color="blue"
                   nameGroup={group.name}
