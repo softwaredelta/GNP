@@ -1,9 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 import { BsFillPeopleFill } from "react-icons/bs";
-import { FiTrash2, FiEdit } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAxios from "../../../../hooks/useAxios";
-import { Link } from "react-router-dom";
 
 export interface ICardInfoNumMembersProps {
   nameGroup: string;
