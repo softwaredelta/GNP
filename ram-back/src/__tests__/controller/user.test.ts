@@ -4,6 +4,7 @@ import request from "supertest";
 import { app } from "../../controller";
 import { authenticateUser, createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
+import { userSeeds } from "../../seeds";
 
 describe("controller:user", () => {
   beforeEach(async () => {
@@ -214,6 +215,63 @@ describe("controller:user", () => {
         .then((res) => {
           expect(res.body).toHaveProperty("message", "Invalid token");
         });
+    });
+  });
+
+  describe("fuzzy user search", () => {
+    beforeEach(async () => {
+      await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+      });
+      await createUser({
+        email: "test-u-2@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "2",
+      });
+      await createUser({
+        email: "test-u-3@delta.tec.mx",
+        password: "password",
+        name: "Example Person",
+        lastName: "1",
+      });
+      await createUser({
+        email: "test-u-4@delta.tec.mx",
+        password: "password",
+        name: "Example Person",
+        lastName: "2",
+      });
+    });
+
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .get("/user/fuzzy-search")
+        .query({ query: "use" })
+        .send()
+        .expect(401);
+    });
+
+    it("returns users with matching name", async () => {
+      await userSeeds();
+      const managerAccessToken = await authenticateUser({
+        email: "manager@delta.tec.mx",
+        password: "password",
+      }).then(({ auth }) => auth.accessToken);
+
+      const users = await request(app)
+        .get("/user/fuzzy-search")
+        .query({ query: "use" })
+        .set("Authorization", `Bearer ${managerAccessToken}`)
+        .send()
+        .expect(200)
+        .then((res) => res.body);
+
+      expect(users).toHaveLength(2);
+      expect(users[0]).toHaveProperty("name", "Test User");
+      expect(users[1]).toHaveProperty("name", "Test User");
     });
   });
 });

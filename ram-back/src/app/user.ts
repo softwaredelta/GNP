@@ -199,6 +199,7 @@ export async function fuzzySearchUsers(params: {
     .orWhere("UserEnt.lastName LIKE :query", {
       query: `%${params.query.toLowerCase()}%`,
     })
+    .orderBy("UserEnt.name", "ASC")
     .getMany();
 
   return users;
