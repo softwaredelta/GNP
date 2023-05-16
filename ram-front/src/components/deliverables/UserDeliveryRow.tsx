@@ -84,8 +84,8 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
       if (result.isConfirmed && callback) {
         const bool = statusChange === "aceptado" ? true : false;
         callback({
-          statusChange: bool,
-          userId: delivery.user?.id,
+            statusChange: bool,
+            userId: delivery.user?.id,
         });
         Swal.fire(
           `¡${statusChange}!`,
