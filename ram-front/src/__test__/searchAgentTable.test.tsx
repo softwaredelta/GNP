@@ -22,7 +22,7 @@ describe("New Search Agent Table", () => {
     it("redirects to login", async () => {
       const test = new RenderTest(
         "authentication-0",
-        <SearchAgentTable agents={[]} />,
+        <SearchAgentTable groupId="" onReloadAgents={() => {}} agents={[]} />,
         root,
       );
       await test.start();
@@ -38,6 +38,8 @@ describe("New Search Agent Table", () => {
         "authentication-0",
         (
           <SearchAgentTable
+            groupId=""
+            onReloadAgents={() => {}}
             agents={[
               {
                 id: "1",
