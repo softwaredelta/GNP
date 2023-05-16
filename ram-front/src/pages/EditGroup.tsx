@@ -30,6 +30,14 @@ export default function EditGroup() {
     method: "GET",
   });
 
+  const { response, error, callback } = useAxios({
+    url: `groups/update/${id}`,
+    method: "PUT",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
   return (

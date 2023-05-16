@@ -150,7 +150,7 @@ groupsRouter.post(
   },
 );
 
-groupsRouter.post(
+groupsRouter.put(
   "/update/:groupId",
   updateParametersMiddleware,
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
