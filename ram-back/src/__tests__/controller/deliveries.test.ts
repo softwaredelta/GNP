@@ -8,12 +8,16 @@ import { createGroup } from "../../app/groups";
 import { createDelivery } from "../../app/deliveries";
 import { setDeliverieToUser } from "../../app/deliveries";
 import { StatusUserDelivery } from "../../entities/user-delivery.entity";
+import { DeliveryEnt } from "../../entities/delivery.entity";
+import { userSeeds } from "../../seeds";
 
 describe("controller:deliveries", () => {
   let accessToken: string;
+  let managerAccessToken: string;
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.synchronize(true);
+    await userSeeds();
 
     const { error: userError } = await createUser({
       email: "test@delta.tec.mx",
@@ -34,6 +38,17 @@ describe("controller:deliveries", () => {
     }
 
     accessToken = auth.accessToken;
+
+    const { auth: managerAuth, error: managerAuthError } =
+      await authenticateUser({
+        email: "manager@delta.tec.mx",
+        password: "password",
+      });
+    if (managerAuthError) {
+      throw new Error(managerAuthError);
+    }
+
+    managerAccessToken = managerAuth.accessToken;
   });
 
   describe("query endpoint", () => {
@@ -84,6 +99,53 @@ describe("controller:deliveries", () => {
         .then((res) => {
           expect(res.status).toBe(200);
         });
+    });
+  });
+
+  describe("delete endpoint", () => {
+    it("rejects unauthenticated request", async () => {
+      return request(app).delete("/deliveries/test-delivery-id").expect(401);
+    });
+
+    it("deletes given delivery", async () => {
+      const group1 = await createGroup({ name: "test-group-1" });
+      const group2 = await createGroup({ name: "test-group-2" });
+      const delivery1 = await createDelivery({
+        idGroup: group1.group.id,
+        deliveryName: "test-delivery-1",
+        description: "test-description-1",
+        imageUrl: "test-image-url-1",
+      });
+      await createDelivery({
+        idGroup: group2.group.id,
+        deliveryName: "test-delivery-2",
+        description: "test-description-2",
+        imageUrl: "test-image-url-2",
+      });
+
+      await setDeliverieToUser({
+        idUser: "1",
+        idDeliverie: delivery1.delivery.id,
+        dateDelivery: new Date("2023-04-25"),
+        status: StatusUserDelivery.withoutSending,
+        fileUrl: "test-file-url",
+      });
+
+      await request(app)
+        .delete(`/deliveries/${delivery1.delivery.id}`)
+        .set("Authorization", `Bearer ${managerAccessToken}`)
+        .expect(200)
+        .then((res) => {
+          expect(res.body).toHaveProperty("message", "Delivery deleted");
+        });
+
+      const ds = await getDataSource();
+      const deliveries = await ds.manager.findOne(DeliveryEnt, {
+        where: {
+          id: delivery1.delivery.id,
+        },
+      });
+      expect(deliveries).toBeNull();
     });
   });
 });
