@@ -2,7 +2,7 @@
 
 import Wrapper from "../containers/Wrapper";
 import { useRecoilValue } from "recoil";
-import { allCourses$, useUpdateGroups } from "../lib/api/api-courses";
+import { allCourses$ } from "../lib/api/api-courses";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import useModal from "../hooks/useModal";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
@@ -10,8 +10,6 @@ import ModalGroupForm from "../components/forms/ModalGroupForm";
 // Manager view that list all groups
 export default function ManagerCourses() {
   const groups = useRecoilValue(allCourses$);
-
-  const updateGroups = useUpdateGroups();
 
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
@@ -39,10 +37,7 @@ export default function ManagerCourses() {
             </div>
           </div>
           <div className="grid place-items-center md:grid-cols-4">
-            <ManagerListGroups
-              groups={groups}
-              onDeleted={() => updateGroups()}
-            ></ManagerListGroups>
+            <ManagerListGroups groups={groups}></ManagerListGroups>
           </div>
         </div>
       </Wrapper>

@@ -4,26 +4,27 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAxios from "../../../../hooks/useAxios";
+import { useUpdateGroups } from "../../../../lib/api/api-courses";
 
 export interface ICardInfoNumMembersProps {
   nameGroup: string;
   number: number;
   color: "blue" | "orange";
   groupId: string;
-  onDeleted: () => void;
 }
 
 export default function CardInfoNumMembers({
   nameGroup,
   number,
   groupId,
-  onDeleted,
 }: ICardInfoNumMembersProps): JSX.Element {
   const { callback } = useAxios({
     url: `groups/${groupId}`,
     method: "DELETE",
     body: {},
   });
+
+  const updateGroups = useUpdateGroups();
 
   function handleDelete() {
     Swal.fire({
@@ -38,7 +39,7 @@ export default function CardInfoNumMembers({
         callback();
         Swal.fire("Eliminado", "El grupo ha sido eliminado", "success").then(
           () => {
-            onDeleted();
+            updateGroups();
           },
         );
       }
