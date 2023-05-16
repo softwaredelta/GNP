@@ -1,9 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 import { BsFillPeopleFill } from "react-icons/bs";
-import { FiTrash2, FiEdit } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAxios from "../../../../hooks/useAxios";
-import { Link } from "react-router-dom";
 
 export interface ICardInfoNumMembersProps {
   nameGroup: string;
@@ -55,7 +55,7 @@ export default function CardInfoNumMembers({
           onClick={(e) => e.stopPropagation()}
         >
           <Link to={`/group/edit/${groupId}`}>
-            <button className="cursor-pointer transition-all ease-in-out hover:scale-125">
+            <button className="cursor-pointer pt-1 transition-all ease-in-out hover:scale-125">
               <FiEdit
                 color="gray"
                 size={20}
