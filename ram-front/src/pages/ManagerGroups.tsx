@@ -2,7 +2,7 @@
 
 import Wrapper from "../containers/Wrapper";
 import { useRecoilValue } from "recoil";
-import { allCourses$ } from "../lib/api/api-courses";
+import { allCourses$, useUpdateGroups } from "../lib/api/api-courses";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import useModal from "../hooks/useModal";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
@@ -14,10 +14,11 @@ import Swal from "sweetalert2";
 // Manager view that list all groups
 export default function ManagerCourses() {
   const groups = useRecoilValue(allCourses$);
+  const updateGroups = useUpdateGroups();
+  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
 
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
-  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
 
   const { response, loading, error, callback } = useAxios<IGroup[]>({
     url: "groups/create",
@@ -37,16 +38,15 @@ export default function ManagerCourses() {
       Swal.fire({
         title: "Grupo agregado",
         text: "Grupo agregado exitosamente",
-        icon: "error",
+        icon: "success",
       });
-      groups.concat(response);
-    }
 
-    if (shouldUpdate) {
-      setShouldUpdate(false);
-      
+      if (shouldUpdate) {
+        setShouldUpdate(false);
+        updateGroups();
+      }
     }
-  }, [error, response, shouldUpdate]);
+  }, [error, groups, response]);
 
   if (loading) {
     return <p>Loading...</p>;
