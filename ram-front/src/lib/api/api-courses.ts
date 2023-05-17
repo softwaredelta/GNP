@@ -18,6 +18,7 @@ export const useUpdateGroups = () => {
 export const allCourses$ = selector<IGroup[]>({
   key: "allCourses$",
   get: async ({ get }): Promise<IGroup[]> => {
+    get(updateGroups$);
     const isTest = get(isTest$);
     const apiBase = get(apiBase$);
     const accessToken = get(accessToken$);

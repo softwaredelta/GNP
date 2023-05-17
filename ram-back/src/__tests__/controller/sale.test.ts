@@ -8,22 +8,26 @@ import { createAssuranceType } from "../../app/assuranceType";
 import { AssuranceTypeEnt } from "../../entities/assurance-type.entity";
 import { DataSource } from "typeorm";
 import { SellEnt } from "../../entities/sell.entity";
+import { createSale } from "../../app/sale";
 
 describe("controller:sale", () => {
   let accessToken: string;
   let assurance: AssuranceTypeEnt;
+  let userId: string;
   let ds: DataSource;
   beforeEach(async () => {
     ds = await getDataSource();
     await ds.synchronize(true);
 
-    const { error: userError } = await createUser({
+    const { error: userError, user } = await createUser({
       email: "test@delta.tec.mx",
       password: "12345678//",
     });
     if (userError) {
       throw new Error(userError);
     }
+
+    userId = user.id;
 
     const { auth, error: authError } = await authenticateUser({
       email: "test@delta.tec.mx",
@@ -184,6 +188,42 @@ describe("controller:sale", () => {
         const sales = await ds.manager.find(SellEnt);
         expect(sales).toHaveLength(1);
         expect(sales[0].policyNumber).toBe("123456789");
+      });
+
+      it("updates sale correctly", async () => {
+        const { sale, error, reason } = await createSale({
+          policyNumber: "123456",
+          assuranceTypeId: assurance.id,
+          userId: userId,
+          paidDate: new Date("2021/01/01"),
+          yearlyFee: "123456",
+          contractingClient: "Juan Pérez",
+          evidenceUrl: "https://www.google.com",
+          periodicity: "mensual",
+          emissionDate: new Date("2021/01/01"),
+          insuredCostumer: "Juan Pérez",
+          paidFee: "123456",
+        });
+
+        expect(reason).toBeUndefined();
+        expect(error).toBeUndefined();
+        expect(sale).toHaveProperty("id");
+
+        await request(app)
+          .post(`/sales/update/${sale.id}`)
+          .set("Authorization", `Bearer ${accessToken}`)
+          .field("policyNumber", "123456789")
+          .field("paidDate", "2021-10-10")
+          .field("yearlyFee", "100000")
+          .field("contractingClient", "john doe")
+          .field("assuranceTypeId", assurance.id)
+          .field("periodicity", "Anual")
+          .field("emissionDate", "2022-10-01")
+          .field("insuredCostumer", "john doe")
+          .field("paidFee", "5000")
+          .field("evidenceUrl", "img")
+          .expect(200)
+          .then(() => {});
       });
     });
   });

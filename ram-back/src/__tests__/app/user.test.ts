@@ -1,6 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { addRoleToUser, authenticateUser, createUser } from "../../app/user";
+import {
+  addRoleToUser,
+  authenticateUser,
+  createUser,
+  fuzzySearchUsers,
+} from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { UserEnt, UserRole } from "../../entities/user.entity";
 
@@ -54,6 +59,20 @@ describe("app:user", () => {
 
       expect(error).toBeUndefined();
       expect(user).toHaveProperty("rolesString", "regular");
+    });
+
+    it("correctly normalizes names and email", async () => {
+      const { user } = await createUser({
+        email: "  example@delta.tec.mx  ",
+        password: "password",
+        name: "  Fermin  ",
+        lastName: "  Hernandez  Gonzalez ",
+      });
+      expect(user).toMatchObject({
+        email: "example@delta.tec.mx",
+        name: "Fermin",
+        lastName: "Hernandez Gonzalez",
+      });
     });
   });
 
@@ -122,6 +141,53 @@ describe("app:user", () => {
 
       expect(error).toBeDefined();
       expect(auth).toMatchObject({});
+    });
+  });
+
+  describe("fuzzy search", () => {
+    beforeEach(async () => {
+      await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+      });
+      await createUser({
+        email: "test-u-2@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "2",
+      });
+      await createUser({
+        email: "test-u-3@delta.tec.mx",
+        password: "password",
+        name: "Example Person",
+        lastName: "1",
+      });
+      await createUser({
+        email: "test-u-4@delta.tec.mx",
+        password: "password",
+        name: "Example Person",
+        lastName: "2",
+      });
+    });
+
+    it("finds users by name", async () => {
+      const users = await fuzzySearchUsers({
+        query: "TEST",
+      });
+      expect(users).toHaveLength(2);
+      expect(users[0]).toHaveProperty("name", "Test User");
+      expect(users[1]).toHaveProperty("name", "Test User");
+    });
+
+    it("finds users by last name", async () => {
+      const users = await fuzzySearchUsers({
+        query: "2",
+      });
+      expect(users).toHaveLength(2);
+      expect(users[0]).toHaveProperty("lastName", "2");
+      expect(users[1]).toHaveProperty("lastName", "2");
     });
   });
 });

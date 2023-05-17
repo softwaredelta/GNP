@@ -5,6 +5,8 @@ export interface IRoute {
   Component: () => JSX.Element;
 }
 
+export type UserRole = "admin" | "manager" | "regular";
+
 export type DeliveryStatus =
   | "Sin enviar"
   | "Enviado"
@@ -16,6 +18,7 @@ export interface IAssuranceType {
   name: string;
   description: string;
 }
+
 export interface IStatus {
   id: string;
   statusName: string;
@@ -32,6 +35,16 @@ export interface ISell {
   periodicity: string;
   user?: IUser;
   evidenceUrl: string;
+}
+
+export interface IProspectStatus {
+  id: string;
+  updatedStatusDate: Date;
+  statusComment: string;
+  prospect: IProspect;
+  prospectId: string;
+  status: IStatus;
+  statusId: string;
 }
 
 export interface IDelivery {
@@ -53,10 +66,46 @@ export interface IUserDelivery {
   deliveryId: string;
 }
 
+export interface IOrigin {
+  id: string;
+  name: string;
+  description: string;
+  user: IUser;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IState {
+  id: string;
+  name: string;
+  country: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IUserLevel {
+  id: string;
+  name: string;
+  user: IUser[];
+}
+
 export interface IUser {
   id: string;
+  origin: IOrigin;
+  state: IState;
+  level: IUserLevel;
+  name: string;
   email: string;
+  password: string;
+  mobile: number;
+  sell: ISell[];
+  phone: number;
+  registerDate: Date;
   imageURL: string;
+  roleString: string;
+  roles: UserRole[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IUserName {
@@ -70,10 +119,22 @@ export interface IUserName {
 export interface IGroup {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   imageURL: string;
   progress: number;
   groupUsers?: IUser[];
   deliveries?: IDelivery[];
   userDeliveries?: IUserDelivery[];
+}
+
+export interface IProspect {
+  id: string;
+  name: string;
+  firstSurname: string;
+  secondSurname: string;
+  prospectStatus: IProspectStatus[];
+  user: IUser;
+  userId: string;
+  createdAt: Date;
+  updateAt: Date;
 }

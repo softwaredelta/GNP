@@ -1,6 +1,7 @@
 import { Checkbox, Table } from "flowbite-react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { IDelivery } from "../../types";
+import { useUrlFile } from "../../lib/files";
 // (c) Delta Software 2023, rights reserved.
 
 export interface IListSalesProps {
@@ -8,6 +9,8 @@ export interface IListSalesProps {
 }
 
 export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
+  const fileUrl = useUrlFile();
+
   return (
     <>
       <Table.Row key={delivery.id} className="border-2 border-gray-300">
@@ -17,7 +20,7 @@ export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
         <Table.Cell>
           <img
             className="w-30 h-14 rounded-lg"
-            src={delivery.imageUrl}
+            src={fileUrl(delivery.imageUrl)}
             alt="Profile Image"
           />
         </Table.Cell>

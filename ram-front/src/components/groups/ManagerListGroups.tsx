@@ -3,23 +3,15 @@ import { useNavigate } from "react-router-dom";
 import Card from "../generics/cards/base/Card";
 import CardInfoNumMembers from "../generics/cards/info/CardInfoNumMembers";
 import { IGroup } from "../../types";
-import { useState, useEffect } from "react";
+import { useUrlFile } from "../../lib/files";
 
 interface Props {
   groups: IGroup[];
-  onDeleted: () => void;
 }
 
-export function ManagerListGroups({ groups, onDeleted }: Props) {
+export function ManagerListGroups({ groups }: Props) {
+  const fileUrl = useUrlFile();
   const navigate = useNavigate();
-
-  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
-  useEffect(() => {
-    if (shouldUpdate) {
-      onDeleted();
-      setShouldUpdate(false);
-    }
-  }, [onDeleted, shouldUpdate]);
 
   return (
     <>
@@ -27,13 +19,12 @@ export function ManagerListGroups({ groups, onDeleted }: Props) {
         groups.map((group) => (
           <div className=" p-10" key={group.id}>
             <div onClick={() => navigate(`/group/${group.id}`)}>
-              <Card color="blue" image={group.imageURL}>
+              <Card color="blue" image={fileUrl(group.imageURL)}>
                 <CardInfoNumMembers
                   color="blue"
                   nameGroup={group.name}
                   number={group.groupUsers?.length ?? 0}
                   groupId={group.id}
-                  onDeleted={() => setShouldUpdate(true)}
                 />
               </Card>
             </div>

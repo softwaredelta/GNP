@@ -1,21 +1,29 @@
 // (c) Delta Software 2023, rights reserved.
 
+import { RiAddBoxFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
+import ModalDeliveryForm from "../components/forms/ModalDeliveryForm";
+import SearchAgentTable from "../components/tables/SearchAgentTable";
+import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
-import { ManagerListGroupDeliveries } from "../components/deliverables/ListManagerDeliveries";
-import { IGroup } from "../types";
-import { RiAddBoxFill } from "react-icons/ri";
-import ModalDeliveryForm from "../components/forms/ModalDeliveryForm";
 import useModal from "../hooks/useModal";
+import { IGroup, IUser } from "../types";
+import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
 
 export default function EditGroup() {
-  const { id } = useParams();
+  const id = useParams().id as string;
   const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
     useModal();
 
   const { response: group } = useAxios<IGroup>({
     url: `groups/${id}`,
+    method: "GET",
+  });
+  const { response: groupAgents, callback: updateGroupAgents } = useAxios<
+    IUser[]
+  >({
+    url: `groups/users/${id}`,
     method: "GET",
   });
 
@@ -42,11 +50,24 @@ export default function EditGroup() {
             />
           </div>
           <div className="flex min-h-[26%] w-full justify-center gap-10">
-            <div className="w-3/5">
-              {group && (
-                <ManagerListGroupDeliveries
-                  deliveries={group.deliveries ?? []}
+            <div className="col-span-3">
+              {groupAgents && (
+                <SearchAgentTable
+                  onReloadAgents={() => updateGroupAgents()}
+                  groupId={id}
+                  agents={groupAgents ?? []}
                 />
+              )}
+              <div className="mt-4" />
+              <AgentFuzzyFinder
+                groupId={id}
+                onReloadAgents={() => updateGroupAgents()}
+                groupAgents={groupAgents ?? []}
+              />
+            </div>
+            <div className="col-span-3">
+              {group && (
+                <SearchDeliveryTable deliveries={group.deliveries ?? []} />
               )}
             </div>
           </div>

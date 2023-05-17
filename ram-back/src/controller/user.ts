@@ -4,7 +4,12 @@ import { Request, RequestHandler, Response, Router } from "express";
 import { getDataSource } from "../arch/db-client";
 import { UserEnt, UserRole } from "../entities/user.entity";
 import { generateToken, TokenType, verifyToken } from "../app/auth";
-import { authenticateUser, createUser, validateUserToken } from "../app/user";
+import {
+  authenticateUser,
+  createUser,
+  fuzzySearchUsers,
+  validateUserToken,
+} from "../app/user";
 import * as j from "joi";
 import { DataSource } from "typeorm";
 import { ProspectEnt } from "../entities/prospect.entity";
@@ -183,3 +188,27 @@ authRouter.post("/refresh", async (req, res) => {
     roles: user.roles,
   });
 });
+
+authRouter.get(
+  "/fuzzy-search",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res, next) => {
+    const schema = j.object({
+      query: j.string().allow("").required(),
+    });
+    const { error } = schema.validate(req.query);
+    if (error) {
+      res.status(400).json({ message: "BAD_DATA", reason: error });
+      return;
+    }
+
+    next();
+  },
+  async (req, res) => {
+    const users = await fuzzySearchUsers({
+      query: req.query.query as string,
+    });
+
+    res.json(users);
+  },
+);

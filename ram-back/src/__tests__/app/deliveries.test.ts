@@ -49,7 +49,7 @@ describe("app:deliveries", () => {
         deliveryName: "test-delivery-1",
       });
 
-      expect(error).toBe("UNHANDLED");
+      expect(error).toBe("NOT_FOUND");
     });
 
     it("updates values correctly", async () => {
