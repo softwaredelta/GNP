@@ -16,6 +16,7 @@ import { UserLevelEnt } from "./user-level.entity";
 import { ProspectEnt } from "./prospect.entity";
 import { ProspectStatusEnt } from "./prospect-status.entity";
 import { StatusEnt } from "./status.entity";
+import { LogEnt } from "./log.entity";
 
 export const entities = [
   AssuranceTypeEnt,
@@ -34,4 +35,5 @@ export const entities = [
   ProspectEnt,
   StatusEnt,
   ProspectStatusEnt,
+  LogEnt,
 ];
