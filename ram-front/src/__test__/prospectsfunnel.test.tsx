@@ -26,17 +26,25 @@ describe("Prospect Funnel", () => {
             agents={[
               {
                 id: "1",
-                email: "test",
+                email: "test1@mail.com",
                 name: "test",
-                lastName: "test",
+                lastName: "1",
                 imageURL: "",
+                roles: ["regular"],
+                sell: [],
+                registerDate: new Date(),
+                roleString: "regular",
               },
               {
                 id: "2",
-                email: "test2",
-                name: "test2",
-                lastName: "test2",
+                email: "test2@mail.com",
+                name: "test",
+                lastName: "2",
                 imageURL: "",
+                roles: ["regular"],
+                sell: [],
+                registerDate: new Date(),
+                roleString: "regular",
               },
             ]}
           ></FunnelTable>

@@ -59,7 +59,7 @@ export interface IDelivery {
 export interface IUserDelivery {
   fileUrl: string;
   dateDelivery: string;
-  user?: IUser;
+  user?: Partial<IUser>;
   status: DeliveryStatus;
   delivery?: IDelivery;
   group?: IGroup;
@@ -91,21 +91,22 @@ export interface IUserLevel {
 
 export interface IUser {
   id: string;
-  origin: IOrigin;
-  state: IState;
-  level: IUserLevel;
+  origin?: IOrigin;
+  state?: IState;
+  level?: IUserLevel;
   name: string;
+  lastName: string;
   email: string;
-  password: string;
-  mobile: number;
+  password?: string;
+  mobile?: number;
   sell: ISell[];
-  phone: number;
+  phone?: number;
   registerDate: Date;
   imageURL: string;
   roleString: string;
   roles: UserRole[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface IUserName {
@@ -122,7 +123,7 @@ export interface IGroup {
   description?: string;
   imageURL: string;
   progress: number;
-  groupUsers?: IUser[];
+  groupUsers?: Partial<IUser>[];
   deliveries?: IDelivery[];
   userDeliveries?: IUserDelivery[];
 }

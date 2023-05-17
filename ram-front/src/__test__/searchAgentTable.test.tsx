@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 import "@testing-library/jest-dom/extend-expect";
-import { Root, createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 import { RenderTest } from "./fixtures";
 import SearchAgentTable from "../components/tables/SearchAgentTable";
 import { screen } from "@testing-library/react";
@@ -48,6 +48,10 @@ describe("New Search Agent Table", () => {
                   "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
                 name: "Juan",
                 lastName: "Velasco",
+                sell: [],
+                roles: ["regular"],
+                roleString: "regular",
+                registerDate: new Date(),
               },
             ]}
           />

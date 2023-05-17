@@ -23,6 +23,7 @@ import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import useAlert from "../hooks/useAlert";
 import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
+import { IUser } from "../types";
 
 // import DeliveryCard from "./cards/DeliveryCard";
 export default function Examples() {
@@ -41,7 +42,7 @@ export default function Examples() {
     },
   ];
 
-  const listAgents = [
+  const listAgents: IUser[] = [
     {
       id: "1",
       email: "user-tets@tec.mx",
@@ -49,6 +50,10 @@ export default function Examples() {
         "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
       name: "Juan",
       lastName: "Velasco",
+      sell: [],
+      roles: ["regular"],
+      roleString: "regular",
+      registerDate: new Date(),
     },
     {
       email: "user-tets@tec.mx",
@@ -57,6 +62,10 @@ export default function Examples() {
       id: "2",
       name: "Juan",
       lastName: "Pedro",
+      sell: [],
+      roles: ["regular"],
+      roleString: "regular",
+      registerDate: new Date(),
     },
     {
       email: "user-tets@tec.mx",
@@ -65,6 +74,10 @@ export default function Examples() {
       id: "3",
       name: "Pedro",
       lastName: "Pascal",
+      sell: [],
+      roles: ["regular"],
+      roleString: "regular",
+      registerDate: new Date(),
     },
   ];
 
