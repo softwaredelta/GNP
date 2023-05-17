@@ -3,10 +3,17 @@
 import { Router } from "express";
 import { getDataSource } from "../arch/db-client";
 import { getS3Api } from "../arch/s3-client";
-import { UserEnt } from "../entities/user.entity";
+import { UserEnt, UserRole } from "../entities/user.entity";
+import { authMiddleware } from "./user";
+import { LogEnt } from "../entities/log.entity";
+import { v4 as uuid } from "uuid";
 
 export const infraRouter = Router();
 
+/**
+ * DO NOT MODIFY THIS ENDPOINT
+ * THE AWS DEPLOYMENT DEPENDS ON IT
+ */
 infraRouter.get("/health", (_req, res) => {
   res.send("OK");
 });
@@ -19,7 +26,9 @@ infraRouter.get("/db", async (_req, res) => {
 
 infraRouter.get("/s3", async (_req, res) => {
   const s3 = await getS3Api();
-  const objectKey = ".test-object";
+  const id = uuid();
+
+  const objectKey = `.s3-test-${id}`;
 
   const objects = await s3.listObjects();
   const objectExists = objects.some((o) => o === objectKey);
@@ -28,7 +37,15 @@ infraRouter.get("/s3", async (_req, res) => {
     await s3.putObject(objectKey, Buffer.from("test"));
   }
 
-  await s3.removeObject(objectKey);
-
   res.send("OK");
 });
+
+infraRouter.get(
+  "/log",
+  authMiddleware({ neededRoles: [UserRole.ADMIN] }),
+  async (req, res) => {
+    const ds = await getDataSource();
+    const logs = await ds.manager.find(LogEnt);
+    res.json(logs);
+  },
+);

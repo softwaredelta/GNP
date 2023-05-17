@@ -6,16 +6,36 @@ import { addUserToGroup, createGroup } from "../app/groups";
 import { createProspect } from "../app/prospect";
 import { createSale } from "../app/sale";
 import { createStatus } from "../app/status";
+import { UserError } from "../app/user";
 import { createUser } from "../app/user";
 import { StatusNames } from "../entities/status.entity";
 import { StatusUserDelivery } from "../entities/user-delivery.entity";
 import { UserRole } from "../entities/user.entity";
 
+/**
+ * Make sure admin user is always available.
+ * Admin user has access to ALL authenticated endpoints.
+ */
+export async function adminSeeds() {
+  const { error } = await createUser({
+    email: "admin@delta.tec.mx",
+    password: process.env.ADMIN_PASSWORD || "password",
+    roles: [UserRole.ADMIN],
+  });
+
+  if (error === UserError.USER_EXISTS) {
+    console.warn("Admin user already exists");
+  } else if (error) {
+    console.error("Error creating admin user", error);
+  } else {
+    console.info("Admin user created");
+  }
+}
+
 export async function userSeeds() {
   const userData = [
     { email: "regular@delta.tec.mx", roles: [UserRole.REGULAR] },
     { email: "manager@delta.tec.mx", roles: [UserRole.MANAGER] },
-    { email: "admin@delta.tec.mx", roles: [UserRole.ADMIN] },
     {
       email: "manager-admin@delta.tec.mx",
       roles: [UserRole.MANAGER, UserRole.ADMIN],

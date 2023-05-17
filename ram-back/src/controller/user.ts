@@ -14,6 +14,14 @@ import * as j from "joi";
 
 export const authRouter = Router();
 
+const createUserParameters = j.object({
+  email: j.string().email().required(),
+  password: j.string().min(8).required(),
+  role: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).required(),
+  name: j.string().required(),
+  lastName: j.string().required(),
+});
+
 const userParameters = j.object({
   email: j.string().email().required(),
   password: j.string().min(8).required(),
@@ -29,33 +37,16 @@ const userParametersMiddleware: RequestHandler = (req, res, next) => {
   next();
 };
 
-authRouter.post("/create", userParametersMiddleware, async (req, res) => {
-  const { email, password } = req.body;
-  // TODO: validation
-
-  const { user, error } = await createUser({ email, password });
+const createUserParametersMiddleware: RequestHandler = (req, res, next) => {
+  const { error } = createUserParameters.validate(req.body);
   if (error) {
-    res.status(400).json({ message: error });
+    res.status(400).json({ message: "BAD_DATA", reason: error });
     return;
   }
 
-  res.json(user);
-});
+  next();
+};
 
-authRouter.post("/authenticate", userParametersMiddleware, async (req, res) => {
-  const { email, password } = req.body;
-  // TODO: validation
-
-  const { auth, error } = await authenticateUser({ email, password });
-  if (error) {
-    res.status(401).json({ message: error });
-    return;
-  }
-
-  res.json(auth);
-});
-
-// ALL requested roles must be present
 export const authMiddleware = (
   params: {
     neededRoles?: UserRole[];
@@ -87,6 +78,12 @@ export const authMiddleware = (
       return;
     }
 
+    if (user.roles.includes(UserRole.ADMIN)) {
+      req.user = user;
+      next();
+      return;
+    }
+
     if (neededRoles.length > 0) {
       const hasRoles = neededRoles.every((neededRole) =>
         user.roles.includes(neededRole),
@@ -98,10 +95,46 @@ export const authMiddleware = (
     }
 
     req.user = user;
-
     next();
   };
 };
+
+authRouter.post(
+  "/create",
+  createUserParametersMiddleware,
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const { email, password, role, name, lastName } = req.body;
+    // TODO: validation
+
+    const { user, error } = await createUser({
+      email,
+      password,
+      name,
+      lastName,
+      roles: [role],
+    });
+    if (error) {
+      res.status(400).json({ message: error });
+      return;
+    }
+
+    res.json(user);
+  },
+);
+
+authRouter.post("/authenticate", userParametersMiddleware, async (req, res) => {
+  const { email, password } = req.body;
+  // TODO: validation
+
+  const { auth, error } = await authenticateUser({ email, password });
+  if (error) {
+    res.status(401).json({ message: error });
+    return;
+  }
+
+  res.json(auth);
+});
 
 authRouter.get(
   "/me",
