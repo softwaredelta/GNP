@@ -1,11 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { RequestHandler, Router } from "express";
+import { Request, RequestHandler, Response, Router } from "express";
 import { getDataSource } from "../arch/db-client";
 import { UserEnt, UserRole } from "../entities/user.entity";
-import { TokenType, generateToken, verifyToken } from "../app/auth";
+import { generateToken, TokenType, verifyToken } from "../app/auth";
 import { authenticateUser, createUser, validateUserToken } from "../app/user";
 import * as j from "joi";
+import { DataSource } from "typeorm";
+import { ProspectEnt } from "../entities/prospect.entity";
 
 export const authRouter = Router();
 
@@ -116,6 +118,27 @@ authRouter.get("/all-agents", async (req, res) => {
   });
   res.json(sales);
 });
+
+authRouter.get(
+  "/prospect/agent/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req: Request, res: Response): Promise<void> => {
+    const id: string = req.params.id;
+    const db: DataSource = await getDataSource();
+    const [agent, prospects] = await Promise.all([
+      await db.manager.findOne(UserEnt, { where: { id } }),
+      await db.manager.find(ProspectEnt, {
+        where: { userId: id },
+        relations: ["prospectStatus"],
+      }),
+    ]);
+    if (!agent) {
+      res.status(404).json({});
+    } else {
+      res.status(200).json({ agent, prospects });
+    }
+  },
+);
 
 // this is purely an example and currently serves no purpose for the app
 // see tests
