@@ -22,7 +22,7 @@ export default function ManagerCourses() {
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
 
-  const { response, loading, error, callback } = useAxios<IGroup[]>({
+  const { response, loading, error, callback } = useAxios<IGroup>({
     url: "groups/create",
     method: "POST",
   });
