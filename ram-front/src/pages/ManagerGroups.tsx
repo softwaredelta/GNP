@@ -41,12 +41,13 @@ export default function ManagerCourses() {
         title: "Grupo agregado",
         text: "Grupo agregado exitosamente",
         icon: "success",
+        timer: 5000,
       });
 
       if (shouldUpdate) {
         setShouldUpdate(false);
-        updateGroups();
         toggleModalGroupForm();
+        updateGroups();
         navigate(`/group/edit/${response.id}`);
       }
     }
