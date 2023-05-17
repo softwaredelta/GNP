@@ -63,8 +63,8 @@ describe("ListDeliveries", () => {
                 userDeliveries: [],
               },
               user: {
-                email: "user-2@mail.com",
                 id: "2",
+                email: "user-2@mail.com",
                 name: "User 2",
                 lastName: "User 2",
                 imageURL: "",

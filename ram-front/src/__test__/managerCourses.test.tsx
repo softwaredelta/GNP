@@ -1,8 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Root, createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 import "@testing-library/jest-dom/extend-expect";
-import { screen, render, waitFor, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import { RenderTest } from "./fixtures";
