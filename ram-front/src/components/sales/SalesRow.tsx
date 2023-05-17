@@ -2,8 +2,9 @@
 
 import React from "react";
 import { Table } from "flowbite-react";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
 import useAxios from "../../hooks/useAxios";
+import { useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
 
@@ -33,6 +34,8 @@ export default function SalesRow({
     method: "POST",
     body: {},
   });
+
+  const navigate = useNavigate();
 
   function handleDelete() {
     Swal.fire({
@@ -68,10 +71,18 @@ export default function SalesRow({
       <Table.Cell>{new Date(paidDate).toLocaleDateString()}</Table.Cell>
       <Table.Cell>{status}</Table.Cell>
       <Table.Cell>
-        <FaTrash
-          onClick={handleDelete}
-          className=" hover:scale-105 hover:fill-red-500"
-        />
+        <div className="grid grid-cols-2 items-center justify-center ">
+          <FaEdit
+            onClick={() => navigate(`/modify-sale/${id}`)}
+            color="gray"
+            size={20}
+            className="hover:scale-105 hover:fill-blue-700"
+          />
+          <FaTrash
+            onClick={handleDelete}
+            className="hover:scale-105 hover:fill-red-500"
+          />
+        </div>
       </Table.Cell>
     </Table.Row>
   );

@@ -32,6 +32,10 @@ export interface ISell {
   periodicity: string;
   user?: IUser;
   evidenceUrl: string;
+  insuredCostumer: string;
+  paidFee: string;
+  emissionDate: Date;
+  assuranceTypeId: string;
 }
 
 export interface IDelivery {
