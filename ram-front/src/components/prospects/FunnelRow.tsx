@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Table } from "flowbite-react";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import useAxios from "../../hooks/useAxios";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   id: string;
@@ -16,11 +17,14 @@ export default function FunnelRow({ id, email }: Props) {
     method: "GET",
   });
 
+  const navigate = useNavigate();
+
   const propspectsCount = prospects ? prospects : 0;
   return (
     <Table.Row
       key={id}
-      className="bg-white dark:border-gray-700 dark:bg-gray-800"
+      onClick={() => navigate(`/prospects/agent/${id}`)}
+      className="bg-white hover:cursor-pointer dark:border-gray-700 dark:bg-gray-800"
     >
       <Table.Cell
         className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
