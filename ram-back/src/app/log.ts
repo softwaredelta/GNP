@@ -5,7 +5,6 @@ import { INSTANCE_ID } from "../arch/instance";
 import { LogEnt } from "../entities/log.entity";
 
 /**
- * 
  * This logs are accessible via the infra/log endpoint for admin users
  */
 export async function log(kind: string, data: string | object) {
