@@ -204,3 +204,13 @@ salesRouter.post("/update/:id", authMiddleware(), async (req, res) => {
 
   res.json({ sale });
 });
+
+salesRouter.get("/:id", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const sale = await db.manager.findOne(SellEnt, {
+    relations: { assuranceType: true, user: true },
+    where: { id: req.params.id },
+  });
+
+  res.json(sale);
+});
