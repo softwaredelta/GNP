@@ -10,12 +10,14 @@ import { IGroup } from "../types";
 import useAxios from "../hooks/useAxios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 // Manager view that list all groups
 export default function ManagerCourses() {
   const groups = useRecoilValue(allCourses$);
   const updateGroups = useUpdateGroups();
   const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const { isOpen: isOpenGroupForm, toggleModal: toggleModalGroupForm } =
     useModal();
@@ -44,6 +46,8 @@ export default function ManagerCourses() {
       if (shouldUpdate) {
         setShouldUpdate(false);
         updateGroups();
+        toggleModalGroupForm();
+        navigate(`/group/edit/${response.id}`);
       }
     }
   }, [error, response]);
@@ -65,6 +69,14 @@ export default function ManagerCourses() {
                 isOpenModal={isOpenGroupForm}
                 closeModal={toggleModalGroupForm}
                 handlePost={(image, name) => {
+                  if (!name) {
+                    Swal.fire({
+                      title: "Nombre faltante",
+                      text: "Ingrese nombre del grupo en el campo",
+                      icon: "error",
+                    });
+                    return;
+                  }
                   if (!image) {
                     Swal.fire({
                       title: "Imagen faltante",
