@@ -11,9 +11,7 @@ import { ISell } from "../types";
 export default function NewSale() {
   const assuranceTypes = useRecoilValue(allAssuranceTypes$);
   const { id: idSale } = useParams();
-  const {
-    response: sale
-  } = useAxios<ISell>({
+  const { response: sale } = useAxios<ISell>({
     url: `sales/${idSale}`,
     method: "GET",
   });
