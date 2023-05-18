@@ -327,8 +327,8 @@ describe("Update status endpoint", () => {
           .field("description", "new description")
           .expect(200)
           .then((res) => {
-            expect(res.body.description).toHaveProperty("deliveryName", "new name");
-            expect(res.body.description).toHaveProperty("description", "new description");
+            expect(res.body).toHaveProperty("deliveryName", "new name");
+            expect(res.body).toHaveProperty("description", "new description");
           });
       });
     });
