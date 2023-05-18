@@ -16,6 +16,7 @@ import { authenticateUser } from "../../app/user";
 import { truncate } from "fs";
 import { getS3Api } from "../../arch/s3-client";
 import { DeliveryEnt } from "../../entities/delivery.entity";
+import exp from "constants";
 
 let managerAccessToken: string;
 let accessToken: string;
@@ -302,7 +303,10 @@ describe("Update status endpoint", () => {
           .send({
             description: "new description",
           })
-          .expect(200);
+          .expect(200)
+          .then((res) => {
+            expect(res.body.description).toBe("new description");
+          });
       });
 
       it("accepts request that sends fields and image file", async () => {
@@ -321,7 +325,11 @@ describe("Update status endpoint", () => {
           .attach("image", file.buffer, file.originalname)
           .field("deliveryName", "new name")
           .field("description", "new description")
-          .expect(200);
+          .expect(200)
+          .then((res) => {
+            expect(res.body.description).toHaveProperty("deliveryName", "new name");
+            expect(res.body.description).toHaveProperty("description", "new description");
+          });
       });
     });
 
