@@ -6,9 +6,13 @@ import { IDelivery } from "../../types";
 
 export interface IListSalesProps {
   deliveries: IDelivery[];
+  onReloadDeliveries: () => void;
 }
 
-export default function SearchDeliveryTable({ deliveries }: IListSalesProps) {
+export default function SearchDeliveryTable({
+  deliveries,
+  onReloadDeliveries,
+}: IListSalesProps) {
   const [search, setSearch] = useState("");
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,6 +24,10 @@ export default function SearchDeliveryTable({ deliveries }: IListSalesProps) {
       item.deliveryName.toLowerCase().includes(search.toLowerCase()),
     ),
   };
+
+  if (onReloadDeliveries) {
+    console.log(onReloadDeliveries);
+  }
 
   return (
     <>
@@ -44,7 +52,11 @@ export default function SearchDeliveryTable({ deliveries }: IListSalesProps) {
         <Table.Body>
           {data.nodes.length > 0 ? (
             data.nodes.map((node, index) => (
-              <SearchDeliveryRow delivery={node} key={index} />
+              <SearchDeliveryRow
+                delivery={node}
+                key={index}
+                onReload={() => onReloadDeliveries()}
+              />
             ))
           ) : (
             <p className="text-center">No hay entregables en el grupo</p>

@@ -8,8 +8,9 @@ import useAxios from "../../hooks/useAxios";
 
 export interface IListSalesProps {
   delivery: IDelivery;
+  onReload: () => void;
 }
-export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
+export const SearchDeliveryRow = ({ delivery, onReload }: IListSalesProps) => {
   const fileUrl = useUrlFile();
 
   const { callback } = useAxios({
@@ -27,9 +28,11 @@ export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
     }).then((result) => {
-      if (result.isConfirmed && callback) {
+      if (result.isConfirmed && callback && onReload) {
         callback();
-        console.log("Delivery ID: " + delivery.id);
+        if (onReload) {
+          onReload();
+        }
         Swal.fire({
           title: "Eliminado",
           text: "El grupo ha sido eliminado con éxito",

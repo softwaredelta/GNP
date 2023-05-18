@@ -16,7 +16,7 @@ export default function EditGroup() {
   const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
     useModal();
 
-  const { response: group } = useAxios<IGroup>({
+  const { response: group, callback: updateDeliveries } = useAxios<IGroup>({
     url: `groups/${id}`,
     method: "GET",
   });
@@ -66,8 +66,11 @@ export default function EditGroup() {
               />
             </div>
             <div className="col-span-3">
-              {group && (
-                <SearchDeliveryTable deliveries={group.deliveries ?? []} />
+              {group && updateDeliveries && (
+                <SearchDeliveryTable
+                  deliveries={group.deliveries ?? []}
+                  onReloadDeliveries={() => updateDeliveries()}
+                />
               )}
             </div>
           </div>
