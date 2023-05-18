@@ -51,7 +51,7 @@ export default function ManagerCourses() {
         navigate(`/group/edit/${response.id}`);
       }
     }
-  }, [error, response]);
+  }, [error, response, shouldUpdate, updateGroups]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -94,8 +94,8 @@ export default function ManagerCourses() {
                     setShouldUpdate(true);
                   }
                 }}
-                title="Agregar Grupo"
-                initialValues=""
+                isEditModal={false}
+                initialValues={{ name: "" }}
               />
             </div>
           </div>
