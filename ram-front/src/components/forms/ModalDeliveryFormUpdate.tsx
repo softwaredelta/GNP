@@ -46,14 +46,7 @@ export default function ModalDeliveryFormUpdate({
       } catch (err) {
         console.error(err);
       }
-    } else {
-      Swal.fire({
-        title: "Error!",
-        text: `No seleccionaste archivo.`,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
+    } 
   };
 
   useEffect(() => {

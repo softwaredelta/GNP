@@ -53,36 +53,43 @@ export async function updateDelivery(params: {
   error?: DeliveryError;
   errorReason?: Error;
 }> {
-  if (!params.deliveryName && !params.description && !params.imageUrl) {
-    return {
-      delivery: {} as DeliveryEnt,
-      error: DeliveryError.UNHANDLED,
-      errorReason: new Error("No fields to update"),
-    };
-  }
-
   const ds = await getDataSource();
-  const query = ds.createQueryBuilder().update(DeliveryEnt);
-  (["deliveryName", "description", "imageUrl"] as const).forEach((field) => {
-    if (params[field]) {
-      query.set({ [field]: params[field] });
-    }
-  });
-
-  await query.where("id = :id", { id: params.deliveryId }).execute();
-
-  const delivery = await ds.manager.findOne(DeliveryEnt, {
+  const existingDelivery = await ds.manager.findOne(DeliveryEnt, {
     where: { id: params.deliveryId },
   });
-  if (!delivery) {
+
+  if (!existingDelivery) {
     return {
-      delivery: {} as DeliveryEnt,
       error: DeliveryError.NOT_FOUND,
-      errorReason: new Error("No delivery found"),
+      delivery: {} as DeliveryEnt,
     };
   }
 
-  return { delivery };
+  if (!params.deliveryName && !params.description && !params.imageUrl)
+    return {
+      error: DeliveryError.NOT_FOUND,
+      delivery: {} as DeliveryEnt,
+    };
+
+  return ds.manager
+    .update(DeliveryEnt, params.deliveryId, {
+      deliveryName: params.deliveryName,
+      description: params.description,
+      imageUrl: params.imageUrl,
+    })
+    .then(async () => {
+      const delivery = await ds.manager.findOneOrFail(DeliveryEnt, {
+        where: { id: params.deliveryId },
+      });
+      if (delivery) return { delivery };
+      else
+        return { delivery: {} as DeliveryEnt, error: DeliveryError.NOT_FOUND };
+    })
+    .catch((e) => ({
+      error: DeliveryError.UNHANDLED as DeliveryError,
+      errorReason: e as Error,
+      delivery: {} as DeliveryEnt,
+    }));
 }
 
 export async function setDeliveryToAllUsers(params: {
