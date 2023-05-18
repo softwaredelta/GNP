@@ -6,7 +6,7 @@ import {
   UserDeliveryEnt,
   StatusUserDelivery,
 } from "../entities/user-delivery.entity";
-
+import { getUsersByGroup } from "./groups";
 export enum DeliveryError {
   UNHANDLED = "UNHANDLED",
   NOT_FOUND = "NOT_FOUND",
@@ -83,6 +83,59 @@ export async function updateDelivery(params: {
   }
 
   return { delivery };
+}
+
+export async function setDeliveryToAllUsers(params: {
+  idGroup: string;
+  idDelivery: string;
+  dateDelivery: Date;
+  status?: string;
+  fileUrl: string;
+}): Promise<
+  Array<{
+    userDelivery: UserDeliveryEnt;
+    error?: DeliveryError;
+    errorReason?: Error;
+  }>
+> {
+  const ds = await getDataSource();
+  const { idGroup, idDelivery, dateDelivery, status, fileUrl } = params;
+  const groupUsers = await getUsersByGroup(idGroup);
+
+  try {
+    return await ds.manager.transaction(async (transactionalEntityManager) => {
+      const promises = groupUsers.map(async (user) => {
+        const userDelivery = ds.manager.create(UserDeliveryEnt, {
+          deliveryId: idDelivery,
+          userId: user.id,
+          dateDelivery,
+          status: status ?? StatusUserDelivery.withoutSending,
+          fileUrl,
+        });
+
+        try {
+          await transactionalEntityManager.save(userDelivery);
+          return { userDelivery };
+        } catch (e) {
+          return {
+            userDelivery: {} as UserDeliveryEnt,
+            error: DeliveryError.UNHANDLED,
+            errorReason: e as Error,
+          };
+        }
+      });
+
+      return Promise.all(promises);
+    });
+  } catch (e) {
+    return [
+      {
+        userDelivery: {} as UserDeliveryEnt,
+        error: DeliveryError.UNHANDLED,
+        errorReason: new Error("Fallo asignando delivery a usuario"),
+      },
+    ];
+  }
 }
 
 export async function setDeliverieToUser(params: {
