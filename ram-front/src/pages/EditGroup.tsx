@@ -16,10 +16,12 @@ export default function EditGroup() {
   const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
     useModal();
 
-  const { response: group } = useAxios<IGroup>({
-    url: `groups/${id}`,
-    method: "GET",
-  });
+  const { response: group, callback: updateGroupDeliveries } = useAxios<IGroup>(
+    {
+      url: `groups/${id}`,
+      method: "GET",
+    },
+  );
   const { response: groupAgents, callback: updateGroupAgents } = useAxios<
     IUser[]
   >({
@@ -46,7 +48,10 @@ export default function EditGroup() {
             </div>
             <ModalDeliveryForm
               isOpenModal={isOpenDeliveryForm}
-              closeModal={toggleModalDeliveryForm}
+              closeModal={() => {
+                toggleModalDeliveryForm();
+                updateGroupDeliveries();
+              }}
             />
           </div>
           <div className="flex min-h-[26%] w-full justify-center gap-10">
@@ -67,7 +72,10 @@ export default function EditGroup() {
             </div>
             <div className="col-span-3">
               {group && (
-                <SearchDeliveryTable deliveries={group.deliveries ?? []} />
+                <SearchDeliveryTable
+                  deliveries={group.deliveries ?? []}
+                  onReloadDeliveries={() => updateGroupDeliveries()}
+                />
               )}
             </div>
           </div>
