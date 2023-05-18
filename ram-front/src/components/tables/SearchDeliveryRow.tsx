@@ -19,12 +19,6 @@ export const SearchDeliveryRow = ({
 }: IListSalesProps) => {
   const fileUrl = useUrlFile();
 
-  // const { callback } = useAxios({
-  //   url: `deliveries/${delivery.id}`,
-  //   method: "DELETE",
-  //   body: {},
-  // });
-
   const deliveryID = delivery.id;
   const accessToken = useRecoilValue(accessToken$);
   const apiBase = useRecoilValue(apiBase$);

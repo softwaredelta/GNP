@@ -13,7 +13,7 @@ export default function SearchDeliveryTable({
   deliveries,
   onReloadDeliveries,
 }: IListSalesProps) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
