@@ -166,44 +166,62 @@ salesRouter.post(
   },
 );
 
-salesRouter.post("/update/:id", authMiddleware(), async (req, res) => {
-  const {
-    policyNumber,
-    paidDate,
-    yearlyFee,
-    contractingClient,
-    assuranceTypeId,
-    periodicity,
-    emissionDate,
-    insuredCostumer,
-    paidFee,
-  } = req.body;
-  const { user } = req;
-  if (!user) {
-    res.status(401).json({ message: "NO_USER" });
-    return;
-  }
-  const { sale, error } = await updateSale({
-    id: req.params.id,
-    policyNumber,
-    paidDate,
-    yearlyFee,
-    contractingClient,
-    assuranceTypeId,
-    periodicity,
-    emissionDate,
-    insuredCostumer,
-    paidFee,
-    userId: user.id,
-  });
+salesRouter.post(
+  "/update/:id",
+  authMiddleware(),
+  upload.single("file"),
+  async (req, res) => {
+    const {
+      policyNumber,
+      paidDate,
+      yearlyFee,
+      contractingClient,
+      assuranceTypeId,
+      periodicity,
+      emissionDate,
+      insuredCostumer,
+      paidFee,
+    } = req.body;
+    const { user } = req;
+    if (!user) {
+      res.status(401).json({ message: "NO_USER" });
+      return;
+    }
 
-  if (error) {
-    res.status(500).json({ message: error });
-    return;
-  }
+    const { file } = req;
 
-  res.json({ sale });
-});
+    if (!file && !req.body.evidenceUrl) {
+      res.status(400).json({ message: "NO_FILE_UPLOAD" });
+      return;
+    }
+
+    const evidenceUrl = !!file
+      ? await uploadFile({ file })
+      : req.body.evidenceUrl;
+
+    const { sale, error } = await updateSale({
+      id: req.params.id,
+      policyNumber,
+      paidDate,
+      yearlyFee,
+      contractingClient,
+      assuranceTypeId,
+      periodicity,
+      emissionDate,
+      insuredCostumer,
+      paidFee,
+      userId: user.id,
+      evidenceUrl: evidenceUrl,
+    });
+
+    if (error) {
+      res.status(500).json({ message: error });
+      return;
+    }
+
+    res.json({ sale });
+  },
+);
 
 salesRouter.get("/:id", authMiddleware(), async (req, res) => {
   const db = await getDataSource();

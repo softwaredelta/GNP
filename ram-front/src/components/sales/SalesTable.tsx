@@ -38,9 +38,12 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
         <Table.Head>
           <Table.HeadCell>Nombre del Cliente</Table.HeadCell>
           <Table.HeadCell>Póliza</Table.HeadCell>
-          <Table.HeadCell>Monto</Table.HeadCell>
+          <Table.HeadCell>Prima Anual</Table.HeadCell>
+          <Table.HeadCell>Prima Pagada</Table.HeadCell>
+          <Table.HeadCell>Periodicidad</Table.HeadCell>
           <Table.HeadCell>Tipo de Seguro</Table.HeadCell>
-          <Table.HeadCell>Fecha</Table.HeadCell>
+          <Table.HeadCell>Fecha Emisión</Table.HeadCell>
+          <Table.HeadCell>Fecha Pago</Table.HeadCell>
           <Table.HeadCell>Estado</Table.HeadCell>
           <Table.HeadCell>
             <span className="sr-only">Edit</span>
@@ -51,13 +54,7 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
             return (
               <SalesRow
                 key={sale.id}
-                id={sale.id}
-                contractingClient={sale.contractingClient}
-                yearlyFee={sale.yearlyFee}
-                assuranceTypeName={sale.assuranceType.name}
-                paidDate={sale.paidDate}
-                status={sale.status}
-                policyNum={sale.policyNumber}
+                sale={sale}
                 onDeleted={() => {
                   setShouldUpdate(true);
                 }}

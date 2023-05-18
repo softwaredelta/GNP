@@ -469,15 +469,15 @@ export async function loadSeeds() {
     // ASSURANCE TYPES
 
     await createAssuranceType({
-      name: "Gastos médicos mayores",
+      name: "GMM",
       description:
         "El seguro de gastos médicos mayores abarca los gastos de hospitalización, cirugía, medicamentos, estudios clínicos, honorarios médicos, entre otros.",
       id: "1",
     });
 
     await createAssuranceType({
-      name: "Seguro de mascota",
-      description: "El seguro de mascotas abarca los gastos de veterinario",
+      name: "VIDA",
+      description: "Seguro de vida",
       id: "2",
     });
 
@@ -488,7 +488,7 @@ export async function loadSeeds() {
     });
 
     await createAssuranceType({
-      name: "Patrimonial",
+      name: "PATRIMONIAL",
       description: "Seguros de patrimonio",
       id: "4",
     });
