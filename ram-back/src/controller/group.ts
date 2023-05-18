@@ -20,6 +20,7 @@ import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
 import { UserRole } from "../entities/user.entity";
 import { authMiddleware } from "./user";
+import { setUserToAllDeliveries } from "../app/user-delivery";
 
 export const groupsRouter = Router();
 const upload = multer();
@@ -220,6 +221,10 @@ groupsRouter.post(
     const groupId = req.params.id;
 
     await addUserToGroup({ groupId, userId });
+    await setUserToAllDeliveries({
+      groupId,
+      userId,
+    });
     res.status(200).send();
   },
 );

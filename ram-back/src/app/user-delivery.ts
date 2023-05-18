@@ -1,8 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { DataSource } from "typeorm";
-import { UserDeliveryEnt } from "../entities/user-delivery.entity";
+import {
+  StatusUserDelivery,
+  UserDeliveryEnt,
+} from "../entities/user-delivery.entity";
 import { getDataSource } from "../arch/db-client";
+import { DeliveryError } from "./deliveries";
+import { DeliveryEnt } from "../entities/delivery.entity";
 
 export enum FileError {
   INVALID_FORMAT = "INVALID_FORMAT",
@@ -63,5 +68,59 @@ export async function getAuthUserDelivery(
       userDelivery: {} as UserDeliveryEnt,
       error: FileError.FILE_NOT_FOUND,
     };
+  }
+}
+
+export async function setUserToAllDeliveries(params: {
+  groupId: string;
+  userId: string;
+}): Promise<
+  Array<{
+    userDelivery: UserDeliveryEnt;
+    error?: DeliveryError;
+    errorReason?: Error;
+  }>
+> {
+  const ds = await getDataSource();
+  const { groupId, userId } = params;
+  const groupDeliveries = await ds.manager.find(DeliveryEnt, {
+    where: {
+      groupId: groupId,
+    },
+  });
+
+  try {
+    return await ds.manager.transaction(async (transactionalEntityManager) => {
+      const promises = groupDeliveries.map(async (delivery) => {
+        const userDelivery = ds.manager.create(UserDeliveryEnt, {
+          deliveryId: delivery.id,
+          userId: userId,
+          dateDelivery: new Date(),
+          status: StatusUserDelivery.withoutSending,
+          fileUrl: delivery.imageUrl,
+        });
+
+        try {
+          await transactionalEntityManager.save(userDelivery);
+          return { userDelivery };
+        } catch (e) {
+          return {
+            userDelivery: {} as UserDeliveryEnt,
+            error: DeliveryError.UNHANDLED,
+            errorReason: e as Error,
+          };
+        }
+      });
+
+      return Promise.all(promises);
+    });
+  } catch (e) {
+    return [
+      {
+        userDelivery: {} as UserDeliveryEnt,
+        error: DeliveryError.UNHANDLED,
+        errorReason: new Error("Fallo asignando delivery a usuario"),
+      },
+    ];
   }
 }
