@@ -4,18 +4,26 @@ import request from "supertest";
 import { app } from "../../controller";
 import { authenticateUser, createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
-import { userSeeds } from "../../seeds";
+import { adminSeeds, userSeeds } from "../../seeds";
 
 describe("controller:user", () => {
+  let adminAccessToken: string;
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.synchronize(true);
 
+    await adminSeeds();
     await createUser({
       id: "1",
       email: "fermin@delta.tec.mx",
       password: "L3LitoB3b3ciT0Itc",
     });
+
+    const { auth } = await authenticateUser({
+      email: "admin@delta.tec.mx",
+      password: "password",
+    });
+    adminAccessToken = auth.accessToken;
   });
 
   describe("creation handler", () => {
@@ -23,16 +31,22 @@ describe("controller:user", () => {
       await request(app)
         .post("/user/create")
         .send({
-          email: "keny@delta.tec.mx",
+          email: "kenny@delta.tec.mx",
           password: "L3LitoB3b3ciT0Itc",
+          name: "Kenny",
+          lastName: "McCormick",
+          role: "regular",
         })
         .set("Accept", "application/json")
+        .set("Authorization", `Bearer ${adminAccessToken}`)
         .expect("Content-Type", /json/)
         .expect(200)
         .then((response) => {
           expect(response.body).toHaveProperty("id");
           expect(response.body).toHaveProperty("email");
           expect(response.body).toHaveProperty("password");
+          expect(response.body).toHaveProperty("name");
+          expect(response.body).toHaveProperty("lastName");
         });
     });
 
@@ -42,8 +56,12 @@ describe("controller:user", () => {
         .send({
           email: "fermin@delta.tec.mx",
           password: "password7812361",
+          name: "Fermin",
+          lastName: "Gonzalez",
+          role: "regular",
         })
         .set("Accept", "application/json")
+        .set("Authorization", `Bearer ${adminAccessToken}`)
         .expect("Content-Type", /json/)
         .expect(400)
         .then((response) => {
@@ -56,6 +74,7 @@ describe("controller:user", () => {
         .post("/user/create")
         .send()
         .set("Accept", "application/json")
+        .set("Authorization", `Bearer ${adminAccessToken}`)
         .expect("Content-Type", /json/)
         .expect(400)
         .then((response) => {

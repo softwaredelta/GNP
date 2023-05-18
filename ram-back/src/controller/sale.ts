@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Router, RequestHandler } from "express";
-import { createSale } from "../app/sale";
+import { createSale, updateSale } from "../app/sale";
 export const salesRouter = Router();
 import * as j from "joi";
 import { getDataSource } from "../arch/db-client";
@@ -165,3 +165,52 @@ salesRouter.post(
     res.json({ changedSale });
   },
 );
+
+salesRouter.post("/update/:id", authMiddleware(), async (req, res) => {
+  const {
+    policyNumber,
+    paidDate,
+    yearlyFee,
+    contractingClient,
+    assuranceTypeId,
+    periodicity,
+    emissionDate,
+    insuredCostumer,
+    paidFee,
+  } = req.body;
+  const { user } = req;
+  if (!user) {
+    res.status(401).json({ message: "NO_USER" });
+    return;
+  }
+  const { sale, error } = await updateSale({
+    id: req.params.id,
+    policyNumber,
+    paidDate,
+    yearlyFee,
+    contractingClient,
+    assuranceTypeId,
+    periodicity,
+    emissionDate,
+    insuredCostumer,
+    paidFee,
+    userId: user.id,
+  });
+
+  if (error) {
+    res.status(500).json({ message: error });
+    return;
+  }
+
+  res.json({ sale });
+});
+
+salesRouter.get("/:id", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const sale = await db.manager.findOne(SellEnt, {
+    relations: { assuranceType: true, user: true },
+    where: { id: req.params.id },
+  });
+
+  res.json(sale);
+});

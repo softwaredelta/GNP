@@ -12,6 +12,7 @@ const NewSale = lazy(async () => import("../pages/NewSale"));
 const SalesHistory = lazy(async () => import("../pages/SalesHistory"));
 const VerifySales = lazy(async () => import("../pages/VerifySales"));
 const FunnelProspects = lazy(async () => import("../pages/ProspectsFunnel"));
+const ModifySale = lazy(async () => import("../pages/ModifySale"));
 
 const ManagerGroup = lazy(async () => import("../pages/ManagerGroup"));
 const ManagerGroups = lazy(async () => import("../pages/ManagerGroups"));
@@ -79,6 +80,10 @@ export const RegularUserRoutes: IRoute[] = [
   {
     path: "/help",
     Component: () => <Help />,
+  },
+  {
+    path: "/modify-sale/:id",
+    Component: () => <ModifySale />,
   },
 ];
 

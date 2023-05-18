@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import * as dotenv from "dotenv";
 import { router } from "./routes";
 import { getDataSource } from "../arch/db-client";
+import { log } from "../app/log";
 
 // for local development, we use the env file
 if (!process.env.NODE_ENV) {
@@ -33,6 +34,13 @@ app.use((req, res) => {
   }
 
   res.redirect(process.env.APP_URL || "/");
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+app.use(async (err: any, req: any, res: any, next: any) => {
+  console.error(err);
+  res.status(500).send("Internal server error");
+  await log("unhandled-error", err);
 });
 
 export const start = async () => {

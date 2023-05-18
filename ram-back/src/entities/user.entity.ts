@@ -59,7 +59,7 @@ export function capitalizeString(str: string): string {
     .join(" ");
 }
 
-@Entity({ name: "user" })
+@Entity({ name: "user_ent" })
 export class UserEnt {
   @PrimaryGeneratedColumn("uuid")
   id!: string;

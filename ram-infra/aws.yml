@@ -237,7 +237,7 @@ Resources:
     Properties:
       ServiceToken: !GetAtt LoadBalancerSetupLambda.Arn
       EnvironmentName: !Ref Environment
-      HealthCheckPath: !Sub /api/health
+      HealthCheckPath: !Sub /api/infra/health
 
   LoadBalancerSetupLambda:
     Type: AWS::Lambda::Function
@@ -413,6 +413,7 @@ Resources:
                 Effect: Allow
                 Resource:
                   - !Sub arn:aws:s3:::${ApplicationBucket}
+                  - !Sub arn:aws:s3:::${ApplicationBucket}/*
               - Sid: ElasticBeanstalkBucketAccess
                 Action:
                   - s3:Get*
