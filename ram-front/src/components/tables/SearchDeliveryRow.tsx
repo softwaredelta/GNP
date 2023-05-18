@@ -3,6 +3,10 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { IDelivery } from "../../types";
 import { useUrlFile } from "../../lib/files";
 import Swal from "sweetalert2";
+import { apiBase$ } from "../../lib/api/api-base";
+import { useRecoilValue } from "recoil";
+import { accessToken$ } from "../../lib/api/api-auth";
+import { useCallback } from "react";
 import useAxios from "../../hooks/useAxios";
 import ModalDeliveryFormUpdate from "../forms/ModalDeliveryFormUpdate";
 import useModal from "../../hooks/useModal";
@@ -10,39 +14,58 @@ import useModal from "../../hooks/useModal";
 
 export interface IListSalesProps {
   delivery: IDelivery;
+  onReloadDeliveries: () => void;
 }
-export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
+export const SearchDeliveryRow = ({
+  delivery,
+  onReloadDeliveries,
+}: IListSalesProps) => {
   const fileUrl = useUrlFile();
 
-  const { callback } = useAxios({
-    url: `deliveries/${delivery.id}`,
-    method: "DELETE",
-    body: {},
-  });
+  const deliveryID = delivery.id;
+  const accessToken = useRecoilValue(accessToken$);
+  const apiBase = useRecoilValue(apiBase$);
+  const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
+    useModal();
 
-  function handleDelete() {
-    Swal.fire({
+  const deleteDelivery = useCallback(async () => {
+    const result = await Swal.fire({
       title: "¿Estás seguro?",
       text: "No podrás revertir esta acción",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed && callback) {
-        callback();
-        console.log("Delivery ID: " + delivery.id);
-        Swal.fire({
-          title: "Eliminado",
-          text: "El grupo ha sido eliminado con éxito",
-          icon: "success",
-          timer: 5000,
-        });
-      }
     });
-  }
-  const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
-    useModal();
+
+    if (!result.isConfirmed) {
+      return;
+    }
+    const response = await fetch(
+      `${apiBase}/deliveries/${encodeURIComponent(deliveryID as string)}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      Swal.fire(
+        "Error",
+        "No se pudo eliminar el agente. Por favor intenta más tarde.",
+        "error",
+      );
+    } else {
+      Swal.fire(
+        "Eliminado",
+        "El entregable ha sido eliminado con éxito",
+        "success",
+      );
+      onReloadDeliveries();
+    }
+  }, [accessToken, apiBase, delivery, onReloadDeliveries]);
 
   return (
     <>
@@ -76,7 +99,7 @@ export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
           />
           <button
             className="cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={() => handleDelete()}
+            onClick={() => deleteDelivery()}
           >
             <FiTrash2 color="gray" size={20} className="hover:stroke-red-900" />
           </button>

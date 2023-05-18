@@ -22,7 +22,7 @@ describe("New Search Delivery Table", () => {
     it("redirects to login", async () => {
       const test = new RenderTest(
         "authentication-0",
-        <SearchDeliveryTable deliveries={[]} />,
+        <SearchDeliveryTable deliveries={[]} onReloadDeliveries={() => {}} />,
         root,
       );
       await test.start();
@@ -47,6 +47,7 @@ describe("New Search Delivery Table", () => {
                   "https://www.kayum.mx/wp-content/uploads/2019/09/logo-GNP.jpeg",
               },
             ]}
+            onReloadDeliveries={() => {}}
           />
         ),
         root,
