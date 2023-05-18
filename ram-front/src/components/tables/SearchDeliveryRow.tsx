@@ -4,6 +4,8 @@ import { IDelivery } from "../../types";
 import { useUrlFile } from "../../lib/files";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
+import ModalDeliveryFormUpdate from "../forms/ModalDeliveryFormUpdate";
+import useModal from "../../hooks/useModal";
 // (c) Delta Software 2023, rights reserved.
 
 export interface IListSalesProps {
@@ -39,6 +41,8 @@ export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
       }
     });
   }
+  const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
+    useModal();
 
   return (
     <>
@@ -57,7 +61,7 @@ export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
         <Table.Cell>
           <button
             className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={() => alert("Redireccionando a editar delivery ...")}
+            onClick={toggleModalDeliveryForm}
           >
             <FiEdit
               color="gray"
@@ -65,6 +69,11 @@ export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
               className="hover:stroke-gnp-blue-900"
             />
           </button>
+          <ModalDeliveryFormUpdate
+            isOpenModal={isOpenDeliveryForm}
+            closeModal={toggleModalDeliveryForm}
+            deliveryId={delivery.id}
+          />
           <button
             className="cursor-pointer transition-all ease-in-out hover:scale-125"
             onClick={() => handleDelete()}
