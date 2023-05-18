@@ -262,14 +262,14 @@ describe("Update status endpoint", () => {
     describe("authentication", () => {
       it("rejects unauthenticated request", async () => {
         return request(app)
-          .patch(`/deliveries/${deliveryId}`)
+          .post(`/deliveries/${deliveryId}`)
           .send()
           .expect(401);
       });
 
       it("rejects non-manager request", async () => {
         return request(app)
-          .patch(`/deliveries/${deliveryId}`)
+          .post(`/deliveries/${deliveryId}`)
           .set("Authorization", `Bearer ${accessTokenInvalid}`)
           .send()
           .expect(403);
@@ -277,7 +277,7 @@ describe("Update status endpoint", () => {
 
       it("accepts manager request", async () => {
         return request(app)
-          .patch(`/deliveries/${deliveryId}`)
+          .post(`/deliveries/${deliveryId}`)
           .set("Authorization", `Bearer ${managerAccessToken}`)
           .send({
             deliveryName: "new name",
@@ -289,7 +289,7 @@ describe("Update status endpoint", () => {
     describe("validation", () => {
       it("rejects empty request", async () => {
         return request(app)
-          .patch(`/deliveries/${deliveryId}`)
+          .post(`/deliveries/${deliveryId}`)
           .set("Authorization", `Bearer ${managerAccessToken}`)
           .send({})
           .expect(400);
@@ -297,7 +297,7 @@ describe("Update status endpoint", () => {
 
       it("accepts request that only changes some field", async () => {
         return request(app)
-          .patch(`/deliveries/${deliveryId}`)
+          .post(`/deliveries/${deliveryId}`)
           .set("Authorization", `Bearer ${managerAccessToken}`)
           .send({
             description: "new description",
@@ -316,7 +316,7 @@ describe("Update status endpoint", () => {
         } as Express.Multer.File;
 
         return request(app)
-          .patch(`/deliveries/${deliveryId}`)
+          .post(`/deliveries/${deliveryId}`)
           .set("Authorization", `Bearer ${managerAccessToken}`)
           .attach("image", file.buffer, file.originalname)
           .field("deliveryName", "new name")
@@ -328,7 +328,7 @@ describe("Update status endpoint", () => {
     describe("functionality", () => {
       it("handles invalid delivery id", async () => {
         return request(app)
-          .patch(`/deliveries/12345`)
+          .post(`/deliveries/12345`)
           .set("Authorization", `Bearer ${managerAccessToken}`)
           .send({
             deliveryName: "new name",
@@ -347,7 +347,7 @@ describe("Update status endpoint", () => {
         } as Express.Multer.File;
 
         const response = await request(app)
-          .patch(`/deliveries/${deliveryId}`)
+          .post(`/deliveries/${deliveryId}`)
           .set("Authorization", `Bearer ${managerAccessToken}`)
           .attach("image", file.buffer, file.originalname)
           .field("deliveryName", "new name")
@@ -366,7 +366,7 @@ describe("Update status endpoint", () => {
 
       it("updates fields correctly", async () => {
         await request(app)
-          .patch(`/deliveries/${deliveryId}`)
+          .post(`/deliveries/${deliveryId}`)
           .set("Authorization", `Bearer ${managerAccessToken}`)
           .send({
             description: "new description",

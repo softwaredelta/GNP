@@ -217,7 +217,7 @@ deliveriesRouter.post(
   },
 );
 
-deliveriesRouter.patch(
+deliveriesRouter.post(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
   upload.single("image"),
