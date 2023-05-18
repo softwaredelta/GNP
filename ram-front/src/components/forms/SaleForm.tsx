@@ -1,112 +1,57 @@
 // (c) Delta Software 2023, rights reserved.
-
-import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
-import { TbSend } from "react-icons/tb";
-import useAxios from "../../hooks/useAxios";
-import Swal from "sweetalert2";
-import { useForm } from "react-hook-form";
 import { IAssuranceType, ISell } from "../../types";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
+import Swal from "sweetalert2";
 import { FileInput } from "flowbite-react";
+import { TbSend } from "react-icons/tb";
+import "react-datepicker/dist/react-datepicker.css";
 
-import { useParams } from "react-router-dom";
-
-export interface Props {
+export interface ISaleFormProps {
   assuranceTypes: IAssuranceType[];
-  sale: ISell;
+  initialSell: ISell;
+  isEdit: boolean;
+  handlePost: (data: {
+    form: ISell;
+    paidDate: Date | null;
+    emissionDate: Date | null;
+    file: File | null | string;
+  }) => void;
 }
 
-const CardModifySale = ({ assuranceTypes, sale }: Props) => {
-  const paidDateFormat = new Date(sale.paidDate);
-  const [paidDate, setPaidDate] = useState<Date | null>(paidDateFormat);
-  const emissionDateFormat = new Date(sale.emissionDate);
-  const [emissionDate, setEmissionDate] = useState<Date | null>(
-    emissionDateFormat,
-  );
-
-  const [file, setFile] = useState<File | null>(null);
-
-  type FormValues = {
-    policyNumber: number;
-    assuranceTypeId: string;
-    paidDate: Date;
-    yearlyFee: number;
-    contractingClient: string;
-    periodicity: string;
-    paidFee: number;
-    insuredCostumer: string;
-    emissionDate: Date;
-  };
-
-  const { register, handleSubmit, reset } = useForm<FormValues>();
-
-  const { id: idSale } = useParams();
-
-  const { response, error, callback } = useAxios({
-    url: `sales/update/${idSale}`,
-    method: "POST",
+export default function SaleForm({
+  assuranceTypes,
+  initialSell = {
+    policyNumber: "",
+    yearlyFee: "",
+    contractingClient: "",
+    status: "",
+    periodicity: "",
+    evidenceUrl: "",
+    insuredCostumer: "",
+    paidFee: "",
+    assuranceTypeId: "",
+  },
+  isEdit = false,
+  handlePost,
+}: ISaleFormProps) {
+  const { register, handleSubmit, reset } = useForm<ISell>({
+    defaultValues: {
+      ...initialSell,
+    },
   });
 
-  const sendData = (data: FormValues) => {
-    if (file) {
-      const formData: FormData = new FormData();
-      formData.append("evidenceUrl", "not-handled");
-      formData.append("policyNumber", data.policyNumber.toString());
-      formData.append("assuranceTypeId", data.assuranceTypeId.toString());
-      formData.append("paidDate", paidDate?.toString() as string);
-      formData.append("yearlyFee", data.yearlyFee.toString());
-      formData.append("contractingClient", data.contractingClient);
-      formData.append("periodicity", data.periodicity);
-      formData.append("paidFee", data.paidFee.toString());
-      formData.append("insuredCostumer", data.insuredCostumer);
-      formData.append("emissionDate", emissionDate?.toString() as string);
-
-      try {
-        callback?.(formData);
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      Swal.fire({
-        title: "Error!",
-        text: `No seleccionaste archivo.`,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (response) {
-      Swal.fire({
-        title: "Success!",
-        text: "La venta se ha registrado correctamente.",
-        icon: "success",
-      });
-      reset({
-        policyNumber: 0,
-        yearlyFee: 0,
-        contractingClient: "",
-        assuranceTypeId: "1",
-        periodicity: "Mensual",
-        paidFee: 0,
-        insuredCostumer: "",
-      });
-      setPaidDate(new Date());
-      setEmissionDate(new Date());
-    } else if (error) {
-      console.log({ error });
-      Swal.fire({
-        title: "Error!",
-        text: `Ocurrió un error al registrar la venta.\n
-        ${(error as any).response.data.message}`,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
-  }, [response, error]);
+  const [paidDate, setPaidDate] = useState<Date | null>(
+    initialSell.paidDate ? new Date(initialSell.paidDate) : new Date(),
+  );
+  const [emissionDate, setEmissionDate] = useState<Date | null>(
+    initialSell.emissionDate ? new Date(initialSell.emissionDate) : new Date(),
+  );
+  const [file, setFile] = useState<File | null | string>(
+    initialSell.evidenceUrl || null,
+  );
 
   return (
     <div className="m-4 grid w-11/12 grid-cols-4 rounded-lg bg-gradient-to-t from-[#DBDFE6] to-[#FFEFDB] shadow-lg">
@@ -118,7 +63,7 @@ const CardModifySale = ({ assuranceTypes, sale }: Props) => {
       <div className="grid-cols col-span-3 grid w-full rounded-l-lg md:col-span-3 md:w-full">
         <div className="col flex items-center justify-center rounded-t-lg bg-orange-500 p-4 md:rounded-tr-lg">
           <h1 className="my-2 text-3xl font-bold text-white">
-            Modificar venta
+            {isEdit ? "Editar " : "Agregar "}venta
           </h1>
         </div>
         <div className="col grid grid-cols-3">
@@ -127,10 +72,9 @@ const CardModifySale = ({ assuranceTypes, sale }: Props) => {
               Póliza
             </label>
             <input
-              value={sale.policyNumber}
               className="input-primary w-full"
               placeholder="Ingrese el número de póliza"
-              type="number"
+              type="text"
               {...register("policyNumber", {
                 required: "El campo poliza es requerido",
                 minLength: {
@@ -147,7 +91,6 @@ const CardModifySale = ({ assuranceTypes, sale }: Props) => {
               Nombre del asegurado
             </label>
             <input
-              value={sale.insuredCostumer}
               className="input-primary w-full"
               placeholder="Ingrese el nombre de asegurado"
               {...register("insuredCostumer", {
@@ -166,7 +109,6 @@ const CardModifySale = ({ assuranceTypes, sale }: Props) => {
               Nombre del Contratante
             </label>
             <input
-              value={sale.contractingClient}
               className="input-primary w-full"
               placeholder="Ingrese el nombre del contratante"
               {...register("contractingClient", {
@@ -203,7 +145,6 @@ const CardModifySale = ({ assuranceTypes, sale }: Props) => {
               Prima Anual
             </label>
             <input
-              value={sale.yearlyFee}
               className="input-primary w-full"
               type="number"
               placeholder="Ingrese la prima anual"
@@ -256,7 +197,6 @@ const CardModifySale = ({ assuranceTypes, sale }: Props) => {
               Prima Pagada
             </label>
             <input
-              value={sale.paidFee}
               className="input-primary w-full"
               type="number"
               placeholder="Ingrese la prima pagada"
@@ -286,21 +226,33 @@ const CardModifySale = ({ assuranceTypes, sale }: Props) => {
               })}
             >
               {assuranceTypes.map((at, index) => (
-                <option
-                  key={index}
-                  value={at.id}
-                  selected={at.id === sale.assuranceTypeId}
-                >
+                <option key={index} value={at.id}>
                   {at.name}
                 </option>
               ))}
             </select>
           </div>
 
-          <div className="col-span-2 mb-4 px-6 pt-8 ">
+          <div className="col-span-2 mb-4 flex flex-col justify-center px-6 ">
+            {typeof file === "string" && (
+              <div className="py-2">
+                <label htmlFor="" className="label-primary font-bold">
+                  {"Esta venta ya tiene archivo: "}
+                </label>
+                <a
+                  href={file}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=" text-gnp-blue-600 underline"
+                >
+                  {" Click aquí para verlo"}
+                </a>
+              </div>
+            )}
             <FileInput
               id="file"
-              onChange={(e) => {
+              className="w-full"
+              onChange={(e: any) => {
                 if (e.target.files) {
                   setFile(e.target.files[0]);
                 } else setFile(null);
@@ -311,17 +263,23 @@ const CardModifySale = ({ assuranceTypes, sale }: Props) => {
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
             <button
               className="btn-primary flex h-12 items-center justify-center"
-              onClick={handleSubmit(sendData, (errorsFields) => {
-                Swal.fire({
-                  title: "Error!",
-                  text: `Ocurrió un error al registrar la venta.\n
-                    ${Object.values(errorsFields).map((e) => e.message + " ")}`,
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              })}
+              onClick={handleSubmit(
+                (form) => {
+                  handlePost({ form, emissionDate, file, paidDate });
+                  reset();
+                },
+                (errorsFields) => {
+                  Swal.fire({
+                    title: "Error!",
+                    text: `Ocurrió un error al registrar la venta.\n
+                  ${Object.values(errorsFields).map((e) => e.message + " ")}`,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                  });
+                },
+              )}
             >
-              <span className="text-lg font-semibold"> Guardar </span>
+              <span className="text-lg font-semibold"> Enviar </span>
               <TbSend size={20} className="ml-2" />
             </button>
           </div>
@@ -329,6 +287,4 @@ const CardModifySale = ({ assuranceTypes, sale }: Props) => {
       </div>
     </div>
   );
-};
-
-export default CardModifySale;
+}
