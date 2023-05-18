@@ -14,31 +14,19 @@ import * as j from "joi";
 
 export const authRouter = Router();
 
-const createUserParameters = j.object({
-  email: j.string().email().required(),
-  password: j.string().min(8).required(),
-  role: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).required(),
-  name: j.string().required(),
-  lastName: j.string().required(),
-});
-
 const userParameters = j.object({
   email: j.string().email().required(),
   password: j.string().min(8).required(),
+  confirmPassword: j.string().valid(j.ref("password")).optional(),
+  name: j.string().optional(),
+  lastName: j.string().optional(),
+  mobile: j.number().optional(),
+  role: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).optional(),
+  urlPP200: j.string().optional().allow("").default(""),
 });
 
 const userParametersMiddleware: RequestHandler = (req, res, next) => {
   const { error } = userParameters.validate(req.body);
-  if (error) {
-    res.status(400).json({ message: "BAD_DATA", reason: error });
-    return;
-  }
-
-  next();
-};
-
-const createUserParametersMiddleware: RequestHandler = (req, res, next) => {
-  const { error } = createUserParameters.validate(req.body);
   if (error) {
     res.status(400).json({ message: "BAD_DATA", reason: error });
     return;
@@ -101,10 +89,11 @@ export const authMiddleware = (
 
 authRouter.post(
   "/create",
-  createUserParametersMiddleware,
+  userParametersMiddleware,
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
   async (req, res) => {
-    const { email, password, role, name, lastName } = req.body;
+    const { email, password, name, lastName, role, mobile, urlPP200 } =
+      req.body;
     // TODO: validation
 
     const { user, error } = await createUser({
@@ -112,7 +101,9 @@ authRouter.post(
       password,
       name,
       lastName,
+      urlPP200,
       roles: [role],
+      mobile,
     });
     if (error) {
       res.status(400).json({ message: error });

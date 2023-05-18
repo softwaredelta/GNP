@@ -31,9 +31,11 @@ export async function createUser(params: {
   password: string;
   name?: string;
   lastName?: string;
+  mobile?: number;
   id?: string;
   roles?: UserRole[];
   iamgeURL?: string;
+  urlPP200?: string;
 }): Promise<{ user: UserEnt; error?: UserError }> {
   // TODO: handle authentication with admin or something
 
@@ -41,6 +43,8 @@ export async function createUser(params: {
   const id = params.id || v4();
   const hashedPassword = await hashPassword(params.password);
   const roles = params.roles || [UserRole.REGULAR];
+  const mobile = params.mobile || 10000000000;
+  const urlPP200 = params.urlPP200 || "";
 
   return ds.manager
     .save(
@@ -49,6 +53,8 @@ export async function createUser(params: {
         id,
         email: params.email,
         name: params.name,
+        mobile,
+        urlPP200,
         lastName: params.lastName,
         password: hashedPassword,
         rolesString: buildRoleString(roles),

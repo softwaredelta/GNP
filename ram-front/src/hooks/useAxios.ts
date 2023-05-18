@@ -35,6 +35,7 @@ export default function useAxios<T>({
 
   const fetchData = useCallback(async (): Promise<void> => {
     try {
+      setError(null);
       setLoading(true);
       const res = await axios({
         method,

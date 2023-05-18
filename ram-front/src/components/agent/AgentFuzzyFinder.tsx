@@ -116,7 +116,7 @@ export default function AgentFuzzyFinder({
         if (selectedItem !== null) {
           const userId = users[selectedItem].id;
           (async () => {
-            await addUser(userId);
+            await addUser(userId as string);
             onReloadAgents();
             updateGroups();
           })();
@@ -144,7 +144,7 @@ export default function AgentFuzzyFinder({
               selected={selectedItem !== null && selectedItem === index}
               user={user}
               onClick={async () => {
-                await addUser(user.id);
+                await addUser(user.id as string);
                 onReloadAgents();
                 updateGroups();
               }}

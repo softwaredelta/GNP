@@ -93,6 +93,9 @@ export class UserEnt {
   @Column(TELEPHONE_COLUMN)
   mobile!: number;
 
+  @Column(URL_COLUMN)
+  urlPP200?: string;
+
   @OneToMany(() => SellEnt, (sell) => sell.user)
   sell!: SellEnt[];
 
