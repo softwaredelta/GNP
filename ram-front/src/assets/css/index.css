@@ -19,7 +19,7 @@
 }
 
 .input-primary {
-  @apply mb-8 h-12 rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
+  @apply mb-8 h-12 w-full rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
 }
 
 .text-area-primary {
@@ -36,6 +36,10 @@
 
 .title {
   @apply my-10 w-72 rounded-r-3xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white;
+}
+
+.label-primary {
+  @apply text-base font-bold text-gnp-blue-500 block mb-1 mt-3;
 }
 
 .custom-scroll {

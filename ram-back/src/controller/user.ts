@@ -17,6 +17,12 @@ export const authRouter = Router();
 const userParameters = j.object({
   email: j.string().email().required(),
   password: j.string().min(8).required(),
+  confirmPassword: j.string().valid(j.ref("password")).optional(),
+  name: j.string().optional(),
+  lastName: j.string().optional(),
+  mobile: j.number().optional(),
+  role: j.string().optional(),
+  urlPP200: j.string().optional().allow("").default(""),
 });
 
 const userParametersMiddleware: RequestHandler = (req, res, next) => {
@@ -30,10 +36,18 @@ const userParametersMiddleware: RequestHandler = (req, res, next) => {
 };
 
 authRouter.post("/create", userParametersMiddleware, async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name, lastName, role, mobile, urlPP200 } = req.body;
   // TODO: validation
 
-  const { user, error } = await createUser({ email, password });
+  const { user, error } = await createUser({
+    email,
+    password,
+    name,
+    lastName,
+    urlPP200,
+    roles: [role],
+    mobile,
+  });
   if (error) {
     res.status(400).json({ message: error });
     return;
