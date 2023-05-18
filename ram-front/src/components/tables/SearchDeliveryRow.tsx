@@ -28,7 +28,7 @@ export const SearchDeliveryRow = ({ delivery }: IListSalesProps) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed && callback) {
-        callback()
+        callback();
         console.log("Delivery ID: " + delivery.id);
         Swal.fire({
           title: "Eliminado",
