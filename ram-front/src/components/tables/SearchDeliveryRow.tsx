@@ -93,7 +93,10 @@ export const SearchDeliveryRow = ({
           </button>
           <ModalDeliveryFormUpdate
             isOpenModal={isOpenDeliveryForm}
-            closeModal={toggleModalDeliveryForm}
+            closeModal={() => {
+              toggleModalDeliveryForm();
+              onReloadDeliveries();
+            }}
             deliveryId={delivery.id}
           />
           <button
