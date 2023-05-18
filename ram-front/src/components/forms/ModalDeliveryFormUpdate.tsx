@@ -29,23 +29,28 @@ export default function ModalDeliveryFormUpdate({
   });
 
   type FormValues = {
-    deliveryName: string;
-    description: string;
+    deliveryName?: string;
+    description?: string;
+    
   };
 
   const { register, handleSubmit, reset } = useForm<FormValues>();
 
   const uploadFile = (data: FormValues) => {
+    const formData: FormData = new FormData();
     if (file) {
-      const formData: FormData = new FormData();
       formData.append("image", file);
+    }
+    if (data.deliveryName) {
       formData.append("deliveryName", data.deliveryName);
+    }
+    if (data.description) {
       formData.append("description", data.description);
-      try {
-        callback?.(formData);
-      } catch (err) {
-        console.error(err);
-      }
+    }
+    try {
+      callback?.(formData);
+    } catch (err) {
+      console.error(err);
     }
   };
 
