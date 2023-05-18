@@ -9,6 +9,7 @@ import {
   createDelivery,
   deleteDelivery,
   getUserDeliveriesbyGroup,
+  setDeliveryToAllUsers,
   updateDelivery,
   updateDeliveryStatus,
 } from "../app/deliveries";
@@ -211,9 +212,18 @@ deliveriesRouter.post(
     const { delivery, error } = data;
     if (error) {
       res.status(500).json({ error });
-    } else {
-      res.status(201).json({ delivery });
+      return;
     }
+
+    await setDeliveryToAllUsers({
+      idDelivery: delivery.id,
+      idGroup: req.params.groupId,
+      fileUrl: delivery.imageUrl,
+      status: StatusUserDelivery.withoutSending,
+      dateDelivery: new Date(),
+    });
+
+    res.status(201).json({ delivery });
   },
 );
 
