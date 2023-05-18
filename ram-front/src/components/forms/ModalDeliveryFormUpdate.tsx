@@ -31,7 +31,6 @@ export default function ModalDeliveryFormUpdate({
   type FormValues = {
     deliveryName?: string;
     description?: string;
-    
   };
 
   const { register, handleSubmit, reset } = useForm<FormValues>();

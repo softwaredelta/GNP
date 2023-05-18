@@ -16,7 +16,6 @@ import { authenticateUser } from "../../app/user";
 import { truncate } from "fs";
 import { getS3Api } from "../../arch/s3-client";
 import { DeliveryEnt } from "../../entities/delivery.entity";
-import exp from "constants";
 
 let managerAccessToken: string;
 let accessToken: string;
