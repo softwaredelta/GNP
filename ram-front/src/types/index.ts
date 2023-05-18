@@ -58,11 +58,21 @@ export interface IUserDelivery {
 }
 
 export interface IUser {
-  id: string;
+  id?: string;
   email: string;
-  imageURL: string;
+  imageURL?: string;
   name: string;
   lastName: string;
+  origin?: string;
+  state?: string;
+  level?: string;
+  password?: string;
+  confirmPassword?: string;
+  mobile?: number;
+  phone?: number;
+  registerDate?: Date;
+  role?: string;
+  urlPP200?: string;
 }
 
 export interface IGroup {

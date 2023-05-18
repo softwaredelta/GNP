@@ -59,6 +59,13 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
           <Link to="/help">
             <Dropdown.Item>Ayuda</Dropdown.Item>
           </Link>
+          {role === "manager" ? (
+            <Link to="/add-user">
+              <Dropdown.Item>Agregar usuarios</Dropdown.Item>
+            </Link>
+          ) : (
+            <></>
+          )}
           <Dropdown.Divider />
           <Dropdown.Item onClick={onLogout} data-testid="logout-button">
             Salir

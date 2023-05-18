@@ -50,7 +50,7 @@ export default function SearchAgentTable({
 
       const response = await fetch(
         `${apiBase}/groups/${groupId}/remove-user?userId=${encodeURIComponent(
-          agent.id,
+          agent.id as string,
         )}`,
         {
           method: "POST",
