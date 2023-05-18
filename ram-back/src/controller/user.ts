@@ -21,7 +21,7 @@ const userParameters = j.object({
   name: j.string().optional(),
   lastName: j.string().optional(),
   mobile: j.number().optional(),
-  role: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).required(),
+  role: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).optional(),
   urlPP200: j.string().optional().allow("").default(""),
 });
 
