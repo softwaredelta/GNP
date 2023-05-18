@@ -5,11 +5,11 @@ import { IGroup } from "../../types";
 import Modal from "../generics/Modal";
 
 export interface IModalGroupFormProps {
-  handlePost: (image: File | null, name: string) => void;
+  handlePost: (image: File | null | string, name: string) => void;
   closeModal: VoidFunction;
   isOpenModal: boolean;
   isEditModal: boolean;
-  initialValues: IGroup;
+  initialValues?: IGroup;
 }
 
 export default function ModalGroupForm({
@@ -53,7 +53,7 @@ export default function ModalGroupForm({
                   ref={nameRef}
                   type="text"
                   className="input-primary w-10/12"
-                  defaultValue={initialValues.name}
+                  defaultValue={initialValues?.name}
                 />
               </div>
               <div className="row-span-2 w-9/12">
@@ -66,7 +66,7 @@ export default function ModalGroupForm({
                 >
                   <img
                     className="h-full w-full object-cover"
-                    src={initialValues.imageURL || "/default.jfif"}
+                    src={initialValues?.imageURL || "/default.jfif"}
                     ref={imgRef}
                   />
                 </div>

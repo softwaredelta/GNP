@@ -1,9 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import Wrapper from "../containers/Wrapper";
@@ -51,7 +51,14 @@ export default function ManagerCourses() {
         navigate(`/group/edit/${response.id}`);
       }
     }
-  }, [error, response, shouldUpdate, updateGroups]);
+  }, [
+    error,
+    response,
+    shouldUpdate,
+    toggleModalGroupForm,
+    updateGroups,
+    navigate,
+  ]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -95,7 +102,6 @@ export default function ManagerCourses() {
                   }
                 }}
                 isEditModal={false}
-                initialValues={{ name: "" }}
               />
             </div>
           </div>

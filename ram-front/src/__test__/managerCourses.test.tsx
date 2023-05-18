@@ -150,6 +150,7 @@ describe("Add new group", () => {
           handlePost={mockPostHandler}
           isOpenModal={true}
           closeModal={mockToggleHandler}
+          isEditModal={false}
         />
       ),
       root,

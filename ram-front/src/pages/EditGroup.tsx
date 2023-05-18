@@ -45,14 +45,6 @@ export default function EditGroup() {
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Error",
-        text: "No se pudo obtener la lista de estatus",
-        icon: "error",
-      });
-    }
-
-    if (response) {
-      Swal.fire({
         title: "Grupo modificado",
         text: "El grupo se ha modificado correctamente",
         icon: "success",
@@ -68,6 +60,7 @@ export default function EditGroup() {
     }
     if (shouldUpdate) {
       setShouldUpdate(false);
+      toggleModalGroupForm();
       updateGroups();
     }
   }, [response, error]);
@@ -86,7 +79,7 @@ export default function EditGroup() {
             <div className="flex w-auto pr-8">
               <button
                 onClick={toggleModalGroupForm}
-                className="btn-primary"
+                className="btn-primary pr-7"
                 data-testid="button-modal"
               >
                 Editar Grupo
@@ -96,17 +89,17 @@ export default function EditGroup() {
                   isOpenModal={isOpenGroupForm}
                   closeModal={toggleModalGroupForm}
                   handlePost={(image, name) => {
-                    // if (!image) {
-                    //   Swal.fire({
-                    //     title: "Imagen faltante",
-                    //     text: "Inserte una imagen en el campo",
-                    //     icon: "error",
-                    //   });
-                    //   return;
-                    // }
+                    if (!image) {
+                      Swal.fire({
+                        title: "Imagen faltante",
+                        text: "Inserte una imagen en el campo",
+                        icon: "error",
+                      });
+                      return;
+                    }
                     if (callback) {
                       const data: FormData = new FormData();
-                      // data.append("image", image);
+                      data.append("image", image);
                       data.append("name", name);
                       callback(data);
                     }
