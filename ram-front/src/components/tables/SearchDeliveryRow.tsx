@@ -1,13 +1,15 @@
-import { Checkbox, Table } from "flowbite-react";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { IDelivery } from "../../types";
-import { useUrlFile } from "../../lib/files";
-import Swal from "sweetalert2";
-import { apiBase$ } from "../../lib/api/api-base";
-import { useRecoilValue } from "recoil";
-import { accessToken$ } from "../../lib/api/api-auth";
-import { useCallback } from "react";
 // (c) Delta Software 2023, rights reserved.
+import { Checkbox, Table } from "flowbite-react";
+import { useCallback } from "react";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { useRecoilValue } from "recoil";
+import Swal from "sweetalert2";
+import useModal from "../../hooks/useModal";
+import { accessToken$ } from "../../lib/api/api-auth";
+import { apiBase$ } from "../../lib/api/api-base";
+import { useUrlFile } from "../../lib/files";
+import { IDelivery } from "../../types";
+import ModalDeliveryFormUpdate from "../forms/ModalDeliveryFormUpdate";
 
 export interface IListSalesProps {
   delivery: IDelivery;
@@ -19,6 +21,8 @@ export const SearchDeliveryRow = ({
 }: IListSalesProps) => {
   const fileUrl = useUrlFile();
 
+  const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
+    useModal();
   const deliveryID = delivery.id;
   const accessToken = useRecoilValue(accessToken$);
   const apiBase = useRecoilValue(apiBase$);
@@ -79,7 +83,7 @@ export const SearchDeliveryRow = ({
         <Table.Cell>
           <button
             className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={() => alert("Redireccionando a editar delivery ...")}
+            onClick={toggleModalDeliveryForm}
           >
             <FiEdit
               color="gray"
@@ -87,6 +91,11 @@ export const SearchDeliveryRow = ({
               className="hover:stroke-gnp-blue-900"
             />
           </button>
+          <ModalDeliveryFormUpdate
+            isOpenModal={isOpenDeliveryForm}
+            closeModal={toggleModalDeliveryForm}
+            deliveryId={delivery.id}
+          />
           <button
             className="cursor-pointer transition-all ease-in-out hover:scale-125"
             onClick={() => deleteDelivery()}

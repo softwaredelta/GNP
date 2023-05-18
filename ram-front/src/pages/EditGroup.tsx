@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
 import ModalDeliveryForm from "../components/forms/ModalDeliveryForm";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
+import ModalDeliveryFormCreate from "../components/forms/ModalDeliveryFormCreate";
 import SearchAgentTable from "../components/tables/SearchAgentTable";
 import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import Wrapper from "../containers/Wrapper";
@@ -116,7 +117,7 @@ export default function EditGroup() {
                 <RiAddBoxFill className="ml-2 inline-block" size={20} />
               </button>
             </div>
-            <ModalDeliveryForm
+            <ModalDeliveryFormCreate
               isOpenModal={isOpenDeliveryForm}
               closeModal={() => {
                 toggleModalDeliveryForm();
