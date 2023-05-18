@@ -1,27 +1,27 @@
 // (c) Delta Software 2023, rights reserved.
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-import useAxios from "../../hooks/useAxios";
+import { useState, useEffect } from "react";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import Modal from "../generics/Modal";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
+import useAxios from "../../hooks/useAxios";
 
 export interface IModalDeliveryFormProps {
   closeModal: VoidFunction;
   isOpenModal: boolean;
-  deliveryId: string;
 }
 
-export default function ModalDeliveryFormUpdate({
+export default function ModalDeliveryFormCreate({
   closeModal,
   isOpenModal,
-  deliveryId,
 }: IModalDeliveryFormProps) {
   const { setPreviewImage, imgRef, resetImage } = usePreviewImage();
+  const { id } = useParams();
   const [file, setFile] = useState<File | null>(null);
 
   const { response, error, callback } = useAxios({
-    url: `deliveries/${deliveryId}`,
+    url: `deliveries/create-delivery/${id}`,
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
@@ -29,7 +29,7 @@ export default function ModalDeliveryFormUpdate({
   });
 
   type FormValues = {
-    deliveryName: string;
+    name: string;
     description: string;
   };
 
@@ -39,13 +39,20 @@ export default function ModalDeliveryFormUpdate({
     if (file) {
       const formData: FormData = new FormData();
       formData.append("image", file);
-      formData.append("deliveryName", data.deliveryName);
+      formData.append("deliveryName", data.name);
       formData.append("description", data.description);
       try {
         callback?.(formData);
       } catch (err) {
         console.error(err);
       }
+    } else {
+      Swal.fire({
+        title: "Error!",
+        text: `No seleccionaste archivo.`,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -53,21 +60,19 @@ export default function ModalDeliveryFormUpdate({
     if (response) {
       Swal.fire({
         title: "Success!",
-        text: "El entregable se ha modificado correctamente.",
+        text: "El entregable se ha registrado correctamente.",
         icon: "success",
       });
       reset({
-        deliveryName: "",
+        name: "",
         description: "",
       });
       closeModal();
-    }
-
-    if (error) {
+    } else if (error) {
       console.log({ error });
       Swal.fire({
         title: "Error!",
-        text: `Ocurrió un error al modificar el entregable.\n
+        text: `Ocurrió un error al registrar el entregable.\n
         ${(error as any).response.data.message}`,
         icon: "error",
         confirmButtonText: "OK",
@@ -90,7 +95,7 @@ export default function ModalDeliveryFormUpdate({
             className=" relative w-3/5 rounded-3xl bg-gnp-white p-10"
           >
             <h1 className="apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white">
-              Editar entregable
+              Agregar entregable
             </h1>
             <div className="justify-beetwen mt-10  grid  grid-cols-2  place-items-center">
               <div className="row-span-2 flex w-full flex-col items-center justify-center space-y-3">
@@ -102,7 +107,7 @@ export default function ModalDeliveryFormUpdate({
                 <input
                   type="text"
                   className="input-primary w-10/12"
-                  {...register("deliveryName", {
+                  {...register("name", {
                     required: "El campo nombre del entregable requerido.",
                     minLength: {
                       value: 3,
@@ -174,7 +179,7 @@ export default function ModalDeliveryFormUpdate({
                   onClick={handleSubmit(uploadFile, (errorsFields) => {
                     Swal.fire({
                       title: "Error!",
-                      text: `Ocurrió un error al modificar el entregable.\n
+                      text: `Ocurrió un error al registrar la venta.\n
                         ${Object.values(errorsFields).map(
                           (e) => e.message + " ",
                         )}`,
@@ -183,7 +188,7 @@ export default function ModalDeliveryFormUpdate({
                     });
                   })}
                 >
-                  Editar
+                  Agregar
                 </button>
               </div>
             </div>

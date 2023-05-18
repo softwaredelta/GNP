@@ -5,7 +5,6 @@ import { RiAddBoxFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
-import ModalDeliveryForm from "../components/forms/ModalDeliveryForm";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
 import ModalDeliveryFormCreate from "../components/forms/ModalDeliveryFormCreate";
 import SearchAgentTable from "../components/tables/SearchAgentTable";
