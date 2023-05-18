@@ -39,7 +39,7 @@
 }
 
 .label-primary {
-  @apply text-base font-bold text-gnp-blue-500 block mb-1 mt-3;
+  @apply mb-1 mt-3 block text-base font-bold text-gnp-blue-500;
 }
 
 .custom-scroll {
