@@ -19,7 +19,7 @@ export default function SearchAgentTable({
   groupId,
   onReloadAgents,
 }: IListSearchProps) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
   const accessToken = useRecoilValue(accessToken$);
   const apiBase = useRecoilValue(apiBase$);
 
