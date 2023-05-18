@@ -9,7 +9,7 @@ import useAxios from "../../hooks/useAxios";
 export interface IModalDeliveryFormProps {
   closeModal: VoidFunction;
   isOpenModal: boolean;
-  deliveryId: String;
+  deliveryId: string;
 }
 
 export default function ModalDeliveryFormUpdate({
