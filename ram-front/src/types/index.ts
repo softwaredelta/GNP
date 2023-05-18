@@ -22,19 +22,19 @@ export interface IStatus {
 }
 
 export interface ISell {
-  id: string;
+  id?: string;
   policyNumber: string;
-  assuranceType: IAssuranceType;
-  paidDate: Date;
+  assuranceType?: IAssuranceType;
+  paidDate?: Date;
   yearlyFee: string;
   contractingClient: string;
   status: string;
   periodicity: string;
   user?: IUser;
-  evidenceUrl: string;
+  evidenceUrl?: string;
   insuredCostumer: string;
-  paidFee: string;
-  emissionDate: Date;
+  paidFee?: string;
+  emissionDate?: Date;
   assuranceTypeId: string;
 }
 
