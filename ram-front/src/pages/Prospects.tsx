@@ -25,7 +25,7 @@ export default function Prospects() {
     response: prospectResponse,
     error: prospectError,
     loading: prospectLoading,
-    callback // Renombrar el callbacj¿k,
+    callback, // Renombrar el callbacj¿k,
   } = useAxios({
     url: "prospect/create",
     method: "POST",
