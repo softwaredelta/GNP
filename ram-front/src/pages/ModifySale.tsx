@@ -79,9 +79,6 @@ export default function NewSale() {
                   "emissionDate",
                   emissionDate?.toString() as string,
                 );
-                for (const value of formData.values()) {
-                  console.log(value);
-                }
                 try {
                   callback?.(formData);
                 } catch (err) {
