@@ -1,16 +1,16 @@
 // (c) Delta Software 2023, rights reserved.
 
-import Wrapper from "../containers/Wrapper";
-import { useRecoilValue } from "recoil";
-import { allCourses$, useUpdateGroups } from "../lib/api/api-courses";
-import { ManagerListGroups } from "../components/groups/ManagerListGroups";
-import useModal from "../hooks/useModal";
-import ModalGroupForm from "../components/forms/ModalGroupForm";
-import { IGroup } from "../types";
-import useAxios from "../hooks/useAxios";
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import Swal from "sweetalert2";
+import ModalGroupForm from "../components/forms/ModalGroupForm";
+import { ManagerListGroups } from "../components/groups/ManagerListGroups";
+import Wrapper from "../containers/Wrapper";
+import useAxios from "../hooks/useAxios";
+import useModal from "../hooks/useModal";
+import { allCourses$, useUpdateGroups } from "../lib/api/api-courses";
+import { IGroup } from "../types";
 
 // Manager view that list all groups
 export default function ManagerCourses() {
@@ -51,7 +51,14 @@ export default function ManagerCourses() {
         navigate(`/group/edit/${response.id}`);
       }
     }
-  }, [error, response]);
+  }, [
+    error,
+    response,
+    shouldUpdate,
+    toggleModalGroupForm,
+    updateGroups,
+    navigate,
+  ]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -94,6 +101,7 @@ export default function ManagerCourses() {
                     setShouldUpdate(true);
                   }
                 }}
+                isEditModal={false}
               />
             </div>
           </div>

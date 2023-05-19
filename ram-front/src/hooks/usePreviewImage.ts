@@ -3,21 +3,23 @@
 import { ChangeEvent, RefObject, useRef, useState } from "react";
 
 export interface IusePreviewImageReturn {
-  image: File | null;
+  image: File | null | string;
   setPreviewImage: (e: ChangeEvent<HTMLInputElement>) => void;
   imgRef: RefObject<HTMLImageElement>;
   resetImage: () => void;
 }
 
-export default function usePreviewImage(): IusePreviewImageReturn {
-  const [image, setImage] = useState<File | null>(null);
+export default function usePreviewImage(
+  defaultImage = "/default.jfif",
+): IusePreviewImageReturn {
+  const [image, setImage] = useState<File | null | string>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
   const setPreviewImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (!imgRef.current) return;
 
     if (!e.target.files) {
-      imgRef.current.src = `/default.jfif`;
+      imgRef.current.src = defaultImage;
       setImage(null);
       return;
     }

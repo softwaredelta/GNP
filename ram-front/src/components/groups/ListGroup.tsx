@@ -26,12 +26,12 @@ export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
           >
             <Card
               color={index % 2 ? "orange" : "blue"}
-              image={fileUrl(group.imageURL)}
+              image={fileUrl(group.imageURL as string)}
             >
               <CardInfoGroup
                 color={index % 2 ? "orange" : "blue"}
                 nameGroup={group.name}
-                progress={group.progress}
+                progress={group.progress as number}
               />
             </Card>
           </button>

@@ -272,6 +272,7 @@ export default function Examples() {
           handlePost={(image, name) => {
             alert(`Nombre: ${name} Imagen: ${image}`);
           }}
+          isEditModal={false}
         />
       </div>
       <div className="w-11/12">
