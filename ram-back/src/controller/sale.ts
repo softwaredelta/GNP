@@ -13,7 +13,7 @@ import { uploadFile } from "../app/file";
 const upload = multer();
 
 const saleParameters = j.object({
-  policyNumber: j.number().required(),
+  policyNumber: j.string().required(),
   paidDate: j.string().required(),
   yearlyFee: j.number().required(),
   contractingClient: j.string().required(),
