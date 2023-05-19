@@ -76,11 +76,11 @@ export interface IUser {
 }
 
 export interface IGroup {
-  id: string;
+  id?: string;
   name: string;
   description?: string;
-  imageURL: string;
-  progress: number;
+  imageURL?: string;
+  progress?: number;
   groupUsers?: IUser[];
   deliveries?: IDelivery[];
   userDeliveries?: IUserDelivery[];

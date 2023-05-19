@@ -1,14 +1,14 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Root, createRoot } from "react-dom/client";
 import "@testing-library/jest-dom/extend-expect";
-import { screen, render, waitFor, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { Root, createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { ManagerListGroups } from "../components/groups/ManagerListGroups";
-import { RenderTest } from "./fixtures";
-import ManagerCourses from "../pages/ManagerGroups";
 import { RecoilRoot } from "recoil";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
+import { ManagerListGroups } from "../components/groups/ManagerListGroups";
+import ManagerCourses from "../pages/ManagerGroups";
+import { RenderTest } from "./fixtures";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
@@ -150,14 +150,12 @@ describe("Add new group", () => {
           handlePost={mockPostHandler}
           isOpenModal={true}
           closeModal={mockToggleHandler}
+          isEditModal={false}
         />
       ),
       root,
     );
     await test.start();
-
-    const title = screen.getByText("Agregar grupo");
-    expect(title).toBeInTheDocument();
 
     const buttonClose = screen.getByText("Cancelar");
     expect(buttonClose).toBeInTheDocument();

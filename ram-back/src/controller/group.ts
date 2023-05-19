@@ -16,11 +16,11 @@ import {
   updateGroup,
   updateGroupWithFile,
 } from "../app/groups";
+import { setUserToAllDeliveries } from "../app/user-delivery";
 import { getDataSource } from "../arch/db-client";
 import { GroupEnt } from "../entities/group.entity";
 import { UserRole } from "../entities/user.entity";
 import { authMiddleware } from "./user";
-import { setUserToAllDeliveries } from "../app/user-delivery";
 
 export const groupsRouter = Router();
 const upload = multer();
@@ -69,7 +69,7 @@ groupsRouter.get("/my-groups", authMiddleware(), async (req, res) => {
 groupsRouter.get("/:id", async (req, res) => {
   const ds = await getDataSource();
   const groups = await ds.manager.findOne(GroupEnt, {
-    select: ["id", "name", "deliveries"],
+    select: ["id", "name", "deliveries", "imageURL"],
     relations: ["deliveries", "deliveries.userDeliveries"],
     where: {
       id: req.params.id,
