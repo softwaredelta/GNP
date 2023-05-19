@@ -89,9 +89,22 @@ export async function getProspectStatus(params: { userId: string }): Promise<{
         },
       },
       where: { userId: params.userId },
+<<<<<<< HEAD
+      order: { prospectStatus: { updatedStatusDate: "DESC" }},
     });
 
-    return { prospects };
+    return { prospects: prospects.map((p) => ({...p, prospectStatus: [p.prospectStatus[0]]})) };
+=======
+      order: { prospectStatus: { updatedStatusDate: "DESC" } },
+    });
+
+    return {
+      prospects: prospects.map((p) => ({
+        ...p,
+        prospectStatus: [p.prospectStatus[0]],
+      })),
+    };
+>>>>>>> 493a69c ([FRONT] Back and front connected)
   } catch (e) {
     return {
       error: ProspectError.PROSPECT_ERROR,
