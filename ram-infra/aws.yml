@@ -88,6 +88,11 @@ Parameters:
     Type: String
     Description: The full domain name for the application, should match hosted zone if used (ram.example.com)
 
+  AdminPassword:
+    Type: String
+    Description: The password for the admin user
+    NoEcho: true
+
 Conditions:
   HasHostedZone: !Not [!Equals [!Ref HostedZone, ""]]
 
@@ -200,6 +205,9 @@ Resources:
         - Namespace: aws:elasticbeanstalk:application:environment
           OptionName: S3_BUCKET_NAME
           Value: !Sub ${AWS::AccountId}-${AWS::StackName}-appdata
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: ADMIN_PASSWORD
+          Value: !Ref AdminPassword
 
         # Database config
         - Namespace: aws:rds:dbinstance
