@@ -1,27 +1,27 @@
 // (c) Delta Software 2023, rights reserved.
-import { useState, useEffect } from "react";
-import usePreviewImage from "../../hooks/usePreviewImage";
-import Modal from "../generics/Modal";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { useParams } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
+import usePreviewImage from "../../hooks/usePreviewImage";
+import Modal from "../generics/Modal";
 
 export interface IModalDeliveryFormProps {
   closeModal: VoidFunction;
   isOpenModal: boolean;
+  deliveryId: string;
 }
 
-export default function ModalDeliveryForm({
+export default function ModalDeliveryFormUpdate({
   closeModal,
   isOpenModal,
+  deliveryId,
 }: IModalDeliveryFormProps) {
   const { setPreviewImage, imgRef, resetImage } = usePreviewImage();
-  const { id } = useParams();
   const [file, setFile] = useState<File | null>(null);
 
   const { response, error, callback } = useAxios({
-    url: `deliveries/create-delivery/${id}`,
+    url: `deliveries/${deliveryId}`,
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
@@ -29,30 +29,27 @@ export default function ModalDeliveryForm({
   });
 
   type FormValues = {
-    name: string;
-    description: string;
+    deliveryName?: string;
+    description?: string;
   };
 
   const { register, handleSubmit, reset } = useForm<FormValues>();
 
   const uploadFile = (data: FormValues) => {
+    const formData: FormData = new FormData();
     if (file) {
-      const formData: FormData = new FormData();
       formData.append("image", file);
-      formData.append("deliveryName", data.name);
+    }
+    if (data.deliveryName) {
+      formData.append("deliveryName", data.deliveryName);
+    }
+    if (data.description) {
       formData.append("description", data.description);
-      try {
-        callback?.(formData);
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      Swal.fire({
-        title: "Error!",
-        text: `No seleccionaste archivo.`,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+    }
+    try {
+      callback?.(formData);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -60,19 +57,21 @@ export default function ModalDeliveryForm({
     if (response) {
       Swal.fire({
         title: "Success!",
-        text: "El entregable se ha registrado correctamente.",
+        text: "El entregable se ha modificado correctamente.",
         icon: "success",
       });
       reset({
-        name: "",
+        deliveryName: "",
         description: "",
       });
       closeModal();
-    } else if (error) {
+    }
+
+    if (error) {
       console.log({ error });
       Swal.fire({
         title: "Error!",
-        text: `Ocurrió un error al registrar el entregable.\n
+        text: `Ocurrió un error al modificar el entregable.\n
         ${(error as any).response.data.message}`,
         icon: "error",
         confirmButtonText: "OK",
@@ -95,7 +94,7 @@ export default function ModalDeliveryForm({
             className=" relative w-3/5 rounded-3xl bg-gnp-white p-10"
           >
             <h1 className="apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white">
-              Agregar entregable
+              Editar entregable
             </h1>
             <div className="justify-beetwen mt-10  grid  grid-cols-2  place-items-center">
               <div className="row-span-2 flex w-full flex-col items-center justify-center space-y-3">
@@ -107,7 +106,7 @@ export default function ModalDeliveryForm({
                 <input
                   type="text"
                   className="input-primary w-10/12"
-                  {...register("name", {
+                  {...register("deliveryName", {
                     required: "El campo nombre del entregable requerido.",
                     minLength: {
                       value: 3,
@@ -179,7 +178,7 @@ export default function ModalDeliveryForm({
                   onClick={handleSubmit(uploadFile, (errorsFields) => {
                     Swal.fire({
                       title: "Error!",
-                      text: `Ocurrió un error al registrar la venta.\n
+                      text: `Ocurrió un error al modificar el entregable.\n
                         ${Object.values(errorsFields).map(
                           (e) => e.message + " ",
                         )}`,
@@ -188,7 +187,7 @@ export default function ModalDeliveryForm({
                     });
                   })}
                 >
-                  Agregar
+                  Editar
                 </button>
               </div>
             </div>

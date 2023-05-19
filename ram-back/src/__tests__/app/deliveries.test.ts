@@ -69,6 +69,7 @@ describe("app:deliveries", () => {
       const updated = await updateDelivery({
         deliveryId: delivery.delivery.id,
         deliveryName: "test-delivery-2",
+        description: "test-description-2",
       });
       expect(updated).toHaveProperty(
         "delivery.deliveryName",
@@ -80,7 +81,7 @@ describe("app:deliveries", () => {
         where: { id: delivery.delivery.id },
       });
       expect(updatedInDb).toHaveProperty("deliveryName", "test-delivery-2");
-      expect(updatedInDb).toHaveProperty("description", "test-description-1");
+      expect(updatedInDb).toHaveProperty("description", "test-description-2");
       expect(updatedInDb).toHaveProperty("imageUrl", "test-image-1");
     });
   });
