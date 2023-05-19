@@ -21,11 +21,11 @@ export const SearchDeliveryRow = ({
 }: IListSalesProps) => {
   const fileUrl = useUrlFile();
 
-  const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
-    useModal();
   const deliveryID = delivery.id;
   const accessToken = useRecoilValue(accessToken$);
   const apiBase = useRecoilValue(apiBase$);
+  const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
+    useModal();
 
   const deleteDelivery = useCallback(async () => {
     const result = await Swal.fire({
