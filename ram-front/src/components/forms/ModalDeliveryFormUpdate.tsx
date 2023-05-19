@@ -4,18 +4,21 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
 import usePreviewImage from "../../hooks/usePreviewImage";
+import { IDelivery } from "../../types";
 import Modal from "../generics/Modal";
 
 export interface IModalDeliveryFormProps {
   closeModal: VoidFunction;
   isOpenModal: boolean;
   deliveryId: string;
+  initialValues?: IDelivery;
 }
 
 export default function ModalDeliveryFormUpdate({
   closeModal,
   isOpenModal,
   deliveryId,
+  initialValues,
 }: IModalDeliveryFormProps) {
   const { setPreviewImage, imgRef, resetImage } = usePreviewImage();
   const [file, setFile] = useState<File | null>(null);
@@ -105,6 +108,7 @@ export default function ModalDeliveryFormUpdate({
                 </div>
                 <input
                   type="text"
+                  defaultValue={initialValues?.deliveryName}
                   className="input-primary w-10/12"
                   {...register("deliveryName", {
                     required: "El campo nombre del entregable requerido.",
@@ -124,6 +128,7 @@ export default function ModalDeliveryFormUpdate({
                   </label>
                 </div>
                 <textarea
+                  defaultValue={initialValues?.description}
                   className="text-area-primary w-10/12 resize-none"
                   {...register("description", {})}
                 />
@@ -133,7 +138,7 @@ export default function ModalDeliveryFormUpdate({
                 <div className="aspect-video w-full overflow-hidden rounded-3xl border-4 border-gnp-orange-500">
                   <img
                     className="h-full w-full object-cover"
-                    src={"/default.jfif"}
+                    src={initialValues?.imageUrl || "/default.jfif"}
                     ref={imgRef}
                   />
                 </div>

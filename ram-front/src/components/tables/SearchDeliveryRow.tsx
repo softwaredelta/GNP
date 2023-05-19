@@ -66,6 +66,7 @@ export const SearchDeliveryRow = ({
     }
   }, [accessToken, apiBase, delivery, onReloadDeliveries]);
 
+  // console.log(Response);
   return (
     <>
       <Table.Row key={delivery.id} className="border-2 border-gray-300">
@@ -97,6 +98,7 @@ export const SearchDeliveryRow = ({
               toggleModalDeliveryForm();
               onReloadDeliveries();
             }}
+            initialValues={delivery}
             deliveryId={delivery.id}
           />
           <button
