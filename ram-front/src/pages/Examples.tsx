@@ -7,6 +7,7 @@ import DeliveryCard from "../components/generics/cards/base/DeliveryCard";
 import CardInfoAssurence from "../components/generics/cards/info/CardInfoAssurence";
 import CardInfoGroup from "../components/generics/cards/info/CardInfoGroup";
 import CardInfoTopFive from "../components/generics/cards/info/CardInfoTopFive";
+import RowProspect from "../components/prospects/RowProspect";
 
 import { BsHouses } from "react-icons/bs";
 import { IoPawSharp } from "react-icons/io5";
@@ -288,6 +289,28 @@ export default function Examples() {
       </div>
       <div className="col-span-3 ">
         <SearchDeliveryTable deliveries={listDeliveries}></SearchDeliveryTable>
+      </div>
+{}
+      <div className="col-span-3 w-10/12">
+      <RowProspect 
+              id="id-4"
+              name="Yasodhara"
+              firstName="Díaz"
+              secondName="Arellano"
+              prospectStatus={
+                [
+                  {
+                    status:{
+                      id: "1",
+                      date: new Date("2021-08-01"),
+                      statusName: "En proceso",
+                    }
+                    
+                  }
+                ]
+              }
+              comments = "Hola soy una persona de RAM y me gustaría hacer un comentario"
+            />
       </div>
     </div>
   );

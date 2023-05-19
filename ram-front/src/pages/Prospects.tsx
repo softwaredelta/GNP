@@ -8,10 +8,23 @@ import ModalProspectForm from "../components/forms/ModalProspectForm";
 import useAxios from "../hooks/useAxios";
 import { useEffect } from "react";
 import { IStatus } from "../types";
+import {IProspects} from "../types";
 import Swal from "sweetalert2";
+import RowProspect from "../components/prospects/RowProspect";
+import ListProspects from "../components/prospects/ListProspects";
 
 export default function Prospects() {
-  const { isOpen, toggleModal } = useModal(true);
+  const { response, loading, error } = useAxios<{
+    prospects: IProspects[];
+  }>({
+    url: "prospect/my-prospects",
+    method: "GET",
+  });
+
+  console.log("response");
+  console.log(response);
+
+  const { isOpen, toggleModal } = useModal();
   const {
     response: statusResponse,
     error: statusError,
@@ -85,19 +98,16 @@ export default function Prospects() {
               </button>
             </div>
           </div>
-          <div className="flex items-center justify-center p-4">
-            <img
-              src={wip_3}
-              className="h-1/2 w-1/2 md:h-1/5 md:w-1/5"
-              alt="Work in progress"
-            />
+
+          <div className="">  
+            {response && (
+              <ListProspects
+                prospects={response.prospects}
+
+              />
+            )}  
           </div>
-          <h1 className="flex justify-center text-3xl font-bold text-gnp-blue-900">
-            Estamos trabajando en
-          </h1>
-          <h1 className="flex justify-center text-3xl font-bold text-orange-500">
-            Prospectos
-          </h1>
+
         </div>
       </>
     </Wrapper>

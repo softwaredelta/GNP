@@ -18,7 +18,9 @@ export interface IAssuranceType {
 }
 export interface IStatus {
   id: string;
+  date: Date;
   statusName: string;
+  comments: string;
 }
 
 export interface ISell {
@@ -76,4 +78,16 @@ export interface IGroup {
   groupUsers?: IUser[];
   deliveries?: IDelivery[];
   userDeliveries?: IUserDelivery[];
+}
+
+export interface IProspects {
+  id: string;
+  name: string;
+  firstSurname: string;
+  secondSurname: string;
+  state: string;
+  prospectStatus: {
+    status: IStatus
+    statusComment: string
+  }[]
 }
