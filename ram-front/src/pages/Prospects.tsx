@@ -11,7 +11,7 @@ import { IStatus } from "../types";
 import Swal from "sweetalert2";
 
 export default function Prospects() {
-  const { isOpen, toggleModal } = useModal(true);
+  const { isOpen, toggleModal } = useModal();
   const {
     response: statusResponse,
     error: statusError,
