@@ -89,11 +89,15 @@ export async function getProspectStatus(params: { userId: string }): Promise<{
         },
       },
       where: { userId: params.userId },
-      order: { prospectStatus: { updatedStatusDate: "DESC" }},
+      order: { prospectStatus: { updatedStatusDate: "DESC" } },
     });
 
-    return { prospects: prospects.map((p) => ({...p, prospectStatus: [p.prospectStatus[0]]})) };
-
+    return {
+      prospects: prospects.map((p) => ({
+        ...p,
+        prospectStatus: [p.prospectStatus[0]],
+      })),
+    };
   } catch (e) {
     return {
       error: ProspectError.PROSPECT_ERROR,
