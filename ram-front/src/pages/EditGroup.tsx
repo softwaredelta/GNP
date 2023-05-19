@@ -39,7 +39,7 @@ export default function EditGroup() {
 
   const { response, error, loading, callback } = useAxios({
     url: `groups/update/${id}`,
-    method: "PUT",
+    method: "POST",
   });
 
   useEffect(() => {
@@ -60,7 +60,9 @@ export default function EditGroup() {
     }
     if (shouldUpdate) {
       setShouldUpdate(false);
-      toggleModalGroupForm();
+      setTimeout(() => {
+        toggleModalGroupForm();
+      }, 1200);
       updateGroups();
     }
   }, [response, error]);
