@@ -35,6 +35,7 @@ const FunnelProspect = ({ agents }: Props) => {
                   key={agent.id}
                   id={agent.id as string}
                   email={agent.email}
+                  link={agent.urlPP200 as string}
                 />
               );
             })}
