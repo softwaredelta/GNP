@@ -295,21 +295,22 @@ export default function Examples() {
       <RowProspect 
               id="id-4"
               name="Yasodhara"
-              firstName="Díaz"
-              secondName="Arellano"
+              firstSurname="Díaz"
+              secondSurname="Arellano"
               prospectStatus={
                 [
                   {
                     status:{
                       id: "1",
                       date: new Date("2021-08-01"),
-                      statusName: "En proceso",
-                    }
-                    
+                      statusName: "Nuevo prospecto",
+                      comments: "Me incha el el front"
+                    },
+                    statusComment:"Hola soy una persona de RAM y me gustaría hacer un comentario"
                   }
                 ]
               }
-              comments = "Hola soy una persona de RAM y me gustaría hacer un comentario"
+
             />
       </div>
     </div>
