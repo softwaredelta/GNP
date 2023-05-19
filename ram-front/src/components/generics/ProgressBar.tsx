@@ -35,7 +35,7 @@ export default function ProgressBar({
           style={{ width: `${progress < 12 ? 12 : progress}%` }}
           className={`text-xs font-bold text-white ${colorOptions[color].progress} rounded-full p-0.5 text-center`}
         >
-          {progress}%
+          {progress.toFixed(2).toString()}%
         </div>
       </div>
     </div>
