@@ -136,7 +136,7 @@ Resources:
     Properties:
       EnvironmentName: !Sub ${AWS::AccountId}-${AWS::StackName}-backend-env
       ApplicationName: !Ref Application
-      SolutionStackName: "64bit Amazon Linux 2 v5.7.0 running Node.js 16"
+      SolutionStackName: "64bit Amazon Linux 2 v5.8.1 running Node.js 18"
       CNAMEPrefix: !Sub ${AWS::AccountId}-${AWS::StackName}
       OptionSettings:
         - Namespace: aws:ec2:instances
