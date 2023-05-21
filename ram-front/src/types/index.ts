@@ -87,7 +87,7 @@ export interface IProspects {
   secondSurname: string;
   state: string;
   prospectStatus: {
-    status: IStatus
-    statusComment: string
-  }[]
+    status: IStatus;
+    statusComment: string;
+  }[];
 }

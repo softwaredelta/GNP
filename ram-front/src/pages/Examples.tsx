@@ -290,28 +290,26 @@ export default function Examples() {
       <div className="col-span-3 ">
         <SearchDeliveryTable deliveries={listDeliveries}></SearchDeliveryTable>
       </div>
-{}
+      {}
       <div className="col-span-3 w-10/12">
-      <RowProspect 
-              id="id-4"
-              name="Yasodhara"
-              firstSurname="Díaz"
-              secondSurname="Arellano"
-              prospectStatus={
-                [
-                  {
-                    status:{
-                      id: "1",
-                      date: new Date("2021-08-01"),
-                      statusName: "Nuevo prospecto",
-                      comments: "Me incha el el front"
-                    },
-                    statusComment:"Hola soy una persona de RAM y me gustaría hacer un comentario"
-                  }
-                ]
-              }
-
-            />
+        <RowProspect
+          id="id-4"
+          name="Yasodhara"
+          firstSurname="Díaz"
+          secondSurname="Arellano"
+          prospectStatus={[
+            {
+              status: {
+                id: "1",
+                date: new Date("2021-08-01"),
+                statusName: "Nuevo prospecto",
+                comments: "Me incha el el front",
+              },
+              statusComment:
+                "Hola soy una persona de RAM y me gustaría hacer un comentario",
+            },
+          ]}
+        />
       </div>
     </div>
   );

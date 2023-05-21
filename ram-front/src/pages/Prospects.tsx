@@ -1,28 +1,25 @@
 // (c) Delta Software 2023, rights reserved.
-
-import wip_3 from "../assets/imgs/wip_3.svg";
 import Wrapper from "../containers/Wrapper";
 import { AiOutlinePlus } from "react-icons/ai";
 import useModal from "../hooks/useModal";
 import ModalProspectForm from "../components/forms/ModalProspectForm";
 import useAxios from "../hooks/useAxios";
 import { useEffect } from "react";
-import { IStatus } from "../types";
-import {IProspects} from "../types";
+import { IStatus, IProspects } from "../types";
 import Swal from "sweetalert2";
-import RowProspect from "../components/prospects/RowProspect";
 import ListProspects from "../components/prospects/ListProspects";
 
 export default function Prospects() {
-  const { response, loading, error } = useAxios<{
+  const {
+    response,
+    loading: prospectsLoading,
+    error: prospectsError,
+  } = useAxios<{
     prospects: IProspects[];
   }>({
     url: "prospect/my-prospects",
     method: "GET",
   });
-
-  console.log("response");
-  console.log(response);
 
   const { isOpen, toggleModal } = useModal();
   const {
@@ -68,9 +65,23 @@ export default function Prospects() {
         icon: "error",
       });
     }
-  }, [statusResponse, statusError, prospectResponse, prospectError]);
 
-  if (statusLoading || prospectLoading) {
+    if (prospectsError) {
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo obtener la lista de prospectos, intente más tarde",
+        icon: "error",
+      });
+    }
+  }, [
+    statusResponse,
+    statusError,
+    prospectResponse,
+    prospectError,
+    prospectsError,
+  ]);
+
+  if (statusLoading || prospectLoading || prospectsLoading) {
     return <p>Loading...</p>;
   }
 
@@ -99,15 +110,9 @@ export default function Prospects() {
             </div>
           </div>
 
-          <div className="">  
-            {response && (
-              <ListProspects
-                prospects={response.prospects}
-
-              />
-            )}  
+          <div>
+            {response && <ListProspects prospects={response.prospects} />}
           </div>
-
         </div>
       </>
     </Wrapper>
