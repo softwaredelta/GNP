@@ -12,6 +12,7 @@ const NewSale = lazy(async () => import("../pages/NewSale"));
 const SalesHistory = lazy(async () => import("../pages/SalesHistory"));
 const VerifySales = lazy(async () => import("../pages/VerifySales"));
 const FunnelProspects = lazy(async () => import("../pages/ProspectsFunnel"));
+const ModifySale = lazy(async () => import("../pages/ModifySale"));
 
 const ManagerGroup = lazy(async () => import("../pages/ManagerGroup"));
 const ManagerGroups = lazy(async () => import("../pages/ManagerGroups"));
@@ -26,6 +27,7 @@ const PlaceholderHome = lazy(
   async () => import("../pages/TODO/PlaceholderHome"),
 );
 const EditGroup = lazy(async () => import("../pages/EditGroup"));
+const AddUser = lazy(async () => import("../pages/AddUser"));
 
 export const CommonUserRoutes: IRoute[] = [
   {
@@ -79,6 +81,10 @@ export const RegularUserRoutes: IRoute[] = [
     path: "/help",
     Component: () => <Help />,
   },
+  {
+    path: "/modify-sale/:id",
+    Component: () => <ModifySale />,
+  },
 ];
 
 export const ManagerUserRoutes: IRoute[] = [
@@ -111,8 +117,8 @@ export const ManagerUserRoutes: IRoute[] = [
     Component: () => <Help />,
   },
   {
-    path: "/help",
-    Component: () => <Help />,
+    path: "/add-user",
+    Component: () => <AddUser />,
   },
   {
     path: "/goals",

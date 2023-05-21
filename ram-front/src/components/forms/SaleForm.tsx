@@ -1,103 +1,57 @@
 // (c) Delta Software 2023, rights reserved.
-
-import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
-import { TbSend } from "react-icons/tb";
-import useAxios from "../../hooks/useAxios";
-import Swal from "sweetalert2";
+import { IAssuranceType, ISell } from "../../types";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { IAssuranceType } from "../../types";
+import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
+import Swal from "sweetalert2";
 import { FileInput } from "flowbite-react";
+import { TbSend } from "react-icons/tb";
+import "react-datepicker/dist/react-datepicker.css";
 
-export interface IListAssuranceTypesProps {
+export interface ISaleFormProps {
   assuranceTypes: IAssuranceType[];
+  initialSell: ISell;
+  isEdit: boolean;
+  handlePost: (data: {
+    form: ISell;
+    paidDate: Date | null;
+    emissionDate: Date | null;
+    file: File | null | string;
+  }) => void;
 }
 
-const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
-  const [paidDate, setPaidDate] = useState<Date | null>(null);
-  const [emissionDate, setEmissionDate] = useState<Date | null>(null);
-
-  const [file, setFile] = useState<File | null>(null);
-
-  type FormValues = {
-    policyNumber: number;
-    assuranceTypeId: string;
-    paidDate: Date;
-    yearlyFee: number;
-    contractingClient: string;
-    periodicity: string;
-    paidFee: number;
-    insuredCostumer: string;
-    emissionDate: Date;
-  };
-
-  const { register, handleSubmit, reset } = useForm<FormValues>();
-
-  const { response, error, callback } = useAxios({
-    url: "sales/create",
-    method: "POST",
+export default function SaleForm({
+  assuranceTypes,
+  initialSell = {
+    policyNumber: "",
+    yearlyFee: "",
+    contractingClient: "",
+    status: "",
+    periodicity: "",
+    evidenceUrl: "",
+    insuredCostumer: "",
+    paidFee: "",
+    assuranceTypeId: "",
+  },
+  isEdit = false,
+  handlePost,
+}: ISaleFormProps) {
+  const { register, handleSubmit, reset } = useForm<ISell>({
+    defaultValues: {
+      ...initialSell,
+    },
   });
 
-  const sendData = (data: FormValues) => {
-    if (file) {
-      const formData: FormData = new FormData();
-      formData.append("file", file);
-      formData.append("policyNumber", data.policyNumber.toString());
-      formData.append("assuranceTypeId", data.assuranceTypeId.toString());
-      formData.append("paidDate", paidDate?.toString() as string);
-      formData.append("yearlyFee", data.yearlyFee.toString());
-      formData.append("contractingClient", data.contractingClient);
-      formData.append("periodicity", data.periodicity);
-      formData.append("paidFee", data.paidFee.toString());
-      formData.append("insuredCostumer", data.insuredCostumer);
-      formData.append("emissionDate", emissionDate?.toString() as string);
-
-      try {
-        callback?.(formData);
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      Swal.fire({
-        title: "Error!",
-        text: `No seleccionaste archivo.`,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (response) {
-      Swal.fire({
-        title: "Success!",
-        text: "La venta se ha registrado correctamente.",
-        icon: "success",
-      });
-      reset({
-        policyNumber: 0,
-        yearlyFee: 0,
-        contractingClient: "",
-        assuranceTypeId: "1",
-        periodicity: "Mensual",
-        paidFee: 0,
-        insuredCostumer: "",
-      });
-      setPaidDate(new Date());
-      setEmissionDate(new Date());
-    } else if (error) {
-      console.log({ error });
-      Swal.fire({
-        title: "Error!",
-        text: `Ocurrió un error al registrar la venta.\n
-        ${(error as any).response.data.message}`,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
-  }, [response, error]);
+  const [paidDate, setPaidDate] = useState<Date | null>(
+    initialSell.paidDate ? new Date(initialSell.paidDate) : new Date(),
+  );
+  const [emissionDate, setEmissionDate] = useState<Date | null>(
+    initialSell.emissionDate ? new Date(initialSell.emissionDate) : new Date(),
+  );
+  const [file, setFile] = useState<File | null | string>(
+    initialSell.evidenceUrl || null,
+  );
 
   return (
     <div className="m-4 grid w-11/12 grid-cols-4 rounded-lg bg-gradient-to-t from-[#DBDFE6] to-[#FFEFDB] shadow-lg">
@@ -108,18 +62,19 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
       />
       <div className="grid-cols col-span-3 grid w-full rounded-l-lg md:col-span-3 md:w-full">
         <div className="col flex items-center justify-center rounded-t-lg bg-orange-500 p-4 md:rounded-tr-lg">
-          <h1 className="my-2 text-3xl font-bold text-white">Agregar venta</h1>
+          <h1 className="my-2 text-3xl font-bold text-white">
+            {isEdit ? "Editar " : "Agregar "}venta
+          </h1>
         </div>
         <div className="col grid grid-cols-3">
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
-            {/* 1st column */}
             <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
               Póliza
             </label>
             <input
               className="input-primary w-full"
               placeholder="Ingrese el número de póliza"
-              type="number"
+              type="text"
               {...register("policyNumber", {
                 required: "El campo poliza es requerido",
                 minLength: {
@@ -169,7 +124,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               })}
             />
           </div>
-          {/* 2nd column */}
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
             <label
               htmlFor="datePicker"
@@ -225,7 +179,6 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
               <option value={"Anual"}> Anual </option>
             </select>
           </div>
-          {/* 3rd column */}
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
             <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
               Fecha Pago
@@ -280,12 +233,26 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
             </select>
           </div>
 
-          {/* 4th column */}
-          <div className="col-span-2 mb-4 px-6 pt-8 ">
-            {/* File zone */}
+          <div className="col-span-2 mb-4 flex flex-col justify-center px-6 ">
+            {typeof file === "string" && (
+              <div className="py-2">
+                <label htmlFor="" className="label-primary font-bold">
+                  {"Esta venta ya tiene archivo: "}
+                </label>
+                <a
+                  href={file}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=" text-gnp-blue-600 underline"
+                >
+                  {" Click aquí para verlo"}
+                </a>
+              </div>
+            )}
             <FileInput
               id="file"
-              onChange={(e) => {
+              className="w-full"
+              onChange={(e: any) => {
                 if (e.target.files) {
                   setFile(e.target.files[0]);
                 } else setFile(null);
@@ -296,15 +263,21 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
             <button
               className="btn-primary flex h-12 items-center justify-center"
-              onClick={handleSubmit(sendData, (errorsFields) => {
-                Swal.fire({
-                  title: "Error!",
-                  text: `Ocurrió un error al registrar la venta.\n
-                    ${Object.values(errorsFields).map((e) => e.message + " ")}`,
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              })}
+              onClick={handleSubmit(
+                (form) => {
+                  handlePost({ form, emissionDate, file, paidDate });
+                  reset();
+                },
+                (errorsFields) => {
+                  Swal.fire({
+                    title: "Error!",
+                    text: `Ocurrió un error al registrar la venta.\n
+                  ${Object.values(errorsFields).map((e) => e.message + " ")}`,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                  });
+                },
+              )}
             >
               <span className="text-lg font-semibold"> Enviar </span>
               <TbSend size={20} className="ml-2" />
@@ -314,6 +287,4 @@ const CardNewSale = ({ assuranceTypes }: IListAssuranceTypesProps) => {
       </div>
     </div>
   );
-};
-
-export default CardNewSale;
+}

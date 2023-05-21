@@ -45,7 +45,9 @@ function LoginForm({
         <label className="w-9/12 justify-between text-sm font-bold text-[#424242] ">
           Nombre de Usuario
         </label>
-        <input className="input-primary w-[79%]" type="email" name="username" />
+        <div className="w-[79%]">
+          <input className="input-primary" type="email" name="username" />
+        </div>
 
         <div className="flex w-9/12 justify-between">
           <label className=" text-sm font-bold text-[#424242]">
@@ -57,9 +59,9 @@ function LoginForm({
           </a>
         </div>
 
-        <div className="relative flex w-full justify-center">
+        <div className="relative flex w-[79%] justify-center">
           <input
-            className="input-primary w-[79%] pr-10"
+            className="input-primary pr-10"
             type={passwordVisible ? "text" : "password"}
             name="password"
           />

@@ -1,13 +1,28 @@
 // (c) Delta Software 2023, rights reserved.
 import "@testing-library/jest-dom/extend-expect";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import ListGroups from "../components/groups/ListGroup";
-import { BrowserRouter } from "react-router-dom";
+import { Root, createRoot } from "react-dom/client";
+import { RenderTest } from "./fixtures";
 
 describe("ListGroups", () => {
-  it("renders a list of groups", () => {
-    render(
-      <BrowserRouter>
+  let container: HTMLDivElement;
+  let root: Root;
+  beforeEach(() => {
+    container = document.createElement("div");
+    document.body.appendChild(container);
+
+    root = createRoot(container);
+  });
+  afterEach(() => {
+    document.body.removeChild(container);
+    container.remove();
+  });
+
+  it("renders a list of groups", async () => {
+    const test = new RenderTest(
+      "list-groups-0",
+      (
         <ListGroups
           groups={[
             {
@@ -26,25 +41,31 @@ describe("ListGroups", () => {
             },
           ]}
         />
-      </BrowserRouter>,
+      ),
+      root,
     );
+    await test.start();
+
     const groups = screen.getAllByRole("group");
     expect(groups).toHaveLength(2);
   });
 
-  it("renders a message when there are no groups", () => {
-    render(
-      <BrowserRouter>
-        <ListGroups groups={[]} />
-      </BrowserRouter>,
+  it("renders a message when there are no groups", async () => {
+    const test = new RenderTest(
+      "list-groups-1",
+      <ListGroups groups={[]} />,
+      root,
     );
+    await test.start();
+
     const message = screen.getByText("No hay grupos");
     expect(message).toBeInTheDocument();
   });
 
-  it("renders a group", () => {
-    render(
-      <BrowserRouter>
+  it("renders a group", async () => {
+    const test = new RenderTest(
+      "list-groups-2",
+      (
         <ListGroups
           groups={[
             {
@@ -56,8 +77,11 @@ describe("ListGroups", () => {
             },
           ]}
         />
-      </BrowserRouter>,
+      ),
+      root,
     );
+    await test.start();
+
     const group = screen.getByRole("group");
     expect(group).toBeInTheDocument();
 

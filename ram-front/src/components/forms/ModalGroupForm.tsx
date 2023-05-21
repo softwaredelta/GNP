@@ -1,18 +1,23 @@
 // (c) Delta Software 2023, rights reserved.
 import { useRef } from "react";
 import usePreviewImage from "../../hooks/usePreviewImage";
+import { IGroup } from "../../types";
 import Modal from "../generics/Modal";
 
 export interface IModalGroupFormProps {
-  handlePost: (image: File | null, name: string) => void;
+  handlePost: (image: File | null | string, name: string) => void;
   closeModal: VoidFunction;
   isOpenModal: boolean;
+  isEditModal: boolean;
+  initialValues?: IGroup;
 }
 
 export default function ModalGroupForm({
   handlePost,
   closeModal,
   isOpenModal,
+  isEditModal,
+  initialValues,
 }: IModalGroupFormProps) {
   const { image, setPreviewImage, imgRef, resetImage } = usePreviewImage();
   const nameRef = useRef<HTMLInputElement>(null);
@@ -32,8 +37,12 @@ export default function ModalGroupForm({
             className=" relative w-3/5 rounded-3xl bg-gnp-white p-10"
             data-testid="modal-group"
           >
-            <h1 className="apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white">
-              Agregar grupo
+            <h1
+              className={`apply w-full rounded-xl ${
+                isEditModal ? "bg-gnp-blue-600" : "bg-gnp-orange-500"
+              } p-4 text-center text-2xl font-semibold text-white`}
+            >
+              {isEditModal ? "Editar Grupo" : "Crear Grupo"}
             </h1>
             <div className="justify-beetwen mt-10 flex grid grid-cols-2  place-items-center">
               <div className="flex w-full flex-col items-center justify-center space-y-3">
@@ -44,13 +53,20 @@ export default function ModalGroupForm({
                   ref={nameRef}
                   type="text"
                   className="input-primary w-10/12"
+                  defaultValue={initialValues?.name}
                 />
               </div>
               <div className="row-span-2 w-9/12">
-                <div className="aspect-video w-full w-full overflow-hidden rounded-3xl border-4 border-gnp-orange-500">
+                <div
+                  className={`aspect-video w-full overflow-hidden rounded-3xl border-4 ${
+                    isEditModal
+                      ? "border-b-gnp-blue-500"
+                      : "border-gnp-orange-500"
+                  }`}
+                >
                   <img
                     className="h-full w-full object-cover"
-                    src={"/default.jfif"}
+                    src={initialValues?.imageURL || "/default.jfif"}
                     ref={imgRef}
                   />
                 </div>

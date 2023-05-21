@@ -24,16 +24,20 @@ export interface IStatus {
 }
 
 export interface ISell {
-  id: string;
+  id?: string;
   policyNumber: string;
-  assuranceType: IAssuranceType;
-  paidDate: Date;
+  assuranceType?: IAssuranceType;
+  paidDate?: Date;
   yearlyFee: string;
   contractingClient: string;
   status: string;
   periodicity: string;
   user?: IUser;
-  evidenceUrl: string;
+  evidenceUrl?: string;
+  insuredCostumer: string;
+  paidFee?: string;
+  emissionDate?: Date;
+  assuranceTypeId: string;
 }
 
 export interface IDelivery {
@@ -56,25 +60,29 @@ export interface IUserDelivery {
 }
 
 export interface IUser {
-  id: string;
+  id?: string;
   email: string;
-  imageURL: string;
-}
-
-export interface IUserName {
-  id: string;
-  email: string;
-  imageURL: string;
+  imageURL?: string;
   name: string;
   lastName: string;
+  origin?: string;
+  state?: string;
+  level?: string;
+  password?: string;
+  confirmPassword?: string;
+  mobile?: number;
+  phone?: number;
+  registerDate?: Date;
+  role?: string;
+  urlPP200?: string;
 }
 
 export interface IGroup {
-  id: string;
+  id?: string;
   name: string;
-  description: string;
-  imageURL: string;
-  progress: number;
+  description?: string;
+  imageURL?: string;
+  progress?: number;
   groupUsers?: IUser[];
   deliveries?: IDelivery[];
   userDeliveries?: IUserDelivery[];

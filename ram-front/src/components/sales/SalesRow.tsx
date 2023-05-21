@@ -2,37 +2,26 @@
 
 import React from "react";
 import { Table } from "flowbite-react";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
 import useAxios from "../../hooks/useAxios";
+import { useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
+import { ISell } from "../../types";
 
 type Props = {
-  id: string;
-  contractingClient: string;
-  yearlyFee: string;
-  assuranceTypeName: string;
-  paidDate: Date;
-  status: string;
-  policyNum: string;
+  sale: ISell;
   onDeleted: () => void;
 };
 
-export default function SalesRow({
-  id,
-  contractingClient,
-  yearlyFee,
-  assuranceTypeName,
-  paidDate,
-  status,
-  policyNum,
-  onDeleted,
-}: Props) {
+export default function SalesRow({ sale, onDeleted }: Props) {
   const { callback } = useAxios({
-    url: `sales/delete/${id}`,
+    url: `sales/delete/${sale.id}`,
     method: "POST",
     body: {},
   });
+
+  const navigate = useNavigate();
 
   function handleDelete() {
     Swal.fire({
@@ -56,22 +45,37 @@ export default function SalesRow({
 
   return (
     <Table.Row
-      key={id}
+      key={sale.id}
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        {contractingClient}
+        {sale.contractingClient}
       </Table.Cell>
-      <Table.Cell>{policyNum}</Table.Cell>
-      <Table.Cell>{yearlyFee}</Table.Cell>
-      <Table.Cell>{assuranceTypeName}</Table.Cell>
-      <Table.Cell>{new Date(paidDate).toLocaleDateString()}</Table.Cell>
-      <Table.Cell>{status}</Table.Cell>
+      <Table.Cell>{sale.policyNumber}</Table.Cell>
+      <Table.Cell>{sale.yearlyFee}</Table.Cell>
+      <Table.Cell>{sale.paidFee}</Table.Cell>
+      <Table.Cell>{sale.periodicity}</Table.Cell>
+      <Table.Cell>{sale.assuranceType?.name}</Table.Cell>
       <Table.Cell>
-        <FaTrash
-          onClick={handleDelete}
-          className=" hover:scale-105 hover:fill-red-500"
-        />
+        {new Date(sale.emissionDate as Date).toLocaleDateString()}
+      </Table.Cell>
+      <Table.Cell>
+        {new Date(sale.paidDate as Date).toLocaleDateString()}
+      </Table.Cell>
+      <Table.Cell>{sale.status}</Table.Cell>
+      <Table.Cell>
+        <div className="grid grid-cols-2 items-center justify-center ">
+          <FaEdit
+            onClick={() => navigate(`/modify-sale/${sale.id}`)}
+            color="gray"
+            size={20}
+            className="hover:scale-105 hover:fill-blue-700"
+          />
+          <FaTrash
+            onClick={handleDelete}
+            className="hover:scale-105 hover:fill-red-500"
+          />
+        </div>
       </Table.Cell>
     </Table.Row>
   );

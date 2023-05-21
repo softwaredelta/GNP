@@ -4,7 +4,7 @@
  */
 
 import { DataSource } from "typeorm";
-import { loadSeeds } from "../seeds";
+import { adminSeeds, loadSeeds } from "../seeds";
 import { entities } from "../entities";
 
 let dataSource: DataSource | null = null;
@@ -73,6 +73,20 @@ export async function getDataSource(): Promise<DataSource> {
     await dataSource
       .initialize()
       .then(() => console.info("Using AWS DataSource connection"));
+
+    // Makes sure database is initialized when first deployed for aws
+    // IMPORTANT: DO NOT FREELY CALL SYNC IN PRODUCTION, THIS WILL CAUSE DATA LOSS
+    // CHANGES TO THE ENTITIES SHOULD BE MIGRATED WITH TYPEORM MIGRATIONS
+    const hasUserTable = await dataSource
+      .query(
+        "select exists ( select from pg_tables where schemaname = 'public' AND tablename  = 'user_ent' )",
+      )
+      .then((result) => (result[0].exists as boolean) ?? false);
+    if (!hasUserTable) {
+      await dataSource.synchronize(true);
+    }
+
+    await adminSeeds();
 
     return dataSource;
   }

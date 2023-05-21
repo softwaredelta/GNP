@@ -35,6 +35,8 @@ describe("ListDeliveries", () => {
               user: {
                 email: "user@mail.com",
                 id: "1",
+                name: "User",
+                lastName: "User",
                 imageURL: "",
               },
             },
@@ -63,6 +65,8 @@ describe("ListDeliveries", () => {
               user: {
                 email: "user-2@mail.com",
                 id: "2",
+                name: "User 2",
+                lastName: "User 2",
                 imageURL: "",
               },
             },

@@ -12,7 +12,7 @@ import RowProspect from "../components/prospects/RowProspect";
 import { BsHouses } from "react-icons/bs";
 import { IoPawSharp } from "react-icons/io5";
 import { RiPencilFill } from "react-icons/ri";
-import ModalDeliveryForm from "../components/forms/ModalDeliveryForm";
+import ModalDeliveryForm from "../components/forms/ModalDeliveryFormCreate";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
 import Modal from "../components/generics/Modal";
 import ManagerDelivery from "../components/generics/cards/info/ManagerDelivery";
@@ -273,6 +273,7 @@ export default function Examples() {
           handlePost={(image, name) => {
             alert(`Nombre: ${name} Imagen: ${image}`);
           }}
+          isEditModal={false}
         />
       </div>
       <div className="w-11/12">
@@ -285,10 +286,17 @@ export default function Examples() {
         />
       </div>
       <div className="col-span-3 ">
-        <SearchAgentTable agents={listAgents}></SearchAgentTable>
+        <SearchAgentTable
+          groupId={""}
+          onReloadAgents={() => {}}
+          agents={listAgents}
+        ></SearchAgentTable>
       </div>
       <div className="col-span-3 ">
-        <SearchDeliveryTable deliveries={listDeliveries}></SearchDeliveryTable>
+        <SearchDeliveryTable
+          deliveries={listDeliveries}
+          onReloadDeliveries={() => {}}
+        ></SearchDeliveryTable>
       </div>
       {}
       <div className="col-span-3 w-10/12">

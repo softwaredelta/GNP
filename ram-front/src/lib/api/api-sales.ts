@@ -52,6 +52,10 @@ export const allSales$ = selector<ISell[]>({
           policyNumber: "1234567",
           paidDate: new Date(),
           status: "pending",
+          insuredCostumer: "Test costumer name 1",
+          paidFee: "100",
+          emissionDate: new Date("10-05-2000"),
+          assuranceTypeId: "test-assurance-type-1",
         },
         {
           id: "test-sale-2",
@@ -67,6 +71,10 @@ export const allSales$ = selector<ISell[]>({
           policyNumber: "1234568",
           paidDate: new Date(),
           status: "pending",
+          insuredCostumer: "Test costumer name 1",
+          paidFee: "100",
+          emissionDate: new Date("10-05-2000"),
+          assuranceTypeId: "test-assurance-type-1",
         },
       ];
     }

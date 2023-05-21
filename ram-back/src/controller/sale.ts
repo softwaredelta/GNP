@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Router, RequestHandler } from "express";
-import { createSale } from "../app/sale";
+import { createSale, updateSale } from "../app/sale";
 export const salesRouter = Router();
 import * as j from "joi";
 import { getDataSource } from "../arch/db-client";
@@ -13,7 +13,7 @@ import { uploadFile } from "../app/file";
 const upload = multer();
 
 const saleParameters = j.object({
-  policyNumber: j.number().required(),
+  policyNumber: j.string().required(),
   paidDate: j.string().required(),
   yearlyFee: j.number().required(),
   contractingClient: j.string().required(),
@@ -165,3 +165,70 @@ salesRouter.post(
     res.json({ changedSale });
   },
 );
+
+salesRouter.post(
+  "/update/:id",
+  authMiddleware(),
+  upload.single("file"),
+  async (req, res) => {
+    const {
+      policyNumber,
+      paidDate,
+      yearlyFee,
+      contractingClient,
+      assuranceTypeId,
+      periodicity,
+      emissionDate,
+      insuredCostumer,
+      paidFee,
+    } = req.body;
+    const { user } = req;
+    if (!user) {
+      res.status(401).json({ message: "NO_USER" });
+      return;
+    }
+
+    const { file } = req;
+
+    if (!file && !req.body.evidenceUrl) {
+      res.status(400).json({ message: "NO_FILE_UPLOAD" });
+      return;
+    }
+
+    const evidenceUrl = !!file
+      ? await uploadFile({ file })
+      : req.body.evidenceUrl;
+
+    const { sale, error } = await updateSale({
+      id: req.params.id,
+      policyNumber,
+      paidDate,
+      yearlyFee,
+      contractingClient,
+      assuranceTypeId,
+      periodicity,
+      emissionDate,
+      insuredCostumer,
+      paidFee,
+      userId: user.id,
+      evidenceUrl: evidenceUrl,
+    });
+
+    if (error) {
+      res.status(500).json({ message: error });
+      return;
+    }
+
+    res.json({ sale });
+  },
+);
+
+salesRouter.get("/:id", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const sale = await db.manager.findOne(SellEnt, {
+    relations: { assuranceType: true, user: true },
+    where: { id: req.params.id },
+  });
+
+  res.json(sale);
+});

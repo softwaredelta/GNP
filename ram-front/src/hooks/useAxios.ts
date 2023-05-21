@@ -17,7 +17,7 @@ export interface IUseAxiosReturn<T> {
   response: T | null;
   error?: AxiosError | unknown;
   loading?: boolean;
-  callback?: (newBody?: object) => void;
+  callback: (newBody?: object) => void;
 }
 
 export default function useAxios<T>({
@@ -35,6 +35,7 @@ export default function useAxios<T>({
 
   const fetchData = useCallback(async (): Promise<void> => {
     try {
+      setError(null);
       setLoading(true);
       const res = await axios({
         method,

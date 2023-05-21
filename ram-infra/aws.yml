@@ -88,6 +88,11 @@ Parameters:
     Type: String
     Description: The full domain name for the application, should match hosted zone if used (ram.example.com)
 
+  AdminPassword:
+    Type: String
+    Description: The password for the admin user
+    NoEcho: true
+
 Conditions:
   HasHostedZone: !Not [!Equals [!Ref HostedZone, ""]]
 
@@ -136,7 +141,7 @@ Resources:
     Properties:
       EnvironmentName: !Sub ${AWS::AccountId}-${AWS::StackName}-backend-env
       ApplicationName: !Ref Application
-      SolutionStackName: "64bit Amazon Linux 2 v5.7.0 running Node.js 16"
+      SolutionStackName: "64bit Amazon Linux 2 v5.8.1 running Node.js 18"
       CNAMEPrefix: !Sub ${AWS::AccountId}-${AWS::StackName}
       OptionSettings:
         - Namespace: aws:ec2:instances
@@ -200,6 +205,9 @@ Resources:
         - Namespace: aws:elasticbeanstalk:application:environment
           OptionName: S3_BUCKET_NAME
           Value: !Sub ${AWS::AccountId}-${AWS::StackName}-appdata
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: ADMIN_PASSWORD
+          Value: !Ref AdminPassword
 
         # Database config
         - Namespace: aws:rds:dbinstance
@@ -237,7 +245,7 @@ Resources:
     Properties:
       ServiceToken: !GetAtt LoadBalancerSetupLambda.Arn
       EnvironmentName: !Ref Environment
-      HealthCheckPath: !Sub /api/health
+      HealthCheckPath: !Sub /api/infra/health
 
   LoadBalancerSetupLambda:
     Type: AWS::Lambda::Function
@@ -413,6 +421,7 @@ Resources:
                 Effect: Allow
                 Resource:
                   - !Sub arn:aws:s3:::${ApplicationBucket}
+                  - !Sub arn:aws:s3:::${ApplicationBucket}/*
               - Sid: ElasticBeanstalkBucketAccess
                 Action:
                   - s3:Get*

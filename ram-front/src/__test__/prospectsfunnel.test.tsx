@@ -27,11 +27,15 @@ describe("Prospect Funnel", () => {
               {
                 id: "1",
                 email: "test",
+                name: "test",
+                lastName: "test",
                 imageURL: "",
               },
               {
                 id: "2",
                 email: "test2",
+                name: "test2",
+                lastName: "test2",
                 imageURL: "",
               },
             ]}

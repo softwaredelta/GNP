@@ -3,7 +3,8 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
 import LogoRAM from "../../../assets/imgs/Ram_LogoInv.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useCallback } from "react";
 
 interface Props {
   onLogout: () => void;
@@ -13,6 +14,14 @@ interface Props {
 }
 
 function NavBar({ onLogout, useremail, username, role }: Props) {
+  const route = useLocation();
+  const isActive = useCallback(
+    (link: RegExp) => {
+      return link.test(route.pathname);
+    },
+    [route.pathname],
+  );
+
   return (
     <Navbar
       className="border border-black shadow-md "
@@ -50,6 +59,13 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
           <Link to="/help">
             <Dropdown.Item>Ayuda</Dropdown.Item>
           </Link>
+          {role === "manager" ? (
+            <Link to="/add-user">
+              <Dropdown.Item>Agregar usuarios</Dropdown.Item>
+            </Link>
+          ) : (
+            <></>
+          )}
           <Dropdown.Divider />
           <Dropdown.Item onClick={onLogout} data-testid="logout-button">
             Salir
@@ -58,29 +74,19 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        {role === "manager" ? (
-          <Navbar.Link
-            as={Link}
-            to="/"
-            className="mx-8 text-lg active:bg-amber-500"
-            active={true}
-          >
-            Home
-          </Navbar.Link>
-        ) : (
-          <Navbar.Link
-            as={Link}
-            to="/"
-            className="ml-2 text-lg active:bg-amber-500"
-            active={true}
-          >
-            Home
-          </Navbar.Link>
-        )}
+        <Navbar.Link
+          as={Link}
+          to="/"
+          className="mx-8 text-lg active:bg-amber-500"
+          active={isActive(/^\/$/i)}
+        >
+          Home
+        </Navbar.Link>
         <Navbar.Link
           as={Link}
           to="/groups"
           className="mx-8  text-lg text-gray-900 "
+          active={isActive(/^\/(group|delivery)/i)}
         >
           Grupos
         </Navbar.Link>
@@ -88,7 +94,8 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
           <Navbar.Link
             as={Link}
             to="/verify-sales"
-            className="mx-8  text-lg text-gray-900 "
+            className="mx-8  text-lg text-gray-900"
+            active={isActive(/^\/verify-sales/i)}
           >
             Ventas
           </Navbar.Link>
@@ -113,6 +120,7 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
               as={Link}
               to="/prospects"
               className="mx-8 text-lg text-gray-900"
+              active={isActive(/^\/prospect/i)}
             >
               Prospectos
             </Navbar.Link>
@@ -120,6 +128,7 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
               as={Link}
               to="/goals"
               className="mx-8 text-lg text-gray-900"
+              active={isActive(/^\/goal/i)}
             >
               Metas
             </Navbar.Link>
@@ -130,6 +139,7 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
               as={Link}
               to="/prospects"
               className="mx-8 text-lg text-gray-900"
+              active={isActive(/^\/prospect/i)}
             >
               Prospectos
             </Navbar.Link>

@@ -4,17 +4,26 @@ import request from "supertest";
 import { app } from "../../controller";
 import { authenticateUser, createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
+import { adminSeeds, userSeeds } from "../../seeds";
 
 describe("controller:user", () => {
+  let adminAccessToken: string;
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.synchronize(true);
 
+    await adminSeeds();
     await createUser({
       id: "1",
       email: "fermin@delta.tec.mx",
       password: "L3LitoB3b3ciT0Itc",
     });
+
+    const { auth } = await authenticateUser({
+      email: "admin@delta.tec.mx",
+      password: "password",
+    });
+    adminAccessToken = auth.accessToken;
   });
 
   describe("creation handler", () => {
@@ -22,16 +31,22 @@ describe("controller:user", () => {
       await request(app)
         .post("/user/create")
         .send({
-          email: "keny@delta.tec.mx",
+          email: "kenny@delta.tec.mx",
           password: "L3LitoB3b3ciT0Itc",
+          name: "Kenny",
+          lastName: "McCormick",
+          role: "regular",
         })
         .set("Accept", "application/json")
+        .set("Authorization", `Bearer ${adminAccessToken}`)
         .expect("Content-Type", /json/)
         .expect(200)
         .then((response) => {
           expect(response.body).toHaveProperty("id");
           expect(response.body).toHaveProperty("email");
           expect(response.body).toHaveProperty("password");
+          expect(response.body).toHaveProperty("name");
+          expect(response.body).toHaveProperty("lastName");
         });
     });
 
@@ -41,8 +56,12 @@ describe("controller:user", () => {
         .send({
           email: "fermin@delta.tec.mx",
           password: "password7812361",
+          name: "Fermin",
+          lastName: "Gonzalez",
+          role: "regular",
         })
         .set("Accept", "application/json")
+        .set("Authorization", `Bearer ${adminAccessToken}`)
         .expect("Content-Type", /json/)
         .expect(400)
         .then((response) => {
@@ -55,6 +74,7 @@ describe("controller:user", () => {
         .post("/user/create")
         .send()
         .set("Accept", "application/json")
+        .set("Authorization", `Bearer ${adminAccessToken}`)
         .expect("Content-Type", /json/)
         .expect(400)
         .then((response) => {
@@ -214,6 +234,63 @@ describe("controller:user", () => {
         .then((res) => {
           expect(res.body).toHaveProperty("message", "Invalid token");
         });
+    });
+  });
+
+  describe("fuzzy user search", () => {
+    beforeEach(async () => {
+      await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+      });
+      await createUser({
+        email: "test-u-2@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "2",
+      });
+      await createUser({
+        email: "test-u-3@delta.tec.mx",
+        password: "password",
+        name: "Example Person",
+        lastName: "1",
+      });
+      await createUser({
+        email: "test-u-4@delta.tec.mx",
+        password: "password",
+        name: "Example Person",
+        lastName: "2",
+      });
+    });
+
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .get("/user/fuzzy-search")
+        .query({ query: "use" })
+        .send()
+        .expect(401);
+    });
+
+    it("returns users with matching name", async () => {
+      await userSeeds();
+      const managerAccessToken = await authenticateUser({
+        email: "manager@delta.tec.mx",
+        password: "password",
+      }).then(({ auth }) => auth.accessToken);
+
+      const users = await request(app)
+        .get("/user/fuzzy-search")
+        .query({ query: "use" })
+        .set("Authorization", `Bearer ${managerAccessToken}`)
+        .send()
+        .expect(200)
+        .then((res) => res.body);
+
+      expect(users).toHaveLength(2);
+      expect(users[0]).toHaveProperty("name", "Test User");
+      expect(users[1]).toHaveProperty("name", "Test User");
     });
   });
 });

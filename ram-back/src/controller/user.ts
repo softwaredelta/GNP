@@ -4,7 +4,12 @@ import { RequestHandler, Router } from "express";
 import { getDataSource } from "../arch/db-client";
 import { UserEnt, UserRole } from "../entities/user.entity";
 import { TokenType, generateToken, verifyToken } from "../app/auth";
-import { authenticateUser, createUser, validateUserToken } from "../app/user";
+import {
+  authenticateUser,
+  createUser,
+  fuzzySearchUsers,
+  validateUserToken,
+} from "../app/user";
 import * as j from "joi";
 
 export const authRouter = Router();
@@ -12,6 +17,12 @@ export const authRouter = Router();
 const userParameters = j.object({
   email: j.string().email().required(),
   password: j.string().min(8).required(),
+  confirmPassword: j.string().valid(j.ref("password")).optional(),
+  name: j.string().optional(),
+  lastName: j.string().optional(),
+  mobile: j.number().optional(),
+  role: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).optional(),
+  urlPP200: j.string().optional().allow("").default(""),
 });
 
 const userParametersMiddleware: RequestHandler = (req, res, next) => {
@@ -24,33 +35,6 @@ const userParametersMiddleware: RequestHandler = (req, res, next) => {
   next();
 };
 
-authRouter.post("/create", userParametersMiddleware, async (req, res) => {
-  const { email, password } = req.body;
-  // TODO: validation
-
-  const { user, error } = await createUser({ email, password });
-  if (error) {
-    res.status(400).json({ message: error });
-    return;
-  }
-
-  res.json(user);
-});
-
-authRouter.post("/authenticate", userParametersMiddleware, async (req, res) => {
-  const { email, password } = req.body;
-  // TODO: validation
-
-  const { auth, error } = await authenticateUser({ email, password });
-  if (error) {
-    res.status(401).json({ message: error });
-    return;
-  }
-
-  res.json(auth);
-});
-
-// ALL requested roles must be present
 export const authMiddleware = (
   params: {
     neededRoles?: UserRole[];
@@ -82,6 +66,12 @@ export const authMiddleware = (
       return;
     }
 
+    if (user.roles.includes(UserRole.ADMIN)) {
+      req.user = user;
+      next();
+      return;
+    }
+
     if (neededRoles.length > 0) {
       const hasRoles = neededRoles.every((neededRole) =>
         user.roles.includes(neededRole),
@@ -93,10 +83,49 @@ export const authMiddleware = (
     }
 
     req.user = user;
-
     next();
   };
 };
+
+authRouter.post(
+  "/create",
+  userParametersMiddleware,
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const { email, password, name, lastName, role, mobile, urlPP200 } =
+      req.body;
+    // TODO: validation
+
+    const { user, error } = await createUser({
+      email,
+      password,
+      name,
+      lastName,
+      urlPP200,
+      roles: [role],
+      mobile,
+    });
+    if (error) {
+      res.status(400).json({ message: error });
+      return;
+    }
+
+    res.json(user);
+  },
+);
+
+authRouter.post("/authenticate", userParametersMiddleware, async (req, res) => {
+  const { email, password } = req.body;
+  // TODO: validation
+
+  const { auth, error } = await authenticateUser({ email, password });
+  if (error) {
+    res.status(401).json({ message: error });
+    return;
+  }
+
+  res.json(auth);
+});
 
 authRouter.get(
   "/me",
@@ -160,3 +189,27 @@ authRouter.post("/refresh", async (req, res) => {
     roles: user.roles,
   });
 });
+
+authRouter.get(
+  "/fuzzy-search",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res, next) => {
+    const schema = j.object({
+      query: j.string().allow("").required(),
+    });
+    const { error } = schema.validate(req.query);
+    if (error) {
+      res.status(400).json({ message: "BAD_DATA", reason: error });
+      return;
+    }
+
+    next();
+  },
+  async (req, res) => {
+    const users = await fuzzySearchUsers({
+      query: req.query.query as string,
+    });
+
+    res.json(users);
+  },
+);

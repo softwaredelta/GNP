@@ -29,9 +29,13 @@ export interface UserAuthentication {
 export async function createUser(params: {
   email: string;
   password: string;
+  name?: string;
+  lastName?: string;
+  mobile?: number;
   id?: string;
   roles?: UserRole[];
   iamgeURL?: string;
+  urlPP200?: string;
 }): Promise<{ user: UserEnt; error?: UserError }> {
   // TODO: handle authentication with admin or something
 
@@ -39,6 +43,8 @@ export async function createUser(params: {
   const id = params.id || v4();
   const hashedPassword = await hashPassword(params.password);
   const roles = params.roles || [UserRole.REGULAR];
+  const mobile = params.mobile || 10000000000;
+  const urlPP200 = params.urlPP200 || "";
 
   return ds.manager
     .save(
@@ -46,6 +52,10 @@ export async function createUser(params: {
       ds.manager.create(UserEnt, {
         id,
         email: params.email,
+        name: params.name,
+        mobile,
+        urlPP200,
+        lastName: params.lastName,
         password: hashedPassword,
         rolesString: buildRoleString(roles),
         imageURL: params.iamgeURL ?? "https://picsum.photos/200",
@@ -179,4 +189,24 @@ export async function validateUserToken(params: {
   }
 
   return { user };
+}
+
+export async function fuzzySearchUsers(params: {
+  query: string;
+}): Promise<UserEnt[]> {
+  const ds = await getDataSource();
+  const users = await ds
+    .createQueryBuilder()
+    .from(UserEnt, "UserEnt")
+    .select(["UserEnt.id", "UserEnt.name", "UserEnt.lastName"])
+    .where("UserEnt.name LIKE :query", {
+      query: `%${params.query.toLowerCase()}%`,
+    })
+    .orWhere("UserEnt.lastName LIKE :query", {
+      query: `%${params.query.toLowerCase()}%`,
+    })
+    .orderBy("UserEnt.name", "ASC")
+    .getMany();
+
+  return users;
 }
