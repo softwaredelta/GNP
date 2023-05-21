@@ -25,9 +25,24 @@ export default function ModalProspectForm({
   closeModal,
   isOpenModal,
   listStatus = [
-    { id: "1", statusName: "Nuevo Prospecto" , date: new Date(), comments: "Nuevo prospecto"},
-    { id: "2", statusName: "Contactado" , date: new Date(), comments: "Contactado"},
-    { id: "3", statusName: "No Contactado" , date: new Date(), comments: "No Contactado"},
+    {
+      id: "1",
+      statusName: "Nuevo Prospecto",
+      date: new Date(),
+      comments: "Nuevo prospecto",
+    },
+    {
+      id: "2",
+      statusName: "Contactado",
+      date: new Date(),
+      comments: "Contactado",
+    },
+    {
+      id: "3",
+      statusName: "No Contactado",
+      date: new Date(),
+      comments: "No Contactado",
+    },
   ],
   isEdit = false,
 }: IModalProspectFormProps) {
