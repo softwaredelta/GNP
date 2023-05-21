@@ -20,6 +20,7 @@ export default function Prospects() {
     url: "prospect/my-prospects",
     method: "GET",
   });
+  console.log(response);
 
   const { isOpen, toggleModal } = useModal();
   const {

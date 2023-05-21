@@ -35,11 +35,11 @@ export default function RowProspect({
           {name} {firstSurname} {secondSurname}
         </div>
 
-        <div className="flex h-full items-center justify-end space-x-6 border-l-2 border-black/10 py-4 px-4">
+        <div className="justify-left flex h-full items-center space-x-6 border-l-2 border-black/10 py-4 px-4">
           <div>{prospectStatus[0].status.statusName}</div>
         </div>
 
-        <div className="flex justify-center space-x-6 py-4 px-4">
+        <div className="flex items-center justify-center space-x-6 py-4 px-4">
           <div
             className={`h-8 w-8 ${
               colorOptions[prospectStatus[0].status.statusName]
@@ -47,14 +47,13 @@ export default function RowProspect({
           ></div>
         </div>
 
-        <div className="col-span-3 flex h-full items-center justify-center border-l-2 border-black/10 py-4 px-4">
+        <div className=" col-span-3 flex h-full items-center justify-center border-l-2 border-black/10 py-4 px-4">
           {prospectStatus[0].statusComment}
         </div>
 
         <div className="flex h-full items-center justify-center border-l-2 border-black/10 py-4 px-4 ">
           <button className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125">
-            {" "}
-            <FiEdit className="text-2xl" />{" "}
+            <FiEdit className="text-2xl" />
           </button>
         </div>
       </div>

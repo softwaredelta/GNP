@@ -303,7 +303,7 @@ export default function Examples() {
                 id: "1",
                 date: new Date("2021-08-01"),
                 statusName: "Nuevo prospecto",
-                comments: "Me incha el el front",
+                comments: "Soy un comentario",
               },
               statusComment:
                 "Hola soy una persona de RAM y me gustaría hacer un comentario",
