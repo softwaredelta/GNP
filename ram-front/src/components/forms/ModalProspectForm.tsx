@@ -25,9 +25,24 @@ export default function ModalProspectForm({
   closeModal,
   isOpenModal,
   listStatus = [
-    { id: "1", statusName: "Nuevo Prospecto" },
-    { id: "2", statusName: "Contactado" },
-    { id: "3", statusName: "No Contactado" },
+    {
+      id: "1",
+      statusName: "Nuevo Prospecto",
+      date: new Date(),
+      comments: "Nuevo prospecto",
+    },
+    {
+      id: "2",
+      statusName: "Contactado",
+      date: new Date(),
+      comments: "Contactado",
+    },
+    {
+      id: "3",
+      statusName: "No Contactado",
+      date: new Date(),
+      comments: "No Contactado",
+    },
   ],
   isEdit = false,
 }: IModalProspectFormProps) {
@@ -50,7 +65,7 @@ export default function ModalProspectForm({
             <h1 className="apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white">
               {isEdit ? "Editar" : "Agregar"} prospecto
             </h1>
-            <div className="justify-beetwen mt-10 flex grid grid-cols-2 place-items-center   gap-4 ">
+            <div className="justify-beetwen mt-10 flex grid grid-cols-2 place-items-center gap-4 ">
               <div className="flex w-full flex-col items-center justify-center space-y-3">
                 <label className="text-xl font-semibold">Nombre</label>
                 <input

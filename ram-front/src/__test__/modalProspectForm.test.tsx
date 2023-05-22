@@ -31,11 +31,15 @@ describe("Tests Modal Prospect", () => {
     const exampleListStatus: IStatus[] = [
       {
         id: "1",
+        date: new Date(),
         statusName: "example1",
+        comments: "example1",
       },
       {
         id: "2",
+        date: new Date(),
         statusName: "example2",
+        comments: "example2",
       },
     ];
 

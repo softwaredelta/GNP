@@ -1,16 +1,26 @@
 // (c) Delta Software 2023, rights reserved.
-
-import wip_3 from "../assets/imgs/wip_3.svg";
 import Wrapper from "../containers/Wrapper";
 import { AiOutlinePlus } from "react-icons/ai";
 import useModal from "../hooks/useModal";
 import ModalProspectForm from "../components/forms/ModalProspectForm";
 import useAxios from "../hooks/useAxios";
 import { useEffect } from "react";
-import { IStatus } from "../types";
+import { IStatus, IProspects } from "../types";
 import Swal from "sweetalert2";
+import ListProspects from "../components/prospects/ListProspects";
 
 export default function Prospects() {
+  const {
+    response,
+    loading: prospectsLoading,
+    error: prospectsError,
+  } = useAxios<{
+    prospects: IProspects[];
+  }>({
+    url: "prospect/my-prospects",
+    method: "GET",
+  });
+
   const { isOpen, toggleModal } = useModal();
   const {
     response: statusResponse,
@@ -55,9 +65,23 @@ export default function Prospects() {
         icon: "error",
       });
     }
-  }, [statusResponse, statusError, prospectResponse, prospectError]);
 
-  if (statusLoading || prospectLoading) {
+    if (prospectsError) {
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo obtener la lista de prospectos, intente más tarde",
+        icon: "error",
+      });
+    }
+  }, [
+    statusResponse,
+    statusError,
+    prospectResponse,
+    prospectError,
+    prospectsError,
+  ]);
+
+  if (statusLoading || prospectLoading || prospectsLoading) {
     return <p>Loading...</p>;
   }
 
@@ -85,19 +109,10 @@ export default function Prospects() {
               </button>
             </div>
           </div>
-          <div className="flex items-center justify-center p-4">
-            <img
-              src={wip_3}
-              className="h-1/2 w-1/2 md:h-1/5 md:w-1/5"
-              alt="Work in progress"
-            />
+
+          <div>
+            {response && <ListProspects prospects={response.prospects} />}
           </div>
-          <h1 className="flex justify-center text-3xl font-bold text-gnp-blue-900">
-            Estamos trabajando en
-          </h1>
-          <h1 className="flex justify-center text-3xl font-bold text-orange-500">
-            Prospectos
-          </h1>
         </div>
       </>
     </Wrapper>
