@@ -1,9 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { useParams } from "react-router-dom";
+import { FiEdit } from "react-icons/fi";
+import { Link, useParams } from "react-router-dom";
+import { ManagerListGroupDeliveries } from "../components/deliverables/ListManagerDeliveries";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
-import { ManagerListGroupDeliveries } from "../components/deliverables/ListManagerDeliveries";
 import { IGroup } from "../types";
 
 export default function GroupDeliveries() {
@@ -16,9 +17,23 @@ export default function GroupDeliveries() {
 
   return (
     <div>
-      <Wrapper>
+      <Wrapper title={group?.name}>
         <>
-          <p className="title">{group?.name}</p>
+          <div className="flex items-center justify-end">
+            {/* <p className="title">{group?.name}</p> */}
+            <div className="m-6">
+              <Link to={`/group/edit/${group?.id}`}>
+                <button className="btn-primary flex-grid flex cursor-pointer pt-1 transition-all ease-in-out hover:scale-110">
+                  Editar grupo
+                  <FiEdit
+                    color="white"
+                    size={20}
+                    className="ml-3 inline-block"
+                  />
+                </button>
+              </Link>
+            </div>
+          </div>
           <div className="flex min-h-[26%] w-full justify-center gap-10">
             <div className="w-3/5">
               {group && (

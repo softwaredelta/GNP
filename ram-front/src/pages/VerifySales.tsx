@@ -31,13 +31,8 @@ export default function VerifySales() {
 
   return (
     <>
-      <Wrapper>
+      <Wrapper title="Ventas">
         <div>
-          <div className="flex w-full items-center justify-start pt-8">
-            <h1 className=" rounded-r-2xl bg-gnp-orange-500 py-3 px-20 text-xl font-bold text-white">
-              Verificar ventas
-            </h1>
-          </div>
           <div className="mt-8 flex flex-col items-center justify-center">
             {response && <VerifySalesTable sales={response.sales} />}
           </div>

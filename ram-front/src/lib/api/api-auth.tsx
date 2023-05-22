@@ -22,6 +22,8 @@ export interface Authentication {
   refreshToken: string;
   refreshTokenExpiresAt: number;
   username: string;
+  name: string;
+  lastName: string;
   roles: string[];
 }
 
@@ -127,6 +129,8 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
                 refreshTokenExpiresAt:
                   new Date().getTime() + 24 * 60 * 60 * 1000,
                 username: "username",
+                name: "name",
+                lastName: "lastName",
                 roles: ["regular"],
               });
               set(authenticationError$, null);
@@ -291,6 +295,8 @@ export function AuthenticationInitializationHandler() {
             refreshToken: "refreshToken",
             refreshTokenExpiresAt: 3600,
             username: "username",
+            name: "name",
+            lastName: "lastName",
             roles: ["regular"],
           });
         } else {
