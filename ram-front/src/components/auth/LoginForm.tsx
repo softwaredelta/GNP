@@ -1,9 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 import LogoRAM from "../../assets/imgs/Ram_LogoInv.png";
+import usePasswordVisibility from "../../hooks/usePasswordVisibility";
 
 function LoginForm({
   onLogin,
@@ -12,11 +12,8 @@ function LoginForm({
   onLogin: (params: { username: string; password: string }) => void;
   isLoading: boolean;
 }) {
-  const [passwordVisible, setpasswordVisible] = useState<boolean>(false);
-
-  const handlePasswordVisibility = (): void => {
-    setpasswordVisible(!passwordVisible);
-  };
+  const { handlePasswordVisibility, typeInput, passwordVisible } =
+    usePasswordVisibility();
 
   return (
     <div className="flex h-full w-full items-start bg-slate-200">
@@ -62,13 +59,13 @@ function LoginForm({
         <div className="relative flex w-[79%] justify-center">
           <input
             className="input-primary pr-10"
-            type={passwordVisible ? "text" : "password"}
+            type={typeInput()}
             name="password"
           />
           <button
             type="button"
             onClick={handlePasswordVisibility}
-            className="absolute right-[15%] top-3 focus:outline-none"
+            className="absolute right-[7%] top-3 focus:outline-none"
           >
             {passwordVisible ? (
               <AiFillEye size={20} color="#012356" />
