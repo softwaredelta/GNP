@@ -14,7 +14,7 @@ export default function PlaceholderHome() {
           <div className="container px-3">
             <div className="w-full items-start justify-center text-center md:w-2/5 md:text-left">
               <p className="tracking-loose w-full uppercase">
-                Hola {auth?.username}
+                Hola {`${auth?.name} ${auth?.lastName}`}
               </p>
               <h1 className="my-4 text-5xl font-bold leading-tight">
                 Bienvenido al portal de Grupo Asesores Ram

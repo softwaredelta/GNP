@@ -23,6 +23,8 @@ export interface UserAuthentication {
   refreshToken: string;
   refreshTokenExpiresAt: number;
   username: string;
+  name: string;
+  lastName: string;
   roles: UserRole[];
 }
 
@@ -143,7 +145,7 @@ export async function authenticateUser(params: {
     where: {
       email: params.email,
     },
-    select: ["id", "email", "password", "rolesString"],
+    select: ["id", "email", "name", "lastName", "password", "rolesString"],
   });
   const correctPass =
     user === null
@@ -163,6 +165,8 @@ export async function authenticateUser(params: {
       refreshToken: refreshToken.token,
       refreshTokenExpiresAt: refreshToken.expiresAt,
       username: user.email,
+      name: user.name,
+      lastName: user.lastName,
       roles: user.roles,
     },
   };
