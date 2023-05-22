@@ -12,13 +12,13 @@ export function BackButton() {
 
   return (
     <button
-      className="relative flex items-center text-gnp-orange-500 transition-transform duration-300 hover:scale-110"
+      className="relative flex items-center justify-center text-gnp-orange-500 transition-transform duration-300 hover:scale-110"
       onClick={handleGoBack}
     >
       <IoArrowBackCircle size={30} className="mr-1" />
-      <span className="absolute left-full top-1/2 -translate-y-1/2 transform text-sm font-bold opacity-100 transition-opacity duration-300">
+      <div className="  transform text-sm font-bold opacity-100 transition-opacity duration-300">
         Regresar
-      </span>
+      </div>
     </button>
   );
 }
