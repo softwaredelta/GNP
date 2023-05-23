@@ -13,10 +13,7 @@ export interface IUseSearchProps {
   key: string;
 }
 
-export default function useSearch({
-  info,
-  key,
-}: IUseSearchProps): UseSearchReturn {
+export default function useSearch({ info }: IUseSearchProps): UseSearchReturn {
   const [search, setSearch] = useState<string>("");
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {

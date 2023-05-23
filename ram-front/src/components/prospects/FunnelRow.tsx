@@ -12,7 +12,7 @@ type Props = {
   lastName?: string;
 };
 
-export default function FunnelRow({ id, name, link, lastName, email }: Props) {
+export default function FunnelRow({ id, name, link, lastName }: Props) {
   const { response: prospects } = useAxios<number>({
     url: `prospect/count-prospects-new/${id}`,
     method: "GET",
