@@ -10,13 +10,17 @@ import {
   isAuthenticationReady$,
 } from "./lib/api/api-auth";
 import { HashProvider } from "./lib/api/api-hash";
+import useLoader from "./hooks/useLoader";
+import BlockPage from "./components/loaders/BlockPage";
 
 // makes sure app is only rendered once auth initialization is complete
 export function AuthWrapper({ children }: { children: React.ReactNode }) {
   const isAuthenticationReady = useRecoilValue(isAuthenticationReady$);
+  const { loading } = useLoader();
 
   return (
     <>
+      {loading && <BlockPage />}
       <AuthenticationInitializationHandler />
       {isAuthenticationReady && (
         <>

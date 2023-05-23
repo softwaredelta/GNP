@@ -153,8 +153,8 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
                   }),
                 },
               );
-              const result = await response.json();
               set(isLoading$, false);
+              const result = await response.json();
               if (response.ok) {
                 set(authentication$, result);
                 set(authenticationError$, null);
