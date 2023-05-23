@@ -1,5 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-import { Checkbox, Table } from "flowbite-react";
+import { Table } from "flowbite-react";
 import { useCallback } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { useRecoilValue } from "recoil";
@@ -66,13 +66,9 @@ export const SearchDeliveryRow = ({
     }
   }, [accessToken, apiBase, delivery, onReloadDeliveries]);
 
-  // console.log(Response);
   return (
     <>
       <Table.Row key={delivery.id} className="border-2 border-gray-300">
-        <Table.Cell>
-          <Checkbox className="border-gray-400" />
-        </Table.Cell>
         <Table.Cell>
           <img
             className="w-30 h-14 rounded-lg"

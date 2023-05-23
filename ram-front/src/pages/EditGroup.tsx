@@ -81,7 +81,7 @@ export default function EditGroup() {
             <div className="flex w-auto pr-8">
               <button
                 onClick={toggleModalGroupForm}
-                className="btn-primary pr-7"
+                className="btn-primary pr-4"
                 data-testid="button-modal"
               >
                 Editar Grupo
@@ -110,13 +110,15 @@ export default function EditGroup() {
                   initialValues={{ name: group.name, imageURL: group.imageURL }}
                 />
               )}
-              <button
-                onClick={toggleModalDeliveryForm}
-                className="btn-primary flex-grid flex items-center"
-              >
-                {"Agregar entregable"}
-                <RiAddBoxFill className="ml-2 inline-block" size={20} />
-              </button>
+              <div className="pl-4">
+                <button
+                  onClick={toggleModalDeliveryForm}
+                  className="btn-primary flex-grid flex items-center"
+                >
+                  {"Agregar entregable"}
+                  <RiAddBoxFill className="ml-2 inline-block" size={20} />
+                </button>
+              </div>
             </div>
             <ModalDeliveryFormCreate
               isOpenModal={isOpenDeliveryForm}
