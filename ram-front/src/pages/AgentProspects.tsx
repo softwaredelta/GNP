@@ -21,10 +21,11 @@ export default function AgentProspects() {
   return (
     <Wrapper>
       <div>
-        <div className="flex w-full items-center justify-start pt-8">
+        <div className="flex w-full justify-between pt-8">
           <h1 className=" rounded-r-2xl bg-gnp-orange-500 py-3 px-20 text-xl font-bold text-white">
-            Prospectos para {response?.agent.name}
+            Prospectos para {response?.agent.name} {response?.agent.lastName}
           </h1>
+          <h2>Buscar por nombre</h2>
         </div>
         <div className="mt-8 flex flex-col items-center justify-center"></div>
       </div>
