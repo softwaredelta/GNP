@@ -288,9 +288,9 @@ describe("controller:user", () => {
         .expect(200)
         .then((res) => res.body);
 
-      expect(users).toHaveLength(2);
-      expect(users[0]).toHaveProperty("name", "Test User");
-      expect(users[1]).toHaveProperty("name", "Test User");
+      expect(users).toHaveLength(4);
+      expect(users[0]).toHaveProperty("name", "Manager");
+      expect(users[1]).toHaveProperty("name", "Regular");
     });
   });
 });
