@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuthentication } from "../lib/api/api-auth";
 import { apiBase$ } from "../lib/api/api-base";
 import { useRecoilValue } from "recoil";
+import useLoader from "./useLoader";
 
 export interface IUseAxiosProps {
   url: string;
@@ -27,6 +28,7 @@ export default function useAxios<T>({
   headers = {},
 }: IUseAxiosProps): IUseAxiosReturn<T> {
   const { auth } = useAuthentication();
+  const { setLoading: setBlockPage } = useLoader();
   const apiBase = useRecoilValue(apiBase$);
   const [response, setResponse] = useState<T | null>(null);
   const [error, setError] = useState<AxiosError | unknown>(null);
@@ -67,6 +69,11 @@ export default function useAxios<T>({
     }
     fetchData();
   };
+
+  useEffect(() => {
+    if (method !== "GET" && loading !== undefined && setBlockPage)
+      setBlockPage(loading);
+  }, [loading, setBlockPage, method]);
 
   return { response, error, loading, callback };
 }
