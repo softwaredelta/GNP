@@ -103,7 +103,7 @@ export default function Prospects() {
         <div className="mt-8">
           <div className=" flex justify-end px-5">
             <div className="flex">
-              <button className="btn-secondary" onClick={toggleModal}>
+              <button className="btn-primary" onClick={toggleModal}>
                 Agregar prospecto
                 <AiOutlinePlus className="ml-1 inline font-bold" />
               </button>

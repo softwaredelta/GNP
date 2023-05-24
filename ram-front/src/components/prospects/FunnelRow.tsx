@@ -7,11 +7,12 @@ import useAxios from "../../hooks/useAxios";
 
 type Props = {
   id: string;
-  email: string;
   link: string;
+  name: string;
+  lastName?: string;
 };
 
-export default function FunnelRow({ id, email, link }: Props) {
+export default function FunnelRow({ id, name, link, lastName }: Props) {
   const { response: prospects } = useAxios<number>({
     url: `prospect/count-prospects-new/${id}`,
     method: "GET",
@@ -27,7 +28,7 @@ export default function FunnelRow({ id, email, link }: Props) {
         className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
         align="center"
       >
-        {email}
+        {name} {lastName}
       </Table.Cell>
       <Table.Cell align="center">{prospects}</Table.Cell>
       <Table.Cell align="center">
@@ -44,7 +45,10 @@ export default function FunnelRow({ id, email, link }: Props) {
       </Table.Cell>
       <Table.Cell align="center">
         <a href={link} target="_blank" rel="noopener noreferrer">
-          <RiFileExcel2Fill className=" hover:scale-105 hover:fill-green-500" />
+          <RiFileExcel2Fill
+            size={20}
+            className="transition-all  duration-300 ease-in-out hover:scale-125 hover:fill-green-500"
+          />
         </a>
       </Table.Cell>
     </Table.Row>

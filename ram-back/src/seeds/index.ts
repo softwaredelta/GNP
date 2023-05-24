@@ -33,8 +33,18 @@ export async function adminSeeds() {
 
 export async function userSeeds() {
   const userData = [
-    { email: "regular@delta.tec.mx", roles: [UserRole.REGULAR] },
-    { email: "manager@delta.tec.mx", roles: [UserRole.MANAGER] },
+    {
+      email: "regular@delta.tec.mx",
+      roles: [UserRole.REGULAR],
+      name: "Regular",
+      lastName: "User",
+    },
+    {
+      email: "manager@delta.tec.mx",
+      roles: [UserRole.MANAGER],
+      name: "Manager",
+      lastName: "User",
+    },
     {
       email: "manager-admin@delta.tec.mx",
       roles: [UserRole.MANAGER, UserRole.ADMIN],
