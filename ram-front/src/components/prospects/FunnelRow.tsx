@@ -45,7 +45,10 @@ export default function FunnelRow({ id, name, link, lastName }: Props) {
       </Table.Cell>
       <Table.Cell align="center">
         <a href={link} target="_blank" rel="noopener noreferrer">
-          <RiFileExcel2Fill className=" hover:scale-105 hover:fill-green-500" />
+          <RiFileExcel2Fill
+            size={20}
+            className="transition-all  duration-300 ease-in-out hover:scale-125 hover:fill-green-500"
+          />
         </a>
       </Table.Cell>
     </Table.Row>

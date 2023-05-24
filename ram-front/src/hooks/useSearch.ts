@@ -1,30 +1,34 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { useState } from "react";
-import { IDelivery, IProspects, IUser } from "../types";
+import { useState, useEffect } from "react";
 
-export interface UseSearchReturn {
+export interface IUseSearchReturn<T> {
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  data: { nodes: IDelivery | IDelivery | IProspects };
+  data: Array<T>;
 }
 
-export interface IUseSearchProps {
-  info: IUser[] | IDelivery[] | IProspects[];
+export interface IUseSearchProps<T> {
+  info: Array<T>;
   key: string;
 }
 
-export default function useSearch({ info }: IUseSearchProps): UseSearchReturn {
+export default function useSearch<T>({
+  info,
+  key,
+}: IUseSearchProps<T>): IUseSearchReturn<T> {
   const [search, setSearch] = useState<string>("");
+  const [data, setData] = useState<Array<T>>(info);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
-  const data = {
-    nodes: info.filter((item) =>
-      item.name.toLowerCase().includes(search.toLowerCase()),
-    ),
-  };
+  useEffect(() => {
+    const filteredData = info.filter((item: any) =>
+      item[key].toLowerCase().includes(search.toLowerCase()),
+    );
+    setData(filteredData);
+  }, [search]);
 
   return { handleSearch, data };
 }

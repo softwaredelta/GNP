@@ -11,7 +11,13 @@ export interface IListProspectsProps {
 export default function ListProspects({
   prospects,
 }: IListProspectsProps): JSX.Element {
-  const { handleSearch, data } = useSearch({ info: prospects, key: "name" });
+  const { handleSearch, data } = useSearch({
+    info: prospects.map((prospect) => ({
+      ...prospect,
+      fullName: `${prospect.name} ${prospect.firstSurname} ${prospect.secondSurname}`,
+    })),
+    key: "fullName",
+  });
 
   if (prospects.length === 0) return <h1>No hay prospectos</h1>;
 
@@ -28,7 +34,7 @@ export default function ListProspects({
           />
         </label>
       </div>
-      {data.nodes.map((prospect) => {
+      {data.map((prospect: IProspects) => {
         return (
           <RowProspect
             key={prospect.id}

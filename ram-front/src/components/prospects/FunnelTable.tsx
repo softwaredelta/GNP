@@ -11,7 +11,13 @@ interface Props {
 }
 
 const FunnelProspect = ({ agents }: Props) => {
-  const { handleSearch, data } = useSearch({ info: agents, key: "name" });
+  const { handleSearch, data } = useSearch({
+    info: agents.map((agent) => ({
+      ...agent,
+      fullName: `${agent.name} ${agent.lastName}`,
+    })),
+    key: "fullName",
+  });
 
   return (
     <div className="mt-8 flex flex-col items-center justify-center">
@@ -43,7 +49,7 @@ const FunnelProspect = ({ agents }: Props) => {
             <Table.HeadCell align="center">PP200</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {data.nodes.map((agent) => {
+            {data.map((agent: IUser) => {
               return (
                 <FunnelRow
                   key={agent.id}
