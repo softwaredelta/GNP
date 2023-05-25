@@ -54,9 +54,7 @@ describe("ProspectHistoryList", () => {
         </BrowserRouter>
       </RecoilRoot>,
     );
-    const message = screen.getByRole("heading", {
-      name: "No hay historial del prospecto",
-    });
+    const message = screen.getByLabelText("no-historial-prospecto");
     expect(message).toBeInTheDocument();
   });
 });
