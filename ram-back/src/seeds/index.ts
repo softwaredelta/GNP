@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { createAssuranceType } from "../app/assuranceType";
-import { createDelivery } from "../app/deliveries";
+import { createDelivery, createLinkDelivery } from "../app/deliveries";
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createProspect } from "../app/prospect";
 import { createSale } from "../app/sale";
@@ -255,6 +255,27 @@ export async function loadSeeds() {
     });
 
     //DELIVERIES
+    const delivery = await createDelivery({
+      deliveryName: "Creación de YouCanBookMe",
+      description:
+        "Los agentes tendrán un calendario en donde podrán ver sus citas y espacios disponibles",
+      idGroup: group1.group.id,
+      imageUrl:
+        "https://osbsoftware.com.br/upload/fabricante/you%20canbook%20me.png",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.youtube.com/watch?v=9XaYdCdwiWU",
+      deliveryId: delivery.delivery.id,
+      name: "Youtube",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.google.com",
+      deliveryId: delivery.delivery.id,
+      name: "Google",
+    });
+
     await createDelivery({
       deliveryName: "Creación de YouCanBookMe",
       description:

@@ -9,13 +9,18 @@ import {
   addDeliveryToGroup,
 } from "../../app/groups";
 import { getDataSource } from "../../arch/db-client";
-import { createDelivery, setDeliverieToUser } from "../../app/deliveries";
+import {
+  createDelivery,
+  createLinkDelivery,
+  setDeliverieToUser,
+} from "../../app/deliveries";
 import { userSeeds } from "../../seeds";
 import { UserRole } from "../../entities/user.entity";
 import { authenticateUser } from "../../app/user";
 import { truncate } from "fs";
 import { getS3Api } from "../../arch/s3-client";
 import { DeliveryEnt } from "../../entities/delivery.entity";
+import { DeliveryLinkEnt } from "../../entities/delivery-link.entity";
 
 let managerAccessToken: string;
 let accessToken: string;
@@ -64,6 +69,12 @@ beforeEach(async () => {
   });
 
   deliveryId = delivery.id;
+
+  await createLinkDelivery({
+    name: "test",
+    link: "test-link",
+    deliveryId: deliveryId,
+  });
 
   await setDeliverieToUser({
     idDeliverie: delivery.id,
@@ -386,6 +397,32 @@ describe("Update status endpoint", () => {
         });
         expect(delivery.description).toBe("new description");
         expect(delivery.deliveryName).toBe("test_delivery");
+      });
+    });
+
+    describe("Add links to deliveries", () => {
+      it("handles invalid delivery id", async () => {
+        return request(app)
+          .post(`/deliveries/12345`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .send({
+            deliveryName: "new name",
+          })
+          .expect(404);
+      });
+
+      it("Get the links correctly", async () => {
+        await request(app)
+          .get(`/deliveries/group-delivery/${deliveryId}`)
+          .set("Authorization", `Bearer ${managerAccessToken}`)
+          .expect(200);
+
+        const ds = await getDataSource();
+        const delivery = await ds.manager.findOneOrFail(DeliveryLinkEnt, {
+          where: { deliveryId: deliveryId },
+        });
+        expect(delivery.name).toBe("test");
+        expect(delivery.link).toBe("test-link");
       });
     });
   });
