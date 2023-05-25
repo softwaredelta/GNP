@@ -99,3 +99,12 @@ export interface IProspects {
     statusComment: string;
   }[];
 }
+
+export interface IMembers {
+  id: string;
+  rol: string;
+  name: string;
+  lastName: string;
+  state: string;
+  imageUrl: string;
+}
