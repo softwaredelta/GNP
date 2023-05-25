@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import { ISell } from "../../types";
+import { NumericFormat } from "react-number-format";
 
 type Props = {
   sale: ISell;
@@ -52,8 +53,28 @@ export default function SalesRow({ sale, onDeleted }: Props) {
         {sale.contractingClient}
       </Table.Cell>
       <Table.Cell>{sale.policyNumber}</Table.Cell>
-      <Table.Cell>{sale.yearlyFee}</Table.Cell>
-      <Table.Cell>{sale.paidFee}</Table.Cell>
+      <Table.Cell>
+        <NumericFormat
+          value={sale.yearlyFee}
+          displayType={"text"}
+          thousandSeparator={true}
+          decimalScale={2}
+          decimalSeparator="."
+          fixedDecimalScale={true}
+          prefix={"$"}
+        />
+      </Table.Cell>
+      <Table.Cell>
+        <NumericFormat
+          value={sale.paidFee}
+          displayType={"text"}
+          thousandSeparator={true}
+          decimalScale={2}
+          decimalSeparator="."
+          fixedDecimalScale={true}
+          prefix={"$"}
+        />{" "}
+      </Table.Cell>
       <Table.Cell>{sale.periodicity}</Table.Cell>
       <Table.Cell>{sale.assuranceType?.name}</Table.Cell>
       <Table.Cell>

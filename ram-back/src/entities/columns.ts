@@ -90,7 +90,6 @@ export const POLICY_NUMBER_COLUMN: ColumnOptions = {
   type: "varchar",
   length: 255,
   nullable: false,
-  unique: true,
 };
 
 export const MONEY_COLUMN: ColumnOptions = {
