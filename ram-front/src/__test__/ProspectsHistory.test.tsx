@@ -46,7 +46,7 @@ describe("ProspectHistoryList", () => {
 
     expect(screen.getByTestId("prospect-list")).toBeInTheDocument();
   });
-  it("renders a message when there are no deliveries", () => {
+  it("renders a message when there are no history", () => {
     render(
       <RecoilRoot>
         <BrowserRouter>
