@@ -7,7 +7,6 @@ type Props = {
 };
 
 export function ProspectListHistory({ state, comment, date }: Props) {
-    
   function getColorClass(option: string) {
     switch (option) {
       case "Cliente":

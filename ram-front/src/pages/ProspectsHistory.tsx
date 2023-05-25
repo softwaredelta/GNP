@@ -38,12 +38,11 @@ interface History {
 }
 
 export default function ProspectsHistory() {
-
   const [history, setHistory] = useState<Array<History>>([]);
   useEffect(() => {
     setHistory(INITIAL_STATE);
   }, []);
-   
+
   if (history.length === 0) return <h1>No hay historial del prospecto</h1>;
   return (
     <Wrapper title="Historial de prospecto: ">
