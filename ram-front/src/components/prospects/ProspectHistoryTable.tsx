@@ -8,7 +8,6 @@ type Props = {
 };
 
 export default function ProspectsHistoryTable({ History }: Props) {
-  if (history.length === 0) return <h1>No hay historial del prospecto</h1>;
   return (
     <div className="flex flex-col items-center justify-center pt-8">
       <>

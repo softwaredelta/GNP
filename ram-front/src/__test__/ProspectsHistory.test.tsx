@@ -46,15 +46,4 @@ describe("ProspectHistoryList", () => {
 
     expect(screen.getByTestId("prospect-list")).toBeInTheDocument();
   });
-  it("renders a message when there are no history", () => {
-    render(
-      <RecoilRoot>
-        <BrowserRouter>
-          <ProspectsHistoryTable History={[]} />
-        </BrowserRouter>
-      </RecoilRoot>,
-    );
-    const message = screen.getByLabelText("no-historial-prospecto");
-    expect(message).toBeInTheDocument();
-  });
 });

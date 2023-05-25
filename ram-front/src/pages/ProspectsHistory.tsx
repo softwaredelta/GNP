@@ -26,17 +26,6 @@ export default function ProspectsHistory() {
   useEffect(() => {
     setHistory(INITIAL_STATE);
   }, []);
-  if (history.length === 0)
-    return (
-      <Wrapper title="Historial de prospecto: ">
-        <h1
-          className="flex justify-center text-3xl font-bold text-gnp-blue-900"
-          aria-label="no-historial-prospecto"
-        >
-          No hay historial del prospecto
-        </h1>
-      </Wrapper>
-    );
   return (
     <Wrapper title="Historial de prospecto: ">
       <ProspectsHistoryTable History={history} />
