@@ -1,15 +1,15 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { getDataSource } from "../arch/db-client";
 import { v4 } from "uuid";
+import { getDataSource } from "../arch/db-client";
 import {
   UserEnt,
   UserRole,
   buildRoleString,
   rolesFromString,
 } from "../entities/user.entity";
+import { comparePassword, hashPassword } from "../utils/hash";
 import { TokenType, generateToken, verifyToken } from "./auth";
-import { hashPassword, comparePassword } from "../utils/hash";
 
 export enum UserError {
   USER_EXISTS = "USER_EXISTS",
@@ -47,6 +47,7 @@ export async function createUser(params: {
   roles?: UserRole[];
   imageURL?: string;
   urlPP200?: string;
+  CUA?: string;
 }): Promise<{ user: UserEnt; error?: UserError }> {
   // TODO: handle authentication with admin or something
 
@@ -56,6 +57,7 @@ export async function createUser(params: {
   const roles = params.roles || [UserRole.REGULAR];
   const mobile = params.mobile || 10000000000;
   const urlPP200 = params.urlPP200 || "";
+  const CUA = params.CUA || "";
 
   return ds.manager
     .save(
@@ -66,6 +68,7 @@ export async function createUser(params: {
         name: params.name,
         mobile,
         urlPP200,
+        CUA,
         lastName: params.lastName,
         password: hashedPassword,
         rolesString: buildRoleString(roles),
