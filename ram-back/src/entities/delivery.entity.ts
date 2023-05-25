@@ -39,7 +39,7 @@ export class DeliveryEnt {
   userDeliveries!: UserDeliveryEnt[];
 
   @OneToMany(() => DeliveryLinkEnt, (deliveryLink) => deliveryLink.delivery)
-  deliveryLinks!: DeliveryLinkEnt[];
+  deliveryLinks: DeliveryLinkEnt[];
 
   @ManyToOne(() => GroupEnt, {
     nullable: false,

@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
-import { ID_COLUMN, URL_COLUMN } from "./columns";
+import { ID_COLUMN, URL_COLUMN, NAME_COLUMN } from "./columns";
 import { DeliveryEnt } from "./delivery.entity";
 
 @Entity({ name: "delivery-link" })
@@ -17,6 +17,9 @@ export class DeliveryLinkEnt {
 
   @Column(URL_COLUMN)
   link!: string;
+
+  @Column(NAME_COLUMN)
+  name!: string;
 
   @ManyToOne(() => DeliveryEnt, {
     nullable: false,
