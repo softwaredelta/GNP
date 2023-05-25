@@ -20,7 +20,10 @@ export function ProspectListHistory({ state, comment, date }: Props) {
     }
   }
   return (
-    <div className="flex rounded-md bg-white p-4 shadow-md">
+    <div
+      data-testid="prospect-list"
+      className="flex rounded-md bg-white p-4 shadow-md"
+    >
       <div className="flex w-1/3 items-center">
         <div className="mr-2">
           <div className={`h-4 w-4 rounded-full ${getColorClass(state)}`}></div>
