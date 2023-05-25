@@ -262,6 +262,7 @@ describe("controller:user", () => {
         password: "password",
         name: "Example Person",
         lastName: "2",
+        imageURL: "https://example.com/image.png",
       });
     });
 
