@@ -1,11 +1,14 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React from "react";
-import { Props } from "../button";
+type Props = {
+  state: string;
+  comment: string;
+  date: string;
+};
 
-export function ProspectListHistory({ estado, comentario, fecha }: Props) {
-  function getColorClass(op) {
-    switch (op) {
+export function ProspectListHistory({ state, comment, date }: Props) {
+  function getColorClass(option: string) {
+    switch (option) {
       case "Cliente":
         return "bg-green-500";
       case "Cancelado":
@@ -20,22 +23,18 @@ export function ProspectListHistory({ estado, comentario, fecha }: Props) {
     <div className="flex rounded-md bg-white p-4 shadow-md">
       <div className="flex w-1/3 items-center">
         <div className="mr-2">
-          <div
-            className={`h-4 w-4 rounded-full ${getColorClass(estado)}`}
-          ></div>
+          <div className={`h-4 w-4 rounded-full ${getColorClass(state)}`}></div>
         </div>
-        <p className="font-semibold text-gray-500">{estado}</p>
+        <p className="font-semibold text-gray-500">{state}</p>
       </div>
       <div className="w-3/3">
         <div className="mb-2">
-          <p className="text-center font-semibold text-gray-500">
-            {comentario}
-          </p>
+          <p className="text-center font-semibold text-gray-500">{comment}</p>
         </div>
       </div>
       <div className="w-2/3">
         <div className="mb-2">
-          <p className="text-center font-semibold text-gray-500">{fecha}</p>
+          <p className="text-center font-semibold text-gray-500">{date}</p>
         </div>
       </div>
     </div>

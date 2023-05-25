@@ -6,39 +6,39 @@ import ProspectListHistory from "../components/prospects/ProspectListHistory";
 
 const INITIAL_STATE = [
   {
-    estado: "Cliente",
-    comentario:
+    state: "Cliente",
+    comment:
       "Se ha realizado las llamadas y agendó su cita para realizar el aseguramiento de su patrominio",
-    fecha: "99/99/99",
+    date: "99/99/99",
   },
   {
-    estado: "Llamada",
-    comentario:
+    state: "Llamada",
+    comment:
       "¡Enhorabuena por tu venta! Lograr una venta siempre es emocionante y un logro para celebrar.",
-    fecha: "99/99/99",
+    date: "99/99/99",
   },
   {
-    estado: "Cancelado",
-    comentario:
+    state: "Cancelado",
+    comment:
       "Recuerda que cada venta es una oportunidad para construir relaciones duraderas con tus clientes.",
-    fecha: "99/99/99",
+    date: "99/99/99",
   },
   {
-    estado: "Cliente",
-    comentario:
+    state: "Cliente",
+    comment:
       "La perseverancia es clave si encuentras obstáculos en el camino. Aprende de ellos y sigue adelante.",
-    fecha: "99/99/99",
+    date: "99/99/99",
   },
 ];
 
-interface Hist {
-  estado: string;
-  comentario: string;
-  fecha: string;
+interface History {
+  state: string;
+  comment: string;
+  date: string;
 }
 
 export default function ProspectsHistory() {
-  const [history, setHistory] = useState<Array<Hist>>([]);
+  const [history, setHistory] = useState<Array<History>>([]);
   useEffect(() => {
     setHistory(INITIAL_STATE);
   }, []);
@@ -67,7 +67,7 @@ export default function ProspectsHistory() {
                 <div className="w-3/3 flex items-center pl-36">
                   <div className="rounded-md  bg-gnp-blue-500">
                     <p className="px-5 py-2 text-center font-semibold text-gray-500 text-white">
-                      Fecha de actualizacion de estado
+                      Fecha de actualizacion de state
                     </p>
                   </div>
                 </div>
@@ -79,10 +79,10 @@ export default function ProspectsHistory() {
               {history.map((h) => {
                 return (
                   <ProspectListHistory
-                    key={h.estado}
-                    estado={h.estado}
-                    comentario={h.comentario}
-                    fecha={h.fecha}
+                    key={h.state}
+                    state={h.state}
+                    comment={h.comment}
+                    date={h.date}
                   />
                 );
               })}
