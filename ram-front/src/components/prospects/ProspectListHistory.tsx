@@ -21,7 +21,6 @@ export function ProspectListHistory({ state, comment, date }: Props) {
   }
   return (
     <div
-      data-testid="prospect-list"
       className="flex rounded-md bg-white p-4 shadow-md"
     >
       <div className="flex w-1/3 items-center">
@@ -38,7 +37,7 @@ export function ProspectListHistory({ state, comment, date }: Props) {
       <div className="w-2/3">
         <div className="mb-2">
           <span className="text-center font-semibold text-gray-500">
-            {date}
+            {date.toLocaleString()}
           </span>
         </div>
       </div>

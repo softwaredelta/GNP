@@ -12,7 +12,7 @@ export default function ProspectsHistoryTable({ History }: Props) {
   return (
     <div className="flex flex-col items-center justify-center pt-8">
       <>
-        <div className="flex items-center justify-end">
+        <div data-testid="prospect-list" className="flex items-center justify-end">
           <div className="m-6">
             <div className="flex">
               <div className="w-3/3 flex items-center pr-40">
