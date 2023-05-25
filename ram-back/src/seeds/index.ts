@@ -94,7 +94,7 @@ export async function loadSeeds() {
       lastName: "Herrera",
       password: "password",
       id: "2",
-      roles: [UserRole.MANAGER],
+      roles: [UserRole.REGULAR],
     });
 
     await createUser({
