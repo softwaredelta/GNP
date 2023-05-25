@@ -323,7 +323,7 @@ export default function Examples() {
         <ProspectListHistory
           state={"Cliente"}
           comment={"Hola"}
-          date={"99/99/99"}
+          date={new Date}
         />
       </div>
     </div>
