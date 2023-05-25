@@ -262,7 +262,7 @@ describe("controller:user", () => {
         password: "password",
         name: "Example Person",
         lastName: "2",
-        iamgeURL: "https://example.com/image.png",
+        imageURL: "https://example.com/image.png",
       });
     });
 

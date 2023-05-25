@@ -45,7 +45,7 @@ export async function createUser(params: {
   mobile?: number;
   id?: string;
   roles?: UserRole[];
-  iamgeURL?: string;
+  imageURL?: string;
   urlPP200?: string;
 }): Promise<{ user: UserEnt; error?: UserError }> {
   // TODO: handle authentication with admin or something
@@ -69,7 +69,7 @@ export async function createUser(params: {
         lastName: params.lastName,
         password: hashedPassword,
         rolesString: buildRoleString(roles),
-        imageURL: params.iamgeURL ?? "https://picsum.photos/200",
+        imageURL: params.imageURL ?? "https://picsum.photos/200",
       }),
     )
     .then((user) => {
