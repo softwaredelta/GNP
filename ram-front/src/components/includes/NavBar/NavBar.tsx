@@ -155,6 +155,21 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
             </div>
           </>
         )}
+
+        {role === "manager" ? (
+          <>
+            <Navbar.Link
+              as={Link}
+              to="/members"
+              className="mx-8 text-lg text-gray-900"
+              active={isActive(/^\/members/i)}
+            >
+              Miembros
+            </Navbar.Link>
+          </>
+        ) : (
+          <></>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );
