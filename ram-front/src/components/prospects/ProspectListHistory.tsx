@@ -3,7 +3,7 @@
 type Props = {
   state: string;
   comment: string;
-  date: string;
+  date: Date;
 };
 
 export function ProspectListHistory({ state, comment, date }: Props) {
@@ -37,7 +37,9 @@ export function ProspectListHistory({ state, comment, date }: Props) {
       </div>
       <div className="w-2/3">
         <div className="mb-2">
-          <p className="text-center font-semibold text-gray-500">{date}</p>
+          <span className="text-center font-semibold text-gray-500">
+            {date}
+          </span>
         </div>
       </div>
     </div>
