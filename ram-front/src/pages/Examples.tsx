@@ -24,8 +24,8 @@ import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import useAlert from "../hooks/useAlert";
 import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
+import ProspectListHistory from "../components/prospects/ProspectListHistory";
 
-// import DeliveryCard from "./cards/DeliveryCard";
 export default function Examples() {
   const listDeliveries = [
     {
@@ -317,6 +317,13 @@ export default function Examples() {
                 "Hola soy una persona de RAM y me gustaría hacer un comentario",
             },
           ]}
+        />
+      </div>
+      <div className="col-span-3 w-10/12">
+        <ProspectListHistory
+          state={"Cliente"}
+          comment={"Hola"}
+          date={"99/99/99"}
         />
       </div>
     </div>
