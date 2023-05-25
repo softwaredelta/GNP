@@ -62,9 +62,6 @@ export function capitalizeString(str: string): string {
 
 @Entity({ name: "user_ent" })
 export class UserEnt {
-  static delete(arg0: {}) {
-    throw new Error("Method not implemented.");
-  }
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

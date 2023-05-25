@@ -115,7 +115,7 @@ export const ID_COLUMN = (
 });
 
 export const IS_ACTIVE_COLUMN: ColumnOptions = {
-  type: "boolean",
+  type: "int",
   nullable: false,
   default: true,
 };
