@@ -113,3 +113,9 @@ export const ID_COLUMN = (
   nullable,
   primary,
 });
+
+export const IS_ACTIVE_COLUMN: ColumnOptions = {
+  type: "boolean",
+  nullable: false,
+  default: true,
+};
