@@ -18,7 +18,7 @@ describe("ProspectHistoryList", () => {
     container.remove();
   });
 
-  it("renders all the agents", () => {
+  it("renders history", () => {
     render(
       <RecoilRoot>
         <BrowserRouter>
