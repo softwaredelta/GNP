@@ -43,17 +43,18 @@ describe("ProspectHistoryList", () => {
         </BrowserRouter>
       </RecoilRoot>,
     );
-    it("renders a message when there are no deliveries", () => {
-      render(
-        <RecoilRoot>
-          <BrowserRouter>
-            <ProspectsHistoryTable History={[]} />
-          </BrowserRouter>
-        </RecoilRoot>,
-      );
-      const message = screen.getByText("No hay historial del prospecto");
-      expect(message).toBeInTheDocument();
-    });
+
     expect(screen.getByTestId("prospect-list")).toBeInTheDocument();
+  });
+  it("renders a message when there are no deliveries", () => {
+    render(
+      <RecoilRoot>
+        <BrowserRouter>
+          <ProspectsHistoryTable History={[]} />
+        </BrowserRouter>
+      </RecoilRoot>,
+    );
+    const message = screen.getByText("No hay historial del prospecto");
+    expect(message).toBeInTheDocument();
   });
 });
