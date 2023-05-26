@@ -1,26 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 import TableMembers from "../components/members/TableMembers";
 import Wrapper from "../containers/Wrapper";
-
+import useAxios from "../hooks/useAxios";
+import { IMembers } from "../types";
 export default function Members() {
-  const members = [
-    {
-      id: "1",
-      name: "Juan",
-      lastName: "Perez",
-      rol: "Agente",
-      state: "Active",
-      imageUrl: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-    },
-    {
-      id: "2",
-      name: "Luis",
-      lastName: "Gonzáles",
-      rol: "Gerente",
-      state: "Active",
-      imageUrl: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-    },
-  ];
+  const { response, loading, error } = useAxios<IMembers[]>({
+    url: "user/members",
+    method: "GET",
+  });
 
   return (
     <Wrapper title="Miembros">
@@ -36,7 +23,7 @@ export default function Members() {
           </button>
         </div>
 
-        <TableMembers members={members} />
+        {response && <TableMembers members={response} />}
       </>
     </Wrapper>
   );
