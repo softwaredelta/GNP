@@ -229,37 +229,37 @@ export async function loadSeeds() {
 
     const group1 = await createGroup({
       name: "Noveles (Inducción)",
-      imageURL:
+      imageUrl:
         "https://media.licdn.com/dms/image/C5622AQF-LKP9Jny8dQ/feedshare-shrink_2048_1536/0/1656612233694?e=1684972800&v=beta&t=9MbCq9kv7-wpB45fnLCMbqChbeRAtIbf3HefLN65EPI",
     });
 
     const groupNovelWeek1 = await createGroup({
       name: "Noveles (Semana 1)",
-      imageURL:
+      imageUrl:
         "https://media.istockphoto.com/id/1420107347/photo/start-written-on-starting-line-on-of-running-track-of-sports-field.jpg?b=1&s=170667a&w=0&k=20&c=BWUlJ_xLHqczgTWek2hzHPD0IwFi3AvjB2DXPtoKw8I=",
     });
 
     const groupNovelWeek2 = await createGroup({
       name: "Noveles (Semana 2)",
-      imageURL:
+      imageUrl:
         "https://cdn.pixabay.com/photo/2017/11/27/07/02/time-2980690__340.jpg",
     });
 
     const groupNovelWeek3 = await createGroup({
       name: "Noveles (Semana 3)",
-      imageURL:
+      imageUrl:
         "https://media.istockphoto.com/id/1255703247/es/foto/una-mujer-haciendo-y-mostrando-el-signo-de-mano-n%C3%BAmero-tres.jpg?s=612x612&w=0&k=20&c=8c0VI8divs47gO0Ui8XMhSAdtJMgPeUZFLEV4VvUkFg=",
     });
 
     const groupNovelWeek4 = await createGroup({
       name: "Noveles (Semana 4)",
-      imageURL:
+      imageUrl:
         "https://corredordigital.mx/wp-content/uploads/2021/03/133101280_10164932258730650_5667144890225799800_o.png",
     });
 
     const groupNovelWeek5 = await createGroup({
       name: "Noveles (Semana 5)",
-      imageURL:
+      imageUrl:
         "https://media.istockphoto.com/id/1390194789/photo/hands-of-an-asian-woman-studying-in-a-coworking-space.jpg?b=1&s=170667a&w=0&k=20&c=IFGwTyl9w2cxmpzytoRC23DOzQVLLixtf_D0nXCwrgs=",
     });
 

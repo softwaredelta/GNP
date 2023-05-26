@@ -44,7 +44,7 @@ describe("New Search Agent Table", () => {
               {
                 id: "1",
                 email: "user-test@tec.mx",
-                imageURL:
+                imageUrl:
                   "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
                 name: "Juan",
                 lastName: "Velasco",

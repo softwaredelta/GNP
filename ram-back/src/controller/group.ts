@@ -46,7 +46,7 @@ groupsRouter.get(
   async (req, res) => {
     const ds = await getDataSource();
     const groups = await ds.manager.find(GroupEnt, {
-      select: ["id", "name", "description", "imageURL", "groupUsers"],
+      select: ["id", "name", "description", "imageUrl", "groupUsers"],
       relations: ["groupUsers"],
     });
 
@@ -69,7 +69,7 @@ groupsRouter.get("/my-groups", authMiddleware(), async (req, res) => {
 groupsRouter.get("/:id", async (req, res) => {
   const ds = await getDataSource();
   const groups = await ds.manager.findOne(GroupEnt, {
-    select: ["id", "name", "deliveries", "imageURL"],
+    select: ["id", "name", "deliveries", "imageUrl"],
     relations: ["deliveries", "deliveries.userDeliveries"],
     where: {
       id: req.params.id,

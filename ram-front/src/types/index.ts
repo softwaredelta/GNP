@@ -62,7 +62,7 @@ export interface IUserDelivery {
 export interface IUser {
   id?: string;
   email: string;
-  imageURL?: string;
+  imageUrl?: string;
   name: string;
   lastName: string;
   origin?: string;
@@ -82,7 +82,7 @@ export interface IGroup {
   id?: string;
   name: string;
   description?: string;
-  imageURL?: string;
+  imageUrl?: string;
   progress?: number;
   groupUsers?: IUser[];
   deliveries?: IDelivery[];
