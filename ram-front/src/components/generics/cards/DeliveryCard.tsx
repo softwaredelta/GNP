@@ -4,10 +4,10 @@ import {
   BsSendCheck,
   BsSendExclamation,
   BsSendPlus,
+  BsArrowRight,
 } from "react-icons/bs";
-import { FiEye, FiUpload } from "react-icons/fi";
 import { DeliveryStatus } from "../../../types";
-import { useOpenFile } from "../../../lib/files";
+import { useUrlFile } from "../../../lib/files";
 
 export type Colors = "blue" | "orange";
 
@@ -29,12 +29,9 @@ const iconList = {
 };
 
 export default function DeliveryCard({
-  deliveryId,
   nameDelivery,
-  image,
   color,
   status,
-  onFileSubmit,
   fileUrl,
 }: DeliveryCardProps): JSX.Element {
   const colorOptions = {
@@ -42,7 +39,7 @@ export default function DeliveryCard({
     orange: "bg-gnp-orange-500",
   };
 
-  const openFileInNewTab = useOpenFile();
+  const file = useUrlFile();
 
   return (
     <div
@@ -51,7 +48,10 @@ export default function DeliveryCard({
     >
       <div className="grid grid-cols-3 ">
         <div className="relative">
-          <img className="h-20 w-full object-cover" src={image} />
+          <img
+            className="h-20 w-full object-cover"
+            src={file(fileUrl as string)}
+          />
           <div
             className={`absolute top-0 left-0 h-full w-full ${colorOptions[color]} bg-opacity-50`}
           ></div>
@@ -66,25 +66,9 @@ export default function DeliveryCard({
           {status}
         </div>
         <div className="flex items-center justify-center text-center">
-          {fileUrl && "Sin enviar" !== status && (
-            <button className="mr-4">
-              <FiEye
-                onClick={() => openFileInNewTab(fileUrl)}
-                color="gray"
-                size={25}
-              />
-            </button>
-          )}
-
-          {"Aceptado" !== status && (
-            <button>
-              <FiUpload
-                color="gray"
-                size={25}
-                onClick={() => onFileSubmit(deliveryId)}
-              />
-            </button>
-          )}
+          <button className="pl-10">
+            <BsArrowRight color="gray" size={35} />
+          </button>
         </div>
       </div>
     </div>

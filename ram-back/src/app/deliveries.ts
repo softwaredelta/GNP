@@ -1,6 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { getDataSource } from "../arch/db-client";
+import { DeliveryLinkEnt } from "../entities/delivery-link.entity";
 import { DeliveryEnt } from "../entities/delivery.entity";
 import {
   UserDeliveryEnt,
@@ -40,6 +41,35 @@ export async function createDelivery(params: {
       error: DeliveryError.UNHANDLED,
       errorReason: e,
       delivery: {} as DeliveryEnt,
+    }));
+}
+
+export async function createLinkDelivery(params: {
+  deliveryId: string;
+  link: string;
+  name: string;
+}): Promise<{
+  delivery: DeliveryLinkEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+
+  return ds.manager
+    .save(
+      ds.manager.create(DeliveryLinkEnt, {
+        deliveryId: params.deliveryId,
+        link: params.link,
+        name: params.name,
+      }),
+    )
+    .then((delivery) => {
+      return { delivery };
+    })
+    .catch((e) => ({
+      error: DeliveryError.UNHANDLED,
+      errorReason: e,
+      delivery: {} as DeliveryLinkEnt,
     }));
 }
 
@@ -252,4 +282,65 @@ export async function deleteDelivery(params: {
 
   await ds.manager.delete(DeliveryEnt, params.deliveryId);
   return {};
+}
+
+// Obtain the deliveries from UserDeliveries where the groupId is the same as the params.groupId
+// and the userId is the same as the params.userId
+export async function getDeliveryGroup(params: {
+  deliveryId: string;
+}): Promise<{
+  delivery: DeliveryEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+
+  try {
+    const delivery = await ds.manager.findOne(DeliveryEnt, {
+      relations: {
+        deliveryLinks: {
+          delivery: false,
+        },
+        userDeliveries: {
+          delivery: false,
+        },
+      },
+      where: { id: params.deliveryId },
+    });
+
+    return { delivery: delivery as DeliveryEnt };
+  } catch (e) {
+    return {
+      error: DeliveryError.UNHANDLED,
+      errorReason: e as Error,
+      delivery: {} as DeliveryEnt,
+    };
+  }
+}
+
+// Obtain the deliveries from UserDeliveries where the groupId is the same as the params.groupId
+// and the userId is the same as the params.userId
+export async function getUserDelivery(params: {
+  userId: string;
+  deliveryId: string;
+}): Promise<{
+  userDelivery: UserDeliveryEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+
+  try {
+    const userDelivery = await ds.manager.findOne(UserDeliveryEnt, {
+      where: { userId: params.userId, deliveryId: params.deliveryId },
+    });
+
+    return { userDelivery: userDelivery as UserDeliveryEnt };
+  } catch (e) {
+    return {
+      error: DeliveryError.UNHANDLED,
+      errorReason: e as Error,
+      userDelivery: {} as UserDeliveryEnt,
+    };
+  }
 }

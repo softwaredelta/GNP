@@ -8,7 +8,9 @@ import {
   DeliveryError,
   createDelivery,
   deleteDelivery,
+  getDeliveryGroup,
   getUserDeliveriesbyGroup,
+  getUserDelivery,
   setDeliveryToAllUsers,
   updateDelivery,
   updateDeliveryStatus,
@@ -291,5 +293,52 @@ deliveriesRouter.delete(
     }
 
     res.status(200).json({ message: "Delivery deleted" });
+  },
+);
+
+deliveriesRouter.get(
+  "/group-delivery/:deliveryId",
+  authMiddleware(),
+  async (req, res) => {
+    if (!req.user) {
+      res.status(401).json({ message: "No user" });
+      return;
+    }
+
+    const deliveryId = req.params.deliveryId;
+
+    const { delivery, error } = await getDeliveryGroup({
+      deliveryId,
+    });
+
+    if (error) {
+      throw new Error(error);
+    }
+
+    res.json(delivery);
+  },
+);
+
+deliveriesRouter.get(
+  "/my-delivery/:deliveryId",
+  authMiddleware(),
+  async (req, res) => {
+    if (!req.user) {
+      res.status(401).json({ message: "No user" });
+      return;
+    }
+    const userId = req.user.id;
+    const deliveryId = req.params.groupId;
+
+    const { userDelivery, error } = await getUserDelivery({
+      userId,
+      deliveryId,
+    });
+
+    if (error) {
+      throw new Error(error);
+    }
+
+    res.json(userDelivery);
   },
 );

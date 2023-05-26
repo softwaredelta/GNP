@@ -141,7 +141,7 @@ authRouter.get("/all-agents", async (req, res) => {
     where: {
       rolesString: UserRole.REGULAR,
     },
-    select: ["id", "email"],
+    select: ["id", "email", "name", "lastName"],
   });
   res.json(sales);
 });

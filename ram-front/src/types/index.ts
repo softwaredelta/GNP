@@ -99,3 +99,29 @@ export interface IProspects {
     statusComment: string;
   }[];
 }
+
+export interface IMembers {
+  id: string;
+  rol: string;
+  name: string;
+  lastName: string;
+  state: string;
+  imageUrl: string;
+}
+
+export interface ILinks {
+  id: string;
+  link: string;
+  name: string;
+}
+
+export interface IDeliveryDescription {
+  id: string;
+  deliveryName: string;
+  createdAt: Date;
+  updatedAt: Date;
+  description: string;
+  imageUrl: string;
+  groupId: string;
+  deliveryLinks: ILinks[];
+}

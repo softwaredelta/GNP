@@ -1,13 +1,28 @@
 // (c) Delta Software 2023, rights reserved.
 import "@testing-library/jest-dom/extend-expect";
-import { render, screen } from "@testing-library/react";
-import { RecoilRoot } from "recoil";
 import ListDeliverables from "../components/deliverables/ListDeliverables";
+import { Root, createRoot } from "react-dom/client";
+import { RenderTest } from "./fixtures";
+import { screen } from "@testing-library/react";
 
 describe("ListDeliveries", () => {
-  it("should render list of deliveries successfully", () => {
-    render(
-      <RecoilRoot>
+  let container: HTMLDivElement;
+  let root: Root;
+  beforeEach(() => {
+    container = document.createElement("div");
+    document.body.appendChild(container);
+
+    root = createRoot(container);
+  });
+  afterEach(() => {
+    document.body.removeChild(container);
+    container.remove();
+  });
+
+  it("should render list of deliveries successfully", async () => {
+    const test = new RenderTest(
+      "list-deliveries-0",
+      (
         <ListDeliverables
           deliverables={[
             {
@@ -72,19 +87,23 @@ describe("ListDeliveries", () => {
             },
           ]}
         />
-      </RecoilRoot>,
+      ),
+      root,
     );
-
-    // const deliveries = screen.getAllByText(/Delivery/i);
-    // expect(deliveries).toHaveLength(2);
+    await test.start();
+    const name1 = screen.getByText("Delivery 1");
+    expect(name1).toBeInTheDocument();
+    const name2 = screen.getByText("Delivery 2");
+    expect(name2).toBeInTheDocument();
   });
 
   it("should render a message when there are no deliveries", () => {
-    render(
-      <RecoilRoot>
-        <ListDeliverables deliverables={[]} />
-      </RecoilRoot>,
+    const test = new RenderTest(
+      "list-deliveries-0",
+      <ListDeliverables deliverables={[]} />,
+      root,
     );
+    test.start();
     const message = screen.getByText("No hay entregables");
     expect(message).toBeInTheDocument();
   });

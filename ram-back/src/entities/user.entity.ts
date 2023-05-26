@@ -25,6 +25,7 @@ import {
   TELEPHONE_COLUMN,
   URL_COLUMN,
   USERNAME_COLUMN,
+  IS_ACTIVE_COLUMN,
 } from "./columns";
 import { GroupUserEnt } from "./group-user.entity";
 import { OriginEnt } from "./origin.entity";
@@ -116,6 +117,9 @@ export class UserEnt {
 
   @Column(URL_COLUMN)
   imageURL?: string;
+
+  @Column(IS_ACTIVE_COLUMN)
+  isActive!: boolean;
 
   @Column(REQUIRED_STRING_COLUMN("roles"))
   rolesString!: string;

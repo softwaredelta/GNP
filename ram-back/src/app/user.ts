@@ -17,6 +17,15 @@ export enum UserError {
   USER_TOKEN_INVALID = "USER_TOKEN_INVALID",
 }
 
+export interface UserRol {
+  id: string;
+  rol: string;
+  name: string;
+  lastName: string;
+  isActive: boolean;
+  imageUrl?: string;
+}
+
 export interface UserAuthentication {
   accessToken: string;
   accessTokenExpiresAt: number;
@@ -36,7 +45,7 @@ export async function createUser(params: {
   mobile?: number;
   id?: string;
   roles?: UserRole[];
-  iamgeURL?: string;
+  imageURL?: string;
   urlPP200?: string;
 }): Promise<{ user: UserEnt; error?: UserError }> {
   // TODO: handle authentication with admin or something
@@ -60,7 +69,7 @@ export async function createUser(params: {
         lastName: params.lastName,
         password: hashedPassword,
         rolesString: buildRoleString(roles),
-        imageURL: params.iamgeURL ?? "https://picsum.photos/200",
+        imageURL: params.imageURL ?? "https://picsum.photos/200",
       }),
     )
     .then((user) => {
@@ -213,4 +222,39 @@ export async function fuzzySearchUsers(params: {
     .getMany();
 
   return users;
+}
+
+const userToUserRol = (user: UserEnt): UserRol => {
+  return {
+    id: user.id,
+    name: user.name,
+    lastName: user.lastName,
+    isActive: user.isActive,
+    imageUrl: user.imageURL,
+    rol: user.roles[0],
+  };
+};
+
+export async function getAllUserRol(): Promise<{
+  userRol: UserRol[];
+  error?: UserError;
+}> {
+  const ds = await getDataSource();
+  const users = await ds
+    .createQueryBuilder()
+    .from(UserEnt, "UserEnt")
+    .select([
+      "UserEnt.id",
+      "UserEnt.name",
+      "UserEnt.lastName",
+      "UserEnt.isActive",
+      "UserEnt.imageUrl",
+      "UserEnt.rolesString",
+    ])
+    .orderBy("UserEnt.name", "ASC")
+    .getMany();
+  if (!users) {
+    return { error: UserError.USER_NOT_FOUND, userRol: [] as UserRol[] };
+  }
+  return { userRol: users.map((user) => userToUserRol(user)) };
 }

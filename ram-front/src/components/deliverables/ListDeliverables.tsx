@@ -8,6 +8,7 @@ import DropZone from "../generics/DropZone";
 import Modal from "../generics/Modal";
 import DeliveryCard from "../generics/cards/DeliveryCard";
 import useAlert from "../../hooks/useAlert";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   deliverables: IUserDelivery[];
@@ -18,6 +19,7 @@ export default function ListDeliverables({ deliverables }: Props) {
   const { showAlert } = useAlert();
   const { isOpen, toggleModal } = useModal();
   const [file, setFile] = useState<File | null>(null);
+  const navigate = useNavigate();
 
   const handleModalOpen = (deliveryCardID: string): void => {
     setId(deliveryCardID);
@@ -96,16 +98,21 @@ export default function ListDeliverables({ deliverables }: Props) {
 
         return (
           <>
-            <DeliveryCard
-              key={index}
-              deliveryId={elem.deliveryId}
-              onFileSubmit={() => handleModalOpen(elem.deliveryId)}
-              nameDelivery={elem.delivery.deliveryName}
-              image={elem.delivery.imageUrl}
-              color={index % 2 ? "orange" : "blue"}
-              status={elem.status}
-              fileUrl={elem.fileUrl}
-            />
+            <div
+              onClick={() => navigate(`/group-delivery/${elem.deliveryId}`)}
+              className="cursor-pointer pt-1 transition-all ease-in-out hover:scale-105"
+            >
+              <DeliveryCard
+                key={index}
+                deliveryId={elem.deliveryId}
+                onFileSubmit={() => handleModalOpen(elem.deliveryId)}
+                nameDelivery={elem.delivery.deliveryName}
+                image={elem.delivery.imageUrl}
+                color={index % 2 ? "orange" : "blue"}
+                status={elem.status}
+                fileUrl={elem.fileUrl}
+              />
+            </div>
             {isOpen && (
               <Modal closeModal={toggleModal}>
                 <div className="flex flex-col space-y-5">
