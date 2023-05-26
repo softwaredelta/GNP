@@ -7,7 +7,6 @@ export interface IModalLinksProps {
   handlePost: (url: string, name: string) => void;
   closeModal: VoidFunction;
   isOpenModal: boolean;
-  isEditModal: boolean;
   initialValues?: ILink;
 }
 
@@ -15,7 +14,6 @@ export default function ModalLinks({
   handlePost,
   closeModal,
   isOpenModal,
-  isEditModal,
   initialValues,
 }: IModalLinksProps) {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -35,11 +33,9 @@ export default function ModalLinks({
             className=" relative w-1/2 rounded-3xl bg-gnp-white p-10"
           >
             <h1
-              className={`apply w-full rounded-xl ${
-                isEditModal ? "bg-gnp-blue-600" : "bg-gnp-orange-500"
-              } p-4 text-center text-2xl font-semibold text-white`}
+              className={"apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white"}
             >
-              {isEditModal ? "Editar Link" : "Crear Link"}
+              Crear Link
             </h1>
 
             <div className="mt-10 grid grid-cols-5 gap-8">
@@ -49,7 +45,6 @@ export default function ModalLinks({
                   ref={nameRef}
                   type="text"
                   className="input-primary w-10/12"
-                  defaultValue={initialValues?.name}
                 />
               </div>
               <div className="col-span-3">
@@ -58,7 +53,6 @@ export default function ModalLinks({
                   ref={urlRef}
                   type="text"
                   className="input-primary w-10/12"
-                  defaultValue={initialValues?.link}
                 />
               </div>
             </div>

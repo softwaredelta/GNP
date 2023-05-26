@@ -153,7 +153,7 @@ export default function ProfileForm({
                 onClick={onTogglePassword}
               >
                 <span className="text-md font-semibold">
-                  Cambiar contraseña
+                  Reestablecer contraseña
                 </span>
                 <MdLockReset size={25} className="ml-2" />
               </button>
@@ -193,7 +193,7 @@ export default function ProfileForm({
                   (errorsFields) => {
                     Swal.fire({
                       title: "Error!",
-                      text: `Ocurrió un error al registrar el usuario.\n
+                      text: `Ocurrió un error al modificar el usuario.\n
                   ${Object.values(errorsFields).map((e) => e.message + " ")}`,
                       icon: "error",
                       confirmButtonText: "OK",

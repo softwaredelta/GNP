@@ -40,7 +40,7 @@ export default function ModalPasswordReset({
             className=" relative w-1/3 rounded-3xl bg-gnp-white p-10"
           >
             <h1 className="apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white">
-              Resetear contraseña
+              Reestablecer contraseña
             </h1>
 
             <div className="mt-10 grid grid-cols-2">
