@@ -60,7 +60,6 @@ const LinkList = ({
           handlePost(link, name);
           toggleModalLink();
         }}
-        isEditModal={false}
       />
       <div className="max-h-96 overflow-y-auto rounded-xl shadow-md">
         <Table className="row" hoverable={true}>

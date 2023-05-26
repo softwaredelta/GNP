@@ -14,7 +14,6 @@ export default function ModalLinks({
   handlePost,
   closeModal,
   isOpenModal,
-  initialValues,
 }: IModalLinksProps) {
   const nameRef = useRef<HTMLInputElement>(null);
   const urlRef = useRef<HTMLInputElement>(null);
@@ -33,7 +32,9 @@ export default function ModalLinks({
             className=" relative w-1/2 rounded-3xl bg-gnp-white p-10"
           >
             <h1
-              className={"apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white"}
+              className={
+                "apply w-full rounded-xl bg-gnp-orange-500 p-4 text-center text-2xl font-semibold text-white"
+              }
             >
               Crear Link
             </h1>
