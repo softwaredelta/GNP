@@ -20,16 +20,16 @@ export default function DeliveryGroup(): JSX.Element {
   const { id } = useParams();
   const openFileInNewTab = useOpenFile();
 
+  const { response: userDelivery, callback: updateDeliveryStatus } =
+    useAxios<IUserDelivery>({
+      url: `user-delivery/${id}/auth`,
+      method: "GET",
+    });
+
   const { response: delivery } = useAxios<IDeliveryDescription>({
     url: `deliveries/group-delivery/${id}`,
     method: "GET",
   });
-
-  const { response: userDelivery, callback: updateDeliveryStatus } =
-    useAxios<IUserDelivery>({
-      url: `deliveries/my-delivery/${id}`,
-      method: "GET",
-    });
 
   const { response: responsePost, callback } = useAxios<{
     dateDelivery: string;
@@ -94,21 +94,24 @@ export default function DeliveryGroup(): JSX.Element {
           <div className="mx-auto flex w-4/5 items-center justify-center">
             <ImageURL url={delivery?.imageUrl || "/default.jfif"} />
           </div>
-          {delivery?.imageUrl && userDelivery?.status === "Enviado" && (
-            <div className="pt-4">
-              <button
-                className="btn-primary flex h-12 items-center justify-center pt-10"
-                onClick={() => openFileInNewTab(userDelivery?.fileUrl || "")}
-              >
-                <span className="text-sm font-semibold">
-                  {" "}
-                  Ver documento enviado{" "}
-                </span>
-                <FiEye className="ml-2" color="white" size={20} />
-              </button>
-            </div>
-          )}
-          {userDelivery?.status === "Sin enviar" && (
+          {delivery?.imageUrl &&
+            (userDelivery?.status === "Enviado" ||
+              userDelivery?.status === "Aceptado") && (
+              <div className="pt-4">
+                <button
+                  className="btn-primary flex h-12 items-center justify-center pt-10"
+                  onClick={() => openFileInNewTab(userDelivery?.fileUrl || "")}
+                >
+                  <span className="text-sm font-semibold">
+                    {" "}
+                    Ver documento enviado{" "}
+                  </span>
+                  <FiEye className="ml-2" color="white" size={20} />
+                </button>
+              </div>
+            )}
+          {(userDelivery?.status === "Sin enviar" ||
+            userDelivery?.status === "Rechazado") && (
             <>
               <FileInput
                 id="file"

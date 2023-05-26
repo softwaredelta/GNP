@@ -1,13 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { ILinks } from "../../types";
+import { ILink } from "../../types";
 
 interface Props {
-  links: ILinks[];
+  links: ILink[];
 }
 
 export default function LinkDelivery({ links }: Props): JSX.Element {
-  if (links.length === 0) return <h1>No hay links</h1>;
+  if (links.length === 0) return <h1>No hay links de apoyo en esta entrega</h1>;
 
   return (
     <div className="">
