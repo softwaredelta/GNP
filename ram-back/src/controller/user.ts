@@ -9,6 +9,7 @@ import {
   createUser,
   fuzzySearchUsers,
   validateUserToken,
+  getAllUserRol,
 } from "../app/user";
 import * as j from "joi";
 
@@ -23,6 +24,14 @@ const userParameters = j.object({
   mobile: j.number().optional(),
   role: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).optional(),
   urlPP200: j.string().optional().allow("").default(""),
+});
+
+const memberParametersSchema = j.object({
+  name: j.string().required(),
+  lastName: j.string().required(),
+  imageUrl: j.string().optional(),
+  UserRole: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).optional(),
+  isActive: j.boolean().required(),
 });
 
 const userParametersMiddleware: RequestHandler = (req, res, next) => {
@@ -204,14 +213,22 @@ authRouter.get(
       res.status(400).json({ message: "BAD_DATA", reason: error });
       return;
     }
-
     next();
   },
-  async (req, res) => {
+  async (req, res, next) => {
     const users = await fuzzySearchUsers({
       query: req.query.query as string,
     });
 
     res.json(users);
+  },
+);
+
+authRouter.get(
+  "/members",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const { userRol } = await getAllUserRol();
+    res.json(userRol);
   },
 );
