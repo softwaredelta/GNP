@@ -110,7 +110,7 @@ export interface IMembers {
   imageUrl: string;
 }
 
-export interface ILinks {
+export interface ILink {
   id: string;
   link: string;
   name: string;
@@ -124,5 +124,5 @@ export interface IDeliveryDescription {
   description: string;
   imageUrl: string;
   groupId: string;
-  deliveryLinks: ILinks[];
+  deliveryLinks: ILink[];
 }
