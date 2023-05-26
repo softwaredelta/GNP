@@ -138,7 +138,7 @@ export const ManagerUserRoutes: IRoute[] = [
     Component: () => <Members />,
   },
   {
-    path: "/prospect-history",
+    path: "/prospect-history/:id",
     Component: () => <ProspectsHistory />,
   },
   {

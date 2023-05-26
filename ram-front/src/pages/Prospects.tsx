@@ -5,7 +5,7 @@ import useModal from "../hooks/useModal";
 import ModalProspectForm from "../components/forms/ModalProspectForm";
 import useAxios from "../hooks/useAxios";
 import { useEffect } from "react";
-import { IStatus, IProspects } from "../types";
+import { IStatus, IProspect } from "../types";
 import Swal from "sweetalert2";
 import ListProspects from "../components/prospects/ListProspects";
 
@@ -15,7 +15,7 @@ export default function Prospects() {
     loading: prospectsLoading,
     error: prospectsError,
   } = useAxios<{
-    prospects: IProspects[];
+    prospects: IProspect[];
   }>({
     url: "prospect/my-prospects",
     method: "GET",

@@ -89,7 +89,7 @@ export interface IGroup {
   userDeliveries?: IUserDelivery[];
 }
 
-export interface IProspects {
+export interface IProspect {
   id: string;
   name: string;
   firstSurname: string;

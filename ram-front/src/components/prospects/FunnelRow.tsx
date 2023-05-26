@@ -30,7 +30,7 @@ export default function FunnelRow({
     <Table.Row
       onClick={() => handleOnClick && handleOnClick(id)}
       key={id}
-      className="bg-white dark:border-gray-700 dark:bg-gray-800"
+      className="transitions-all bg-white ease-in-out hover:cursor-pointer hover:bg-gray-300  dark:border-gray-700 dark:bg-gray-800 "
     >
       <Table.Cell
         className="whitespace-nowrap font-medium text-gray-900 dark:text-white"

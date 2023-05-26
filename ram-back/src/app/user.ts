@@ -262,3 +262,23 @@ export async function getAllUserRol(): Promise<{
 
   return { userRol: users.map((user) => userToUserRol(user)) };
 }
+
+export async function getAgentById(agentId: string): Promise<string> {
+  const ds = await getDataSource();
+
+  try {
+    const agent = await ds.manager.find(UserEnt, {
+      select: ["name", "lastName"],
+      where: {
+        id: agentId,
+      },
+    });
+
+    if (agent.length === 0 || !agent) {
+      return "";
+    }
+    return `${agent[0].name} ${agent[0].lastName ? agent[0].lastName : ""}`;
+  } catch (err) {
+    return "";
+  }
+}

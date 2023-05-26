@@ -9,6 +9,7 @@ import {
   getProspectStatus,
   getProspectsByAgent,
 } from "../app/prospect";
+import { getAgentById } from "../app/user";
 import { getDataSource } from "../arch/db-client";
 import { ProspectEnt } from "../entities/prospect.entity";
 
@@ -100,5 +101,6 @@ prospectRouter.get("/get-agentprospect/:id", async (req, res) => {
     return;
   }
 
-  res.status(200).json({ prospects });
+  const agentName = await getAgentById(agentId);
+  res.status(200).json({ agentName, prospects });
 });
