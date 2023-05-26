@@ -103,7 +103,7 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
         <img
           className="h-10 w-10 rounded-full"
-          src={delivery.user.imageURL}
+          src={delivery.user.imageUrl}
           alt="Rounded avatar"
         />
       </Table.Cell>

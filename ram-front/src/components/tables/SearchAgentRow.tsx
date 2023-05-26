@@ -15,7 +15,7 @@ export const SearchAgentRow = ({ agent, deleteAgent }: IListSearchProps) => {
         <Table.Cell>
           <img
             className="h-14 w-14 rounded-full"
-            src={agent.imageURL}
+            src={agent.imageUrl}
             alt="Profile Image"
           />
         </Table.Cell>

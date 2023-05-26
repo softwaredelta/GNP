@@ -8,6 +8,7 @@ import {
   createUser,
   fuzzySearchUsers,
   validateUserToken,
+  getAllUserRol,
 } from "../app/user";
 import { getDataSource } from "../arch/db-client";
 import { UserEnt, UserRole } from "../entities/user.entity";
@@ -206,7 +207,6 @@ authRouter.get(
       res.status(400).json({ message: "BAD_DATA", reason: error });
       return;
     }
-
     next();
   },
   async (req, res) => {
@@ -215,5 +215,14 @@ authRouter.get(
     });
 
     res.json(users);
+  },
+);
+
+authRouter.get(
+  "/members",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const { userRol } = await getAllUserRol();
+    res.json(userRol);
   },
 );

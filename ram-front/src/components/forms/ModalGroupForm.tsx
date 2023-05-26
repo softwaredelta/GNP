@@ -66,7 +66,7 @@ export default function ModalGroupForm({
                 >
                   <img
                     className="h-full w-full object-cover"
-                    src={initialValues?.imageURL || "/default.jfif"}
+                    src={initialValues?.imageUrl || "/default.jfif"}
                     ref={imgRef}
                   />
                 </div>

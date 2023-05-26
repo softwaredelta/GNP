@@ -107,7 +107,7 @@ export default function EditGroup() {
                     }
                   }}
                   isEditModal={true}
-                  initialValues={{ name: group.name, imageURL: group.imageURL }}
+                  initialValues={{ name: group.name, imageUrl: group.imageUrl }}
                 />
               )}
               <div className="pl-4">

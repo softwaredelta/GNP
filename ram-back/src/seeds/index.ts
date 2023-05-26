@@ -94,7 +94,16 @@ export async function loadSeeds() {
       lastName: "Herrera",
       password: "password",
       id: "2",
-      roles: [UserRole.MANAGER],
+      roles: [UserRole.REGULAR],
+    });
+
+    const userRegular = await createUser({
+      email: "regular@ram.mx",
+      name: "Francisco",
+      lastName: "Herrera",
+      password: "password",
+      id: "2",
+      roles: [UserRole.REGULAR],
     });
 
     await createUser({
@@ -220,37 +229,37 @@ export async function loadSeeds() {
 
     const group1 = await createGroup({
       name: "Noveles (Inducción)",
-      imageURL:
+      imageUrl:
         "https://media.licdn.com/dms/image/C5622AQF-LKP9Jny8dQ/feedshare-shrink_2048_1536/0/1656612233694?e=1684972800&v=beta&t=9MbCq9kv7-wpB45fnLCMbqChbeRAtIbf3HefLN65EPI",
     });
 
     const groupNovelWeek1 = await createGroup({
       name: "Noveles (Semana 1)",
-      imageURL:
+      imageUrl:
         "https://media.istockphoto.com/id/1420107347/photo/start-written-on-starting-line-on-of-running-track-of-sports-field.jpg?b=1&s=170667a&w=0&k=20&c=BWUlJ_xLHqczgTWek2hzHPD0IwFi3AvjB2DXPtoKw8I=",
     });
 
     const groupNovelWeek2 = await createGroup({
       name: "Noveles (Semana 2)",
-      imageURL:
+      imageUrl:
         "https://cdn.pixabay.com/photo/2017/11/27/07/02/time-2980690__340.jpg",
     });
 
     const groupNovelWeek3 = await createGroup({
       name: "Noveles (Semana 3)",
-      imageURL:
+      imageUrl:
         "https://media.istockphoto.com/id/1255703247/es/foto/una-mujer-haciendo-y-mostrando-el-signo-de-mano-n%C3%BAmero-tres.jpg?s=612x612&w=0&k=20&c=8c0VI8divs47gO0Ui8XMhSAdtJMgPeUZFLEV4VvUkFg=",
     });
 
     const groupNovelWeek4 = await createGroup({
       name: "Noveles (Semana 4)",
-      imageURL:
+      imageUrl:
         "https://corredordigital.mx/wp-content/uploads/2021/03/133101280_10164932258730650_5667144890225799800_o.png",
     });
 
     const groupNovelWeek5 = await createGroup({
       name: "Noveles (Semana 5)",
-      imageURL:
+      imageUrl:
         "https://media.istockphoto.com/id/1390194789/photo/hands-of-an-asian-woman-studying-in-a-coworking-space.jpg?b=1&s=170667a&w=0&k=20&c=IFGwTyl9w2cxmpzytoRC23DOzQVLLixtf_D0nXCwrgs=",
     });
 
@@ -265,7 +274,7 @@ export async function loadSeeds() {
     });
 
     await createLinkDelivery({
-      link: "https://www.youtube.com/watch?v=9XaYdCdwiWU",
+      link: "https://www.youtube.com",
       deliveryId: delivery.delivery.id,
       name: "Youtube",
     });
@@ -276,7 +285,19 @@ export async function loadSeeds() {
       name: "Google",
     });
 
-    await createDelivery({
+    await createLinkDelivery({
+      link: "https://www.youtube.com",
+      deliveryId: delivery.delivery.id,
+      name: "Youtube",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.google.com",
+      deliveryId: delivery.delivery.id,
+      name: "Google",
+    });
+
+    const delivery2 = await createDelivery({
       deliveryName: "Creación de YouCanBookMe",
       description:
         "Los agentes tendrán un calendario en donde podrán ver sus citas y espacios disponibles",
@@ -285,7 +306,19 @@ export async function loadSeeds() {
         "https://osbsoftware.com.br/upload/fabricante/you%20canbook%20me.png",
     });
 
-    await createDelivery({
+    await createLinkDelivery({
+      link: "https://www.youtube.com",
+      deliveryId: delivery2.delivery.id,
+      name: "Youtube",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.google.com",
+      deliveryId: delivery2.delivery.id,
+      name: "Google",
+    });
+
+    const delivery3 = await createDelivery({
       deliveryName: "Segumiento de coaching",
       description: "Semáforo para una gestión eficaz del tiempo",
       idGroup: group1.group.id,
@@ -293,12 +326,36 @@ export async function loadSeeds() {
         "https://efesalud.com/wp-content/uploads/2021/10/EPA-Frank-Rumpenhorst.jpg",
     });
 
-    await createDelivery({
+    await createLinkDelivery({
+      link: "https://www.youtube.com",
+      deliveryId: delivery3.delivery.id,
+      name: "Youtube",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.google.com",
+      deliveryId: delivery3.delivery.id,
+      name: "Google",
+    });
+
+    const delivery4 = await createDelivery({
       deliveryName: "Llenado de PP200",
       description: "El agente tiene 200 prospectos en tabla de prospectos",
       idGroup: groupNovelWeek4.group.id,
       imageUrl:
         "https://www.mailclick.com.mx/wp-content/uploads/seguimiento-de-prospecto-twt.png",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.youtube.com",
+      deliveryId: delivery4.delivery.id,
+      name: "Youtube",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.google.com",
+      deliveryId: delivery4.delivery.id,
+      name: "Google",
     });
 
     await createDelivery({
@@ -399,6 +456,11 @@ export async function loadSeeds() {
     });
 
     await addUserToGroup({
+      userId: userRegular.user.id,
+      groupId: group1.group.id,
+    });
+
+    await addUserToGroup({
       userId: user2.user.id,
       groupId: group1.group.id,
     });
@@ -408,6 +470,10 @@ export async function loadSeeds() {
       groupId: groupNovelWeek4.group.id,
     });
 
+    await addUserToGroup({
+      userId: userRegular.user.id,
+      groupId: groupNovelWeek4.group.id,
+    });
     await addUserToGroup({
       userId: regular.id,
       groupId: groupNovelWeek4.group.id,
@@ -501,89 +567,17 @@ export async function loadSeeds() {
       insuredCostumer: "Sofia Martínez",
       paidFee: "1000",
     });
-
-    await createSale({
-      policyNumber: "223456789",
-      assuranceTypeId: "3",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "320000",
-      contractingClient: "Karen Mejía",
-      periodicity: "Mensual",
-      id: "4",
-      userId: "2",
-      status: "Revisada",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Gabriel Torres",
-      paidFee: "40000",
-    });
-
-    await createSale({
-      policyNumber: "123456789",
-      assuranceTypeId: "4",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "470000",
-      contractingClient: "Isabella Morales",
-      periodicity: "Mensual",
-      id: "5",
-      userId: "1",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Alberto Ruíz",
-      paidFee: "7300",
-    });
-
-    await createSale({
-      policyNumber: "123456789",
-      assuranceTypeId: "2",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "56000",
-      contractingClient: "Olivia Herrera",
-      periodicity: "Mensual",
-      id: "6",
-      userId: "1",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Camila Herrera",
-      paidFee: "700",
-    });
-
-    await createSale({
-      policyNumber: "323456789",
-      assuranceTypeId: "1",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "470000",
-      contractingClient: "Renato Fernández",
-      periodicity: "Trimestral",
-      id: "7",
-      userId: "2",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Yamilé Huerta",
-      paidFee: "4500",
-    });
-
     await createSale({
       policyNumber: "423456789",
       assuranceTypeId: "2",
       paidDate: new Date("2021-01-01"),
-      yearlyFee: "95000",
-      contractingClient: "Roberto López",
+      yearlyFee: "134000",
+      contractingClient: "Enrique Bonilla",
       periodicity: "Anual",
-      id: "8",
+      id: "3",
       userId: "2",
       emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Brenda Ramírez",
-      paidFee: "16000",
-    });
-
-    await createSale({
-      policyNumber: "823456789",
-      assuranceTypeId: "4",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "28000",
-      contractingClient: "Miguel Barrera",
-      periodicity: "Anual",
-      id: "9",
-      userId: "2",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Eduardo López",
+      insuredCostumer: "Sofia Martínez",
       paidFee: "1000",
     });
 

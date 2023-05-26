@@ -41,17 +41,6 @@ export default function NewSale() {
     <Wrapper>
       <div className="flex flex-col items-center justify-center pt-8">
         <SaleForm
-          initialSell={{
-            policyNumber: "",
-            yearlyFee: "",
-            contractingClient: "",
-            status: "",
-            periodicity: "",
-            evidenceUrl: "",
-            insuredCostumer: "",
-            paidFee: "",
-            assuranceTypeId: "",
-          }}
           assuranceTypes={assuranceTypes}
           isEdit={false}
           handlePost={({ emissionDate, file, form, paidDate }) => {

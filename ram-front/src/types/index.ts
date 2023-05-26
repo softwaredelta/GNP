@@ -27,7 +27,7 @@ export interface ISell {
   id?: string;
   policyNumber: string;
   assuranceType?: IAssuranceType;
-  paidDate?: Date;
+  paidDate?: Date | string;
   yearlyFee: string;
   contractingClient: string;
   status: string;
@@ -62,7 +62,7 @@ export interface IUserDelivery {
 export interface IUser {
   id?: string;
   email: string;
-  imageURL?: string;
+  imageUrl?: string;
   name: string;
   lastName: string;
   origin?: string;
@@ -82,7 +82,7 @@ export interface IGroup {
   id?: string;
   name: string;
   description?: string;
-  imageURL?: string;
+  imageUrl?: string;
   progress?: number;
   groupUsers?: IUser[];
   deliveries?: IDelivery[];
@@ -108,4 +108,21 @@ export interface IMembers {
   lastName: string;
   state: string;
   imageUrl: string;
+}
+
+export interface ILinks {
+  id: string;
+  link: string;
+  name: string;
+}
+
+export interface IDeliveryDescription {
+  id: string;
+  deliveryName: string;
+  createdAt: Date;
+  updatedAt: Date;
+  description: string;
+  imageUrl: string;
+  groupId: string;
+  deliveryLinks: ILinks[];
 }

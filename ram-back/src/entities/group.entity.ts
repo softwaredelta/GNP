@@ -27,7 +27,7 @@ export class GroupEnt {
   description: string;
 
   @Column(URL_COLUMN)
-  imageURL!: string;
+  imageUrl!: string;
 
   @CreateDateColumn()
   createdAt!: Date;

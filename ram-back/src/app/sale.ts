@@ -2,7 +2,6 @@
 
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
-import { v4 } from "uuid";
 
 export enum SaleError {
   POLICY_NUM_DUPLICATED = "POLICY_NUM_DUPLICATED",
@@ -27,7 +26,6 @@ export async function createSale(params: {
   emissionDate: Date;
 }): Promise<{ sale: SellEnt; error?: SaleError; reason?: Error }> {
   const ds = await getDataSource();
-  const id = params.id || v4();
   // Static values not handled yet in frontend
   const status = params.status || "sin revisar";
   const evidenceUrl = params.evidenceUrl || "https://picsum.photos/400";
@@ -36,7 +34,6 @@ export async function createSale(params: {
     .save(
       SellEnt,
       ds.manager.create(SellEnt, {
-        id,
         policyNumber: params.policyNumber,
         assuranceTypeId: params.assuranceTypeId,
         paidDate: params.paidDate,

@@ -10,6 +10,7 @@ import {
   deleteDelivery,
   getDeliveryGroup,
   getUserDeliveriesbyGroup,
+  getUserDelivery,
   setDeliveryToAllUsers,
   updateDelivery,
   updateDeliveryStatus,
@@ -315,5 +316,29 @@ deliveriesRouter.get(
     }
 
     res.json(delivery);
+  },
+);
+
+deliveriesRouter.get(
+  "/my-delivery/:deliveryId",
+  authMiddleware(),
+  async (req, res) => {
+    if (!req.user) {
+      res.status(401).json({ message: "No user" });
+      return;
+    }
+    const userId = req.user.id;
+    const deliveryId = req.params.groupId;
+
+    const { userDelivery, error } = await getUserDelivery({
+      userId,
+      deliveryId,
+    });
+
+    if (error) {
+      throw new Error(error);
+    }
+
+    res.json(userDelivery);
   },
 );
