@@ -27,22 +27,6 @@ const userParameters = j.object({
   CUA: j.string().optional().allow("").default(""),
 });
 
-const memberParametersSchema = j.object({
-  name: j.string().required(),
-  lastName: j.string().required(),
-  imageUrl: j.string().optional(),
-  UserRole: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).optional(),
-  isActive: j.boolean().required(),
-});
-
-const memberParametersSchema = j.object({
-  name: j.string().required(),
-  lastName: j.string().required(),
-  imageUrl: j.string().optional(),
-  UserRole: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).optional(),
-  isActive: j.boolean().required(),
-});
-
 const userParametersMiddleware: RequestHandler = (req, res, next) => {
   const { error } = userParameters.validate(req.body);
   if (error) {
