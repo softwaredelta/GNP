@@ -31,9 +31,6 @@ export default function DeliveryGroup(): JSX.Element {
     method: "GET",
   });
 
-  console.log("User delivery");
-  console.log(userDelivery);
-
   const { response: responsePost, callback } = useAxios<{
     dateDelivery: string;
     deliveryId: string;
