@@ -46,14 +46,14 @@ export default function Examples() {
     {
       id: "1",
       email: "user-tets@tec.mx",
-      imageURL:
+      imageUrl:
         "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
       name: "Juan",
       lastName: "Velasco",
     },
     {
       email: "user-tets@tec.mx",
-      imageURL:
+      imageUrl:
         "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
       id: "2",
       name: "Juan",
@@ -61,7 +61,7 @@ export default function Examples() {
     },
     {
       email: "user-tets@tec.mx",
-      imageURL:
+      imageUrl:
         "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
       id: "3",
       name: "Pedro",

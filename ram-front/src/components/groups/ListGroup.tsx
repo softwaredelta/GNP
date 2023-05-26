@@ -26,7 +26,7 @@ export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
           >
             <Card
               color={index % 2 ? "orange" : "blue"}
-              image={fileUrl(group.imageURL as string)}
+              image={fileUrl(group.imageUrl as string)}
             >
               <CardInfoGroup
                 color={index % 2 ? "orange" : "blue"}

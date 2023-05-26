@@ -262,7 +262,7 @@ describe("controller:user", () => {
         password: "password",
         name: "Example Person",
         lastName: "2",
-        imageURL: "https://example.com/image.png",
+        imageUrl: "https://example.com/image.png",
       });
     });
 
@@ -291,6 +291,64 @@ describe("controller:user", () => {
 
       expect(users).toHaveLength(4);
       expect(users[0]).toHaveProperty("name", "Manager");
+      expect(users[1]).toHaveProperty("name", "Regular");
+    });
+  });
+
+  describe("get all members", () => {
+    beforeEach(async () => {
+      await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+        imageUrl: "https://example.com/image.png",
+      });
+      await createUser({
+        email: "test-u-2@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "2",
+        imageUrl: "https://example2.com/image.png",
+      });
+      await createUser({
+        email: "test-u-3@delta.tec.mx",
+        password: "password",
+        name: "Example Person",
+        lastName: "1",
+        imageUrl: "https://example3.com/image.png",
+      });
+    });
+
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .get("/user/members")
+        .query({ query: "use" })
+        .send()
+        .expect(401);
+    });
+
+    it("return members information correctly", async () => {
+      await userSeeds();
+      const managerAccessToken = await authenticateUser({
+        email: "manager@delta.tec.mx",
+        password: "password",
+      }).then(({ auth }) => auth.accessToken);
+
+      const users = await request(app)
+        .get("/user/members")
+        .query({ query: "use" })
+        .set("Authorization", `Bearer ${managerAccessToken}`)
+        .send()
+        .expect(200)
+        .then((res) => res.body);
+
+      expect(users[0]).toHaveProperty("name", "Manager");
+      expect(users[0]).toHaveProperty("lastName", "User");
+      expect(users[0]).toHaveProperty(
+        "imageUrl",
+        "https://example.com/image.png",
+      );
       expect(users[1]).toHaveProperty("name", "Regular");
     });
   });

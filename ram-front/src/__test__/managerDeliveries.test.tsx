@@ -20,7 +20,7 @@ describe("Manager deliveries card", () => {
                   email: "test-email-1",
                   name: "test-name-1",
                   lastName: "test-lastname-1",
-                  imageURL: "https://picsum.photos/100",
+                  imageUrl: "https://picsum.photos/100",
                 },
                 status: "Sin enviar",
                 delivery: {
@@ -62,7 +62,7 @@ describe("Manager deliveries card", () => {
                   email: "test-email-2",
                   name: "test-name-2",
                   lastName: "test-lastname-2",
-                  imageURL: "https://picsum.photos/100",
+                  imageUrl: "https://picsum.photos/100",
                 },
                 status: "Aceptado",
                 delivery: {

@@ -19,7 +19,7 @@ export function ManagerListGroups({ groups }: Props) {
         groups.map((group) => (
           <div className=" p-10" key={group.id}>
             <div onClick={() => navigate(`/group/${group.id}`)}>
-              <Card color="blue" image={fileUrl(group.imageURL as string)}>
+              <Card color="blue" image={fileUrl(group.imageUrl as string)}>
                 <CardInfoNumMembers
                   color="blue"
                   nameGroup={group.name}
