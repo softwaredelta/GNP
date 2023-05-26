@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { Table } from "flowbite-react";
 import SalesRow from "./SalesRow";
-import { FaPlus } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { ISell } from "../../types";
 import { Column, usePagination, useTable } from "react-table";
 import Pagination from "../generics/Pagination";
+import SalesFilters from "./SalesFilters";
+import { NumericFormat } from "react-number-format";
 
 export interface IListSalesProps {
   sales: ISell[];
@@ -55,6 +55,7 @@ const columns: Column<ISell>[] = [
 ];
 
 export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
+  const [data, setData] = useState<ISell[]>(sales);
   const {
     page,
     pageOptions,
@@ -66,7 +67,7 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
   } = useTable(
     {
       columns,
-      data: sales,
+      data,
       initialState: { pageIndex: 0, pageSize: 10 },
     },
     usePagination,
@@ -82,15 +83,8 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
 
   return (
     <div data-testid="sales-table" className="grid-row grid w-full px-8 pb-4">
-      <div className="row">
-        <Link to="/new-sale">
-          <div className="float-right w-44 pb-8 pr-8">
-            <button className="btn-primary flex items-center justify-center">
-              <span className="font-semibold"> Agregar </span>
-              <FaPlus size={15} className="ml-2" />
-            </button>
-          </div>
-        </Link>
+      <div>
+        <SalesFilters sales={sales} setSales={setData} />
       </div>
       <Table className="row" hoverable={true}>
         <Table.Head>
@@ -117,6 +111,44 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
               />
             );
           })}
+          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              {"Total"}
+            </Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>
+              <NumericFormat
+                value={data
+                  .map((sale) => sale.yearlyFee)
+                  .reduce((a, b) => Number(a) + Number(b), 0)}
+                displayType={"text"}
+                thousandSeparator={true}
+                decimalScale={2}
+                decimalSeparator="."
+                fixedDecimalScale={true}
+                prefix={"$"}
+              />
+            </Table.Cell>
+            <Table.Cell>
+              <NumericFormat
+                value={data
+                  .map((sale) => sale.paidFee)
+                  .reduce((a, b) => Number(a) + Number(b), 0)}
+                displayType={"text"}
+                thousandSeparator={true}
+                decimalScale={2}
+                decimalSeparator="."
+                fixedDecimalScale={true}
+                prefix={"$"}
+              />{" "}
+            </Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+          </Table.Row>
         </Table.Body>
       </Table>
       <Pagination
