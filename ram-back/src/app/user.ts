@@ -45,7 +45,7 @@ export async function createUser(params: {
   mobile?: number;
   id?: string;
   roles?: UserRole[];
-  imageURL?: string;
+  imageUrl?: string;
   urlPP200?: string;
   CUA?: string;
 }): Promise<{ user: UserEnt; error?: UserError }> {
@@ -72,7 +72,7 @@ export async function createUser(params: {
         lastName: params.lastName,
         password: hashedPassword,
         rolesString: buildRoleString(roles),
-        imageURL: params.imageURL ?? "https://picsum.photos/200",
+        imageUrl: params.imageUrl ?? "https://picsum.photos/200",
       }),
     )
     .then((user) => {
@@ -233,7 +233,7 @@ const userToUserRol = (user: UserEnt): UserRol => {
     name: user.name,
     lastName: user.lastName,
     isActive: user.isActive,
-    imageUrl: user.imageURL,
+    imageUrl: user.imageUrl,
     rol: user.roles[0],
   };
 };
@@ -259,5 +259,6 @@ export async function getAllUserRol(): Promise<{
   if (!users) {
     return { error: UserError.USER_NOT_FOUND, userRol: [] as UserRol[] };
   }
+
   return { userRol: users.map((user) => userToUserRol(user)) };
 }

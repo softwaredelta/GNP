@@ -199,12 +199,17 @@ describe("app:user", () => {
         password: "password",
         name: "Test User",
         lastName: "1",
+        imageUrl: "https://example.com/image.png",
       });
       const { userRol } = await getAllUserRol();
       expect(userRol).toHaveLength(2);
       expect(userRol[1]).toHaveProperty("name", "Test User");
       expect(userRol[1]).toHaveProperty("lastName", "1");
       expect(userRol[1]).toHaveProperty("rol", "regular");
+      expect(userRol[1]).toHaveProperty(
+        "imageUrl",
+        "https://example.com/image.png",
+      );
     });
 
     it("return empty if doesn't exist users", async () => {

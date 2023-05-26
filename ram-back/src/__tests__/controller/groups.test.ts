@@ -158,8 +158,8 @@ describe("controller:groups", () => {
           .field("description", "description")
           .expect(201)
           .then((res) => {
-            expect(res.body.imageURL).toMatch(/\d+\.png/);
-            expect(res.body.imageURL).not.toMatch(/http/);
+            expect(res.body.imageUrl).toMatch(/\d+\.png/);
+            expect(res.body.imageUrl).not.toMatch(/http/);
           });
       });
     });
@@ -288,8 +288,8 @@ describe("controller:groups", () => {
           .field("description", "description")
           .expect(200)
           .then((res) => {
-            expect(res.body.imageURL).toMatch(/\d+\.png/);
-            expect(res.body.imageURL).not.toMatch(/http/);
+            expect(res.body.imageUrl).toMatch(/\d+\.png/);
+            expect(res.body.imageUrl).not.toMatch(/http/);
           });
       });
     });

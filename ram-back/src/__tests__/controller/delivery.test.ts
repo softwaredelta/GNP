@@ -45,7 +45,7 @@ beforeEach(async () => {
   });
   const { group } = await createGroup({
     name: "test-group",
-    imageURL: "https://picsum.photos/200",
+    imageUrl: "https://picsum.photos/200",
   });
 
   await addUserToGroup({
@@ -167,7 +167,7 @@ describe("get all register of a delivery ", () => {
 
         expect(res.body.userDeliveries[0].user).toHaveProperty("id");
         expect(res.body.userDeliveries[0].user).toHaveProperty("email");
-        expect(res.body.userDeliveries[0].user).toHaveProperty("imageURL");
+        expect(res.body.userDeliveries[0].user).toHaveProperty("imageUrl");
       });
   });
 });
