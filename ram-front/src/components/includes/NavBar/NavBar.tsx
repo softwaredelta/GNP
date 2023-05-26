@@ -124,14 +124,6 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
             >
               Prospectos
             </Navbar.Link>
-            <Navbar.Link
-              as={Link}
-              to="/goals"
-              className="mx-8 text-lg text-gray-900"
-              active={isActive(/^\/goal/i)}
-            >
-              Metas
-            </Navbar.Link>
           </>
         ) : (
           <>

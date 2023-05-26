@@ -3,6 +3,7 @@
 import { Table } from "flowbite-react";
 import { AiOutlineEye } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export interface MembersCardProps {
   id: string;
@@ -57,14 +58,13 @@ export default function RowMember({
             />
           </div>
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <FaEdit
-              onClick={() => {
-                alert("Ver perfil");
-              }}
-              color="gray"
-              size={20}
-              className="hover:scale-105 hover:fill-blue-700"
-            />
+            <Link to={`/profile/${id}`}>
+              <FaEdit
+                color="gray"
+                size={20}
+                className="hover:scale-105 hover:fill-blue-700"
+              />
+            </Link>
           </div>
         </div>
       </Table.Cell>

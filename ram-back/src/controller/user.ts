@@ -226,3 +226,12 @@ authRouter.get(
     res.json(userRol);
   },
 );
+
+authRouter.get("/:id", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const user = await db.manager.findOne(UserEnt, {
+    where: { id: req.params.id },
+  });
+
+  res.json(user);
+});
