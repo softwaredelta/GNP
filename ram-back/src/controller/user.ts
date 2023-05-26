@@ -1,8 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { RequestHandler, Router } from "express";
-import { getDataSource } from "../arch/db-client";
-import { UserEnt, UserRole } from "../entities/user.entity";
+import * as j from "joi";
 import { TokenType, generateToken, verifyToken } from "../app/auth";
 import {
   authenticateUser,
@@ -10,7 +9,8 @@ import {
   fuzzySearchUsers,
   validateUserToken,
 } from "../app/user";
-import * as j from "joi";
+import { getDataSource } from "../arch/db-client";
+import { UserEnt, UserRole } from "../entities/user.entity";
 
 export const authRouter = Router();
 
@@ -23,6 +23,7 @@ const userParameters = j.object({
   mobile: j.number().optional(),
   role: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).optional(),
   urlPP200: j.string().optional().allow("").default(""),
+  CUA: j.string().optional().allow("").default(""),
 });
 
 const userParametersMiddleware: RequestHandler = (req, res, next) => {
@@ -92,7 +93,7 @@ authRouter.post(
   userParametersMiddleware,
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
   async (req, res) => {
-    const { email, password, name, lastName, role, mobile, urlPP200 } =
+    const { email, password, name, lastName, role, mobile, urlPP200, CUA } =
       req.body;
     // TODO: validation
 
@@ -102,6 +103,7 @@ authRouter.post(
       name,
       lastName,
       urlPP200,
+      CUA,
       roles: [role],
       mobile,
     });
@@ -141,7 +143,7 @@ authRouter.get("/all-agents", async (req, res) => {
     where: {
       rolesString: UserRole.REGULAR,
     },
-    select: ["id", "email", "name", "lastName"],
+    select: ["id", "email", "name", "lastName", "CUA"],
   });
   res.json(sales);
 });

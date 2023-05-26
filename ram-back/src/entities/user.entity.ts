@@ -23,6 +23,7 @@ import {
   PASSWORD_COLUMN,
   REQUIRED_STRING_COLUMN,
   TELEPHONE_COLUMN,
+  UNIQUE_AGENT_KEY_COLUMN,
   URL_COLUMN,
   USERNAME_COLUMN,
   IS_ACTIVE_COLUMN,
@@ -75,6 +76,9 @@ export class UserEnt {
 
   // @ManyToMany(() => RoleEnt, (role) => role.users)
   // roles: RoleEnt[];
+
+  @Column(UNIQUE_AGENT_KEY_COLUMN)
+  CUA?: string;
 
   @ManyToOne(() => UserLevelEnt, (level) => level.users, { eager: true })
   level: UserLevelEnt;

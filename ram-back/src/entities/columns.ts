@@ -22,6 +22,13 @@ export const LAST_NAME_COLUMN: ColumnOptions = {
   nullable: false,
 };
 
+export const UNIQUE_AGENT_KEY_COLUMN: ColumnOptions = {
+  name: "unique_agent_key",
+  type: "varchar",
+  length: 255,
+  nullable: false,
+};
+
 export const UNIQUE_NAME_COLUMN: ColumnOptions = {
   name: "name",
   type: "varchar",
