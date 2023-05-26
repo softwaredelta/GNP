@@ -209,7 +209,7 @@ authRouter.get(
     }
     next();
   },
-  async (req, res, next) => {
+  async (req, res) => {
     const users = await fuzzySearchUsers({
       query: req.query.query as string,
     });

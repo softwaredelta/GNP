@@ -5,7 +5,6 @@ import { app } from "../../controller";
 import { authenticateUser, createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { adminSeeds, userSeeds } from "../../seeds";
-import exp from "constants";
 
 describe("controller:user", () => {
   let adminAccessToken: string;
@@ -336,7 +335,7 @@ describe("controller:user", () => {
         password: "password",
       }).then(({ auth }) => auth.accessToken);
 
-      const users = await request(app)
+      return request(app)
         .get("/user/members")
         .query({ query: "use" })
         .set("Authorization", `Bearer ${managerAccessToken}`)
