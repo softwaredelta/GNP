@@ -97,6 +97,15 @@ export async function loadSeeds() {
       roles: [UserRole.MANAGER],
     });
 
+    const userRegular = await createUser({
+      email: "regular@ram.mx",
+      name: "Francisco",
+      lastName: "Herrera",
+      password: "password",
+      id: "2",
+      roles: [UserRole.REGULAR],
+    });
+
     await createUser({
       email: "lauradiaz@ram.mx",
       name: "Laura",
@@ -265,7 +274,7 @@ export async function loadSeeds() {
     });
 
     await createLinkDelivery({
-      link: "https://www.youtube.com/watch?v=9XaYdCdwiWU",
+      link: "https://www.youtube.com",
       deliveryId: delivery.delivery.id,
       name: "Youtube",
     });
@@ -276,7 +285,19 @@ export async function loadSeeds() {
       name: "Google",
     });
 
-    await createDelivery({
+    await createLinkDelivery({
+      link: "https://www.youtube.com",
+      deliveryId: delivery.delivery.id,
+      name: "Youtube",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.google.com",
+      deliveryId: delivery.delivery.id,
+      name: "Google",
+    });
+
+    const delivery2 = await createDelivery({
       deliveryName: "Creación de YouCanBookMe",
       description:
         "Los agentes tendrán un calendario en donde podrán ver sus citas y espacios disponibles",
@@ -285,7 +306,19 @@ export async function loadSeeds() {
         "https://osbsoftware.com.br/upload/fabricante/you%20canbook%20me.png",
     });
 
-    await createDelivery({
+    await createLinkDelivery({
+      link: "https://www.youtube.com",
+      deliveryId: delivery2.delivery.id,
+      name: "Youtube",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.google.com",
+      deliveryId: delivery2.delivery.id,
+      name: "Google",
+    });
+
+    const delivery3 = await createDelivery({
       deliveryName: "Segumiento de coaching",
       description: "Semáforo para una gestión eficaz del tiempo",
       idGroup: group1.group.id,
@@ -293,12 +326,36 @@ export async function loadSeeds() {
         "https://efesalud.com/wp-content/uploads/2021/10/EPA-Frank-Rumpenhorst.jpg",
     });
 
-    await createDelivery({
+    await createLinkDelivery({
+      link: "https://www.youtube.com",
+      deliveryId: delivery3.delivery.id,
+      name: "Youtube",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.google.com",
+      deliveryId: delivery3.delivery.id,
+      name: "Google",
+    });
+
+    const delivery4 = await createDelivery({
       deliveryName: "Llenado de PP200",
       description: "El agente tiene 200 prospectos en tabla de prospectos",
       idGroup: groupNovelWeek4.group.id,
       imageUrl:
         "https://www.mailclick.com.mx/wp-content/uploads/seguimiento-de-prospecto-twt.png",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.youtube.com",
+      deliveryId: delivery4.delivery.id,
+      name: "Youtube",
+    });
+
+    await createLinkDelivery({
+      link: "https://www.google.com",
+      deliveryId: delivery4.delivery.id,
+      name: "Google",
     });
 
     await createDelivery({
@@ -399,6 +456,11 @@ export async function loadSeeds() {
     });
 
     await addUserToGroup({
+      userId: userRegular.user.id,
+      groupId: group1.group.id,
+    });
+
+    await addUserToGroup({
       userId: user2.user.id,
       groupId: group1.group.id,
     });
@@ -408,6 +470,10 @@ export async function loadSeeds() {
       groupId: groupNovelWeek4.group.id,
     });
 
+    await addUserToGroup({
+      userId: userRegular.user.id,
+      groupId: groupNovelWeek4.group.id,
+    });
     await addUserToGroup({
       userId: regular.id,
       groupId: groupNovelWeek4.group.id,
