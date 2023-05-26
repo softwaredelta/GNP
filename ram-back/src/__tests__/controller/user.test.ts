@@ -5,6 +5,7 @@ import { app } from "../../controller";
 import { authenticateUser, createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { adminSeeds, userSeeds } from "../../seeds";
+import exp from "constants";
 
 describe("controller:user", () => {
   let adminAccessToken: string;
@@ -342,9 +343,6 @@ describe("controller:user", () => {
         .send()
         .expect(200)
         .then((res) => res.body);
-      
-      
-
     });
   });
 });
