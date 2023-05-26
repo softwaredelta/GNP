@@ -29,14 +29,14 @@ describe("Prospect Funnel", () => {
                 email: "test",
                 name: "test",
                 lastName: "test",
-                imageURL: "",
+                imageUrl: "",
               },
               {
                 id: "2",
                 email: "test2",
                 name: "test2",
                 lastName: "test2",
-                imageURL: "",
+                imageUrl: "",
               },
             ]}
           ></FunnelTable>

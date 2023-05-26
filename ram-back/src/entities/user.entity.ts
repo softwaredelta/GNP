@@ -116,7 +116,7 @@ export class UserEnt {
   updatedAt!: Date;
 
   @Column(URL_COLUMN)
-  imageURL?: string;
+  imageUrl?: string;
 
   @Column(IS_ACTIVE_COLUMN)
   isActive!: boolean;
