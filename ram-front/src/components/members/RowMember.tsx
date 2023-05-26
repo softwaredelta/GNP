@@ -9,7 +9,7 @@ export interface MembersCardProps {
   rol: string;
   name: string;
   lastName: string;
-  state: string;
+  state: number;
   imageUrl: string;
 }
 
@@ -40,7 +40,7 @@ export default function RowMember({
         </div>
       </Table.Cell>
       <Table.Cell align="center">{rol}</Table.Cell>
-      <Table.Cell align="center">{state}</Table.Cell>
+      <Table.Cell align="center">{state ? "Activo" : "Inactivo"}</Table.Cell>
       <Table.Cell align="center">
         <div className=" grid grid-cols-2 ">
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
