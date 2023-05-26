@@ -9,8 +9,10 @@ import { useUrlFile } from "../../lib/files";
 interface Props {
   deliveries: IDelivery[];
 }
+
 export function ManagerListGroupDeliveries({ deliveries }: Props) {
   const urlFile = useUrlFile();
+
   return (
     <>
       {deliveries.length ? (

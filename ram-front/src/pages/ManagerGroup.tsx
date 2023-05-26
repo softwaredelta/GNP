@@ -20,7 +20,6 @@ export default function GroupDeliveries() {
       <Wrapper title={group?.name}>
         <>
           <div className="flex items-center justify-end">
-            {/* <p className="title">{group?.name}</p> */}
             <div className="m-6">
               <Link to={`/group/edit/${group?.id}`}>
                 <button className="btn-primary flex-grid flex cursor-pointer pt-1 transition-all ease-in-out hover:scale-110">

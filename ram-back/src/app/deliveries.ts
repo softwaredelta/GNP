@@ -284,8 +284,7 @@ export async function deleteDelivery(params: {
   return {};
 }
 
-// Obtain the deliveries from UserDeliveries where the groupId is the same as the params.groupId
-// and the userId is the same as the params.userId
+// Obtain a delivery from a group where the deliveryId is the same as the params.deliveryId
 export async function getDeliveryGroup(params: {
   deliveryId: string;
 }): Promise<{
@@ -314,33 +313,6 @@ export async function getDeliveryGroup(params: {
       error: DeliveryError.UNHANDLED,
       errorReason: e as Error,
       delivery: {} as DeliveryEnt,
-    };
-  }
-}
-
-// Obtain the deliveries from UserDeliveries where the groupId is the same as the params.groupId
-// and the userId is the same as the params.userId
-export async function getUserDelivery(params: {
-  userId: string;
-  deliveryId: string;
-}): Promise<{
-  userDelivery: UserDeliveryEnt;
-  error?: DeliveryError;
-  errorReason?: Error;
-}> {
-  const ds = await getDataSource();
-
-  try {
-    const userDelivery = await ds.manager.findOne(UserDeliveryEnt, {
-      where: { userId: params.userId, deliveryId: params.deliveryId },
-    });
-
-    return { userDelivery: userDelivery as UserDeliveryEnt };
-  } catch (e) {
-    return {
-      error: DeliveryError.UNHANDLED,
-      errorReason: e as Error,
-      userDelivery: {} as UserDeliveryEnt,
     };
   }
 }
