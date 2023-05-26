@@ -106,7 +106,7 @@ export interface IMembers {
   rol: string;
   name: string;
   lastName: string;
-  state: string;
+  isActive: number;
   imageUrl: string;
 }
 
