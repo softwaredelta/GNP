@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export interface ISaleFormProps {
   assuranceTypes: IAssuranceType[];
-  initialSell: ISell;
+  initialSell?: ISell;
   isEdit: boolean;
   handlePost: (data: {
     form: ISell;
@@ -28,11 +28,11 @@ export default function SaleForm({
     yearlyFee: "",
     contractingClient: "",
     status: "",
-    periodicity: "",
+    periodicity: "Mensual",
     evidenceUrl: "",
     insuredCostumer: "",
     paidFee: "",
-    assuranceTypeId: "",
+    assuranceTypeId: assuranceTypes[0].id,
   },
   isEdit = false,
   handlePost,
@@ -77,14 +77,6 @@ export default function SaleForm({
               type="text"
               {...register("policyNumber", {
                 required: "El campo poliza es requerido",
-                minLength: {
-                  value: 9,
-                  message: "El número de póliza debe tener al menos 9 dígitos",
-                },
-                maxLength: {
-                  value: 9,
-                  message: "El número de póliza debe tener máximo 9 dígitos",
-                },
               })}
             />
             <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
@@ -150,14 +142,6 @@ export default function SaleForm({
               placeholder="Ingrese la prima anual"
               {...register("yearlyFee", {
                 required: "El campo de prima anual es requerido",
-                minLength: {
-                  value: 2,
-                  message: "El monto debe tener al menos 2 dígitos",
-                },
-                maxLength: {
-                  value: 7,
-                  message: "El monto debe tener máximo 7 dígitos",
-                },
                 min: {
                   value: 1,
                   message: "El monto debe ser mayor a 0",
@@ -169,6 +153,7 @@ export default function SaleForm({
             </label>
             <select
               className="input-primary w-full"
+              defaultValue={initialSell.periodicity}
               {...register("periodicity", {
                 required: "El campo periodicidad es requerido",
               })}
@@ -202,14 +187,6 @@ export default function SaleForm({
               placeholder="Ingrese la prima pagada"
               {...register("paidFee", {
                 required: "El campo prima pagada es requerido",
-                minLength: {
-                  value: 2,
-                  message: "El monto debe tener al menos 2 dígitos",
-                },
-                maxLength: {
-                  value: 7,
-                  message: "El monto debe tener máximo 7 dígitos",
-                },
                 min: {
                   value: 1,
                   message: "El monto debe ser mayor a 0",
@@ -221,6 +198,7 @@ export default function SaleForm({
             </label>
             <select
               className="input-primary w-full"
+              defaultValue={assuranceTypes[0].id}
               {...register("assuranceTypeId", {
                 required: "El campo tipo de seguro es requerido",
               })}

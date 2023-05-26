@@ -1,97 +1,104 @@
 // (c) Delta Software 2023, rights reserved.
-
-import { useState, ChangeEvent } from "react";
+import { useEffect } from "react";
+import useSearch from "../../hooks/useSearch";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FaFilter } from "react-icons/fa";
-import { IAssuranceType } from "../../types";
+import { ISell } from "../../types";
+import { FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import useFilterDate from "../../hooks/useFilterDate";
 
 export interface IListAssuranceTypesProps {
-  assuranceTypes: IAssuranceType[];
+  sales: ISell[];
+  setSales: (sales: ISell[]) => void;
 }
 
-export const SalesFilters = ({ assuranceTypes }: IListAssuranceTypesProps) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [policyNum, setPolicyNum] = useState<string>("");
-  const [client, setClient] = useState<string>("");
-  const [assuranceType, setAssuranceType] = useState(assuranceTypes[0].id);
+export default function SalesFilters({
+  sales,
+  setSales,
+}: IListAssuranceTypesProps) {
+  const { data: dataName, handleSearch } = useSearch<ISell>({
+    info: sales,
+    key: "contractingClient",
+  });
+  const {
+    data: dataPolicy,
+    handleSearch: handleSearchPolicy,
+    updateInfo: updateInfoPolicy,
+  } = useSearch<ISell>({
+    info: dataName,
+    key: "policyNumber",
+  });
 
-  const handleAssuranceTypeChange = (event: any) => {
-    setAssuranceType(event.target.value);
-  };
+  const { data, dateEnd, dateInit, setDateEnd, setDateInit, updateInfo } =
+    useFilterDate<ISell>({
+      info: dataPolicy,
+      key: "paidDate",
+      initialDate: dataPolicy.map((item) => item.paidDate).sort()[0] as string,
+      endDate: dataPolicy
+        .map((item) => item.paidDate)
+        .sort()
+        .reverse()[0] as string,
+    });
+
+  useEffect(() => {
+    setSales(data);
+  }, [data]);
+  useEffect(() => {
+    updateInfoPolicy(dataName);
+  }, [dataName]);
+  useEffect(() => {
+    updateInfo(dataPolicy);
+  }, [dataPolicy]);
 
   return (
-    <div data-testid="Filters" className="grid grid-cols-5 gap-8">
-      <div className="col-span-1">
-        <label className="ml-3 mb-1 block font-semibold text-gray-700">
-          Póliza
-        </label>
+    <div className="grid w-full grid-cols-4 gap-5  py-5">
+      <div className="">
+        <label className="label-primary">Nombre del cliente</label>
+        <input type="text" onChange={handleSearch} className="input-primary" />
+      </div>
+      <div className="">
+        <label className="label-primary">Poliza</label>
         <input
-          className="input-primary w-full"
           type="text"
-          placeholder="Ingrese el número de póliza"
-          value={policyNum}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setPolicyNum(e.target.value)
-          }
+          onChange={handleSearchPolicy}
+          className="input-primary"
         />
       </div>
-      <div className="col-span-1">
-        <label className="ml-3 mb-1 block font-semibold text-gray-700">
-          Nombre de cliente
-        </label>
-        <input
-          className="input-primary w-full"
-          type="text"
-          placeholder="Ingrese el número de póliza"
-          value={client}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setClient(e.target.value)
-          }
-        />
-      </div>
-      <div className="col-span-1">
-        <label className="ml-3 mb-1 block font-semibold text-gray-700">
-          Tipo de seguro
-        </label>
-        <select
-          className="input-primary w-full"
-          value={assuranceType}
-          onChange={handleAssuranceTypeChange}
-        >
-          {assuranceTypes.map((at, index) => (
-            <option key={index} value={at.id}>
-              {at.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="col-span-1">
-        <label
-          htmlFor="datePicker"
-          className="ml-3 mb-1 block font-semibold text-gray-700"
-        >
-          Fecha
-        </label>
+      <div>
+        <label className="label-primary">Fecha de Pago Inicio</label>
         <DatePicker
-          selected={selectedDate}
+          selected={dateInit}
           name="datePicker"
           id="datePicker"
-          onChange={(date: Date | null) => setSelectedDate(date)}
+          onChange={(date: Date | null) => setDateInit(date)}
           dateFormat="dd/MM/yyyy"
-          className="input-primary w-full"
+          className="input-primary"
           placeholderText="dd/mm/aaaa"
           required
         />
       </div>
-      <div className="col-span-1 flex items-center justify-center">
-        <div className="w-40 pb-2">
-          <button className="btn-primary flex items-center justify-center">
-            <span className="font-semibold"> Filtrar </span>
-            <FaFilter size={15} className="ml-2" />
+      <div>
+        <label className="label-primary">Fecha de Pago Fin</label>
+        <DatePicker
+          selected={dateEnd}
+          name="datePicker"
+          id="datePicker"
+          onChange={(date: Date | null) => setDateEnd(date)}
+          dateFormat="dd/MM/yyyy"
+          className="input-primary"
+          placeholderText="dd/mm/aaaa"
+          required
+        />
+      </div>
+      <div className="col-span-2 col-start-2 mx-auto w-1/2 place-self-center pb-5">
+        <Link to="/new-sale">
+          <button className="btn-primary flex h-full items-center justify-center">
+            <span className="font-semibold"> Agregar </span>
+            <FaPlus size={15} className="ml-2" />
           </button>
-        </div>
+        </Link>
       </div>
     </div>
   );
-};
+}

@@ -27,7 +27,7 @@ export interface ISell {
   id?: string;
   policyNumber: string;
   assuranceType?: IAssuranceType;
-  paidDate?: Date;
+  paidDate?: Date | string;
   yearlyFee: string;
   contractingClient: string;
   status: string;

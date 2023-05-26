@@ -94,7 +94,7 @@ export async function loadSeeds() {
       lastName: "Herrera",
       password: "password",
       id: "2",
-      roles: [UserRole.MANAGER],
+      roles: [UserRole.REGULAR],
     });
 
     const userRegular = await createUser({
@@ -567,89 +567,17 @@ export async function loadSeeds() {
       insuredCostumer: "Sofia Martínez",
       paidFee: "1000",
     });
-
-    await createSale({
-      policyNumber: "223456789",
-      assuranceTypeId: "3",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "320000",
-      contractingClient: "Karen Mejía",
-      periodicity: "Mensual",
-      id: "4",
-      userId: "2",
-      status: "Revisada",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Gabriel Torres",
-      paidFee: "40000",
-    });
-
-    await createSale({
-      policyNumber: "123456789",
-      assuranceTypeId: "4",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "470000",
-      contractingClient: "Isabella Morales",
-      periodicity: "Mensual",
-      id: "5",
-      userId: "1",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Alberto Ruíz",
-      paidFee: "7300",
-    });
-
-    await createSale({
-      policyNumber: "123456789",
-      assuranceTypeId: "2",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "56000",
-      contractingClient: "Olivia Herrera",
-      periodicity: "Mensual",
-      id: "6",
-      userId: "1",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Camila Herrera",
-      paidFee: "700",
-    });
-
-    await createSale({
-      policyNumber: "323456789",
-      assuranceTypeId: "1",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "470000",
-      contractingClient: "Renato Fernández",
-      periodicity: "Trimestral",
-      id: "7",
-      userId: "2",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Yamilé Huerta",
-      paidFee: "4500",
-    });
-
     await createSale({
       policyNumber: "423456789",
       assuranceTypeId: "2",
       paidDate: new Date("2021-01-01"),
-      yearlyFee: "95000",
-      contractingClient: "Roberto López",
+      yearlyFee: "134000",
+      contractingClient: "Enrique Bonilla",
       periodicity: "Anual",
-      id: "8",
+      id: "3",
       userId: "2",
       emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Brenda Ramírez",
-      paidFee: "16000",
-    });
-
-    await createSale({
-      policyNumber: "823456789",
-      assuranceTypeId: "4",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "28000",
-      contractingClient: "Miguel Barrera",
-      periodicity: "Anual",
-      id: "9",
-      userId: "2",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Eduardo López",
+      insuredCostumer: "Sofia Martínez",
       paidFee: "1000",
     });
 
