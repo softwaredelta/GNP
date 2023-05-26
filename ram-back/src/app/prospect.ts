@@ -106,3 +106,38 @@ export async function getProspectStatus(params: { userId: string }): Promise<{
     };
   }
 }
+
+export async function getProspectsByAgent(params: {
+  agentId: string;
+}): Promise<{
+  prospects: ProspectEnt[];
+  error?: ProspectError;
+  reason?: Error;
+}> {
+  const ds = await getDataSource();
+
+  try {
+    const prospects = await ds.manager.find(ProspectEnt, {
+      relations: {
+        prospectStatus: {
+          status: true,
+        },
+      },
+      where: { userId: params.agentId },
+      order: { prospectStatus: { updatedStatusDate: "DESC" } },
+    });
+
+    return {
+      prospects: prospects.map((p) => ({
+        ...p,
+        prospectStatus: [p.prospectStatus[0]],
+      })),
+    };
+  } catch (e) {
+    return {
+      error: ProspectError.PROSPECT_ERROR,
+      reason: e as Error,
+      prospects: [],
+    };
+  }
+}

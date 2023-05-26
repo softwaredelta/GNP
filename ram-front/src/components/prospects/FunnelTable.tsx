@@ -8,9 +8,10 @@ import useSearch from "../../hooks/useSearch";
 
 interface Props {
   agents: IUser[];
+  handleOnClick?: (id: string) => void;
 }
 
-const FunnelProspect = ({ agents }: Props) => {
+const FunnelProspect = ({ agents, handleOnClick }: Props) => {
   const { handleSearch, data } = useSearch({
     info: agents.map((agent) => ({
       ...agent,
@@ -57,6 +58,7 @@ const FunnelProspect = ({ agents }: Props) => {
                   name={agent.name}
                   lastName={agent.lastName}
                   link={agent.urlPP200 as string}
+                  handleOnClick={handleOnClick}
                 />
               );
             })}

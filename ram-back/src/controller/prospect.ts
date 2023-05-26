@@ -4,7 +4,11 @@ import { RequestHandler, Router } from "express";
 export const prospectRouter = Router();
 import * as j from "joi";
 import { authMiddleware } from "./user";
-import { createProspect, getProspectStatus } from "../app/prospect";
+import {
+  createProspect,
+  getProspectStatus,
+  getProspectsByAgent,
+} from "../app/prospect";
 import { getDataSource } from "../arch/db-client";
 import { ProspectEnt } from "../entities/prospect.entity";
 
@@ -84,4 +88,17 @@ prospectRouter.get("/count-prospects-new/:id", async (req, res) => {
     },
   });
   res.json(agents);
+});
+
+prospectRouter.get("/get-agentprospect/:id", async (req, res) => {
+  const agentId = req.params.id;
+
+  const { prospects, error, reason } = await getProspectsByAgent({ agentId });
+
+  if (error) {
+    res.status(400).json({ message: error, reason });
+    return;
+  }
+
+  res.status(200).json({ prospects });
 });

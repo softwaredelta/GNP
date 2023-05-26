@@ -56,6 +56,7 @@ export default function Prospects() {
         text: "El prospecto se ha agregado correctamente",
         icon: "success",
       });
+      toggleModal();
     }
 
     if (prospectError) {

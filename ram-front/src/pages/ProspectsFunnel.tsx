@@ -4,11 +4,17 @@ import Wrapper from "../containers/Wrapper";
 import FunnelProspect from "../components/prospects/FunnelTable";
 import { IUser } from "../types";
 import useAxios from "../hooks/useAxios";
+import { useNavigate } from "react-router-dom";
 export default function FunnelProspects() {
   const { response: agents } = useAxios<IUser[]>({
     url: `user/all-agents`,
     method: "GET",
   });
+  const navigate = useNavigate();
+
+  const handleOnClick = (id: string) => {
+    navigate(`/agent-prospects/${id}`);
+  };
 
   return (
     <Wrapper>
@@ -19,7 +25,9 @@ export default function FunnelProspects() {
           </h1>
         </div>
         <div className="mt-8 flex flex-col items-center justify-center">
-          {agents && <FunnelProspect agents={agents} />}
+          {agents && (
+            <FunnelProspect agents={agents} handleOnClick={handleOnClick} />
+          )}
         </div>
       </div>
     </Wrapper>
