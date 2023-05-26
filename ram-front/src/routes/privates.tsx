@@ -30,6 +30,7 @@ const PlaceholderHome = lazy(
 const EditGroup = lazy(async () => import("../pages/EditGroup"));
 const AddUser = lazy(async () => import("../pages/AddUser"));
 const Members = lazy(async () => import("../pages/Members"));
+const DeliveryGroup = lazy(async () => import("../pages/DeliveryGroup"));
 
 export const CommonUserRoutes: IRoute[] = [
   {
@@ -86,6 +87,10 @@ export const RegularUserRoutes: IRoute[] = [
   {
     path: "/modify-sale/:id",
     Component: () => <ModifySale />,
+  },
+  {
+    path: "/group-delivery/:id",
+    Component: () => <DeliveryGroup />,
   },
 ];
 
