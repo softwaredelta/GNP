@@ -1,19 +1,78 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState, useEffect } from "react";
-
+import { useState, useEffect } from "react";
 import { Table } from "flowbite-react";
 import SalesRow from "./SalesRow";
-import { FaPlus } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { ISell } from "../../types";
+import { Column, usePagination, useTable } from "react-table";
+import Pagination from "../generics/Pagination";
+import SalesFilters from "./SalesFilters";
+import { NumericFormat } from "react-number-format";
 
 export interface IListSalesProps {
   sales: ISell[];
   onDeleted: () => void;
 }
 
+const columns: Column<ISell>[] = [
+  {
+    Header: "Nombre del Cliente",
+    accessor: "user",
+  },
+  {
+    Header: "Póliza",
+    accessor: "policyNumber",
+  },
+  {
+    Header: "Prima Anual",
+    accessor: "yearlyFee",
+  },
+  {
+    Header: "Prima Pagada",
+    accessor: "paidFee",
+  },
+  {
+    Header: "Periocidad",
+    accessor: "periodicity",
+  },
+
+  {
+    Header: "Tipo de Seguro",
+    accessor: "assuranceType",
+  },
+  {
+    Header: "Fecha Emisión",
+    accessor: "emissionDate",
+  },
+  {
+    Header: "Fecha Pago",
+    accessor: "paidDate",
+  },
+  {
+    Header: "Estado",
+    accessor: "status",
+  },
+];
+
 export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
+  const [data, setData] = useState<ISell[]>(sales);
+  const {
+    page,
+    pageOptions,
+    canPreviousPage,
+    canNextPage,
+    previousPage,
+    nextPage,
+    state,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0, pageSize: 10 },
+    },
+    usePagination,
+  );
+
   const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
   useEffect(() => {
     if (shouldUpdate) {
@@ -24,45 +83,82 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
 
   return (
     <div data-testid="sales-table" className="grid-row grid w-full px-8 pb-4">
-      <div className="row">
-        <Link to="/new-sale">
-          <div className="float-right w-44 pb-8 pr-8">
-            <button className="btn-primary flex items-center justify-center">
-              <span className="font-semibold"> Agregar </span>
-              <FaPlus size={15} className="ml-2" />
-            </button>
-          </div>
-        </Link>
+      <div>
+        <SalesFilters sales={sales} setSales={setData} />
       </div>
       <Table className="row" hoverable={true}>
         <Table.Head>
-          <Table.HeadCell>Nombre del Cliente</Table.HeadCell>
-          <Table.HeadCell>Póliza</Table.HeadCell>
-          <Table.HeadCell>Prima Anual</Table.HeadCell>
-          <Table.HeadCell>Prima Pagada</Table.HeadCell>
-          <Table.HeadCell>Periodicidad</Table.HeadCell>
-          <Table.HeadCell>Tipo de Seguro</Table.HeadCell>
-          <Table.HeadCell>Fecha Emisión</Table.HeadCell>
-          <Table.HeadCell>Fecha Pago</Table.HeadCell>
-          <Table.HeadCell>Estado</Table.HeadCell>
+          {columns.map((column) => {
+            return (
+              <Table.HeadCell key={column.accessor as string}>
+                {column.Header as string}
+              </Table.HeadCell>
+            );
+          })}
           <Table.HeadCell>
             <span className="sr-only">Edit</span>
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {sales.map((sale) => {
+          {page.map((sale) => {
             return (
               <SalesRow
                 key={sale.id}
-                sale={sale}
+                sale={sale.original}
                 onDeleted={() => {
                   setShouldUpdate(true);
                 }}
               />
             );
           })}
+          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              {"Total"}
+            </Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>
+              <NumericFormat
+                value={data
+                  .map((sale) => sale.yearlyFee)
+                  .reduce((a, b) => Number(a) + Number(b), 0)}
+                displayType={"text"}
+                thousandSeparator={true}
+                decimalScale={2}
+                decimalSeparator="."
+                fixedDecimalScale={true}
+                prefix={"$"}
+              />
+            </Table.Cell>
+            <Table.Cell>
+              <NumericFormat
+                value={data
+                  .map((sale) => sale.paidFee)
+                  .reduce((a, b) => Number(a) + Number(b), 0)}
+                displayType={"text"}
+                thousandSeparator={true}
+                decimalScale={2}
+                decimalSeparator="."
+                fixedDecimalScale={true}
+                prefix={"$"}
+              />{" "}
+            </Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+            <Table.Cell>{""}</Table.Cell>
+          </Table.Row>
         </Table.Body>
       </Table>
+      <Pagination
+        lastPage={pageOptions.length}
+        pageCurrent={state.pageIndex + 1}
+        canNextPage={canNextPage}
+        canPreviousPage={canPreviousPage}
+        nextPage={nextPage}
+        previousPage={previousPage}
+      />
     </div>
   );
 };

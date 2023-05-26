@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 export interface IUseSearchReturn<T> {
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   data: Array<T>;
+  updateInfo: (newInfo: Array<T>) => void;
 }
 
 export interface IUseSearchProps<T> {
@@ -23,6 +24,10 @@ export default function useSearch<T>({
     setSearch(event.target.value);
   };
 
+  const updateInfo = (newInfo: Array<T>) => {
+    setData(newInfo);
+  };
+
   useEffect(() => {
     const filteredData = info.filter((item: any) =>
       item[key].toLowerCase().includes(search.toLowerCase()),
@@ -30,5 +35,5 @@ export default function useSearch<T>({
     setData(filteredData);
   }, [search]);
 
-  return { handleSearch, data };
+  return { handleSearch, data, updateInfo };
 }
