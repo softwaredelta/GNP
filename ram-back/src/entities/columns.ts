@@ -125,3 +125,9 @@ export const IS_ACTIVE_COLUMN: ColumnOptions = {
   nullable: false,
   default: true,
 };
+
+export const BOOLEAN_COLUMN: ColumnOptions = {
+  type: "int",
+  nullable: true,
+  default: true,
+};

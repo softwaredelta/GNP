@@ -32,6 +32,9 @@ const EditGroup = lazy(async () => import("../pages/EditGroup"));
 const AddUser = lazy(async () => import("../pages/AddUser"));
 const Members = lazy(async () => import("../pages/Members"));
 const DeliveryGroup = lazy(async () => import("../pages/DeliveryGroup"));
+const ManagerDeliveryGroup = lazy(
+  async () => import("../pages/ManagerDeliveryGroup"),
+);
 const Profile = lazy(async () => import("../pages/Profile"));
 
 export const CommonUserRoutes: IRoute[] = [
@@ -140,6 +143,10 @@ export const ManagerUserRoutes: IRoute[] = [
   {
     path: "/prospect-history/:id",
     Component: () => <ProspectsHistory />,
+  },
+  {
+    path: "/group-delivery/:id",
+    Component: () => <ManagerDeliveryGroup />,
   },
   {
     path: "/profile/:id",

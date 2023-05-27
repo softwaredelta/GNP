@@ -10,6 +10,7 @@ import { apiBase$ } from "../../lib/api/api-base";
 import { useUrlFile } from "../../lib/files";
 import { IDelivery } from "../../types";
 import ModalDeliveryFormUpdate from "../forms/ModalDeliveryFormUpdate";
+import { useNavigate } from "react-router-dom";
 
 export interface IListSalesProps {
   delivery: IDelivery;
@@ -26,6 +27,7 @@ export const SearchDeliveryRow = ({
   const apiBase = useRecoilValue(apiBase$);
   const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
     useModal();
+  const navigate = useNavigate();
 
   const deleteDelivery = useCallback(async () => {
     const result = await Swal.fire({
@@ -80,7 +82,7 @@ export const SearchDeliveryRow = ({
         <Table.Cell>
           <button
             className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={toggleModalDeliveryForm}
+            onClick={() => navigate(`/group-delivery/${delivery.id}`)}
           >
             <FiEdit
               color="gray"

@@ -47,6 +47,7 @@ export interface IDelivery {
   imageUrl: string;
   userDeliveries?: IUserDelivery[];
   group?: IGroup;
+  hasDelivery?: string;
 }
 
 export interface IUserDelivery {
@@ -124,5 +125,6 @@ export interface IDeliveryDescription {
   description: string;
   imageUrl: string;
   groupId: string;
+  hasDelivery: string;
   deliveryLinks: ILink[];
 }
