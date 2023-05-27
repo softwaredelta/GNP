@@ -33,6 +33,7 @@ import { OriginEnt } from "./origin.entity";
 import { SellEnt } from "./sell.entity";
 import { StateEnt } from "./state.entity";
 import { UserLevelEnt } from "./user-level.entity";
+import { UserLinkEnt } from "./user-link.entity";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -106,6 +107,9 @@ export class UserEnt {
 
   @OneToMany(() => GroupUserEnt, (groupUser) => groupUser.user)
   groupUsers: GroupUserEnt[];
+
+  @OneToMany(() => UserLinkEnt, (userLink) => userLink.user)
+  userLinks: UserLinkEnt[];
 
   @Column(TELEPHONE_COLUMN)
   phone!: number;
