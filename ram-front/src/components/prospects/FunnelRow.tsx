@@ -10,9 +10,16 @@ type Props = {
   link: string;
   name: string;
   lastName?: string;
+  handleOnClick?: (id: string) => void;
 };
 
-export default function FunnelRow({ id, name, link, lastName }: Props) {
+export default function FunnelRow({
+  id,
+  name,
+  link,
+  lastName,
+  handleOnClick,
+}: Props) {
   const { response: prospects } = useAxios<number>({
     url: `prospect/count-prospects-new/${id}`,
     method: "GET",
@@ -21,8 +28,9 @@ export default function FunnelRow({ id, name, link, lastName }: Props) {
   const propspectsCount = prospects ? prospects : 0;
   return (
     <Table.Row
+      onClick={() => handleOnClick && handleOnClick(id)}
       key={id}
-      className="bg-white dark:border-gray-700 dark:bg-gray-800"
+      className="transitions-all bg-white ease-in-out hover:cursor-pointer hover:bg-gray-300  dark:border-gray-700 dark:bg-gray-800 "
     >
       <Table.Cell
         className="whitespace-nowrap font-medium text-gray-900 dark:text-white"

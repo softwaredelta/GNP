@@ -102,7 +102,7 @@ export async function loadSeeds() {
       name: "Francisco",
       lastName: "Herrera",
       password: "password",
-      id: "2",
+      id: "3",
       roles: [UserRole.REGULAR],
     });
 
@@ -111,7 +111,7 @@ export async function loadSeeds() {
       name: "Laura",
       lastName: "Díaz",
       password: "password",
-      id: "3",
+      id: "4",
       roles: [UserRole.MANAGER],
     });
 
@@ -120,7 +120,7 @@ export async function loadSeeds() {
       name: "Daniela",
       lastName: "Gómez",
       password: "password",
-      id: "4",
+      id: "5",
       roles: [UserRole.MANAGER],
     });
 
@@ -129,7 +129,7 @@ export async function loadSeeds() {
       name: "Armando",
       lastName: "Camargo",
       password: "password",
-      id: "5",
+      id: "6",
       roles: [UserRole.MANAGER],
     });
 
@@ -138,7 +138,7 @@ export async function loadSeeds() {
       name: "Karla",
       lastName: "Díaz",
       password: "password",
-      id: "6",
+      id: "7",
       roles: [UserRole.MANAGER],
     });
 
@@ -147,7 +147,7 @@ export async function loadSeeds() {
       name: "Martha",
       lastName: "Arriola",
       password: "password",
-      id: "7",
+      id: "8",
       roles: [UserRole.MANAGER],
     });
 
@@ -156,7 +156,7 @@ export async function loadSeeds() {
       name: "Olivia",
       lastName: "Hernández",
       password: "password",
-      id: "8",
+      id: "9",
       roles: [UserRole.MANAGER],
     });
 
@@ -165,7 +165,7 @@ export async function loadSeeds() {
       name: "Carlos",
       lastName: "Armijo",
       password: "password",
-      id: "9",
+      id: "10",
       roles: [UserRole.MANAGER],
     });
 
@@ -174,7 +174,7 @@ export async function loadSeeds() {
       name: "Miriam",
       lastName: "Contreras",
       password: "password",
-      id: "10",
+      id: "11",
       roles: [UserRole.MANAGER],
     });
 
@@ -183,7 +183,7 @@ export async function loadSeeds() {
       name: "Itzel",
       lastName: "Díaz",
       password: "password",
-      id: "11",
+      id: "12",
       roles: [UserRole.MANAGER],
     });
 
@@ -192,7 +192,7 @@ export async function loadSeeds() {
       name: "Carmen",
       lastName: "Barbosa",
       password: "password",
-      id: "12",
+      id: "13",
       roles: [UserRole.MANAGER],
     });
 
@@ -201,25 +201,7 @@ export async function loadSeeds() {
       name: "Yarely",
       lastName: "García",
       password: "password",
-      id: "13",
-      roles: [UserRole.MANAGER],
-    });
-
-    await createUser({
-      email: "gustavoperez@ram.mx",
-      name: "Gustavo",
-      lastName: "Pérez",
-      password: "password",
       id: "14",
-      roles: [UserRole.MANAGER],
-    });
-
-    await createUser({
-      email: "claudiafernandez@ram.mx",
-      name: "Claudia",
-      lastName: "Fernández",
-      password: "password",
-      id: "15",
       roles: [UserRole.MANAGER],
     });
 

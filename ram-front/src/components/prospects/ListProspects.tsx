@@ -1,11 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
 
 import useSearch from "../../hooks/useSearch";
-import { IProspects } from "../../types";
+import { IProspect } from "../../types";
 import RowProspect from "../prospects/RowProspect";
 
 export interface IListProspectsProps {
-  prospects: IProspects[];
+  prospects: IProspect[];
 }
 
 export default function ListProspects({
@@ -34,7 +34,7 @@ export default function ListProspects({
           />
         </label>
       </div>
-      {data.map((prospect: IProspects) => {
+      {data.map((prospect: IProspect) => {
         return (
           <RowProspect
             key={prospect.id}
