@@ -8,7 +8,7 @@ export default function DeliveryDescription({
   description,
 }: DeliveryDescriptionProps): JSX.Element {
   return (
-    <div>
+    <div role="description">
       <h1 className="pt-8 text-2xl font-semibold text-gnp-orange-500">
         Descripción
       </h1>
