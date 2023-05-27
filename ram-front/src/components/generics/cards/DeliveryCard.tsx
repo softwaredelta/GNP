@@ -15,7 +15,7 @@ export interface DeliveryCardProps {
   deliveryId: string;
   nameDelivery: string;
   image: string;
-  hasDelivery: string;
+  hasDelivery?: string;
   color: Colors;
   status: DeliveryStatus;
   fileUrl?: string;
