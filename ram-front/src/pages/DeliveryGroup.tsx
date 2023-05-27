@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 import LinkDelivery from "../components/deliverables/LinkDelivery";
 import Wrapper from "../containers/Wrapper";
-import { FileInput } from "flowbite-react";
+import { FileInput, Toast } from "flowbite-react";
 import { useState, useEffect } from "react";
 import { TbSend } from "react-icons/tb";
 import DeliveryDescription from "../components/deliverables/DeliveryDescription";
@@ -80,75 +80,94 @@ export default function DeliveryGroup(): JSX.Element {
 
   return (
     <Wrapper title={delivery?.deliveryName || ""}>
-      <div className="grid w-full grid-cols-7 gap-12 px-14">
-        <div className="col-span-4 px-8">
-          <DeliveryDescription description={delivery?.description || ""} />
-          <h1 className="pt-8 text-2xl font-semibold  text-gnp-orange-500">
-            Links
-          </h1>
-          <div className="px-12 text-lg">
-            <LinkDelivery links={delivery?.deliveryLinks ?? []} />
-          </div>
-        </div>
-        <div className="col-span-3 flex w-4/5 flex-col items-center pl-4">
-          <div className="mx-auto flex w-4/5 items-center justify-center">
-            <ImageURL url={delivery?.imageUrl || "/default.jfif"} />
-          </div>
-          {delivery?.imageUrl &&
-            (userDelivery?.status === "Enviado" ||
-              userDelivery?.status === "Aceptado") && (
-              <div className="pt-4">
-                <button
-                  className="btn-primary flex h-12 items-center justify-center pt-10"
-                  onClick={() => openFileInNewTab(userDelivery?.fileUrl || "")}
-                >
-                  <span className="text-sm font-semibold">
-                    {" "}
-                    Ver documento enviado{" "}
-                  </span>
-                  <FiEye className="ml-2" color="white" size={20} />
-                </button>
+      <>
+        <div className="flex justify-end pb-2">
+          {delivery?.hasDelivery && delivery?.hasDelivery === "false" && (
+            <Toast>
+              <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gnp-blue-300 text-cyan-500 dark:bg-cyan-800 dark:text-cyan-200"></div>
+              <div className="ml-3 text-sm">
+                El entregable no requiere evidencia
               </div>
-            )}
-          {(userDelivery?.status === "Sin enviar" ||
-            userDelivery?.status === "Rechazado") && (
-            <>
-              <FileInput
-                id="file"
-                className="w-full pt-6 text-xs"
-                onChange={(e: any) => {
-                  if (e.target.files) {
-                    setFile(e.target.files[0]);
-                  } else setFile(null);
-                }}
-                helperText="Sube la evidencia de la entrega"
-              />
-              <div className="flex w-1/2 items-center justify-center pt-4">
-                <button
-                  className="btn-primary flex h-8 items-center justify-center pt-10"
-                  onClick={handleSubmit(
-                    () => {
-                      uploadFile();
-                    },
-                    (errorsFields) => {
-                      Swal.fire({
-                        title: "Error!",
-                        text: `Ocurrió un error al enviar la evidencia.\n
-                ${Object.values(errorsFields).map((e) => e.message + " ")}`,
-                        icon: "error",
-                        confirmButtonText: "OK",
-                      });
-                    },
-                  )}
-                >
-                  <span className="text-lg font-semibold"> Enviar </span>
-                  <TbSend size={20} className="ml-2" />
-                </button>
-              </div>
-            </>
+              <Toast.Toggle />
+            </Toast>
           )}
         </div>
-      </div>
+        <div className="grid w-full grid-cols-7 gap-12 px-14">
+          <div className="col-span-4 px-8">
+            <DeliveryDescription description={delivery?.description || ""} />
+            <h1 className="pt-8 text-2xl font-semibold  text-gnp-orange-500">
+              Links
+            </h1>
+            <div className="px-12 text-lg">
+              <LinkDelivery links={delivery?.deliveryLinks ?? []} />
+            </div>
+          </div>
+          <div className="col-span-3 flex w-4/5 flex-col items-center pl-4">
+            <div className="mx-auto flex w-4/5 items-center justify-center">
+              <ImageURL url={delivery?.imageUrl || "/default.jfif"} />
+            </div>
+            {delivery?.hasDelivery && delivery?.hasDelivery === "true" && (
+              <>
+                {delivery?.imageUrl &&
+                  (userDelivery?.status === "Enviado" ||
+                    userDelivery?.status === "Aceptado") && (
+                    <div className="pt-4">
+                      <button
+                        className="btn-primary flex h-12 items-center justify-center pt-10"
+                        onClick={() =>
+                          openFileInNewTab(userDelivery?.fileUrl || "")
+                        }
+                      >
+                        <span className="text-sm font-semibold">
+                          {" "}
+                          Ver documento enviado{" "}
+                        </span>
+                        <FiEye className="ml-2" color="white" size={20} />
+                      </button>
+                    </div>
+                  )}
+                {(userDelivery?.status === "Sin enviar" ||
+                  userDelivery?.status === "Rechazado") && (
+                  <>
+                    <FileInput
+                      id="file"
+                      className="w-full pt-6 text-xs"
+                      onChange={(e: any) => {
+                        if (e.target.files) {
+                          setFile(e.target.files[0]);
+                        } else setFile(null);
+                      }}
+                      helperText="Sube la evidencia de la entrega"
+                    />
+                    <div className="flex w-1/2 items-center justify-center pt-4">
+                      <button
+                        className="btn-primary flex h-8 items-center justify-center pt-10"
+                        onClick={handleSubmit(
+                          () => {
+                            uploadFile();
+                          },
+                          (errorsFields) => {
+                            Swal.fire({
+                              title: "Error!",
+                              text: `Ocurrió un error al enviar la evidencia.\n
+                ${Object.values(errorsFields).map((e) => e.message + " ")}`,
+                              icon: "error",
+                              confirmButtonText: "OK",
+                            });
+                          },
+                        )}
+                      >
+                        <span className="text-lg font-semibold"> Enviar </span>
+                        <TbSend size={20} className="ml-2" />
+                      </button>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </>
     </Wrapper>
   );
 }

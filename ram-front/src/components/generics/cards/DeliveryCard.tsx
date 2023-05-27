@@ -15,7 +15,7 @@ export interface DeliveryCardProps {
   deliveryId: string;
   nameDelivery: string;
   image: string;
-  onFileSubmit: (id: string) => void;
+  hasDelivery: string;
   color: Colors;
   status: DeliveryStatus;
   fileUrl?: string;
@@ -33,6 +33,7 @@ export default function DeliveryCard({
   color,
   status,
   fileUrl,
+  hasDelivery,
 }: DeliveryCardProps): JSX.Element {
   const colorOptions = {
     blue: "bg-gnp-blue-500",
@@ -62,8 +63,12 @@ export default function DeliveryCard({
       </div>
       <div className="grid grid-cols-3 border-l-2 border-l-gray-300">
         <div className="col-span-2 flex items-center justify-center text-center font-semibold">
-          <div className="mr-4">{iconList[status]}</div>
-          {status}
+          {hasDelivery === "true" && (
+            <div className="col-span-2 flex items-center justify-center text-center font-semibold">
+              <div className="mr-4">{iconList[status]}</div>
+              {status}
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-center text-center">
           <button className="pl-10">

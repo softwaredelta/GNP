@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 import { Table } from "flowbite-react";
 import { useCallback } from "react";
-import { FiEdit, FiTrash2, FiEye } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { useRecoilValue } from "recoil";
 import Swal from "sweetalert2";
 import useModal from "../../hooks/useModal";
@@ -83,16 +83,6 @@ export const SearchDeliveryRow = ({
           <button
             className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
             onClick={() => navigate(`/group-delivery/${delivery.id}`)}
-          >
-            <FiEye
-              color="gray"
-              size={20}
-              className="hover:stroke-gnp-blue-300"
-            />
-          </button>
-          <button
-            className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={toggleModalDeliveryForm}
           >
             <FiEdit
               color="gray"
