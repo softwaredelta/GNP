@@ -10,11 +10,18 @@ import {
 } from "../entities/user.entity";
 import { comparePassword, hashPassword } from "../utils/hash";
 import { TokenType, generateToken, verifyToken } from "./auth";
+import { UserLinkEnt } from "../entities/user-link.entity";
 
 export enum UserError {
   USER_EXISTS = "USER_EXISTS",
   USER_NOT_FOUND = "USER_NOT_FOUND",
   USER_TOKEN_INVALID = "USER_TOKEN_INVALID",
+  UNHANDLED_ERROR = "UNHANDLED_ERROR",
+}
+
+export enum UserLinkError {
+  NOT_FOUND = "LINK_NOT_FOUND",
+  EXISTS = "LINK_EXISTS",
 }
 
 export interface UserRol {
@@ -261,4 +268,154 @@ export async function getAllUserRol(): Promise<{
   }
 
   return { userRol: users.map((user) => userToUserRol(user)) };
+}
+
+export async function getAgentById(agentId: string): Promise<string> {
+  const ds = await getDataSource();
+
+  try {
+    const agent = await ds.manager.find(UserEnt, {
+      select: ["name", "lastName"],
+      where: {
+        id: agentId,
+      },
+    });
+
+    if (agent.length === 0 || !agent) {
+      return "";
+    }
+    return `${agent[0].name} ${agent[0].lastName ? agent[0].lastName : ""}`;
+  } catch (err) {
+    return "";
+  }
+}
+
+export async function updateUser(params: {
+  email?: string;
+  name?: string;
+  lastName?: string;
+  mobile?: number;
+  id: string;
+  imageUrl?: string;
+  urlPP200?: string;
+  CUA?: string;
+}): Promise<{ user: UserEnt; error?: UserError; errorReason?: Error }> {
+  const ds = await getDataSource();
+  const existingUser = await ds.manager.findOne(UserEnt, {
+    where: { id: params.id },
+  });
+  if (!existingUser) {
+    return {
+      error: UserError.USER_NOT_FOUND,
+      user: {} as UserEnt,
+      errorReason: new Error("User not found"),
+    };
+  }
+  return ds.manager
+    .update(UserEnt, params.id, {
+      email: params.email,
+      name: params.name,
+      lastName: params.lastName,
+      mobile: params.mobile,
+      imageUrl: params.imageUrl,
+      urlPP200: params.urlPP200,
+      CUA: params.CUA,
+    })
+    .then(async () => {
+      const user = await ds.manager.findOneOrFail(UserEnt, {
+        where: { id: params.id },
+      });
+      if (user) return { user };
+      else
+        return {
+          user: {} as UserEnt,
+          error: UserError.USER_NOT_FOUND,
+          errorReason: new Error("User not found"),
+        };
+    })
+    .catch((e) => ({
+      error: UserError.UNHANDLED_ERROR as UserError,
+      errorReason: e as Error,
+      user: {} as UserEnt,
+    }));
+}
+
+export async function resetPassword(params: {
+  email: string;
+  password: string;
+}): Promise<{ error?: UserError }> {
+  const ds = await getDataSource();
+  const user = await ds.manager.findOne(UserEnt, {
+    where: {
+      email: params.email,
+    },
+    select: ["id", "email", "password"],
+  });
+  if (!user) {
+    return { error: UserError.USER_NOT_FOUND };
+  }
+  const newPassword = params.password;
+  const hashedPassword = await hashPassword(newPassword);
+  await ds.manager.update(UserEnt, user.id, { password: hashedPassword });
+  return {};
+}
+
+export async function addLink(params: {
+  id: string;
+  link: string;
+  name: string;
+}): Promise<{ link: UserLinkEnt; error?: UserError }> {
+  const ds = await getDataSource();
+  const user = await ds.manager.findOne(UserEnt, {
+    where: {
+      id: params.id,
+    },
+  });
+  if (!user) {
+    return { link: {} as UserLinkEnt, error: UserError.USER_NOT_FOUND };
+  }
+  return ds.manager
+    .save(
+      UserLinkEnt,
+      ds.manager.create(UserLinkEnt, {
+        user: user,
+        name: params.name,
+        link: params.link,
+        userId: params.id,
+      }),
+    )
+    .then((link) => {
+      return { link };
+    })
+    .catch(() => {
+      return { error: UserError.USER_EXISTS, link: {} as UserLinkEnt };
+    });
+}
+
+export async function updateLink(params: {
+  id: string;
+  link?: string;
+  name?: string;
+}): Promise<{ link: UserLinkEnt; error?: UserLinkError }> {
+  const ds = await getDataSource();
+  const existingLink = await ds.manager.findOne(UserLinkEnt, {
+    where: {
+      id: params.id,
+    },
+  });
+  if (!existingLink) {
+    return { link: {} as UserLinkEnt, error: UserLinkError.NOT_FOUND };
+  }
+  return ds.manager
+    .update(UserLinkEnt, params.id, { name: params.name, link: params.link })
+    .then(async () => {
+      const link = await ds.manager.findOneOrFail(UserLinkEnt, {
+        where: { id: params.id },
+      });
+      if (link) return { link };
+      else return { link: {} as UserLinkEnt, error: UserLinkError.NOT_FOUND };
+    })
+    .catch(() => {
+      return { error: UserLinkError.EXISTS, link: {} as UserLinkEnt };
+    });
 }

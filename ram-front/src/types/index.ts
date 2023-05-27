@@ -90,7 +90,7 @@ export interface IGroup {
   userDeliveries?: IUserDelivery[];
 }
 
-export interface IProspects {
+export interface IProspect {
   id: string;
   name: string;
   firstSurname: string;
@@ -107,7 +107,7 @@ export interface IMembers {
   rol: string;
   name: string;
   lastName: string;
-  state: string;
+  isActive: number;
   imageUrl: string;
 }
 

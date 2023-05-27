@@ -9,9 +9,17 @@ import {
   fuzzySearchUsers,
   validateUserToken,
   getAllUserRol,
+  updateUser,
+  resetPassword,
+  addLink,
+  updateLink,
 } from "../app/user";
 import { getDataSource } from "../arch/db-client";
 import { UserEnt, UserRole } from "../entities/user.entity";
+import multer from "multer";
+import { uploadFile } from "../app/file";
+
+const upload = multer();
 
 export const authRouter = Router();
 
@@ -26,6 +34,20 @@ const userParameters = j.object({
   urlPP200: j.string().optional().allow("").default(""),
   CUA: j.string().optional().allow("").default(""),
 });
+
+const resetPasswordParameters = j.object({
+  email: j.string().email().required(),
+  password: j.string().min(8).required(),
+});
+
+const resetPasswordParametersMiddleware: RequestHandler = (req, res, next) => {
+  const { error } = resetPasswordParameters.validate(req.body);
+  if (error) {
+    res.status(400).json({ message: "BAD_DATA", reason: error });
+    return;
+  }
+  next();
+};
 
 const userParametersMiddleware: RequestHandler = (req, res, next) => {
   const { error } = userParameters.validate(req.body);
@@ -226,3 +248,116 @@ authRouter.get(
     res.json(userRol);
   },
 );
+
+authRouter.get("/:id", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const user = await db.manager.findOne(UserEnt, {
+    where: { id: req.params.id },
+    relations: ["userLinks"],
+  });
+
+  res.json(user);
+});
+
+authRouter.post(
+  "/update/:id",
+  authMiddleware(),
+  upload.single("file"),
+  async (req, res) => {
+    const { email, name, lastName, mobile, urlPP200, CUA } = req.body;
+    const { user } = req;
+    if (!user) {
+      res.status(401).json({ message: "NO_USER" });
+      return;
+    }
+
+    const { file } = req;
+
+    if (!file && !req.body.imageUrl) {
+      res.status(400).json({ message: "NO_FILE_UPLOAD" });
+      return;
+    }
+
+    const imageUrl = !!file ? await uploadFile({ file }) : req.body.imageUrl;
+
+    const { user: modifiedUser, error } = await updateUser({
+      id: req.params.id,
+      email,
+      name,
+      lastName,
+      mobile,
+      urlPP200,
+      CUA,
+      imageUrl: imageUrl,
+    });
+
+    if (error) {
+      res.status(500).json({ message: error });
+      return;
+    }
+
+    res.json({ modifiedUser });
+  },
+);
+
+authRouter.post(
+  "/reset-password",
+  authMiddleware(),
+  resetPasswordParametersMiddleware,
+  async (req, res) => {
+    const { email, password } = req.body;
+    const { error } = await resetPassword({ email, password });
+    if (error) {
+      return res.status(500).json({ message: error });
+    }
+    return res.json({ message: "Password reset successfully" });
+  },
+);
+
+authRouter.post("/add-link/:id", authMiddleware(), async (req, res) => {
+  const { link, name } = req.body;
+
+  const { user } = req;
+
+  if (!user) {
+    res.status(401).json({ message: "NO_USER" });
+    return;
+  }
+
+  const { link: newLink, error } = await addLink({
+    id: req.params.id,
+    link,
+    name,
+  });
+
+  if (error) {
+    res.status(500).json({ message: error });
+    return;
+  }
+
+  res.json({ newLink });
+});
+
+authRouter.post("/edit-link/:id", authMiddleware(), async (req, res) => {
+  const { link, name } = req.body;
+
+  const { user } = req;
+
+  if (!user) {
+    res.status(401).json({ message: "NO_USER" });
+    return;
+  }
+
+  const { link: uLink, error } = await updateLink({
+    id: req.params.id,
+    link,
+    name,
+  });
+
+  if (error) {
+    res.status(500).json({ message: error });
+    return;
+  }
+
+  res.json({ uLink });
+});

@@ -29,7 +29,7 @@ export default function RowProspect({
     Retirado: "bg-red-500",
   };
   return (
-    <div className="mx-auto mt-5 grid w-10/12 grid-cols-1 overflow-hidden rounded bg-gnp-white  shadow-lg transition-all ease-in-out hover:scale-110 ">
+    <div className="mx-auto mt-5 grid w-10/12 grid-cols-1 overflow-hidden rounded bg-gnp-white  shadow-lg transition-all ease-in-out hover:scale-105 ">
       <div className="grid grid-cols-8 border-black/20">
         <div className="col-span-2 flex h-full w-full items-center justify-center py-4 px-4">
           {name} {firstSurname} {secondSurname}

@@ -37,7 +37,7 @@ export default function TableMembers({
                   lastName={member.lastName}
                   imageUrl={member.imageUrl}
                   rol={member.rol}
-                  state={member.state}
+                  isActive={member.isActive}
                 />
               );
             })}

@@ -18,6 +18,7 @@ const ProspectsHistory = lazy(async () => import("../pages/ProspectsHistory"));
 const ManagerGroup = lazy(async () => import("../pages/ManagerGroup"));
 const ManagerGroups = lazy(async () => import("../pages/ManagerGroups"));
 const ManagerDelivery = lazy(async () => import("../pages/ManagerDelivery"));
+const ManageProspects = lazy(async () => import("../pages/ManageProspects"));
 
 const MySalesMetrics = lazy(async () => import("../pages/TODO/MySalesMetrics"));
 const GoalsHistory = lazy(async () => import("../pages/TODO/GoalsHistory"));
@@ -34,6 +35,7 @@ const DeliveryGroup = lazy(async () => import("../pages/DeliveryGroup"));
 const ManagerDeliveryGroup = lazy(
   async () => import("../pages/ManagerDeliveryGroup"),
 );
+const Profile = lazy(async () => import("../pages/Profile"));
 
 export const CommonUserRoutes: IRoute[] = [
   {
@@ -139,11 +141,19 @@ export const ManagerUserRoutes: IRoute[] = [
     Component: () => <Members />,
   },
   {
-    path: "/prospect-history",
+    path: "/prospect-history/:id",
     Component: () => <ProspectsHistory />,
   },
   {
     path: "/group-delivery/:id",
     Component: () => <ManagerDeliveryGroup />,
+  },
+  {
+    path: "/profile/:id",
+    Component: () => <Profile />,
+  },
+  {
+    path: "/agent-prospects/:id",
+    Component: () => <ManageProspects />,
   },
 ];

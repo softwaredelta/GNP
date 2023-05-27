@@ -344,4 +344,66 @@ describe("controller:user", () => {
         .then((res) => res.body);
     });
   });
+
+  describe("modifies user succesfully", () => {
+    beforeEach(async () => {
+      // ! You can use this for the tests
+    });
+
+    it("rejects unauthenticated request", async () => {
+      // ! TODO: Implement this test
+    });
+
+    it("modifies the imageUrl", async () => {
+      // ! TODO: Implement this test
+    });
+
+    it("modifies the user successfully", async () => {
+      // ! TODO: Implement this test
+    });
+  });
+
+  describe("changes user password", () => {
+    beforeEach(async () => {
+      // ! You can use this for the tests
+    });
+
+    it("rejects unauthenticated request", async () => {
+      // ! TODO: Implement this test
+    });
+
+    it("rejects bad data", async () => {
+      // ! TODO: Implement this test
+    });
+
+    it("modifies the password", async () => {
+      // ! TODO: Implement this test
+    });
+  });
+
+  describe("Functions of user's links", () => {
+    beforeEach(async () => {
+      // ! You can use this for the tests
+    });
+
+    it("rejects unauthenticated request", async () => {
+      // ! TODO: Implement this test
+    });
+
+    it("adds new link to a user's links", async () => {
+      // ! TODO: Implement this test
+    });
+
+    it("modifies an existing user link", async () => {
+      // ! TODO: Implement this test
+    });
+
+    it("deletes existing user link", async () => {
+      // ! TODO: Implement this test
+    });
+
+    it("gets a user with their links", async () => {
+      // ! TODO: Implement this test
+    });
+  });
 });

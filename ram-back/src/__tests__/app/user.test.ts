@@ -222,4 +222,24 @@ describe("app:user", () => {
       expect(userRol).toHaveLength(0);
     });
   });
+
+  describe("user links work", () => {
+    it("adds a link to a user's link array", async () => {
+      // ! TODO: Implement this test
+    });
+
+    it("modifies an already existing link", async () => {
+      // ! TODO: Implement this test
+    });
+  });
+
+  describe("user password reset work", () => {
+    it("changes the password", async () => {
+      // ! TODO: Implement this test. Change the password then authenticate again.
+    });
+
+    it("password is hashed", async () => {
+      // ! TODO: Implement this test. Change the password then authenticate again.
+    });
+  });
 });

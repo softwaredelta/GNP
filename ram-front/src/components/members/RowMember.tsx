@@ -3,13 +3,14 @@
 import { Table } from "flowbite-react";
 import { AiOutlineEye } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export interface MembersCardProps {
   id: string;
   rol: string;
   name: string;
   lastName: string;
-  state: string;
+  isActive: number;
   imageUrl: string;
 }
 
@@ -18,7 +19,7 @@ export default function RowMember({
   rol,
   name,
   lastName,
-  state,
+  isActive,
   imageUrl,
 }: MembersCardProps): JSX.Element {
   return (
@@ -39,8 +40,12 @@ export default function RowMember({
           <div className=" mt-2 text-base">{name + " " + lastName}</div>
         </div>
       </Table.Cell>
-      <Table.Cell align="center">{rol}</Table.Cell>
-      <Table.Cell align="center">{state}</Table.Cell>
+      <Table.Cell align="center">
+        {rol === "regular" ? "Agente" : "Gerente"}
+      </Table.Cell>
+      <Table.Cell align="center">
+        {isActive === 1 ? "Activo" : "Inactivo"}
+      </Table.Cell>
       <Table.Cell align="center">
         <div className=" grid grid-cols-2 ">
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
@@ -53,14 +58,13 @@ export default function RowMember({
             />
           </div>
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <FaEdit
-              onClick={() => {
-                alert("Ver perfil");
-              }}
-              color="gray"
-              size={20}
-              className="hover:scale-105 hover:fill-blue-700"
-            />
+            <Link to={`/profile/${id}`}>
+              <FaEdit
+                color="gray"
+                size={20}
+                className="hover:scale-105 hover:fill-blue-700"
+              />
+            </Link>
           </div>
         </div>
       </Table.Cell>
