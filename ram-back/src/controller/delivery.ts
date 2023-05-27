@@ -236,12 +236,14 @@ deliveriesRouter.post(
     const schema = j.object({
       deliveryName: j.string().optional(),
       description: j.string().optional(),
+      hasDelivery: j.string().optional(),
     });
     const { error: validationError } = schema.validate(req.body);
     if (validationError) {
       res.status(400).json({ message: "BAD_DATA", reason: validationError });
       return;
     }
+
     const body = req.body;
     const file = req.file;
     const id = req.params.id;
@@ -261,6 +263,7 @@ deliveriesRouter.post(
       deliveryName: body.deliveryName,
       description: body.description,
       imageUrl,
+      hasDelivery: body.hasDelivery,
     });
 
     if (error && error === DeliveryError.NOT_FOUND) {

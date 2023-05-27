@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 import { Table } from "flowbite-react";
 import { useCallback } from "react";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiEye } from "react-icons/fi";
 import { useRecoilValue } from "recoil";
 import Swal from "sweetalert2";
 import useModal from "../../hooks/useModal";
@@ -10,6 +10,7 @@ import { apiBase$ } from "../../lib/api/api-base";
 import { useUrlFile } from "../../lib/files";
 import { IDelivery } from "../../types";
 import ModalDeliveryFormUpdate from "../forms/ModalDeliveryFormUpdate";
+import { useNavigate } from "react-router-dom";
 
 export interface IListSalesProps {
   delivery: IDelivery;
@@ -26,6 +27,7 @@ export const SearchDeliveryRow = ({
   const apiBase = useRecoilValue(apiBase$);
   const { isOpen: isOpenDeliveryForm, toggleModal: toggleModalDeliveryForm } =
     useModal();
+  const navigate = useNavigate();
 
   const deleteDelivery = useCallback(async () => {
     const result = await Swal.fire({
@@ -78,6 +80,16 @@ export const SearchDeliveryRow = ({
         </Table.Cell>
         <Table.Cell>{delivery.deliveryName}</Table.Cell>
         <Table.Cell>
+          <button
+            className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
+            onClick={() => navigate(`/group-delivery/${delivery.id}`)}
+          >
+            <FiEye
+              color="gray"
+              size={20}
+              className="hover:stroke-gnp-blue-300"
+            />
+          </button>
           <button
             className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
             onClick={toggleModalDeliveryForm}

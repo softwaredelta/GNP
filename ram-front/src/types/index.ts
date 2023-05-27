@@ -124,5 +124,6 @@ export interface IDeliveryDescription {
   description: string;
   imageUrl: string;
   groupId: string;
+  hasDelivery: string;
   deliveryLinks: ILink[];
 }
