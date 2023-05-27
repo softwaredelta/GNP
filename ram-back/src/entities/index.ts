@@ -18,6 +18,7 @@ import { ProspectStatusEnt } from "./prospect-status.entity";
 import { StatusEnt } from "./status.entity";
 import { LogEnt } from "./log.entity";
 import { DeliveryLinkEnt } from "./delivery-link.entity";
+import { UserLinkEnt } from "./user-link.entity";
 
 export const entities = [
   AssuranceTypeEnt,
@@ -38,4 +39,5 @@ export const entities = [
   ProspectStatusEnt,
   LogEnt,
   DeliveryLinkEnt,
+  UserLinkEnt,
 ];
