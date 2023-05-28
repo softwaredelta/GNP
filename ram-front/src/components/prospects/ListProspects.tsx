@@ -1,15 +1,17 @@
 // (c) Delta Software 2023, rights reserved.
 
 import useSearch from "../../hooks/useSearch";
-import { IProspect } from "../../types";
+import { IProspect, IStatus } from "../../types";
 import RowProspect from "../prospects/RowProspect";
 
 export interface IListProspectsProps {
   prospects: IProspect[];
+  listStatus?: IStatus[];
 }
 
 export default function ListProspects({
   prospects,
+  listStatus,
 }: IListProspectsProps): JSX.Element {
   const { handleSearch, data } = useSearch({
     info: prospects.map((prospect) => ({
@@ -43,6 +45,7 @@ export default function ListProspects({
             firstSurname={prospect.firstSurname}
             secondSurname={prospect.secondSurname}
             prospectStatus={prospect.prospectStatus}
+            listStatus={listStatus}
           />
         );
       })}

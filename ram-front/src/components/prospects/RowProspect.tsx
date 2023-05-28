@@ -2,8 +2,11 @@
 
 import { FiEdit } from "react-icons/fi";
 import { IStatus } from "../../types";
+import ModalModifyStatusProspect from "../forms/ModalModifyStatusProspect";
+import useModal from "../../hooks/useModal";
 
 export interface ProspectsCardProps {
+  listStatus?: IStatus[];
   id: string;
   name: string;
   firstSurname: string;
@@ -15,10 +18,12 @@ export interface ProspectsCardProps {
 }
 
 export default function RowProspect({
+  id,
   name,
   firstSurname,
   secondSurname,
   prospectStatus,
+  listStatus,
 }: ProspectsCardProps): JSX.Element {
   const colorOptions: { [key: string]: string } = {
     "Nuevo prospecto": "bg-gnp-blue-500",
@@ -28,6 +33,8 @@ export default function RowProspect({
     "Poliza pagada": "bg-green-500",
     Retirado: "bg-red-500",
   };
+  const { isOpen, toggleModal } = useModal();
+
   return (
     <div className="mx-auto mt-5 grid w-10/12 grid-cols-1 overflow-hidden rounded bg-gnp-white  shadow-lg transition-all ease-in-out hover:scale-105 ">
       <div className="grid grid-cols-8 border-black/20">
@@ -52,7 +59,18 @@ export default function RowProspect({
         </div>
 
         <div className="flex h-full items-center justify-center border-l-2 border-black/10 py-4 px-4 ">
-          <button className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125">
+          <ModalModifyStatusProspect
+            prospectId={id}
+            prospectName={`${name} ${firstSurname} ${secondSurname}`}
+            listStatus={listStatus}
+            handleModifyStatus={() => {}}
+            isOpenModal={isOpen}
+            closeModal={toggleModal}
+          />
+          <button
+            className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
+            onClick={toggleModal}
+          >
             <FiEdit className="text-2xl" />
           </button>
         </div>
