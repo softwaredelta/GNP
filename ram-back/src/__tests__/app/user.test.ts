@@ -6,6 +6,7 @@ import {
   createUser,
   fuzzySearchUsers,
   getAllUserRol,
+  resetPassword,
 } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { UserEnt, UserRole } from "../../entities/user.entity";
@@ -235,7 +236,17 @@ describe("app:user", () => {
 
   describe("user password reset work", () => {
     it("changes the password", async () => {
-      // ! TODO: Implement this test. Change the password then authenticate again.
+      await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+        imageUrl: "https://example.com/image.png",
+      });
+      await resetPassword({
+        email: "test-u-1@delta.tec.mx",
+        password: "password1234",
+      });
     });
 
     it("password is hashed", async () => {

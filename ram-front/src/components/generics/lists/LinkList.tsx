@@ -67,25 +67,31 @@ const LinkList = ({
             <Table.HeadCell className="bg-gray-300">Nombre</Table.HeadCell>
             <Table.HeadCell className="bg-gray-300">Acciones</Table.HeadCell>
           </Table.Head>
-
-          <Table.Body>
-            {links.map((index) => {
-              return (
-                <LinkRow
-                  key={index.id}
-                  link={index.link}
-                  name={index.name}
-                  id={index.id}
-                  onEdited={(id, link, name) => {
-                    handleEdit(id, link, name);
-                  }}
-                  onDeleted={(id) => {
-                    handleDelete(id);
-                  }}
-                />
-              );
-            })}
-          </Table.Body>
+          {links.length === 0 ? (
+            <div className="flex h-32 items-center justify-center">
+              {" "}
+              No hay links registrados{" "}
+            </div>
+          ) : (
+            <Table.Body>
+              {links.map((index: ILink) => {
+                return (
+                  <LinkRow
+                    key={index.id}
+                    link={index.link}
+                    name={index.name}
+                    id={index.id}
+                    onEdited={(id, link, name) => {
+                      handleEdit(id, link, name);
+                    }}
+                    onDeleted={(id) => {
+                      handleDelete(id);
+                    }}
+                  />
+                );
+              })}
+            </Table.Body>
+          )}
         </Table>
       </div>
     </>
