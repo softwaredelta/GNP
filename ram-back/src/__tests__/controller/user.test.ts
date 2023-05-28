@@ -545,9 +545,15 @@ describe("controller:user", () => {
       regularAccessToken = regularAuthenticationResponse.accessToken;
     });
 
-    it("rejects unauthenticated request", async () => {});
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .get("/user/reset-password")
+        .query({ query: "use" })
+        .send()
+        .expect(401);
+    });
 
-    it("adds new link to a user's links", async () => {
+    it("adds new link to a user's links", async () => { //NO FUNCIONA
       const link = "https://example.com";
       const name = "Example";
 
@@ -557,21 +563,51 @@ describe("controller:user", () => {
         .send({ link, name })
         .expect(200);
 
+      console.log(res.body);
       expect(res.body.newLink).toBeDefined();
       expect(res.body.newLink.link).toEqual(link);
       expect(res.body.newLink.name).toEqual(name);
     });
 
     it("modifies an existing user link", async () => {
-      // TODO: Implement this test (Fermin)
+      const updatedLink = {
+        link: "https://newexample.com",
+        name: "New Example",
+      };
+    
+      const res = await request(app)
+        .post("/user/edit-link")
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .send({ id: link.id, ...updatedLink })
+        .expect(200);
+    
+      const { uLink } = res.body;
+    
+      expect(uLink).toHaveProperty("id", link.id);
+      expect(uLink).toHaveProperty("link", updatedLink.link);
+      expect(uLink).toHaveProperty("name", updatedLink.name);
     });
 
     it("deletes existing user link", async () => {
-      // ! TODO: Implement this test
+      const res = await request(app)
+      .post("/user/delete-link")
+      .set("Authorization", `Bearer ${regularAccessToken}`)
+      .send({ id: link.id })
+      .expect(200);
+  
+      expect(res.body.links.affected).toBe(1);
     });
 
     it("gets a user with their links", async () => {
-      // ! TODO: Implement this test
+      const res = await request(app)
+      .get(`/user/links/${user.id}`)
+      .set("Authorization", `Bearer ${regularAccessToken}`)
+      .expect(200);
+  
+      const { links } = res.body;
+
+      expect(Array.isArray(links)).toBe(true);
+      expect(links.length).toBeGreaterThan(0);
     });
   });
 });
