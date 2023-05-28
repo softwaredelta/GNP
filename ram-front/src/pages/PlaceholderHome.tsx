@@ -1,8 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
 import React from "react";
-import Wrapper from "../../containers/Wrapper";
-import { useAuthentication } from "../../lib/api/api-auth";
+import Wrapper from "../containers/Wrapper";
+import { useAuthentication } from "../lib/api/api-auth";
 
 export default function PlaceholderHome() {
   const { auth } = useAuthentication();

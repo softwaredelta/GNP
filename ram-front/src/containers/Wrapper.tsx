@@ -14,17 +14,12 @@ export interface IWrapperProps {
 const Wrapper = ({ children, title }: IWrapperProps): JSX.Element => {
   const { logout, auth } = useAuthentication();
   const location = useLocation();
-  const isHomePage = location.pathname === "/"; // Verifica si es la página de inicio (Home)
-  const isGroupsPage = location.pathname === "/groups"; // Verifica si es la página de grupos (Groups)
+  const isHomePage = location.pathname === "/";
+  const isGroupsPage = location.pathname === "/groups";
 
   return (
     <main className="flex min-h-screen flex-col justify-between overflow-y-auto">
-      <NavBar
-        onLogout={logout}
-        username={auth?.username}
-        useremail={auth?.username}
-        role={auth?.roles[0]}
-      />
+      <NavBar onLogout={logout} user={auth} role={auth?.roles[0]} />
       {!isHomePage && title && !isGroupsPage && (
         <div className="flex w-full items-center justify-between pt-8">
           <h1 className=" rounded-r-2xl bg-gnp-orange-500 py-3 px-20 text-xl font-bold text-white">
