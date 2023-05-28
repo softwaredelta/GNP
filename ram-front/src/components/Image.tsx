@@ -15,6 +15,7 @@ export default function ImageURL({ url }: ImageProps): JSX.Element {
         <img
           className="h-full w-full object-cover"
           src={fileUrl(url as string)}
+          role="img"
         />
       </div>
     </div>

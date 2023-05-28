@@ -18,6 +18,7 @@ export async function createDelivery(params: {
   deliveryName: string;
   description: string;
   imageUrl: string;
+  hasDelivery?: string;
 }): Promise<{
   delivery: DeliveryEnt;
   error?: DeliveryError;
@@ -32,6 +33,7 @@ export async function createDelivery(params: {
         description: params.description,
         imageUrl: params.imageUrl,
         groupId: params.idGroup,
+        hasDelivery: params.hasDelivery || "true",
       }),
     )
     .then((delivery) => {
@@ -78,6 +80,7 @@ export async function updateDelivery(params: {
   deliveryName?: string;
   description?: string;
   imageUrl?: string;
+  hasDelivery?: string;
 }): Promise<{
   delivery: DeliveryEnt;
   error?: DeliveryError;
@@ -95,7 +98,12 @@ export async function updateDelivery(params: {
     };
   }
 
-  if (!params.deliveryName && !params.description && !params.imageUrl)
+  if (
+    !params.deliveryName &&
+    !params.description &&
+    !params.imageUrl &&
+    !params.hasDelivery
+  )
     return {
       error: DeliveryError.NOT_FOUND,
       delivery: {} as DeliveryEnt,
@@ -106,6 +114,7 @@ export async function updateDelivery(params: {
       deliveryName: params.deliveryName,
       description: params.description,
       imageUrl: params.imageUrl,
+      hasDelivery: params.hasDelivery,
     })
     .then(async () => {
       const delivery = await ds.manager.findOneOrFail(DeliveryEnt, {

@@ -12,6 +12,10 @@ export interface IUserFormProps {
   initialUser: IUser;
   handlePost: (data: { form: IUser; file: File | null | string }) => void;
   onTogglePassword: () => void;
+  handleLinkPost: (data: { link: string; name: string }) => void;
+  handleLinkDelete: (id: string) => void;
+  handleLinkEdit: (data: ILink) => void;
+  links: ILink[];
 }
 
 export default function ProfileForm({
@@ -25,9 +29,14 @@ export default function ProfileForm({
     confirmPassword: "",
     role: "regular",
     urlPP200: "",
+    CUA: "",
   },
   handlePost,
   onTogglePassword,
+  handleLinkPost,
+  handleLinkDelete,
+  handleLinkEdit,
+  links,
 }: IUserFormProps) {
   const { register, handleSubmit, reset } = useForm<IUser>({
     defaultValues: {
@@ -39,55 +48,6 @@ export default function ProfileForm({
     initialUser.imageUrl || null,
   );
 
-  const links: ILink[] = [
-    {
-      id: "1",
-      name: "Delta Software 1",
-      link: "https://www.deltasoft.com",
-    },
-    {
-      id: "2",
-      name: "Delta Software",
-      link: "https://www.deltasoft.com",
-    },
-    {
-      id: "3",
-      name: "Delta Software",
-      link: "https://www.deltasoft.com",
-    },
-    {
-      id: "4",
-      name: "Delta Software",
-      link: "https://www.deltasoft.com",
-    },
-    { id: "5", name: "Delta Software", link: "https://www.deltasoft.com" },
-    {
-      id: "6",
-      name: "Delta Software",
-      link: "https://www.deltasoft.com",
-    },
-    {
-      id: "7",
-      name: "Delta Software",
-      link: "https://www.deltasoft.com",
-    },
-    {
-      id: "8",
-      name: "Delta Software 8",
-      link: "https://www.deltasoft.com",
-    },
-    {
-      id: "9",
-      name: "Delta Software 9",
-      link: "https://www.deltasoft.com",
-    },
-    {
-      id: "10",
-      name: "Delta Software 10",
-      link: "https://www.deltasoft.com",
-    },
-  ];
-
   return (
     <div className="mx-6 mt-12 mb-4 grid grid-flow-col grid-rows-6 gap-8">
       <div className="col row-span-5">
@@ -95,7 +55,6 @@ export default function ProfileForm({
           user={initialUser}
           fileChanged={(fileSelected) => {
             setFile(fileSelected);
-            alert(`Cambiando un archivo... ${fileSelected}`);
           }}
         />
       </div>
@@ -141,7 +100,7 @@ export default function ProfileForm({
             <input
               className="input-primary w-full"
               placeholder="Ingrese la clave de agente"
-              {...register("lastName", {
+              {...register("CUA", {
                 required: "El campo de clave es requerido",
               })}
             />
@@ -211,12 +170,12 @@ export default function ProfileForm({
             <div className="h-96">
               <LinkList
                 links={links}
-                handlePost={(link, name) =>
-                  alert(`Subiendo nuevo link... ${link} ${name}`)
-                }
-                handleDelete={(id) => alert(`Borrando link... ${id}`)}
+                handlePost={(link, name) => {
+                  handleLinkPost({ link, name });
+                }}
+                handleDelete={(id) => handleLinkDelete(id)}
                 handleEdit={(id, name, link) =>
-                  alert(`Editando link... ${link} ${name} ${id}`)
+                  handleLinkEdit({ id, name, link })
                 }
               />
             </div>
