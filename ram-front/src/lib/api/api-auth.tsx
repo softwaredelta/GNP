@@ -25,6 +25,8 @@ export interface Authentication {
   name: string;
   lastName: string;
   roles: string[];
+  imageUrl: string;
+  CUA: string;
 }
 
 export interface AuthenticationError {
@@ -132,6 +134,8 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
                 name: "name",
                 lastName: "lastName",
                 roles: ["regular"],
+                imageUrl: "",
+                CUA: "CUA",
               });
               set(authenticationError$, null);
 
@@ -298,6 +302,8 @@ export function AuthenticationInitializationHandler() {
             name: "name",
             lastName: "lastName",
             roles: ["regular"],
+            imageUrl: "",
+            CUA: "CUA",
           });
         } else {
           setAuthentication(null);
