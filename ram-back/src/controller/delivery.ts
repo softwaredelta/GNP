@@ -231,58 +231,6 @@ deliveriesRouter.post(
   },
 );
 
-deliveriesRouter.post(
-  "/:id",
-  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
-  upload.single("image"),
-  async (req, res) => {
-    const schema = j.object({
-      deliveryName: j.string().optional(),
-      description: j.string().optional(),
-      hasDelivery: j.string().optional(),
-    });
-    const { error: validationError } = schema.validate(req.body);
-    if (validationError) {
-      res.status(400).json({ message: "BAD_DATA", reason: validationError });
-      return;
-    }
-
-    const body = req.body;
-    const file = req.file;
-    const id = req.params.id;
-
-    if (!file && !body.deliveryName && !body.description) {
-      res.status(400).json({ message: "BAD_DATA" });
-      return;
-    }
-
-    const imageUrl = await (async () => {
-      if (!file) return undefined;
-      return uploadFile({ file });
-    })();
-
-    const { delivery, error, errorReason } = await updateDelivery({
-      deliveryId: id,
-      deliveryName: body.deliveryName,
-      description: body.description,
-      imageUrl,
-      hasDelivery: body.hasDelivery,
-    });
-
-    if (error && error === DeliveryError.NOT_FOUND) {
-      res.status(404).json({ error });
-      return;
-    }
-    if (error) {
-      res.status(500).json({ error: validationError, errorReason });
-      console.error(errorReason);
-      return;
-    }
-
-    res.json(delivery);
-  },
-);
-
 deliveriesRouter.delete(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -379,5 +327,57 @@ deliveriesRouter.post(
     });
 
     res.json({ changedLink });
+  },
+);
+
+deliveriesRouter.post(
+  "/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  upload.single("image"),
+  async (req, res) => {
+    const schema = j.object({
+      deliveryName: j.string().optional(),
+      description: j.string().optional(),
+      hasDelivery: j.string().optional(),
+    });
+    const { error: validationError } = schema.validate(req.body);
+    if (validationError) {
+      res.status(400).json({ message: "BAD_DATA", reason: validationError });
+      return;
+    }
+
+    const body = req.body;
+    const file = req.file;
+    const id = req.params.id;
+
+    if (!file && !body.deliveryName && !body.description) {
+      res.status(400).json({ message: "BAD_DATA" });
+      return;
+    }
+
+    const imageUrl = await (async () => {
+      if (!file) return undefined;
+      return uploadFile({ file });
+    })();
+
+    const { delivery, error, errorReason } = await updateDelivery({
+      deliveryId: id,
+      deliveryName: body.deliveryName,
+      description: body.description,
+      imageUrl,
+      hasDelivery: body.hasDelivery,
+    });
+
+    if (error && error === DeliveryError.NOT_FOUND) {
+      res.status(404).json({ error });
+      return;
+    }
+    if (error) {
+      res.status(500).json({ error: validationError, errorReason });
+      console.error(errorReason);
+      return;
+    }
+
+    res.json(delivery);
   },
 );

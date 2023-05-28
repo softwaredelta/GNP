@@ -10,10 +10,11 @@ import Swal from "sweetalert2";
 export default function ManagerDeliveryGroup(): JSX.Element {
   const { id } = useParams();
 
-  const { response: delivery } = useAxios<IDeliveryDescription>({
-    url: `deliveries/group-delivery/${id}`,
-    method: "GET",
-  });
+  const { response: delivery, callback: refresh } =
+    useAxios<IDeliveryDescription>({
+      url: `deliveries/group-delivery/${id}`,
+      method: "GET",
+    });
 
   const {
     response: newLink,
@@ -49,6 +50,7 @@ export default function ManagerDeliveryGroup(): JSX.Element {
         text: "El cambio a la lista de links se ha realizado correctamente.",
         icon: "success",
       });
+      refresh();
     } else if (newLinkError) {
       Swal.fire({
         title: "¡Error!",
@@ -97,7 +99,7 @@ export default function ManagerDeliveryGroup(): JSX.Element {
               editLinkCallback?.({ link, name, idLink });
             }}
             handleLinkDelete={(idLink) => {
-              deleteLinkCallback?.({ idLink });
+              deleteLinkCallback?.({ id: idLink });
             }}
           />
         )}
