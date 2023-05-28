@@ -560,7 +560,7 @@ describe("controller:user", () => {
     });
 
     it("modifies an existing user link", async () => {
-      // TODO: Implement this test
+      // TODO: Implement this test (Fermin)
     });
 
     it("deletes existing user link", async () => {
