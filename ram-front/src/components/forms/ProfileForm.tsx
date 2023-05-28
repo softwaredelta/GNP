@@ -38,7 +38,7 @@ export default function ProfileForm({
   handleLinkEdit,
   links,
 }: IUserFormProps) {
-  const { register, handleSubmit, reset } = useForm<IUser>({
+  const { register, handleSubmit, reset, watch } = useForm<IUser>({
     defaultValues: {
       ...initialUser,
     },
@@ -47,12 +47,13 @@ export default function ProfileForm({
   const [file, setFile] = useState<File | null | string>(
     initialUser.imageUrl || null,
   );
+  const formValues = watch();
 
   return (
     <div className="mx-6 mt-12 mb-4 grid grid-flow-col grid-rows-6 gap-8">
       <div className="col row-span-5">
         <ProfileCard
-          user={initialUser}
+          user={formValues}
           fileChanged={(fileSelected) => {
             setFile(fileSelected);
           }}

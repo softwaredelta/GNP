@@ -196,7 +196,15 @@ authRouter.post("/refresh", async (req, res) => {
     where: {
       id: auth.id,
     },
-    select: ["id", "email", "name", "lastName", "rolesString"],
+    select: [
+      "id",
+      "email",
+      "name",
+      "lastName",
+      "rolesString",
+      "imageUrl",
+      "CUA",
+    ],
   });
 
   if (!user) {
@@ -215,6 +223,8 @@ authRouter.post("/refresh", async (req, res) => {
     name: user.name,
     lastName: user.lastName,
     roles: user.roles,
+    imageUrl: user.imageUrl,
+    CUA: user.CUA,
   });
 });
 
