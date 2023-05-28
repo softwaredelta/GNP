@@ -18,6 +18,7 @@ import { getDataSource } from "../arch/db-client";
 import { UserEnt, UserRole } from "../entities/user.entity";
 import multer from "multer";
 import { uploadFile } from "../app/file";
+import { UserLinkEnt } from "../entities/user-link.entity";
 
 const upload = multer();
 
@@ -338,8 +339,8 @@ authRouter.post("/add-link/:id", authMiddleware(), async (req, res) => {
   res.json({ newLink });
 });
 
-authRouter.post("/edit-link/:id", authMiddleware(), async (req, res) => {
-  const { link, name } = req.body;
+authRouter.post("/edit-link", authMiddleware(), async (req, res) => {
+  const { link, name, id } = req.body;
 
   const { user } = req;
 
@@ -349,7 +350,7 @@ authRouter.post("/edit-link/:id", authMiddleware(), async (req, res) => {
   }
 
   const { link: uLink, error } = await updateLink({
-    id: req.params.id,
+    id,
     link,
     name,
   });
@@ -360,4 +361,40 @@ authRouter.post("/edit-link/:id", authMiddleware(), async (req, res) => {
   }
 
   res.json({ uLink });
+});
+
+authRouter.post("/delete-link", authMiddleware(), async (req, res) => {
+  const { user } = req;
+
+  if (!user) {
+    res.status(401).json({ message: "NO_USER" });
+    return;
+  }
+
+  const db = await getDataSource();
+  const links = await db.manager
+    .getRepository(UserLinkEnt)
+    .delete(req.body.id)
+    .catch((err) => {
+      res.status(500).json({ message: err });
+      return;
+    });
+
+  res.json({ links });
+});
+
+authRouter.get("/links/:id", authMiddleware(), async (req, res) => {
+  const { user } = req;
+
+  if (!user) {
+    res.status(401).json({ message: "NO_USER" });
+    return;
+  }
+
+  const db = await getDataSource();
+  const links = await db.manager.find(UserLinkEnt, {
+    where: { userId: req.params.id },
+  });
+
+  res.json({ links });
 });
