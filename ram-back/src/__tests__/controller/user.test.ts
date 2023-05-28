@@ -548,6 +548,9 @@ describe("controller:user", () => {
     it("rejects unauthenticated request", async () => {});
 
     it("adds new link to a user's links", async () => {
+      const link = "https://example.com";
+      const name = "Example";
+
       const res = await request(app)
         .post(`/user/add-link/${user.id}`)
         .set("Authorization", `Bearer ${regularAccessToken}`)
