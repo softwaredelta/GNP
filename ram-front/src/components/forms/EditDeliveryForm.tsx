@@ -4,17 +4,23 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import useAxios from "../../hooks/useAxios";
-import { IDeliveryDescription } from "../../types";
+import { IDeliveryDescription, ILink } from "../../types";
 import LinkList from "../generics/lists/LinkList";
 
 export interface IEditDeliveryFormProps {
   delivery: IDeliveryDescription;
-  id: string;
+  deliveryId: string;
+  handleLinkPost: (data: { link: string; name: string }) => void;
+  handleLinkDelete: (id: string) => void;
+  handleLinkEdit: (data: ILink) => void;
 }
 
 export default function EditDeliveryForm({
   delivery,
-  id,
+  deliveryId,
+  handleLinkPost,
+  handleLinkEdit,
+  handleLinkDelete,
 }: IEditDeliveryFormProps) {
   const [file, setFile] = useState<File | null | string>(null);
 
@@ -23,7 +29,7 @@ export default function EditDeliveryForm({
   const [enabled, setEnabled] = useState<string>();
 
   const { response, error, callback } = useAxios({
-    url: `deliveries/${id}`,
+    url: `deliveries/${deliveryId}`,
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
@@ -125,12 +131,12 @@ export default function EditDeliveryForm({
           <div className="mt-5 mb-2 w-9/12">
             <LinkList
               links={delivery.deliveryLinks}
-              handlePost={(link, name) =>
-                alert(`Subiendo nuevo link... ${link} ${name}`)
-              }
-              handleDelete={(linkID) => alert(`Borrando link... ${linkID}`)}
-              handleEdit={(name, link) =>
-                alert(`Editando link... ${link} ${name}`)
+              handlePost={(link, name) => {
+                handleLinkPost({ link, name });
+              }}
+              handleDelete={(id) => handleLinkDelete(id)}
+              handleEdit={(id, name, link) =>
+                handleLinkEdit({ id, name, link })
               }
             />
           </div>

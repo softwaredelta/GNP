@@ -4,12 +4,12 @@ import { Router } from "express";
 import { authMiddleware } from "./user";
 import { getDataSource } from "../arch/db-client";
 import { DeliveryEnt } from "../entities/delivery.entity";
+import { DeliveryLinkEnt } from "../entities/delivery-link.entity";
 import {
   DeliveryError,
   createDelivery,
   createLinkDelivery,
   deleteDelivery,
-  deleteLinkDelivery,
   getDeliveryGroup,
   getUserDeliveriesbyGroup,
   setDeliveryToAllUsers,
@@ -324,23 +324,18 @@ deliveriesRouter.get(
   },
 );
 
-deliveriesRouter.post(
-  "/delete-delivery-link/:id",
-  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
-  async (req, res) => {
-    const { error, reason } = await deleteLinkDelivery({
-      id: req.params.id,
+deliveriesRouter.post("/delete-delivery-link", async (req, res) => {
+  const db = await getDataSource();
+  const links = await db.manager
+    .getRepository(DeliveryLinkEnt)
+    .delete(req.body.id)
+    .catch((err) => {
+      res.status(500).json({ message: err });
+      return;
     });
 
-    if (error) {
-      console.error(reason);
-      res.status(500).json({ error, reason });
-      return;
-    }
-
-    res.status(200).json({ message: "Link deleted" });
-  },
-);
+  res.json({ links });
+});
 
 deliveriesRouter.post(
   "/create-delivery-link/:deliveryId",
@@ -366,11 +361,10 @@ deliveriesRouter.post(
 );
 
 deliveriesRouter.post(
-  "/update-delivery-link/:id",
-  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  "/update-delivery-link",
+  authMiddleware(),
   async (req, res) => {
-    const { link, name } = req.body;
-    const id = req.params.id;
+    const { link, name, id } = req.body;
     const changedLink = await updateLinkDelivery({
       id,
       link,
