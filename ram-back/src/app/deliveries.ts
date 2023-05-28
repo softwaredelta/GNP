@@ -51,7 +51,7 @@ export async function createLinkDelivery(params: {
   link: string;
   name: string;
 }): Promise<{
-  delivery: DeliveryLinkEnt;
+  link: DeliveryLinkEnt;
   error?: DeliveryError;
   errorReason?: Error;
 }> {
@@ -65,13 +65,13 @@ export async function createLinkDelivery(params: {
         name: params.name,
       }),
     )
-    .then((delivery) => {
-      return { delivery };
+    .then((link) => {
+      return { link };
     })
     .catch((e) => ({
       error: DeliveryError.UNHANDLED,
       errorReason: e,
-      delivery: {} as DeliveryLinkEnt,
+      link: {} as DeliveryLinkEnt,
     }));
 }
 
@@ -324,4 +324,61 @@ export async function getDeliveryGroup(params: {
       delivery: {} as DeliveryEnt,
     };
   }
+}
+//Delete link from delivery
+export async function deleteLinkDelivery(params: {
+  id: string;
+}): Promise<{ error?: DeliveryError; reason?: Error }> {
+  const ds = await getDataSource();
+
+  await ds.manager.delete(DeliveryLinkEnt, params.id);
+  return {};
+}
+
+//Update a link from a delivery
+export async function updateLinkDelivery(params: {
+  id: string;
+  link?: string;
+  name?: string;
+}): Promise<{
+  link: DeliveryLinkEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+  const existingLink = await ds.manager.findOne(DeliveryLinkEnt, {
+    where: { id: params.id },
+  });
+
+  if (!existingLink) {
+    return {
+      error: DeliveryError.NOT_FOUND,
+      link: {} as DeliveryLinkEnt,
+    };
+  }
+
+  if (!params.link && !params.name)
+    return {
+      error: DeliveryError.NOT_FOUND,
+      link: {} as DeliveryLinkEnt,
+    };
+
+  return ds.manager
+    .update(DeliveryLinkEnt, params.id, {
+      name: params.name,
+      link: params.link,
+    })
+    .then(async () => {
+      const link = await ds.manager.findOneOrFail(DeliveryLinkEnt, {
+        where: { id: params.id },
+      });
+      if (link) return { link };
+      else
+        return { link: {} as DeliveryLinkEnt, error: DeliveryError.NOT_FOUND };
+    })
+    .catch((e) => ({
+      error: DeliveryError.UNHANDLED as DeliveryError,
+      errorReason: e as Error,
+      link: {} as DeliveryLinkEnt,
+    }));
 }
