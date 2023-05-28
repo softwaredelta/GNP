@@ -1,6 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React from "react";
 import { Table } from "flowbite-react";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import useAxios from "../../hooks/useAxios";
@@ -44,6 +43,9 @@ export default function SalesRow({ sale, onDeleted }: Props) {
     });
   }
 
+  const capitalize = (word: string): string => {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  };
   return (
     <Table.Row
       key={sale.id}
@@ -83,7 +85,7 @@ export default function SalesRow({ sale, onDeleted }: Props) {
       <Table.Cell>
         {new Date(sale.paidDate as Date).toLocaleDateString()}
       </Table.Cell>
-      <Table.Cell>{sale.status}</Table.Cell>
+      <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
         <div className="grid grid-cols-2 items-center justify-center ">
           <FaEdit
