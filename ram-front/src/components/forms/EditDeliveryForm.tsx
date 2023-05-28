@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import useAxios from "../../hooks/useAxios";
 import { IDeliveryDescription } from "../../types";
+import LinkList from "../generics/lists/LinkList";
 
 export interface IEditDeliveryFormProps {
   delivery: IDeliveryDescription;
@@ -35,11 +36,6 @@ export default function EditDeliveryForm({
     hasDelivery?: string;
   };
 
-  //   type FormValuesLink = {
-  //     name: string;
-  //     link: string;
-  //   };
-
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       deliveryName: delivery.deliveryName,
@@ -59,9 +55,6 @@ export default function EditDeliveryForm({
     if (data.description) {
       formData.append("description", data.description);
     }
-    // if (data.deliveryLinks) {
-    //   formData.append("deliveryLinks", data.deliveryLinks);
-    // }
     if (enabled) {
       formData.append("hasDelivery", enabled);
     }
@@ -130,29 +123,20 @@ export default function EditDeliveryForm({
           />
 
           <div className="mt-5 mb-2 w-9/12">
-            <label className=" text-xl font-semibold">
-              Links del entregable
-            </label>
+            <LinkList
+              links={delivery.deliveryLinks}
+              handlePost={(link, name) =>
+                alert(`Subiendo nuevo link... ${link} ${name}`)
+              }
+              handleDelete={(linkID) => alert(`Borrando link... ${linkID}`)}
+              handleEdit={(name, link) =>
+                alert(`Editando link... ${link} ${name}`)
+              }
+            />
           </div>
-          {/* <input
-              type="text"
-              defaultValue={delivery?.deliveryLinks}
-              className="input-primary w-10/12"
-              {...register("deliveryLinks", {
-                required: "El campo nombre del entregable requerido.",
-                minLength: {
-                  value: 3,
-                  message: "El nombre debe tener al menos 3 caracteres",
-                },
-                maxLength: {
-                  value: 50,
-                  message: "El nombre debe tener máximo 50 caracteres",
-                },
-              })}
-            /> */}
         </div>
 
-        <div className="row-span-3 w-9/12">
+        <div className="row-span-4 w-9/12">
           <div className="mt-10 aspect-video w-full overflow-hidden rounded-3xl border-4 border-gnp-orange-500">
             <img
               className="h-full w-full object-cover"
@@ -179,7 +163,7 @@ export default function EditDeliveryForm({
               className="mb-2 block text-sm font-bold text-gray-700"
               htmlFor="file_input"
             >
-              Selecciona una imagen
+              Selecciona una imagen para el entregable
             </label>
             <input
               className="text-grat-700 focus-outline block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm"
@@ -195,24 +179,26 @@ export default function EditDeliveryForm({
             />
             <p className="mt-1 pl-3 text-xs text-gray-500">JPG, PNG o JPEG</p>
           </div>
-        </div>
-        <div className="w-1/3">
-          <button
-            className="btn-primary"
-            onClick={handleSubmit(uploadFile, (errorsFields) => {
-              Swal.fire({
-                title: "Error!",
-                text: `Ocurrió un error al modificar el entregable.\n
+          <div className="flex w-full place-items-center justify-center pt-4">
+            <div className="w-3/5">
+              <button
+                className="btn-primary"
+                onClick={handleSubmit(uploadFile, (errorsFields) => {
+                  Swal.fire({
+                    title: "Error!",
+                    text: `Ocurrió un error al modificar el entregable.\n
                         ${Object.values(errorsFields).map(
                           (e) => e.message + " ",
                         )}`,
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            })}
-          >
-            Guardar Cambios
-          </button>
+                    icon: "error",
+                    confirmButtonText: "OK",
+                  });
+                })}
+              >
+                Guardar Cambios
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>
