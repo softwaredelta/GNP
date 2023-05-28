@@ -4,15 +4,18 @@ import { Router } from "express";
 import { authMiddleware } from "./user";
 import { getDataSource } from "../arch/db-client";
 import { DeliveryEnt } from "../entities/delivery.entity";
+import { DeliveryLinkEnt } from "../entities/delivery-link.entity";
 import {
   DeliveryError,
   createDelivery,
+  createLinkDelivery,
   deleteDelivery,
   getDeliveryGroup,
   getUserDeliveriesbyGroup,
   setDeliveryToAllUsers,
   updateDelivery,
   updateDeliveryStatus,
+  updateLinkDelivery,
 } from "../app/deliveries";
 import { UserRole } from "../entities/user.entity";
 import {
@@ -228,6 +231,105 @@ deliveriesRouter.post(
   },
 );
 
+deliveriesRouter.delete(
+  "/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const { error, reason } = await deleteDelivery({
+      deliveryId: req.params.id,
+    });
+
+    if (error) {
+      console.error(reason);
+      res.status(500).json({ error, reason });
+      return;
+    }
+
+    res.status(200).json({ message: "Delivery deleted" });
+  },
+);
+
+deliveriesRouter.get(
+  "/group-delivery/:deliveryId",
+  authMiddleware(),
+  async (req, res) => {
+    if (!req.user) {
+      res.status(401).json({ message: "No user" });
+      return;
+    }
+
+    const deliveryId = req.params.deliveryId;
+
+    const { delivery, error } = await getDeliveryGroup({
+      deliveryId,
+    });
+
+    if (error) {
+      throw new Error(error);
+    }
+
+    res.json(delivery);
+  },
+);
+
+deliveriesRouter.post("/delete-delivery-link", async (req, res) => {
+  if (!req.body.id) {
+    res.status(400).json({ message: "El campo 'id' es requerido." });
+    return;
+  }
+
+  try {
+    const db = await getDataSource();
+    const result = await db.manager
+      .getRepository(DeliveryLinkEnt)
+      .delete(req.body.id);
+
+    res.json({ links: result });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Ocurrió un error al eliminar el enlace." });
+  }
+});
+
+deliveriesRouter.post(
+  "/create-delivery-link/:deliveryId",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const deliveryId = req.params.deliveryId;
+    const { link, name } = req.body;
+
+    const data = await createLinkDelivery({
+      deliveryId,
+      link,
+      name,
+    });
+
+    const { link: link2, error } = data;
+    if (error) {
+      res.status(500).json({ error });
+      return;
+    } else {
+      res.json(link2);
+    }
+  },
+);
+
+deliveriesRouter.post(
+  "/update-delivery-link",
+  authMiddleware(),
+  async (req, res) => {
+    const { link, name, id } = req.body;
+    const changedLink = await updateLinkDelivery({
+      id,
+      link,
+      name,
+    });
+
+    res.json({ changedLink });
+  },
+);
+
 deliveriesRouter.post(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -274,47 +376,6 @@ deliveriesRouter.post(
       res.status(500).json({ error: validationError, errorReason });
       console.error(errorReason);
       return;
-    }
-
-    res.json(delivery);
-  },
-);
-
-deliveriesRouter.delete(
-  "/:id",
-  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
-  async (req, res) => {
-    const { error, reason } = await deleteDelivery({
-      deliveryId: req.params.id,
-    });
-
-    if (error) {
-      console.error(reason);
-      res.status(500).json({ error, reason });
-      return;
-    }
-
-    res.status(200).json({ message: "Delivery deleted" });
-  },
-);
-
-deliveriesRouter.get(
-  "/group-delivery/:deliveryId",
-  authMiddleware(),
-  async (req, res) => {
-    if (!req.user) {
-      res.status(401).json({ message: "No user" });
-      return;
-    }
-
-    const deliveryId = req.params.deliveryId;
-
-    const { delivery, error } = await getDeliveryGroup({
-      deliveryId,
-    });
-
-    if (error) {
-      throw new Error(error);
     }
 
     res.json(delivery);
