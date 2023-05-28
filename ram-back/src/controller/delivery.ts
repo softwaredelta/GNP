@@ -325,16 +325,23 @@ deliveriesRouter.get(
 );
 
 deliveriesRouter.post("/delete-delivery-link", async (req, res) => {
-  const db = await getDataSource();
-  const links = await db.manager
-    .getRepository(DeliveryLinkEnt)
-    .delete(req.body.id)
-    .catch((err) => {
-      res.status(500).json({ message: err });
-      return;
-    });
+  if (!req.body.id) {
+    res.status(400).json({ message: "El campo 'id' es requerido." });
+    return;
+  }
 
-  res.json({ links });
+  try {
+    const db = await getDataSource();
+    const result = await db.manager
+      .getRepository(DeliveryLinkEnt)
+      .delete(req.body.id);
+
+    res.json({ links: result });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Ocurrió un error al eliminar el enlace." });
+  }
 });
 
 deliveriesRouter.post(
