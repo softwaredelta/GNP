@@ -2,9 +2,11 @@
 
 import request from "supertest";
 import { app } from "../../controller";
-import { authenticateUser, createUser } from "../../app/user";
+import { authenticateUser, createUser, addLink } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { adminSeeds, userSeeds } from "../../seeds";
+import { UserEnt } from "../../entities/user.entity";
+import { UserLinkEnt } from "../../entities/user-link.entity";
 
 describe("controller:user", () => {
   let adminAccessToken: string;
@@ -346,56 +348,222 @@ describe("controller:user", () => {
   });
 
   describe("modifies user succesfully", () => {
+    let userId: string;
+    let regularAccessToken: string;
     beforeEach(async () => {
-      // ! You can use this for the tests
+      const { user: createdUser, error } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+        imageUrl: "https://example.com/image.png",
+      });
+      expect(error).toBeUndefined();
+      userId = createdUser.id;
+
+      await userSeeds();
+
+      const regularAuthenticationResponse = await request(app)
+        .post("/user/authenticate")
+        .send({
+          email: "regular@delta.tec.mx",
+          password: "password",
+        })
+        .then((res) => res.body);
+
+      regularAccessToken = regularAuthenticationResponse.accessToken;
     });
 
     it("rejects unauthenticated request", async () => {
-      // ! TODO: Implement this test
+      return request(app).get(`/user/update/`).send().expect(401);
     });
 
     it("modifies the imageUrl", async () => {
-      // ! TODO: Implement this test
+      const modifiedImageUrl = "https://example.com/modified-image.png";
+
+      await request(app)
+        .post(`/user/update/${userId}`)
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .send({
+          imageUrl: modifiedImageUrl,
+        })
+        .expect(200);
+
+      const getRegularUserResponse = await request(app)
+        .get(`/user/${userId}`)
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .expect(200);
+      expect(getRegularUserResponse.body.imageUrl).toBe(modifiedImageUrl);
     });
 
     it("modifies the user successfully", async () => {
-      // ! TODO: Implement this test
+      const modifiedUser = {
+        email: "nuevoemail@example.com",
+        name: "Nuevo Nombre",
+        lastName: "Nuevo Apellido",
+        mobile: 1234567890,
+        urlPP200: "https://urlPP200.com",
+        CUA: "nuevoCUA",
+        imageUrl: "https://nueva-imagen.com/imagen.jpg",
+      };
+
+      const response = await request(app)
+        .post(`/user/update/${userId}`)
+        .set("Accept", "application/json")
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .send({
+          email: modifiedUser.email,
+          name: modifiedUser.name,
+          lastName: modifiedUser.lastName,
+          mobile: modifiedUser.mobile,
+          urlPP200: modifiedUser.urlPP200,
+          CUA: modifiedUser.CUA,
+          imageUrl: modifiedUser.imageUrl,
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty("modifiedUser");
+      // Asegúrate de verificar los campos modificados según tus necesidades
+      expect(response.body.modifiedUser).toHaveProperty(
+        "email",
+        modifiedUser.email,
+      );
+      expect(response.body.modifiedUser).toHaveProperty(
+        "name",
+        modifiedUser.name,
+      );
+      expect(response.body.modifiedUser).toHaveProperty(
+        "lastName",
+        modifiedUser.lastName,
+      );
+      expect(response.body.modifiedUser).toHaveProperty(
+        "urlPP200",
+        modifiedUser.urlPP200,
+      );
+      expect(response.body.modifiedUser).toHaveProperty(
+        "CUA",
+        modifiedUser.CUA,
+      );
     });
   });
 
   describe("changes user password", () => {
+    let user: UserEnt;
+    let regularAccessToken: string;
     beforeEach(async () => {
-      // ! You can use this for the tests
+      const { user: createdUser, error } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+        imageUrl: "https://example.com/image.png",
+      });
+      expect(error).toBeUndefined();
+      user = createdUser;
+
+      await userSeeds();
+
+      const regularAuthenticationResponse = await request(app)
+        .post("/user/authenticate")
+        .send({
+          email: "regular@delta.tec.mx",
+          password: "password",
+        })
+        .then((res) => res.body);
+
+      regularAccessToken = regularAuthenticationResponse.accessToken;
     });
 
     it("rejects unauthenticated request", async () => {
-      // ! TODO: Implement this test
+      return request(app)
+        .get("/user/reset-password")
+        .query({ query: "use" })
+        .send()
+        .expect(401);
     });
 
     it("rejects bad data", async () => {
-      // ! TODO: Implement this test
+      return request(app)
+        .post(`/user/reset-password`)
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .send({
+          password: "password",
+          newPassword: "password", //CHECAR
+        })
+        .expect(400);
     });
 
     it("modifies the password", async () => {
-      // ! TODO: Implement this test
+      const newPasswordC = "newpassword";
+
+      const res = await request(app)
+        .post(`/user/reset-password`)
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .send({
+          email: user.email,
+          password: newPasswordC,
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.message).toBe("Password reset successfully");
     });
   });
 
   describe("Functions of user's links", () => {
+    let link: UserLinkEnt;
+    let user: UserEnt;
+    let regularAccessToken: string;
     beforeEach(async () => {
-      // ! You can use this for the tests
+      const { link: addedLink, error: errorlink } = await addLink({
+        id: "1",
+        link: "https://example.com",
+        name: "Example",
+      });
+      expect(errorlink).toBeUndefined();
+      link = addedLink;
+
+      const { user: createdUser, error } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "last name",
+        imageUrl: "https://example.com/image.png",
+        id: "1",
+      });
+      expect(error).toBeUndefined();
+      user = createdUser;
+
+      await userSeeds();
+
+      const regularAuthenticationResponse = await request(app)
+        .post("/user/authenticate")
+        .send({
+          email: "regular@delta.tec.mx",
+          password: "password",
+        })
+        .then((res) => res.body);
+
+      regularAccessToken = regularAuthenticationResponse.accessToken;
     });
 
-    it("rejects unauthenticated request", async () => {
-      // ! TODO: Implement this test
-    });
+    it("rejects unauthenticated request", async () => {});
 
     it("adds new link to a user's links", async () => {
-      // ! TODO: Implement this test
+      const link = "https://example.com";
+      const name = "Example";
+
+      const res = await request(app)
+        .post(`/user/add-link/${user.id}`)
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .send({ link, name })
+        .expect(200);
+
+      expect(res.body.newLink).toBeDefined();
+      expect(res.body.newLink.link).toEqual(link);
+      expect(res.body.newLink.name).toEqual(name);
     });
 
     it("modifies an existing user link", async () => {
-      // ! TODO: Implement this test
+      // TODO: Implement this test (Fermin)
     });
 
     it("deletes existing user link", async () => {
