@@ -18,12 +18,12 @@ import ManagerDelivery from "../components/generics/cards/info/ManagerDelivery";
 import SkeletonCard from "../components/generics/skeleton/SkeletonCard";
 import SkeletonDiv from "../components/generics/skeleton/SkeletonDiv";
 import SkeletonText from "../components/generics/skeleton/SkeletonText";
+// import ProspectListHistory from "../components/prospects/ProspectListHistory";
 import SearchAgentTable from "../components/tables/SearchAgentTable";
 import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import useAlert from "../hooks/useAlert";
 import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
-import ProspectListHistory from "../components/prospects/ProspectListHistory";
 
 export default function Examples() {
   const listDeliveries = [
@@ -300,11 +300,11 @@ export default function Examples() {
       {}
       <div className="col-span-3 w-10/12"></div>
       <div className="col-span-3 w-10/12">
-        <ProspectListHistory
+        {/* <ProspectListHistory
           state={"Cliente"}
           comment={"Hola"}
           date={new Date()}
-        />
+        /> */}
       </div>
     </div>
   );

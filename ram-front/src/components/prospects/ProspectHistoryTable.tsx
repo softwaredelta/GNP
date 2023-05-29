@@ -1,10 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { IStatus } from "../../types";
+import { IStatusProspect } from "../../types";
 import ProspectListHistory from "./ProspectListHistory";
 
 type Props = {
-  History: IStatus[];
+  History: IStatusProspect[];
 };
 
 export default function ProspectsHistoryTable({ History }: Props) {
@@ -19,22 +19,22 @@ export default function ProspectsHistoryTable({ History }: Props) {
             <div className="flex">
               <div className="w-3/3 flex items-center pr-40">
                 <div className="rounded-md  bg-gnp-blue-500">
-                  <p className="px-5 py-2 text-center font-semibold text-gray-500 text-white">
+                  <p className="px-5 py-2 text-center font-semibold text-white">
                     Estado
                   </p>
                 </div>
               </div>
               <div className="w-3/3 px-19 flex items-center">
                 <div className="rounded-md  bg-gnp-blue-500">
-                  <p className="px-5 py-2 text-center font-semibold text-gray-500 text-white">
+                  <p className="px-5 py-2 text-center font-semibold text-white">
                     Comentario
                   </p>
                 </div>
               </div>
               <div className="w-3/3 flex items-center pl-36">
                 <div className="rounded-md  bg-gnp-blue-500">
-                  <p className="px-5 py-2 text-center font-semibold text-gray-500 text-white">
-                    Fecha de actualizacion de state
+                  <p className="px-5 py-2 text-center font-semibold text-white">
+                    Fecha de actualizacion de estado
                   </p>
                 </div>
               </div>
@@ -47,9 +47,9 @@ export default function ProspectsHistoryTable({ History }: Props) {
               return (
                 <ProspectListHistory
                   key={h.id}
-                  state={h.statusName}
-                  comment={h.comments}
-                  date={h.date}
+                  status={h.status}
+                  statusComment={h.statusComment ?? ""}
+                  updatedStatusDate={h.updatedStatusDate}
                 />
               );
             })}

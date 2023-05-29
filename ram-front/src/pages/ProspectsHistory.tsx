@@ -1,33 +1,40 @@
 // (c) Delta Software 2023, rights reserved.
 
-import Wrapper from "../containers/Wrapper";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import ProspectsHistoryTable from "../components/prospects/ProspectHistoryTable";
+import Wrapper from "../containers/Wrapper";
+import useAxios from "../hooks/useAxios";
+import { IStatus, IStatusProspect } from "../types";
 
-const INITIAL_STATE = [
-  {
-    id: "1",
-    date: new Date(),
-    statusName: "Cliente",
-    comments:
-      "Mantén una actitud positiva y entusiasta durante todo el proceso de venta. La energía positiva es contagiosa y puede marcar la diferencia.",
-  },
-];
-
-interface History {
-  id: string;
-  statusName: string;
-  comments: string;
-  date: Date;
+export interface History {
+  history: IStatusProspect[];
+  name: string;
 }
 
 export default function ProspectsHistory() {
-  const [history, setHistory] = useState<Array<History>>([]);
+  const { id: idProspect } = useParams();
+
+  const { response: historyStatus, error: errorStatus } = useAxios<IStatus[]>({
+    url: `status-prospect/${idProspect}`,
+    method: "GET",
+  });
+
   useEffect(() => {
-    setHistory(INITIAL_STATE);
-  }, []);
+    if (errorStatus) {
+      console.log("Error :", errorStatus);
+    }
+  }, [historyStatus, errorStatus]);
+
+  const [history, setHistory] = useState<Array<IStatus>>([]);
+  useEffect(() => {
+    if (historyStatus) {
+      setHistory(historyStatus);
+    }
+  }, [historyStatus]);
+
   return (
-    <Wrapper title="Historial de prospecto: ">
+    <Wrapper title={`Historial de prospecto: `}>
       <ProspectsHistoryTable History={history} />
     </Wrapper>
   );
