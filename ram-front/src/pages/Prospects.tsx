@@ -14,6 +14,7 @@ export default function Prospects() {
     response,
     loading: prospectsLoading,
     error: prospectsError,
+    callback: refresh,
   } = useAxios<{
     prospects: IProspect[];
   }>({
@@ -42,21 +43,22 @@ export default function Prospects() {
   });
 
   useEffect(() => {
-    if (statusError) {
-      Swal.fire({
-        title: "Error",
-        text: "No se pudo obtener la lista de estatus",
-        icon: "error",
-      });
-    }
-
     if (prospectResponse) {
       Swal.fire({
         title: "Prospecto agregado",
         text: "El prospecto se ha agregado correctamente",
         icon: "success",
       });
+      refresh();
+      console.log(response?.prospects);
       toggleModal();
+    }
+    if (statusError) {
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo obtener la lista de estatus",
+        icon: "error",
+      });
     }
 
     if (prospectError) {
@@ -89,7 +91,7 @@ export default function Prospects() {
   return (
     <Wrapper>
       <>
-        {statusResponse && (
+        {statusResponse && response && (
           <ModalProspectForm
             isOpenModal={isOpen}
             closeModal={toggleModal}
