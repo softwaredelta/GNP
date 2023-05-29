@@ -6,7 +6,6 @@ import { authenticateUser, createUser, addLink } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { adminSeeds, userSeeds } from "../../seeds";
 import { UserEnt } from "../../entities/user.entity";
-import { UserLinkEnt } from "../../entities/user-link.entity";
 
 describe("controller:user", () => {
   let adminAccessToken: string;
@@ -509,7 +508,6 @@ describe("controller:user", () => {
   });
 
   describe("Functions of user's links", () => {
-    let link: UserLinkEnt;
     let user: UserEnt;
     let regularAccessToken: string;
     beforeEach(async () => {
@@ -519,7 +517,7 @@ describe("controller:user", () => {
         name: "Example",
       });
       expect(errorlink).toBeUndefined();
-      link = addedLink;
+      expect(addedLink).toBeDefined();
 
       const { user: createdUser, error } = await createUser({
         email: "test-u-1@delta.tec.mx",

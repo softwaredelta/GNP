@@ -52,12 +52,14 @@ export default function FunnelRow({
         {(propspectsCount * 0.04).toFixed(0)}
       </Table.Cell>
       <Table.Cell align="center">
-        <a href={link} target="_blank" rel="noopener noreferrer">
-          <RiFileExcel2Fill
-            size={20}
-            className="transition-all  duration-300 ease-in-out hover:scale-125 hover:fill-green-500"
-          />
-        </a>
+        <RiFileExcel2Fill
+          size={20}
+          className="transition-all  duration-300 ease-in-out hover:scale-125 hover:fill-green-500"
+          onClick={(event) => {
+            event.stopPropagation();
+            window.open(link, "_blank");
+          }}
+        />
       </Table.Cell>
     </Table.Row>
   );

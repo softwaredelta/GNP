@@ -2,7 +2,7 @@
 
 import { Table } from "flowbite-react";
 import { AiOutlineEye } from "react-icons/ai";
-import { FaEdit } from "react-icons/fa";
+import { FiEdit } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useUrlFile } from "../../lib/files";
 
@@ -13,6 +13,7 @@ export interface MembersCardProps {
   lastName: string;
   isActive: number;
   imageUrl: string;
+  email: string;
 }
 
 export default function RowMember({
@@ -22,6 +23,7 @@ export default function RowMember({
   lastName,
   isActive,
   imageUrl,
+  email,
 }: MembersCardProps): JSX.Element {
   const urlfile = useUrlFile();
   return (
@@ -30,42 +32,51 @@ export default function RowMember({
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
       <Table.Cell
-        className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
-        align="center"
+        className="font-medium text-gray-900 dark:text-white"
+        align="right"
       >
-        <div className="flex justify-start">
+        <div className="flex">
           <img
             className="mx-2 h-10 w-10 rounded-full"
             src={urlfile(imageUrl)}
             alt="Rounded avatar"
           ></img>
-          <div className=" mt-2 text-base">{name + " " + lastName}</div>
+          <div className="mt-2 text-base">{name + " " + lastName}</div>
         </div>
       </Table.Cell>
+      <Table.Cell align="center">{email}</Table.Cell>
       <Table.Cell align="center">
-        {rol === "regular" ? "Agente" : "Gerente"}
+        {rol === "regular" ? (
+          <div className="inline-block rounded-full bg-orange-500 py-1 px-2 font-bold text-white">
+            {"Agente"}
+          </div>
+        ) : (
+          <div className=" inline-block rounded-full bg-gnp-blue-600  py-1  px-2 font-bold text-white">
+            {"Gerente"}
+          </div>
+        )}
       </Table.Cell>
       <Table.Cell align="center">
-        {isActive === 1 ? "Activo" : "Inactivo"}
+        {isActive === 1 ? (
+          <div className="inline-block rounded-full bg-green-400 py-1 px-2 font-bold text-white">
+            {"Activo"}
+          </div>
+        ) : (
+          <div className=" inline-block rounded-full bg-red-400  py-1  px-2 font-bold text-white">
+            {"Inactivo"}
+          </div>
+        )}
       </Table.Cell>
       <Table.Cell align="center">
         <div className=" grid grid-cols-2 ">
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <AiOutlineEye
-              size={20}
-              className="text-gray-500"
-              onClick={() => {
-                alert("Ver perfil");
-              }}
-            />
+            <Link to={`/view-profile/${id}`}>
+              <AiOutlineEye size={24} className="text-gray-500" />
+            </Link>
           </div>
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <Link to={`/profile/${id}`}>
-              <FaEdit
-                color="gray"
-                size={20}
-                className="hover:scale-105 hover:fill-blue-700"
-              />
+              <FiEdit color="gray" size={20} className="hover:scale-105" />
             </Link>
           </div>
         </div>

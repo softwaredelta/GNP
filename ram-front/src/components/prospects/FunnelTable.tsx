@@ -20,6 +20,8 @@ const FunnelProspect = ({ agents, handleOnClick }: Props) => {
     key: "fullName",
   });
 
+  console.log(agents);
+
   return (
     <div className="mt-8 flex flex-col items-center justify-center">
       <div className="mx-auto grid w-10/12 grid-cols-1">

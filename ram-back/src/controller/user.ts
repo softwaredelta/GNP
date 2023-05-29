@@ -153,13 +153,20 @@ authRouter.post("/authenticate", userParametersMiddleware, async (req, res) => {
   res.json(auth);
 });
 
-authRouter.get(
-  "/me",
-  authMiddleware({ neededRoles: [UserRole.REGULAR] }),
-  async (req, res) => {
-    res.json(req.user);
-  },
-);
+authRouter.get("/me", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  if (!req.user) {
+    res.status(401).json({ message: "NO USER" });
+    return;
+  }
+
+  const user = await db.manager.findOne(UserEnt, {
+    where: {
+      id: req.user.id,
+    },
+  });
+  res.json(user);
+});
 
 authRouter.get("/all-agents", async (req, res) => {
   const db = await getDataSource();
@@ -167,7 +174,7 @@ authRouter.get("/all-agents", async (req, res) => {
     where: {
       rolesString: UserRole.REGULAR,
     },
-    select: ["id", "email", "name", "lastName", "CUA"],
+    select: ["id", "email", "name", "lastName", "CUA", "urlPP200"],
   });
   res.json(sales);
 });
@@ -373,7 +380,7 @@ authRouter.post("/edit-link", authMiddleware(), async (req, res) => {
   res.json({ uLink });
 });
 
-authRouter.post("/delete-link", authMiddleware(), async (req, res) => {
+authRouter.delete("/delete-link", authMiddleware(), async (req, res) => {
   const { user } = req;
 
   if (!user) {
@@ -404,6 +411,29 @@ authRouter.get("/links/:id", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const links = await db.manager.find(UserLinkEnt, {
     where: { userId: req.params.id },
+  });
+
+  res.json({ links });
+});
+
+authRouter.get("/my-links/:email", authMiddleware(), async (req, res) => {
+  if (!req.user) {
+    res.status(401).json({ message: "NO USER" });
+    return;
+  }
+
+  const db = await getDataSource();
+  const FindUser = await db.manager.findOne(UserEnt, {
+    where: { email: req.user.email },
+  });
+
+  if (!FindUser) {
+    res.status(401).json({ message: "NO USER" });
+    return;
+  }
+
+  const links = await db.manager.find(UserLinkEnt, {
+    where: { userId: FindUser.id },
   });
 
   res.json({ links });

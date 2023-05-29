@@ -43,7 +43,7 @@ export default function Profile() {
     callback: deleteLink,
   } = useAxios({
     url: `user/delete-link`,
-    method: "POST",
+    method: "DELETE",
   });
   const {
     response: resetPasswordResponse,
@@ -164,6 +164,10 @@ export default function Profile() {
                 formData.append("email", form.email?.toString() as string);
                 formData.append("mobile", form.mobile?.toString() as string);
                 formData.append("CUA", form.CUA?.toString() as string);
+                formData.append(
+                  "urlPP200",
+                  form.urlPP200?.toString() as string,
+                );
                 try {
                   callback?.(formData);
                 } catch (err) {
@@ -184,7 +188,7 @@ export default function Profile() {
             }}
             onTogglePassword={togglePasswordResetForm}
             handleLinkDelete={(idLink) => {
-              deleteLink?.({ idLink });
+              deleteLink?.({ id: idLink });
             }}
             handleLinkPost={({ link, name }) => {
               postLink?.({ link, name });

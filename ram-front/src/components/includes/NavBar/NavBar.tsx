@@ -57,7 +57,7 @@ function NavBar({ onLogout, user, role }: Props) {
               {user?.username}
             </span>
           </Dropdown.Header>
-          <Link to="/">
+          <Link to="/my-profile">
             <Dropdown.Item>Ver Perfil</Dropdown.Item>
           </Link>
           <Link to="/help">
