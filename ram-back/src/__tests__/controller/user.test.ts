@@ -553,17 +553,16 @@ describe("controller:user", () => {
         .expect(401);
     });
 
-    it("adds new link to a user's links", async () => { //NO FUNCIONA
+    it("adds new link to a user's links", async () => {
       const link = "https://example.com";
-      const name = "Example";
-
+      const name = "Example Link";
+    
       const res = await request(app)
         .post(`/user/add-link/${user.id}`)
         .set("Authorization", `Bearer ${regularAccessToken}`)
         .send({ link, name })
         .expect(200);
-
-      console.log(res.body);
+    
       expect(res.body.newLink).toBeDefined();
       expect(res.body.newLink.link).toEqual(link);
       expect(res.body.newLink.name).toEqual(name);
@@ -574,15 +573,15 @@ describe("controller:user", () => {
         link: "https://newexample.com",
         name: "New Example",
       };
-    
+
       const res = await request(app)
         .post("/user/edit-link")
         .set("Authorization", `Bearer ${regularAccessToken}`)
         .send({ id: link.id, ...updatedLink })
         .expect(200);
-    
+
       const { uLink } = res.body;
-    
+
       expect(uLink).toHaveProperty("id", link.id);
       expect(uLink).toHaveProperty("link", updatedLink.link);
       expect(uLink).toHaveProperty("name", updatedLink.name);
@@ -590,20 +589,20 @@ describe("controller:user", () => {
 
     it("deletes existing user link", async () => {
       const res = await request(app)
-      .post("/user/delete-link")
-      .set("Authorization", `Bearer ${regularAccessToken}`)
-      .send({ id: link.id })
-      .expect(200);
-  
+        .post("/user/delete-link")
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .send({ id: link.id })
+        .expect(200);
+
       expect(res.body.links.affected).toBe(1);
     });
 
     it("gets a user with their links", async () => {
       const res = await request(app)
-      .get(`/user/links/${user.id}`)
-      .set("Authorization", `Bearer ${regularAccessToken}`)
-      .expect(200);
-  
+        .get(`/user/links/${user.id}`)
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .expect(200);
+
       const { links } = res.body;
 
       expect(Array.isArray(links)).toBe(true);
