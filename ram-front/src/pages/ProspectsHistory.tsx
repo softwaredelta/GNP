@@ -14,16 +14,11 @@ export interface History {
 
 export default function ProspectsHistory() {
   const { id: idProspect } = useParams();
-  console.log("idProspect:", idProspect);
 
   const { response: historyStatus, error: errorStatus } = useAxios<IStatus[]>({
     url: `status-prospect/${idProspect}`,
     method: "GET",
   });
-  console.log(
-    "🚀 ~ file: ProspectsHistory.tsx:22 ~ ProspectsHistory ~ historyStatus:",
-    historyStatus,
-  );
 
   useEffect(() => {
     if (errorStatus) {
