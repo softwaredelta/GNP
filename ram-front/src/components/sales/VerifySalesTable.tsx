@@ -6,9 +6,9 @@ import { Table } from "flowbite-react";
 import Pagination from "../generics/Pagination";
 import VerifySalesRow from "./VerifySalesRow";
 import { ISell } from "../../types";
-import SalesFilters from "./SalesFilters";
 import { Column, usePagination, useTable } from "react-table";
 import { NumericFormat } from "react-number-format";
+import ManagerSalesFilters from "./ManagerSalesFilters";
 export interface IListSalesProps {
   sales: ISell[];
   onUpdated?: () => void;
@@ -86,7 +86,7 @@ export const VerifySalesTable = ({ sales }: IListSalesProps) => {
   return (
     <div data-testid="Table" className="w-full p-8">
       <div>
-        <SalesFilters sales={sales} setSales={setData} />
+        <ManagerSalesFilters sales={sales} setSales={setData} />
       </div>
       <Table className="row" hoverable={true}>
         <Table.Head>
