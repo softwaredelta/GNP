@@ -11,9 +11,8 @@ import {
   updateLink,
 } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
-import { UserEnt, UserRole} from "../../entities/user.entity";
-import { UserLinkEnt } from "../../entities/user-link.entity"
-import { link } from "joi";
+import { UserEnt, UserRole } from "../../entities/user.entity";
+import { UserLinkEnt } from "../../entities/user-link.entity";
 
 describe("app:user", () => {
   beforeEach(async () => {
@@ -237,7 +236,7 @@ describe("app:user", () => {
         link: "https://example.com",
         name: "Example",
       });
-  
+
       expect(error).toBeUndefined();
       addedLink = link;
     });
@@ -252,20 +251,20 @@ describe("app:user", () => {
       expect(error).toBeUndefined();
       expect(link).toHaveProperty("id");
       expect(link).toHaveProperty("link", "https://example.com");
-      expect(link).toHaveProperty("name","Example Link");
+      expect(link).toHaveProperty("name", "Example Link");
     });
 
     it("modifies an already existing link", async () => {
       const linkId = addedLink.id;
       const newLink = "https://exampleAdd.com";
       const newName = "Example Link Add";
-    
+
       const { link, error } = await updateLink({
         id: linkId,
         link: newLink,
         name: newName,
       });
-    
+
       expect(error).toBeUndefined();
       expect(link).toHaveProperty("id", linkId);
       expect(link).toHaveProperty("link", newLink);
@@ -274,7 +273,6 @@ describe("app:user", () => {
   });
 
   describe("user password reset work", () => {
-
     let addedUser: UserEnt;
     beforeEach(async () => {
       const { user, error } = await createUser({
@@ -305,14 +303,14 @@ describe("app:user", () => {
     it("password is hashed", async () => {
       const email = addedUser.email;
       const newPassword = "password1234";
-  
+
       await resetPassword({ email: email, password: newPassword });
-  
+
       const { auth, error } = await authenticateUser({
         email: email,
         password: newPassword,
       });
-  
+
       expect(error).toBeUndefined();
       expect(auth).toHaveProperty("accessToken");
       expect(auth).toHaveProperty("accessTokenExpiresAt");
@@ -322,6 +320,5 @@ describe("app:user", () => {
       expect(auth).toHaveProperty("name", addedUser.name);
       expect(auth).toHaveProperty("lastName", addedUser.lastName);
     });
-    
   });
 });

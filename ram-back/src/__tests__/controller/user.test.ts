@@ -509,17 +509,17 @@ describe("controller:user", () => {
   });
 
   describe("Functions of user's links", () => {
-    let link: UserLinkEnt;
+    let linkAdded: UserLinkEnt;
     let user: UserEnt;
     let regularAccessToken: string;
     beforeEach(async () => {
-      const { link: addedLink, error: errorlink } = await addLink({
+      const { link, error: errorlink } = await addLink({
         id: "1",
         link: "https://example.com",
         name: "Example",
       });
       expect(errorlink).toBeUndefined();
-      link = addedLink;
+      linkAdded = link;
 
       const { user: createdUser, error } = await createUser({
         email: "test-u-1@delta.tec.mx",
@@ -554,17 +554,16 @@ describe("controller:user", () => {
     });
 
     it("adds new link to a user's links", async () => {
-      const link = "https://example.com";
       const name = "Example Link";
-    
+
       const res = await request(app)
         .post(`/user/add-link/${user.id}`)
         .set("Authorization", `Bearer ${regularAccessToken}`)
-        .send({ link, name })
+        .send({ link: linkAdded.link, name })
         .expect(200);
-    
+
       expect(res.body.newLink).toBeDefined();
-      expect(res.body.newLink.link).toEqual(link);
+      expect(res.body.newLink.link).toEqual(linkAdded.link);
       expect(res.body.newLink.name).toEqual(name);
     });
 
@@ -577,12 +576,12 @@ describe("controller:user", () => {
       const res = await request(app)
         .post("/user/edit-link")
         .set("Authorization", `Bearer ${regularAccessToken}`)
-        .send({ id: link.id, ...updatedLink })
+        .send({ id: linkAdded.id, ...updatedLink })
         .expect(200);
 
       const { uLink } = res.body;
 
-      expect(uLink).toHaveProperty("id", link.id);
+      expect(uLink).toHaveProperty("id", linkAdded.id);
       expect(uLink).toHaveProperty("link", updatedLink.link);
       expect(uLink).toHaveProperty("name", updatedLink.name);
     });
@@ -591,7 +590,7 @@ describe("controller:user", () => {
       const res = await request(app)
         .post("/user/delete-link")
         .set("Authorization", `Bearer ${regularAccessToken}`)
-        .send({ id: link.id })
+        .send({ id: linkAdded.id })
         .expect(200);
 
       expect(res.body.links.affected).toBe(1);
