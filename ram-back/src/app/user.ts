@@ -31,6 +31,9 @@ export interface UserRol {
   lastName: string;
   isActive: boolean;
   imageUrl?: string;
+  urlPP200?: string;
+  CUA?: string;
+  mobile?: number;
 }
 
 export interface UserAuthentication {
@@ -42,6 +45,10 @@ export interface UserAuthentication {
   name: string;
   lastName: string;
   roles: UserRole[];
+  imageUrl?: string;
+  urlPP200?: string;
+  CUA?: string;
+  mobile?: number;
 }
 
 export async function createUser(params: {
@@ -164,7 +171,19 @@ export async function authenticateUser(params: {
     where: {
       email: params.email,
     },
-    select: ["id", "email", "name", "lastName", "password", "rolesString"],
+    select: [
+      "id",
+      "email",
+      "name",
+      "lastName",
+      "password",
+      "rolesString",
+      "imageUrl",
+      "urlPP200",
+      "CUA",
+      "mobile",
+      "isActive",
+    ],
   });
   const correctPass =
     user === null
@@ -187,6 +206,10 @@ export async function authenticateUser(params: {
       name: user.name,
       lastName: user.lastName,
       roles: user.roles,
+      imageUrl: user.imageUrl,
+      urlPP200: user.urlPP200,
+      CUA: user.CUA,
+      mobile: user.mobile,
     },
   };
 }

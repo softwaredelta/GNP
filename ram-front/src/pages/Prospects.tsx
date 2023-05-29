@@ -112,7 +112,12 @@ export default function Prospects() {
           </div>
 
           <div>
-            {response && <ListProspects prospects={response.prospects} />}
+            {response && (
+              <ListProspects
+                listStatus={statusResponse as IStatus[]}
+                prospects={response.prospects}
+              />
+            )}
           </div>
         </div>
       </>

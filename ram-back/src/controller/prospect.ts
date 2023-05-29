@@ -1,17 +1,18 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { RequestHandler, Router } from "express";
-export const prospectRouter = Router();
 import * as j from "joi";
-import { authMiddleware } from "./user";
 import {
   createProspect,
   getProspectStatus,
   getProspectsByAgent,
+  modifyProspect,
 } from "../app/prospect";
 import { getAgentById } from "../app/user";
 import { getDataSource } from "../arch/db-client";
 import { ProspectEnt } from "../entities/prospect.entity";
+import { authMiddleware } from "./user";
+export const prospectRouter = Router();
 
 const prospectParameters = j.object({
   name: j.string().required(),
@@ -104,3 +105,32 @@ prospectRouter.get("/get-agentprospect/:id", async (req, res) => {
   const agentName = await getAgentById(agentId);
   res.status(200).json({ agentName, prospects });
 });
+
+prospectRouter.post(
+  "/update-prospect/:id",
+  authMiddleware(),
+  async (req, res) => {
+    const { statusId, statusComment } = req.body;
+    const prospectId = req.params.id;
+    const { user } = req;
+
+    if (!user) {
+      res.status(401).json({ message: "BAD_DATA" });
+      return;
+    }
+
+    const { prospect, error, reason } = await modifyProspect({
+      prospectId,
+      statusId,
+      statusComment,
+    });
+
+    if (error) {
+      console.log(error);
+      res.status(400).json({ message: error, reason });
+      return;
+    }
+
+    res.status(200).json(prospect);
+  },
+);

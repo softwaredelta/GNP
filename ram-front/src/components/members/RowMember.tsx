@@ -4,6 +4,7 @@ import { Table } from "flowbite-react";
 import { AiOutlineEye } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useUrlFile } from "../../lib/files";
 
 export interface MembersCardProps {
   id: string;
@@ -22,6 +23,7 @@ export default function RowMember({
   isActive,
   imageUrl,
 }: MembersCardProps): JSX.Element {
+  const urlfile = useUrlFile();
   return (
     <Table.Row
       key={id}
@@ -34,7 +36,7 @@ export default function RowMember({
         <div className="flex justify-start">
           <img
             className="mx-2 h-10 w-10 rounded-full"
-            src={imageUrl}
+            src={urlfile(imageUrl)}
             alt="Rounded avatar"
           ></img>
           <div className=" mt-2 text-base">{name + " " + lastName}</div>
