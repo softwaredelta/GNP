@@ -6,7 +6,6 @@ import { authMiddleware } from "./user";
 export const statusProspectRouter = Router();
 
 statusProspectRouter.get("/:id", authMiddleware(), async (req, res) => {
-  // const { user } = req;
   const prospectId = req.params.id;
   try {
     const prospectStatus = await getProspectStatus({ prospectId });

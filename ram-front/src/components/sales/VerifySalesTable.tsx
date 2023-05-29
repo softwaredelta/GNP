@@ -55,7 +55,7 @@ const columns: Column<ISell>[] = [
 ];
 
 export const VerifySalesTable = ({ sales }: IListSalesProps) => {
-  const [setHandleUpdate] = useState<boolean>(false);
+  const [handleUpdate, setHandleUpdate] = useState<boolean>(false);
 
   const [data, setData] = useState<ISell[]>(sales);
   const {
@@ -79,7 +79,7 @@ export const VerifySalesTable = ({ sales }: IListSalesProps) => {
   useEffect(() => {
     if (shouldUpdate) {
       setHandleUpdate(false);
-      setShouldUpdate(false);
+      if (handleUpdate) setShouldUpdate(false);
     }
   }, [shouldUpdate]);
 

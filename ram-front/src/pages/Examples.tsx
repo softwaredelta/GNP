@@ -18,7 +18,6 @@ import ManagerDelivery from "../components/generics/cards/info/ManagerDelivery";
 import SkeletonCard from "../components/generics/skeleton/SkeletonCard";
 import SkeletonDiv from "../components/generics/skeleton/SkeletonDiv";
 import SkeletonText from "../components/generics/skeleton/SkeletonText";
-// import ProspectListHistory from "../components/prospects/ProspectListHistory";
 import SearchAgentTable from "../components/tables/SearchAgentTable";
 import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import useAlert from "../hooks/useAlert";
@@ -186,8 +185,6 @@ export default function Examples() {
       </div>
       <div className="md:col-span-3 ">
         <DeliveryCard
-          // deliveryID="test-delivery"
-          // onFileSubmit={() => {}}
           color="blue"
           nameDelivery="Nombre de la entrega"
           image="https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg"
