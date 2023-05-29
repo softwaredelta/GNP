@@ -5,30 +5,18 @@ import React, { useEffect, useState } from "react";
 import { Alert, Table } from "flowbite-react";
 import { AiFillWarning } from "react-icons/ai";
 import VerifySalesRow from "./VerifySalesRow";
-
-export interface AssuranceType {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface User {
-  id: string;
-  name: string;
-  lastName: string;
-  email: string;
-}
+import { IUser, IAssuranceType } from "../../types";
 export interface IListSalesProps {
   sales: {
     id: string;
     policyNumber: string;
-    assuranceType: AssuranceType;
+    assuranceType: IAssuranceType;
     paidDate: Date;
     yearlyFee: string;
     contractingClient: string;
     status: string;
     periodicity: string;
-    user: User;
+    user: IUser;
     evidenceUrl: string;
   }[];
   onUpdated?: () => void;
@@ -49,9 +37,12 @@ export const VerifySalesTable = ({ sales }: IListSalesProps) => {
           <Table.HeadCell>Nombre del agente</Table.HeadCell>
           <Table.HeadCell>Nombre del Cliente</Table.HeadCell>
           <Table.HeadCell>Póliza</Table.HeadCell>
-          <Table.HeadCell>Monto</Table.HeadCell>
+          <Table.HeadCell>Prima anual</Table.HeadCell>
+          <Table.HeadCell>Prima pagada</Table.HeadCell>
+          <Table.HeadCell>Periodicidad</Table.HeadCell>
           <Table.HeadCell>Tipo de Seguro</Table.HeadCell>
-          <Table.HeadCell>Fecha</Table.HeadCell>
+          <Table.HeadCell>Fecha Emisión</Table.HeadCell>
+          <Table.HeadCell>Fecha Pago</Table.HeadCell>
           <Table.HeadCell>Estado</Table.HeadCell>
           <Table.HeadCell> Acciones </Table.HeadCell>
         </Table.Head>
