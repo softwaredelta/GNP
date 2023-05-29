@@ -1,11 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
 
-import Wrapper from "../containers/Wrapper";
-import ProfileForm from "../components/forms/ProfileForm";
-import useAxios from "../hooks/useAxios";
-import { ILink, IUser } from "../types";
-import { useUrlFile } from "../lib/files";
 import { useParams } from "react-router-dom";
+import ProfileForm from "../components/forms/ProfileForm";
+import Wrapper from "../containers/Wrapper";
+import useAxios from "../hooks/useAxios";
+import { useUrlFile } from "../lib/files";
+import { ILink, IUser } from "../types";
 
 export default function ViewProfile() {
   const { id } = useParams<{ id: string }>();

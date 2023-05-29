@@ -1,12 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
-import { ILink, IUser } from "../../types";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-import { TbSend } from "react-icons/tb";
-import LinkList from "../generics/lists/LinkList";
-import ProfileCard from "../generics/cards/ProfileCard";
 import { MdLockReset } from "react-icons/md";
+import { TbSend } from "react-icons/tb";
+import Swal from "sweetalert2";
+import { ILink, IUser } from "../../types";
+import ProfileCard from "../generics/cards/ProfileCard";
+import LinkList from "../generics/lists/LinkList";
 
 export interface IUserFormProps {
   initialUser: IUser;

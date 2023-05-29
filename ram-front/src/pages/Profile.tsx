@@ -1,15 +1,15 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { useParams, useNavigate } from "react-router-dom";
-import Wrapper from "../containers/Wrapper";
-import ProfileForm from "../components/forms/ProfileForm";
-import useAxios from "../hooks/useAxios";
-import { ILink, IUser } from "../types";
-import useModal from "../hooks/useModal";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import ModalPasswordReset from "../components/forms/ModalPasswordReset";
-import { useEffect } from "react";
+import ProfileForm from "../components/forms/ProfileForm";
+import Wrapper from "../containers/Wrapper";
+import useAxios from "../hooks/useAxios";
+import useModal from "../hooks/useModal";
 import { useUrlFile } from "../lib/files";
+import { ILink, IUser } from "../types";
 
 export default function Profile() {
   const { id } = useParams<{ id: string }>();

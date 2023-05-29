@@ -75,6 +75,8 @@ export interface IUser {
   phone?: number;
   registerDate?: Date;
   role?: string;
+  rolesString?: string;
+  createdAt?: Date;
   CUA?: string;
   urlPP200?: string;
 }

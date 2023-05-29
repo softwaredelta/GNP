@@ -3,10 +3,10 @@
 import { Badge } from "flowbite-react";
 import { ChangeEvent } from "react";
 import { BsCameraFill } from "react-icons/bs";
-import usePreviewImage from "../../../hooks/usePreviewImage";
-import { IUser } from "../../../types";
 import { FiEdit2 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import usePreviewImage from "../../../hooks/usePreviewImage";
+import { IUser } from "../../../types";
 
 interface ProfileCardProps {
   user: IUser;
@@ -60,17 +60,30 @@ export default function ProfileCard({
           </div>
         </div>
         <div className="mt-5 flex justify-center">
-          <div className="text-3xl font-bold">
+          <div className="text-center text-3xl font-bold">
             {user.name + " " + user.lastName}
           </div>
         </div>
-        <div className="flex justify-center">
+        <div className="mt-2 flex justify-center">
           <div className="text-xl font-bold text-orange-500">
-            {user.role || "Gerente"}
+            {user.rolesString &&
+              user.rolesString
+                .split("_")
+                .map(
+                  (role) =>
+                    role.charAt(0).toUpperCase() + role.slice(1).toLowerCase(),
+                )
+                .join(" ")}
           </div>
         </div>
-        <div className="flex justify-center">
-          <Badge size="md">3 days ago</Badge>
+        <div className="mt-2 flex justify-center">
+          <Badge size="md">
+            {user.createdAt &&
+              `${Math.floor(
+                (new Date().getTime() - new Date(user.createdAt).getTime()) /
+                  (1000 * 60 * 60 * 24),
+              )} days ago`}
+          </Badge>
         </div>
       </div>
       {!isEdit && (

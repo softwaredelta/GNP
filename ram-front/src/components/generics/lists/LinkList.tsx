@@ -81,7 +81,7 @@ const LinkList = ({
           </Table.Head>
           {links.length === 0 ? (
             <div className="flex h-32 items-center justify-center">
-              {isEdit ? "Este usuario no tiene links" : "No tienes links aún"}
+              {isEdit ? "Aún no hay links" : "No tienes links aún"}
             </div>
           ) : (
             <Table.Body>
