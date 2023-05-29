@@ -102,6 +102,20 @@ export interface IProspect {
   }[];
 }
 
+export interface IStatusProspect {
+  id?: string;
+  updatedStatusDate?: Date;
+  statusComment?: string;
+  prospectId?: string;
+  statusId?: string;
+  status?: Status;
+}
+
+export interface Status {
+  id: string;
+  statusName: string;
+}
+
 export interface IMembers {
   id: string;
   rol: string;

@@ -39,3 +39,24 @@ export async function setStatusToProspect(params: {
       };
     });
 }
+
+export async function getProspectStatus(params: {
+  prospectId: string;
+}): Promise<ProspectStatusEnt[]> {
+  const ds = await getDataSource();
+
+  const { prospectId } = params;
+
+  return ds.manager
+    .find(ProspectStatusEnt, {
+      where: { prospectId },
+      relations: ["status"],
+    })
+    .then((prospectStatus) => {
+      return prospectStatus;
+    })
+    .catch((e) => {
+      console.log(e);
+      return [];
+    });
+}
