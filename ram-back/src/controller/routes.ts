@@ -11,6 +11,7 @@ import { filesRouter } from "./files";
 import { userDeliveryRouter } from "./user-delivery";
 import { prospectRouter } from "./prospect";
 import { statusRouter } from "./status";
+import { statusProspectRouter } from "./status-prospect";
 
 export const router = Router();
 
@@ -24,3 +25,4 @@ router.use("/assurance-types", assuranceTypeRouter);
 router.use("/files", filesRouter);
 router.use("/prospect", prospectRouter);
 router.use("/status", statusRouter);
+router.use("/status-prospect", statusProspectRouter);
