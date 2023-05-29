@@ -15,18 +15,3 @@ statusProspectRouter.get("/:id", authMiddleware(), async (req, res) => {
     res.status(400).json({ message: "BAD_DATA" });
   }
 });
-
-// statusProspectRouter.get("/:id", authMiddleware(), async (req, res) => {
-//   const { user } = req;
-//   const prospectId = req.params.id;
-//   try {
-//     const prospectStatus = await getProspectStatus({ prospectId });
-//     const response = prospectStatus.map((status) => ({
-//       name: status.name,
-//       status: status.status,
-//     }));
-//     res.status(201).json(response);
-//   } catch (e) {
-//     res.status(400).json({ message: "BAD_DATA" });
-//   }
-// });
