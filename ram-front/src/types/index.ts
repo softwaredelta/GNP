@@ -123,6 +123,7 @@ export interface IMembers {
   lastName: string;
   isActive: number;
   imageUrl: string;
+  email: string;
 }
 
 export interface ILink {
