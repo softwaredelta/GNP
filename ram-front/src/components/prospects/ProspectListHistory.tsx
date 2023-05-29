@@ -47,9 +47,9 @@ export function ProspectListHistory({
           </div>
           <p className="font-semibold text-gray-500">{status?.statusName}</p>
         </div>
-        <div className="flex w-2/3 items-center justify-center">
+        <div className="flex w-3/4 items-center justify-center">
           <div className="mb-2 text-right">
-            <p className="text-center font-semibold text-gray-500">
+            <p className="text-justify font-semibold text-gray-500">
               {statusComment}
             </p>
           </div>
