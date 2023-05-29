@@ -26,6 +26,7 @@ describe("Verify sales table", () => {
                 user: {
                   email: "test@delta.tec.mx",
                   name: "Oliver",
+                  lastName: "Queen",
                   id: "test-user",
                 },
                 assuranceType: {

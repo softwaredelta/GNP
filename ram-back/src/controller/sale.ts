@@ -1,14 +1,14 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Router, RequestHandler } from "express";
-import { createSale, updateSale } from "../app/sale";
-export const salesRouter = Router();
+import { RequestHandler, Router } from "express";
 import * as j from "joi";
+import multer from "multer";
+import { uploadFile } from "../app/file";
+import { createSale, updateSale } from "../app/sale";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
-import multer from "multer";
-import { uploadFile } from "../app/file";
+export const salesRouter = Router();
 
 const upload = multer();
 
@@ -133,13 +133,30 @@ salesRouter.get("/my-sales", authMiddleware(), async (req, res) => {
   res.json(sales);
 });
 
-salesRouter.get("/verify-sales", authMiddleware(), async (req, res) => {
+salesRouter.get("/verify-sales/pending", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
     relations: { user: true, assuranceType: true },
     where: { status: "sin revisar" },
   });
 
+  res.json({ sales });
+});
+
+salesRouter.get("/verify-sales/aproved", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const sales = await db.manager.find(SellEnt, {
+    relations: { user: true, assuranceType: true },
+    where: { status: "aceptada" },
+  });
+  res.json({ sales });
+});
+salesRouter.get("/verify-sales/refused", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const sales = await db.manager.find(SellEnt, {
+    relations: { user: true, assuranceType: true },
+    where: { status: "rechazada" },
+  });
   res.json({ sales });
 });
 
