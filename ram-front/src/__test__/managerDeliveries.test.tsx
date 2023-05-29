@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 import "@testing-library/jest-dom/extend-expect";
-import { getByText, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
