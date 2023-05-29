@@ -1,9 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { FiEdit } from "react-icons/fi";
+import useModal from "../../hooks/useModal";
 import { IStatus } from "../../types";
 import ModalModifyStatusProspect from "../forms/ModalModifyStatusProspect";
-import useModal from "../../hooks/useModal";
 
 export interface ProspectsCardProps {
   listStatus?: IStatus[];
@@ -61,7 +61,9 @@ export default function RowProspect({
         </div>
 
         <div className=" col-span-3 flex h-full items-center justify-center border-l-2 border-black/10 py-4 px-4">
-          {prospectStatus[0].statusComment}
+          {prospectStatus[0].statusComment.length > 50
+            ? prospectStatus[0].statusComment.substring(0, 50) + "..."
+            : prospectStatus[0].statusComment}{" "}
         </div>
 
         <div className="flex h-full items-center justify-center border-l-2 border-black/10 py-4 px-4 ">
@@ -79,7 +81,10 @@ export default function RowProspect({
           />
           <button
             className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={toggleModal}
+            onClick={(event) => {
+              event.stopPropagation();
+              toggleModal();
+            }}
           >
             <FiEdit className="text-2xl" />
           </button>
