@@ -106,31 +106,26 @@ prospectRouter.get("/get-agentprospect/:id", async (req, res) => {
   res.status(200).json({ agentName, prospects });
 });
 
-prospectRouter.post(
-  "/update-prospect/:id",
-  authMiddleware(),
-  async (req, res) => {
-    const { statusId, statusComment } = req.body;
-    const prospectId = req.params.id;
-    const { user } = req;
+prospectRouter.post("/update-prospect", authMiddleware(), async (req, res) => {
+  const { statusId, statusComment, prospectId } = req.body;
+  const { user } = req;
 
-    if (!user) {
-      res.status(401).json({ message: "BAD_DATA" });
-      return;
-    }
+  if (!user) {
+    res.status(401).json({ message: "BAD_DATA" });
+    return;
+  }
 
-    const { prospect, error, reason } = await modifyProspect({
-      prospectId,
-      statusId,
-      statusComment,
-    });
+  const { prospect, error, reason } = await modifyProspect({
+    prospectId,
+    statusId,
+    statusComment,
+  });
 
-    if (error) {
-      console.log(error);
-      res.status(400).json({ message: error, reason });
-      return;
-    }
+  if (error) {
+    console.log(error);
+    res.status(400).json({ message: error, reason });
+    return;
+  }
 
-    res.status(200).json(prospect);
-  },
-);
+  res.status(200).json(prospect);
+});

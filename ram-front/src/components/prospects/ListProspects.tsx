@@ -8,11 +8,17 @@ import RowProspect from "../prospects/RowProspect";
 export interface IListProspectsProps {
   prospects: IProspect[];
   listStatus?: IStatus[];
+  handleStatusEdit: (data: {
+    prospectId: string;
+    statusId: string;
+    statusComment: string;
+  }) => void;
 }
 
 export default function ListProspects({
   prospects,
   listStatus,
+  handleStatusEdit,
 }: IListProspectsProps): JSX.Element {
   const navigate = useNavigate();
 
@@ -77,13 +83,15 @@ export default function ListProspects({
             onClick={() => navigate(`/prospect-history/${prospect.id}`)}
           >
             <RowProspect
-              key={prospect.id}
               id={prospect.id}
               name={prospect.name}
               firstSurname={prospect.firstSurname}
               secondSurname={prospect.secondSurname}
               prospectStatus={prospect.prospectStatus}
               listStatus={listStatus}
+              handleEdit={(prospectId, statusId, statusComment) =>
+                handleStatusEdit({ prospectId, statusId, statusComment })
+              }
             />
           </div>
         );

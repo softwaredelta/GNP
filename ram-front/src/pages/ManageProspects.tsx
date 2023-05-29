@@ -20,7 +20,12 @@ export default function ManageProspects() {
       <>
         <div>
           {prospectsResponse && (
-            <ListProspects prospects={prospectsResponse.prospects} />
+            <ListProspects
+              prospects={prospectsResponse.prospects}
+              handleStatusEdit={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
           )}
         </div>
       </>
