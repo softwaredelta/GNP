@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { useOpenFile } from "../lib/files";
 import { FiEye } from "react-icons/fi";
+import useAlert from "../hooks/useAlert";
 
 export default function DeliveryGroup(): JSX.Element {
   const [file, setFile] = useState<File | null | string>(null);
@@ -45,6 +46,8 @@ export default function DeliveryGroup(): JSX.Element {
     },
   });
 
+  const alert = useAlert();
+
   useEffect(() => {
     if (responsePost) {
       Swal.fire({
@@ -52,7 +55,6 @@ export default function DeliveryGroup(): JSX.Element {
         text: "El entregable se ha guardado correctamente.",
         icon: "success",
       });
-
       updateDeliveryStatus();
     }
   }, [responsePost]);
@@ -67,12 +69,14 @@ export default function DeliveryGroup(): JSX.Element {
         console.error(err);
       }
     } else {
-      Swal.fire({
-        title: "Error!",
-        text: `No seleccionaste archivo.`,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      alert.showAlert(
+        {
+          type: "error",
+          description: "No seleccionaste archivo",
+          message: "Error!",
+        },
+        5,
+      );
     }
   };
 
