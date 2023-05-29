@@ -1,8 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Table } from "flowbite-react";
+import { Alert, Table } from "flowbite-react";
+import { AiFillWarning } from "react-icons/ai";
 import VerifySalesRow from "./VerifySalesRow";
 
 export interface AssuranceType {
@@ -14,6 +15,7 @@ export interface AssuranceType {
 export interface User {
   id: string;
   name: string;
+  lastName: string;
   email: string;
 }
 export interface IListSalesProps {
@@ -55,14 +57,22 @@ export const VerifySalesTable = ({ sales }: IListSalesProps) => {
         </Table.Head>
         <Table.Body className="divide-y">
           {sales.length === 0 && (
-            <div className="text-center">No hay ventas para verificar</div>
+            <div className="flex items-center justify-center">
+              <Alert
+                color="info"
+                icon={AiFillWarning}
+                className="ml-10 w-full text-center font-bold"
+              >
+                <h1 className="text-base">No hay ventas para verificar</h1>
+              </Alert>
+            </div>
           )}
           {sales.map((sale) => {
             return (
               <VerifySalesRow
                 key={sale.id}
                 id={sale.id}
-                agentName={sale.user.email}
+                agentName={sale.user.name + " " + sale.user.lastName}
                 contractingClient={sale.contractingClient}
                 yearlyFee={sale.yearlyFee}
                 assuranceTypeName={sale.assuranceType.name}
