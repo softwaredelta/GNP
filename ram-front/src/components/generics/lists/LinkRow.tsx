@@ -9,8 +9,9 @@ interface LinkRowProps {
   id: string;
   name: string;
   link: string;
-  onDeleted: (id: string) => void;
-  onEdited: (id: string, name: string, link: string) => void;
+  onDeleted?: (id: string) => void;
+  onEdited?: (id: string, name: string, link: string) => void;
+  isEdit?: boolean;
 }
 
 export default function LinkRow({
@@ -19,6 +20,7 @@ export default function LinkRow({
   link,
   onDeleted,
   onEdited,
+  isEdit = true,
 }: LinkRowProps) {
   const [edit, setEdit] = useState<boolean>(false);
   const [urlLink, setLink] = useState<string>(link);
@@ -29,7 +31,7 @@ export default function LinkRow({
       key={id}
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
-      {edit ? (
+      {edit && isEdit ? (
         <>
           <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
             <div className="mb-2">
@@ -55,7 +57,7 @@ export default function LinkRow({
                   size={20}
                   className="text-green-500"
                   onClick={() => {
-                    onEdited(id, nameLink, urlLink);
+                    if (onEdited) onEdited(id, nameLink, urlLink);
                     setEdit(false);
                   }}
                 />
@@ -63,7 +65,7 @@ export default function LinkRow({
             </div>
           </Table.Cell>
         </>
-      ) : (
+      ) : isEdit && !edit ? (
         <>
           <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
             <a
@@ -87,12 +89,23 @@ export default function LinkRow({
                 <FiTrash2
                   size={20}
                   className="text-red-500"
-                  onClick={() => onDeleted(id)}
+                  onClick={() => {
+                    if (onDeleted) onDeleted(id);
+                  }}
                 />
               </div>
             </div>
           </Table.Cell>
         </>
+      ) : (
+        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+          <a
+            href={urlLink}
+            className="overflow-hidden hover:text-sky-500 hover:underline"
+          >
+            {nameLink}
+          </a>
+        </Table.Cell>
       )}
     </Table.Row>
   );
