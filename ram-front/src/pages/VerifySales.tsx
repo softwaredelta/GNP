@@ -1,12 +1,13 @@
 // (c) Delta Software 2023, rights reserved.
 
+import { Tabs } from "flowbite-react";
 import {
   AssuranceType,
   User,
   VerifySalesTable,
 } from "../components/sales/VerifySalesTable";
-import useAxios from "../hooks/useAxios";
 import Wrapper from "../containers/Wrapper";
+import useAxios from "../hooks/useAxios";
 
 export default function VerifySales() {
   const { response, loading } = useAxios<{
@@ -32,11 +33,20 @@ export default function VerifySales() {
   return (
     <>
       <Wrapper title="Ventas">
-        <div>
-          <div className="mt-8 flex flex-col items-center justify-center">
-            {response && <VerifySalesTable sales={response.sales} />}
-          </div>
-        </div>
+        <Tabs.Group
+          aria-label="Default tabs"
+          className="px-8 pb-4"
+          style="default"
+        >
+          <Tabs.Item active={true} title="Sin Revisar">
+            <div>
+              <div className="mt-8 flex flex-col items-center justify-center">
+                {response && <VerifySalesTable sales={response.sales} />}
+              </div>
+            </div>
+          </Tabs.Item>
+          <Tabs.Item title="Revisados">{/*  "Revisados" */}</Tabs.Item>
+        </Tabs.Group>
       </Wrapper>
     </>
   );
