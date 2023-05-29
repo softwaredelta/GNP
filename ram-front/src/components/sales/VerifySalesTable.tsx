@@ -63,9 +63,7 @@ export const VerifySalesTable = ({ sales }: IListSalesProps) => {
                 icon={AiFillWarning}
                 className="ml-10 w-full text-center font-bold"
               >
-                <h1 className="text-base">
-                  No hay registro de ventas sin revisar
-                </h1>
+                <h1 className="text-base">No hay ventas para verificar</h1>
               </Alert>
             </div>
           )}
