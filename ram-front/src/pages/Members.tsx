@@ -17,7 +17,6 @@ export default function Members() {
     method: "GET",
   });
 
-  console.log(membersResponse);
   const {
     response: createResponse,
     loading: createLoading,

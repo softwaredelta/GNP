@@ -1,11 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
+import { Alert, Tabs } from "flowbite-react";
+import { AiFillWarning } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
 import { IDelivery } from "../types";
-import { Tabs, Alert } from "flowbite-react";
-import { AiFillWarning } from "react-icons/ai";
 
 export default function ManagerDeliveries(): JSX.Element {
   const { id } = useParams();
@@ -14,6 +14,10 @@ export default function ManagerDeliveries(): JSX.Element {
     url: `deliveries/${id}`,
     method: "GET",
   });
+  console.log(
+    "🚀 ~ file: ManagerDelivery.tsx:16 ~ ManagerDeliveries ~ deliveries:",
+    delivery,
+  );
 
   const { response: ReviewedDeliveries } = useAxios<IDelivery>({
     url: `deliveries/reviewed/${id}`,

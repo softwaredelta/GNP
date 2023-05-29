@@ -1,16 +1,16 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React from "react";
 import { Table } from "flowbite-react";
-import useAxios from "../../hooks/useAxios";
+import React from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { FcCheckmark } from "react-icons/fc";
 import { RxCross1 } from "react-icons/rx";
-import Swal from "sweetalert2";
 import { NumericFormat } from "react-number-format";
-import { ISell } from "../../types";
+import Swal from "sweetalert2";
+import useAxios from "../../hooks/useAxios";
 import useModal from "../../hooks/useModal";
 import { useOpenFile } from "../../lib/files";
+import { ISell } from "../../types";
 import Modal from "../generics/Modal";
 
 type Props = {
@@ -97,7 +97,7 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
         <div className="grid grid-cols-3 items-center justify-center ">
-          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <AiOutlineEye
               size={20}
               className="text-gray-500"
@@ -116,14 +116,14 @@ export default function SalesRow({ sale, onUpdated }: Props) {
               </div>
             </Modal>
           )}
-          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <FcCheckmark
               size={20}
               className="text-green-500"
               onClick={() => handleUpdate("aceptada")}
             />
           </div>
-          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <RxCross1
               size={20}
               className="text-red-500"

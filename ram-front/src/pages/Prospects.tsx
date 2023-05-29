@@ -53,7 +53,6 @@ export default function Prospects() {
 
   useEffect(() => {
     if (newStatus) {
-      console.log("llega aquí");
       Swal.fire({
         title: "Estado del prospecto actualizado",
         text: "El prospecto se ha actualizado correctamente",
