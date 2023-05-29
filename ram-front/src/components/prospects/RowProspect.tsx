@@ -15,6 +15,11 @@ export interface ProspectsCardProps {
     status: IStatus;
     statusComment: string;
   }[];
+  handleEdit: (
+    prospectId: string,
+    statusId: string,
+    statusComment: string,
+  ) => void;
 }
 
 export default function RowProspect({
@@ -24,6 +29,7 @@ export default function RowProspect({
   secondSurname,
   prospectStatus,
   listStatus,
+  handleEdit,
 }: ProspectsCardProps): JSX.Element {
   const colorOptions: { [key: string]: string } = {
     "Nuevo prospecto": "bg-gnp-blue-500",
@@ -60,12 +66,16 @@ export default function RowProspect({
 
         <div className="flex h-full items-center justify-center border-l-2 border-black/10 py-4 px-4 ">
           <ModalModifyStatusProspect
+            statusId={prospectStatus[0].status.id}
+            statusComment={prospectStatus[0].statusComment}
             prospectId={id}
             prospectName={`${name} ${firstSurname} ${secondSurname}`}
             listStatus={listStatus}
-            handleModifyStatus={() => {}}
             isOpenModal={isOpen}
             closeModal={toggleModal}
+            handleEdit={(prospectId, statusId, statusComment) =>
+              handleEdit(prospectId, statusId, statusComment)
+            }
           />
           <button
             className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
