@@ -1,15 +1,15 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Table } from "flowbite-react";
-import { IUserDelivery } from "../../types";
 import { useMemo } from "react";
-import { RiFileSearchFill } from "react-icons/ri";
-import { type IconType } from "react-icons/lib";
 import { FcCheckmark } from "react-icons/fc";
+import { type IconType } from "react-icons/lib";
+import { RiFileSearchFill } from "react-icons/ri";
 import { RxCross1 } from "react-icons/rx";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
 import { useOpenFile } from "../../lib/files";
+import { IUserDelivery } from "../../types";
 
 function ActionButton({
   color,
@@ -107,7 +107,9 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
           alt="Rounded avatar"
         />
       </Table.Cell>
-      <Table.Cell>{delivery.user.email}</Table.Cell>
+      <Table.Cell>
+        {delivery.user.name + " " + delivery.user.lastName}
+      </Table.Cell>
 
       <Table.Cell>
         {delivery.status === "Aceptado" ? (
