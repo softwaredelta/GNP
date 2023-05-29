@@ -1,62 +1,26 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Tabs } from "flowbite-react";
-import {
-  AssuranceType,
-  User,
-  VerifySalesTable,
-} from "../components/sales/VerifySalesTable";
+import { VerifySalesTable } from "../components/sales/VerifySalesTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
+import { ISell } from "../types";
 
 export default function VerifySales() {
   const { response: pendingResponse, loading: loadingResponse } = useAxios<{
-    sales: {
-      id: string;
-      policyNumber: string;
-      assuranceType: AssuranceType;
-      paidDate: Date;
-      yearlyFee: string;
-      contractingClient: string;
-      status: string;
-      periodicity: string;
-      user: User;
-      evidenceUrl: string;
-    }[];
+    sales: ISell[];
   }>({
     url: `sales/verify-sales/pending`,
     method: "GET",
   });
   const { response: verifiedResponse, loading: loadingVerified } = useAxios<{
-    sales: {
-      id: string;
-      policyNumber: string;
-      assuranceType: AssuranceType;
-      paidDate: Date;
-      yearlyFee: string;
-      contractingClient: string;
-      status: string;
-      periodicity: string;
-      user: User;
-      evidenceUrl: string;
-    }[];
+    sales: ISell[];
   }>({
     url: `sales/verify-sales/aproved`,
     method: "GET",
   });
   const { response: refusedResponse, loading: loadingRefused } = useAxios<{
-    sales: {
-      id: string;
-      policyNumber: string;
-      assuranceType: AssuranceType;
-      paidDate: Date;
-      yearlyFee: string;
-      contractingClient: string;
-      status: string;
-      periodicity: string;
-      user: User;
-      evidenceUrl: string;
-    }[];
+    sales: ISell[];
   }>({
     url: `sales/verify-sales/refused`,
     method: "GET",
@@ -71,7 +35,7 @@ export default function VerifySales() {
       <Wrapper title="Ventas">
         <Tabs.Group
           aria-label="Default tabs"
-          className="px-8 pb-4"
+          className="px-8 py-4"
           style="default"
         >
           <Tabs.Item active={true} title="Sin Revisar">

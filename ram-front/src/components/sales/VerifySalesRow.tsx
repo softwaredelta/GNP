@@ -8,40 +8,20 @@ import { FcCheckmark } from "react-icons/fc";
 import { RxCross1 } from "react-icons/rx";
 import Swal from "sweetalert2";
 import { NumericFormat } from "react-number-format";
-// import { capitalize } from "../../../utils/formats.ts";
-
-import Modal from "../generics/Modal";
+import { ISell } from "../../types";
 import useModal from "../../hooks/useModal";
 import { useOpenFile } from "../../lib/files";
+import Modal from "../generics/Modal";
 
 type Props = {
-  id: string;
-  agentName?: string;
-  contractingClient: string;
-  yearlyFee: string;
-  assuranceTypeName: string;
-  paidDate: Date;
-  status: string;
-  policyNum: string;
-  evidenceUrl: string;
+  sale: ISell;
   onUpdated: () => void;
 };
 
-export default function VerifySalesRow({
-  id,
-  agentName,
-  contractingClient,
-  yearlyFee,
-  assuranceTypeName,
-  paidDate,
-  status,
-  policyNum,
-  evidenceUrl,
-  onUpdated,
-}: Props) {
+export default function SalesRow({ sale, onUpdated }: Props) {
   const { isOpen, toggleModal } = useModal();
   const { callback } = useAxios({
-    url: `sales/update-status/${id}`,
+    url: `sales/update-status/${sale.id}`,
     method: "POST",
     body: {},
   });
@@ -71,40 +51,57 @@ export default function VerifySalesRow({
       }
     });
   }
+
   const capitalize = (word: string): string => {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   };
-
   return (
     <Table.Row
-      key={id}
+      key={sale.id}
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        {agentName ? agentName : "Sin agente"}
+        {sale.contractingClient}
       </Table.Cell>
-      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        {contractingClient}
-      </Table.Cell>
-      <Table.Cell>{policyNum}</Table.Cell>
+      <Table.Cell>{sale.policyNumber}</Table.Cell>
       <Table.Cell>
         <NumericFormat
-          value={yearlyFee}
+          value={sale.yearlyFee}
           displayType={"text"}
           thousandSeparator={true}
+          decimalScale={2}
+          decimalSeparator="."
+          fixedDecimalScale={true}
           prefix={"$"}
         />
       </Table.Cell>
-      <Table.Cell>{assuranceTypeName}</Table.Cell>
-      <Table.Cell>{new Date(paidDate).toLocaleDateString()}</Table.Cell>
-      <Table.Cell>{capitalize(status)}</Table.Cell>
+      <Table.Cell>
+        <NumericFormat
+          value={sale.paidFee}
+          displayType={"text"}
+          thousandSeparator={true}
+          decimalScale={2}
+          decimalSeparator="."
+          fixedDecimalScale={true}
+          prefix={"$"}
+        />{" "}
+      </Table.Cell>
+      <Table.Cell>{sale.periodicity}</Table.Cell>
+      <Table.Cell>{sale.assuranceType?.name}</Table.Cell>
+      <Table.Cell>
+        {new Date(sale.emissionDate as Date).toLocaleDateString()}
+      </Table.Cell>
+      <Table.Cell>
+        {new Date(sale.paidDate as Date).toLocaleDateString()}
+      </Table.Cell>
+      <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
         <div className="grid grid-cols-3 items-center justify-center ">
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <AiOutlineEye
               size={20}
               className="text-gray-500"
-              onClick={() => openFile(evidenceUrl)}
+              onClick={() => openFile(sale.evidenceUrl as string)}
             />
           </div>
 
