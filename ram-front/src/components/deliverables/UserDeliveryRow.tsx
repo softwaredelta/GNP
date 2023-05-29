@@ -60,7 +60,7 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
 
     let dateString = dateFormatter.format(
       Math.floor(
-        (new Date(delivery.dateDelivery).getTime() - new Date().getTime()) /
+        (new Date().getTime() - new Date(delivery.dateDelivery).getTime()) /
           (1000 * 60 * 60 * 24),
       ),
       "day",
