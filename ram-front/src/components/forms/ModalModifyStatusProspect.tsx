@@ -1,75 +1,39 @@
 // (c) Delta Software 2023, rights reserved.
-
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-import useAxios from "../../hooks/useAxios";
 import { IStatus } from "../../types";
 import Modal from "../generics/Modal";
-
-export interface FormValues {
-  statusId: string;
-  statusComment: string;
-}
+import { useState } from "react";
 
 export interface IModalModifyStatusProspectProps {
   prospectName: string;
   prospectId: string;
-  handleModifyStatus: (data: FormValues) => void;
+  statusId: string;
+  statusComment: string;
   closeModal: VoidFunction;
   isOpenModal: boolean;
   listStatus?: IStatus[];
+  handleEdit: (
+    prospectId: string,
+    statusId: string,
+    statusComment: string,
+  ) => void;
 }
 
 export default function ModalModifyStatusProspect({
   prospectId,
   prospectName,
-  handleModifyStatus,
+  statusId,
+  statusComment,
   closeModal,
   isOpenModal,
   listStatus = [],
+  handleEdit,
 }: IModalModifyStatusProspectProps) {
-  const { register, handleSubmit, reset } = useForm<FormValues>();
+  const [newStatus, setStatus] = useState<string>(statusId);
+  const [comment, setComment] = useState<string>(statusComment);
 
-  const { response, error, callback } = useAxios({
-    url: `prospect/update-prospect/${prospectId}`,
-    method: "POST",
-  });
-
-  const handleUpdateProspect = (data: FormValues) => {
-    try {
-      callback?.(data);
-      handleModifyStatus(data);
-      closeModal();
-      reset();
-    } catch (err) {
-      console.error(err);
-    }
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatus(e.target.value);
   };
-
-  useEffect(() => {
-    if (response) {
-      Swal.fire({
-        title: "Éxito!",
-        text: `Se modificó el estado del prospecto correctamente.`,
-        icon: "success",
-        confirmButtonText: "OK",
-      });
-      reset({
-        statusId: "",
-        statusComment: "",
-      });
-      closeModal();
-    } else if (error) {
-      Swal.fire({
-        title: "Error!",
-        text: `Ocurrió un error al modificar el estado del prospecto.`,
-        icon: "error",
-        confirmButtonText: "OK",
-        footer: `<span>${error}</span>`,
-      });
-    }
-  }, [response, error]);
 
   return (
     <>
@@ -78,7 +42,6 @@ export default function ModalModifyStatusProspect({
           withModal={false}
           closeModal={() => {
             closeModal();
-            reset();
           }}
         >
           <div
@@ -93,9 +56,8 @@ export default function ModalModifyStatusProspect({
                 <label className="text-xl font-semibold">Estado</label>
                 <select
                   className="input-primary w-10/12"
-                  {...register("statusId", {
-                    required: "El campo Estado es requerido",
-                  })}
+                  value={newStatus}
+                  onChange={handleStatusChange}
                 >
                   {listStatus.map((status) => (
                     <option key={status.id} value={status.id}>
@@ -108,7 +70,7 @@ export default function ModalModifyStatusProspect({
                 <label className="text-xl font-semibold">Comentario</label>
                 <div className="h-40 w-10/12">
                   <textarea
-                    {...register("statusComment")}
+                    onChange={(e) => setComment(e.target.value)}
                     className="text-area-primary resize-none"
                   />
                 </div>
@@ -119,25 +81,16 @@ export default function ModalModifyStatusProspect({
                 className="btn-border"
                 onClick={() => {
                   closeModal();
-                  reset();
                 }}
               >
                 Cancelar
               </button>
               <button
                 className="btn-primary"
-                onClick={handleSubmit(handleUpdateProspect, (errorsFields) => {
-                  Swal.fire({
-                    title: "Error!",
-                    text: `Ocurrió un error al modificar el estado del prospecto.
-                    \n${Object.values(errorsFields).map(
-                      (e) => e.message + " ",
-                    )}`,
-
-                    icon: "error",
-                    confirmButtonText: "OK",
-                  });
-                })}
+                onClick={() => {
+                  handleEdit(prospectId, newStatus, comment);
+                  closeModal();
+                }}
               >
                 Guardar
               </button>

@@ -14,6 +14,7 @@ export default function Prospects() {
     response,
     loading: prospectsLoading,
     error: prospectsError,
+    callback: refresh,
   } = useAxios<{
     prospects: IProspect[];
   }>({
@@ -41,7 +42,35 @@ export default function Prospects() {
     method: "POST",
   });
 
+  const {
+    response: newStatus,
+    error: newStatusError,
+    callback: newStatusCallBack,
+  } = useAxios({
+    url: `prospect/update-prospect`,
+    method: "POST",
+  });
+
   useEffect(() => {
+    if (newStatus) {
+      Swal.fire({
+        title: "Estado del prospecto actualizado",
+        text: "El prospecto se ha actualizado correctamente",
+        icon: "success",
+      }).then(() => {
+        refresh();
+      });
+    }
+    if (prospectResponse) {
+      Swal.fire({
+        title: "Prospecto agregado",
+        text: "El prospecto se ha agregado correctamente",
+        icon: "success",
+      }).then(() => {
+        refresh();
+        toggleModal();
+      });
+    }
     if (statusError) {
       Swal.fire({
         title: "Error",
@@ -50,13 +79,12 @@ export default function Prospects() {
       });
     }
 
-    if (prospectResponse) {
+    if (newStatusError) {
       Swal.fire({
-        title: "Prospecto agregado",
-        text: "El prospecto se ha agregado correctamente",
-        icon: "success",
+        title: "Prospecto no actualizado",
+        text: "El estado del prospecto no se actualizo correctamente",
+        icon: "error",
       });
-      toggleModal();
     }
 
     if (prospectError) {
@@ -80,6 +108,7 @@ export default function Prospects() {
     prospectResponse,
     prospectError,
     prospectsError,
+    newStatus,
   ]);
 
   if (statusLoading || prospectLoading || prospectsLoading) {
@@ -89,7 +118,7 @@ export default function Prospects() {
   return (
     <Wrapper>
       <>
-        {statusResponse && (
+        {statusResponse && response && (
           <ModalProspectForm
             isOpenModal={isOpen}
             closeModal={toggleModal}
@@ -116,6 +145,9 @@ export default function Prospects() {
               <ListProspects
                 listStatus={statusResponse as IStatus[]}
                 prospects={response.prospects}
+                handleStatusEdit={({ prospectId, statusId, statusComment }) => {
+                  newStatusCallBack?.({ prospectId, statusId, statusComment });
+                }}
               />
             )}
           </div>

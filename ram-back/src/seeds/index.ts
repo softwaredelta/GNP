@@ -509,7 +509,7 @@ export async function loadSeeds() {
     // SALES
 
     await createSale({
-      policyNumber: "423456789",
+      policyNumber: "523456789",
       assuranceTypeId: "1",
       paidDate: new Date("2021-01-01"),
       yearlyFee: "135000",
@@ -537,20 +537,7 @@ export async function loadSeeds() {
     });
 
     await createSale({
-      policyNumber: "423456789",
-      assuranceTypeId: "2",
-      paidDate: new Date("2021-01-01"),
-      yearlyFee: "134000",
-      contractingClient: "Enrique Bonilla",
-      periodicity: "Anual",
-      id: "3",
-      userId: "2",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Sofia Martínez",
-      paidFee: "1000",
-    });
-    await createSale({
-      policyNumber: "423456789",
+      policyNumber: "123456789",
       assuranceTypeId: "2",
       paidDate: new Date("2021-01-01"),
       yearlyFee: "134000",

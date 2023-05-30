@@ -10,9 +10,10 @@ import { MdAddLink } from "react-icons/md";
 
 interface ILinkListProps {
   links: ILink[];
-  handlePost: (link: string, name: string) => void;
-  handleDelete: (id: string) => void;
-  handleEdit: (id: string, link: string, name: string) => void;
+  handlePost?: (link: string, name: string) => void;
+  handleDelete?: (id: string) => void;
+  handleEdit?: (id: string, link: string, name: string) => void;
+  isEdit?: boolean;
 }
 
 const LinkList = ({
@@ -20,76 +21,95 @@ const LinkList = ({
   handleDelete,
   handleEdit,
   handlePost,
+  isEdit = true,
 }: ILinkListProps) => {
   const { isOpen: isOpenLinkModal, toggleModal: toggleModalLink } = useModal();
-
+  console.log(links);
   return (
     <>
       <div className="mb-3 inline-block flex items-center justify-between">
         <label className="ml-3 block text-2xl font-bold">Lista de links</label>
         <div className="ml-4">
-          <button
-            className="btn-primary flex items-center justify-center"
-            onClick={toggleModalLink}
-          >
-            Agregar
-            {<MdAddLink className="ml-2" size={20} />}
-          </button>
+          {isEdit && (
+            <button
+              className="btn-primary flex items-center justify-center"
+              onClick={toggleModalLink}
+            >
+              Agregar
+              {<MdAddLink className="ml-2" size={20} />}
+            </button>
+          )}
         </div>
       </div>
-      <ModalLinks
-        isOpenModal={isOpenLinkModal}
-        closeModal={toggleModalLink}
-        handlePost={(link, name) => {
-          if (!name) {
-            Swal.fire({
-              title: "Texto faltante",
-              text: "Ingrese texto con el que se identificará el link",
-              icon: "error",
-            });
-            return;
-          }
-          if (!link) {
-            Swal.fire({
-              title: "Link faltante",
-              text: "Ingrese el hipervínculo que desea agregar",
-              icon: "error",
-            });
-            return;
-          }
-          handlePost(link, name);
-          toggleModalLink();
-        }}
-      />
-      <div className="max-h-96 overflow-y-auto rounded-xl shadow-md">
+      {isEdit && (
+        <ModalLinks
+          isOpenModal={isOpenLinkModal}
+          closeModal={toggleModalLink}
+          handlePost={(link, name) => {
+            if (!name) {
+              Swal.fire({
+                title: "Texto faltante",
+                text: "Ingrese texto con el que se identificará el link",
+                icon: "error",
+              });
+              return;
+            }
+            if (!link) {
+              Swal.fire({
+                title: "Link faltante",
+                text: "Ingrese el hipervínculo que desea agregar",
+                icon: "error",
+              });
+              return;
+            }
+            if (handlePost) handlePost(link, name);
+            toggleModalLink();
+          }}
+        />
+      )}
+      <div
+        className={`overflow-y-auto rounded-xl shadow-md ${
+          isEdit ? "max-h-96" : "max-h-80"
+        }`}
+      >
         <Table className="row" hoverable={true}>
           <Table.Head className="border-2 border-gray-300">
             <Table.HeadCell className="bg-gray-300">Nombre</Table.HeadCell>
-            <Table.HeadCell className="bg-gray-300">Acciones</Table.HeadCell>
+            {isEdit && (
+              <Table.HeadCell className="bg-gray-300">Acciones</Table.HeadCell>
+            )}
           </Table.Head>
           {links.length === 0 ? (
             <div className="flex h-32 items-center justify-center">
-              {" "}
-              No hay links registrados{" "}
+              {isEdit ? "Aún no hay links" : "No tienes links aún"}
             </div>
           ) : (
             <Table.Body>
-              {links.map((index: ILink) => {
-                return (
-                  <LinkRow
-                    key={index.id}
-                    link={index.link}
-                    name={index.name}
-                    id={index.id}
-                    onEdited={(id, link, name) => {
-                      handleEdit(id, link, name);
-                    }}
-                    onDeleted={(id) => {
-                      handleDelete(id);
-                    }}
-                  />
-                );
-              })}
+              {isEdit
+                ? links.map((index: ILink) => (
+                    <LinkRow
+                      key={index.id}
+                      link={index.link}
+                      name={index.name}
+                      id={index.id}
+                      isEdit={isEdit}
+                      onEdited={(id, link, name) => {
+                        if (handleEdit) handleEdit(id, link, name);
+                      }}
+                      onDeleted={(id) => {
+                        if (handleDelete) handleDelete(id);
+                      }}
+                    />
+                  ))
+                : links.map((index: ILink) => (
+                    <LinkRow
+                      key={index.id}
+                      link={index.link}
+                      name={index.name}
+                      isEdit={isEdit}
+                      id={index.id}
+                    />
+                  ))}
             </Table.Body>
           )}
         </Table>

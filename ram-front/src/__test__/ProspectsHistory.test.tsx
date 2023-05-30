@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
-import "@testing-library/jest-dom/extend-expect";
 import { screen } from "@testing-library/dom";
+import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
@@ -26,17 +26,21 @@ describe("ProspectHistoryList", () => {
             History={[
               {
                 id: "1",
-                statusName: "Cliente",
-                comments:
-                  "Mantén una actitud positiva y entusiasta durante todo el proceso de venta. La energía positiva es contagiosa y puede marcar la diferencia.",
-                date: new Date(),
+                updatedStatusDate: new Date(),
+                statusComment: "Mostró interés en el proceso",
+                status: {
+                  id: "1",
+                  statusName: "Cliente",
+                },
               },
               {
                 id: "2",
-                statusName: "Llamada",
-                comments:
-                  "No temas seguir buscando nuevas oportunidades de venta. El mundo está lleno de posibilidades",
-                date: new Date(),
+                updatedStatusDate: new Date(),
+                statusComment: "No se pudo contactar al cliente",
+                status: {
+                  id: "2",
+                  statusName: "Primera llamada",
+                },
               },
             ]}
           ></ProspectsHistoryTable>

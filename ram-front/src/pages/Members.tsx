@@ -74,7 +74,13 @@ export default function Members() {
           </div>
         </div>
 
-        {membersResponse && <TableMembers members={membersResponse} />}
+        <div className="mt-5 flex w-full justify-center">
+          {membersResponse && (
+            <div className="w-4/5">
+              <TableMembers members={membersResponse} />
+            </div>
+          )}
+        </div>
       </>
     </Wrapper>
   );

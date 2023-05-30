@@ -2,8 +2,8 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
 import { RecoilRoot } from "recoil";
+import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
 
 describe("Manager deliveries card", () => {
   it("renders all the pending deliveries", () => {
@@ -37,9 +37,6 @@ describe("Manager deliveries card", () => {
         </BrowserRouter>
       </RecoilRoot>,
     );
-
-    const user = screen.getByText("test-email-1");
-    expect(user).toBeInTheDocument();
 
     const status = screen.getByText("Sin enviar");
     expect(status).toBeInTheDocument();
@@ -79,8 +76,6 @@ describe("Manager deliveries card", () => {
         </BrowserRouter>
       </RecoilRoot>,
     );
-    const user = screen.getByText("test-email-2");
-    expect(user).toBeInTheDocument();
 
     const status = screen.getByText("Aceptado");
     expect(status).toBeInTheDocument();

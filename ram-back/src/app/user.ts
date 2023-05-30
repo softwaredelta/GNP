@@ -34,6 +34,7 @@ export interface UserRol {
   urlPP200?: string;
   CUA?: string;
   mobile?: number;
+  email: string;
 }
 
 export interface UserAuthentication {
@@ -265,6 +266,7 @@ const userToUserRol = (user: UserEnt): UserRol => {
     isActive: user.isActive,
     imageUrl: user.imageUrl,
     rol: user.roles[0],
+    email: user.email,
   };
 };
 
@@ -283,6 +285,7 @@ export async function getAllUserRol(): Promise<{
       "UserEnt.isActive",
       "UserEnt.imageUrl",
       "UserEnt.rolesString",
+      "UserEnt.email",
     ])
     .orderBy("UserEnt.name", "ASC")
     .getMany();

@@ -1,9 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { FiEdit } from "react-icons/fi";
+import { MdRemoveRedEye } from "react-icons/md";
+import useModal from "../../hooks/useModal";
+import { useAuthentication } from "../../lib/api/api-auth";
 import { IStatus } from "../../types";
 import ModalModifyStatusProspect from "../forms/ModalModifyStatusProspect";
-import useModal from "../../hooks/useModal";
 
 export interface ProspectsCardProps {
   listStatus?: IStatus[];
@@ -15,6 +17,11 @@ export interface ProspectsCardProps {
     status: IStatus;
     statusComment: string;
   }[];
+  handleEdit: (
+    prospectId: string,
+    statusId: string,
+    statusComment: string,
+  ) => void;
 }
 
 export default function RowProspect({
@@ -24,6 +31,7 @@ export default function RowProspect({
   secondSurname,
   prospectStatus,
   listStatus,
+  handleEdit,
 }: ProspectsCardProps): JSX.Element {
   const colorOptions: { [key: string]: string } = {
     "Nuevo prospecto": "bg-gnp-blue-500",
@@ -34,6 +42,8 @@ export default function RowProspect({
     Retirado: "bg-red-500",
   };
   const { isOpen, toggleModal } = useModal();
+
+  const { auth } = useAuthentication();
 
   return (
     <div className="mx-auto mt-5 grid w-10/12 grid-cols-1 overflow-hidden rounded bg-gnp-white  shadow-lg transition-all ease-in-out hover:scale-105 ">
@@ -55,24 +65,41 @@ export default function RowProspect({
         </div>
 
         <div className=" col-span-3 flex h-full items-center justify-center border-l-2 border-black/10 py-4 px-4">
-          {prospectStatus[0].statusComment}
+          {prospectStatus[0].statusComment.length > 50
+            ? prospectStatus[0].statusComment.substring(0, 50) + "..."
+            : prospectStatus[0].statusComment}{" "}
         </div>
 
         <div className="flex h-full items-center justify-center border-l-2 border-black/10 py-4 px-4 ">
           <ModalModifyStatusProspect
+            statusId={prospectStatus[0].status.id}
+            statusComment={prospectStatus[0].statusComment}
             prospectId={id}
             prospectName={`${name} ${firstSurname} ${secondSurname}`}
             listStatus={listStatus}
-            handleModifyStatus={() => {}}
             isOpenModal={isOpen}
             closeModal={toggleModal}
+            handleEdit={(prospectId, statusId, statusComment) =>
+              handleEdit(prospectId, statusId, statusComment)
+            }
           />
-          <button
-            className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
-            onClick={toggleModal}
-          >
-            <FiEdit className="text-2xl" />
-          </button>
+          <div>
+            {auth?.roles[0] === "manager" ? (
+              <button className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125">
+                <MdRemoveRedEye className="text-2xl" />
+              </button>
+            ) : (
+              <button
+                className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleModal();
+                }}
+              >
+                <FiEdit className="text-2xl" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
