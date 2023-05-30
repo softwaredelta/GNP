@@ -6,6 +6,7 @@ import { authenticateUser, createUser, addLink } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { adminSeeds, userSeeds } from "../../seeds";
 import { UserEnt } from "../../entities/user.entity";
+import { UserLinkEnt } from "../../entities/user-link.entity";
 
 describe("controller:user", () => {
   let adminAccessToken: string;
@@ -520,7 +521,6 @@ describe("controller:user", () => {
       expect(errorlink).toBeUndefined();
       linkAdded = link;
 
-
       const { user: createdUser, error } = await createUser({
         email: "test-u-1@delta.tec.mx",
         password: "password",
@@ -588,11 +588,12 @@ describe("controller:user", () => {
 
     it("deletes existing user link", async () => {
       const res = await request(app)
-        .post("/user/delete-link")
+        .delete("/user/delete-link")
         .set("Authorization", `Bearer ${regularAccessToken}`)
         .send({ id: linkAdded.id })
         .expect(200);
 
+      expect(res.body.links).toBeDefined();
       expect(res.body.links.affected).toBe(1);
     });
 
