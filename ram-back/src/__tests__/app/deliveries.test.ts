@@ -1,6 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 import {
   createDelivery,
+  createLinkDelivery,
   deleteDelivery,
   getUserDeliveriesbyGroup,
   setDeliverieToUser,
@@ -10,6 +11,7 @@ import { createGroup } from "../../app/groups";
 import { createUser } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { DeliveryEnt } from "../../entities/delivery.entity";
+import { DeliveryLinkEnt } from "../../entities/delivery-link.entity";
 import {
   StatusUserDelivery,
   UserDeliveryEnt,
@@ -25,7 +27,7 @@ describe("app:deliveries", () => {
     it("creates a new delivery", async () => {
       const group = await createGroup({
         name: "test-group-1",
-        imageURL: "test-image-1",
+        imageUrl: "test-image-1",
       });
 
       const { delivery } = await createDelivery({
@@ -69,6 +71,7 @@ describe("app:deliveries", () => {
       const updated = await updateDelivery({
         deliveryId: delivery.delivery.id,
         deliveryName: "test-delivery-2",
+        description: "test-description-2",
       });
       expect(updated).toHaveProperty(
         "delivery.deliveryName",
@@ -80,7 +83,7 @@ describe("app:deliveries", () => {
         where: { id: delivery.delivery.id },
       });
       expect(updatedInDb).toHaveProperty("deliveryName", "test-delivery-2");
-      expect(updatedInDb).toHaveProperty("description", "test-description-1");
+      expect(updatedInDb).toHaveProperty("description", "test-description-2");
       expect(updatedInDb).toHaveProperty("imageUrl", "test-image-1");
     });
   });
@@ -94,7 +97,7 @@ describe("app:deliveries", () => {
 
       const group = await createGroup({
         name: "test-group-1",
-        imageURL: "test-image-1",
+        imageUrl: "test-image-1",
       });
 
       const delivery = await createDelivery({
@@ -133,7 +136,7 @@ describe("app:deliveries", () => {
 
       const group1 = await createGroup({
         name: "test-group-1",
-        imageURL: "test-image-1",
+        imageUrl: "test-image-1",
       });
 
       const deliveryNames = Array.from(
@@ -242,6 +245,41 @@ describe("app:deliveries", () => {
       userDeliveries = await ds.manager.find(UserDeliveryEnt);
       expect(deliveries).toHaveLength(0);
       expect(userDeliveries).toHaveLength(0);
+    });
+  });
+
+  describe("Add links deliverie funtion", () => {
+    it("handles non existing delivery", async () => {
+      const ds = await getDataSource();
+      const deliveries = await ds.manager.find(DeliveryEnt);
+      expect(deliveries).toHaveLength(0);
+      await deleteDelivery({ deliveryId: "non-existing-delivery-id" });
+      expect(deliveries).toHaveLength(0);
+    });
+
+    it("Add a link correctly", async () => {
+      const ds = await getDataSource();
+
+      const { group } = await createGroup({
+        name: "test-group-1",
+        description: "test-description-1",
+      });
+      const { delivery } = await createDelivery({
+        deliveryName: "test-delivery-1",
+        description: "test-description-1",
+        idGroup: group.id,
+        imageUrl: "",
+      });
+
+      await createLinkDelivery({
+        name: "test-link-1",
+        link: "test-url-1",
+        deliveryId: delivery.id,
+      });
+
+      const deliveries = await ds.manager.find(DeliveryLinkEnt);
+      expect(deliveries).toHaveLength(1);
+      expect(deliveries[0]).toHaveProperty("link", "test-url-1");
     });
   });
 });

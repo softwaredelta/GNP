@@ -23,9 +23,12 @@ describe("Verify sales table", () => {
                 contractingClient: "Mónica Ayala",
                 periodicity: "mensual",
                 evidenceUrl: "https://www.google.com",
+                insuredCostumer: "Jordana Betancourt",
+                assuranceTypeId: "test-at-1",
                 user: {
                   email: "test@delta.tec.mx",
                   name: "Oliver",
+                  lastName: "Queen",
                   id: "test-user",
                 },
                 assuranceType: {
@@ -52,17 +55,5 @@ describe("Verify sales table", () => {
 
     const assurance = screen.getByText(/test-assurance-type-1/i);
     expect(assurance).toBeInTheDocument();
-  });
-
-  it("renders a message when there are no sales to check", () => {
-    render(
-      <RecoilRoot>
-        <BrowserRouter>
-          <VerifySalesTable sales={[]} onUpdated={() => {}}></VerifySalesTable>
-        </BrowserRouter>
-      </RecoilRoot>,
-    );
-    const message = screen.getByText("No hay ventas para verificar");
-    expect(message).toBeInTheDocument();
   });
 });

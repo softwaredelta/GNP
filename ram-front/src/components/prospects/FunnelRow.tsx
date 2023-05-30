@@ -7,10 +7,19 @@ import useAxios from "../../hooks/useAxios";
 
 type Props = {
   id: string;
-  email: string;
+  link: string;
+  name: string;
+  lastName?: string;
+  handleOnClick?: (id: string) => void;
 };
 
-export default function FunnelRow({ id, email }: Props) {
+export default function FunnelRow({
+  id,
+  name,
+  link,
+  lastName,
+  handleOnClick,
+}: Props) {
   const { response: prospects } = useAxios<number>({
     url: `prospect/count-prospects-new/${id}`,
     method: "GET",
@@ -19,14 +28,15 @@ export default function FunnelRow({ id, email }: Props) {
   const propspectsCount = prospects ? prospects : 0;
   return (
     <Table.Row
+      onClick={() => handleOnClick && handleOnClick(id)}
       key={id}
-      className="bg-white dark:border-gray-700 dark:bg-gray-800"
+      className="transitions-all bg-white ease-in-out hover:cursor-pointer hover:bg-gray-300  dark:border-gray-700 dark:bg-gray-800 "
     >
       <Table.Cell
         className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
         align="center"
       >
-        {email}
+        {name} {lastName}
       </Table.Cell>
       <Table.Cell align="center">{prospects}</Table.Cell>
       <Table.Cell align="center">
@@ -42,7 +52,14 @@ export default function FunnelRow({ id, email }: Props) {
         {(propspectsCount * 0.04).toFixed(0)}
       </Table.Cell>
       <Table.Cell align="center">
-        <RiFileExcel2Fill className=" hover:scale-105 hover:fill-green-500" />
+        <RiFileExcel2Fill
+          size={20}
+          className="transition-all  duration-300 ease-in-out hover:scale-125 hover:fill-green-500"
+          onClick={(event) => {
+            event.stopPropagation();
+            window.open(link, "_blank");
+          }}
+        />
       </Table.Cell>
     </Table.Row>
   );

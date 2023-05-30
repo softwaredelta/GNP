@@ -18,14 +18,16 @@ export interface IAssuranceType {
 }
 export interface IStatus {
   id: string;
+  date: Date;
   statusName: string;
+  comments: string;
 }
 
 export interface ISell {
   id?: string;
   policyNumber: string;
   assuranceType?: IAssuranceType;
-  paidDate?: Date;
+  paidDate?: Date | string;
   yearlyFee: string;
   contractingClient: string;
   status: string;
@@ -45,6 +47,7 @@ export interface IDelivery {
   imageUrl: string;
   userDeliveries?: IUserDelivery[];
   group?: IGroup;
+  hasDelivery?: string;
 }
 
 export interface IUserDelivery {
@@ -60,7 +63,7 @@ export interface IUserDelivery {
 export interface IUser {
   id?: string;
   email: string;
-  imageURL?: string;
+  imageUrl?: string;
   name: string;
   lastName: string;
   origin?: string;
@@ -72,16 +75,73 @@ export interface IUser {
   phone?: number;
   registerDate?: Date;
   role?: string;
+  rolesString?: string;
+  createdAt?: Date;
+  CUA?: string;
   urlPP200?: string;
 }
 
 export interface IGroup {
-  id: string;
+  id?: string;
   name: string;
   description?: string;
-  imageURL: string;
-  progress: number;
+  imageUrl?: string;
+  progress?: number;
   groupUsers?: IUser[];
   deliveries?: IDelivery[];
   userDeliveries?: IUserDelivery[];
+}
+
+export interface IProspect {
+  id: string;
+  name: string;
+  firstSurname: string;
+  secondSurname: string;
+  state: string;
+  prospectStatus: {
+    status: IStatus;
+    statusComment: string;
+  }[];
+}
+
+export interface IStatusProspect {
+  id?: string;
+  updatedStatusDate?: Date;
+  statusComment?: string;
+  prospectId?: string;
+  statusId?: string;
+  status?: Status;
+}
+
+export interface Status {
+  id: string;
+  statusName: string;
+}
+
+export interface IMembers {
+  id: string;
+  rol: string;
+  name: string;
+  lastName: string;
+  isActive: number;
+  imageUrl: string;
+  email: string;
+}
+
+export interface ILink {
+  id: string;
+  link: string;
+  name: string;
+}
+
+export interface IDeliveryDescription {
+  id: string;
+  deliveryName: string;
+  createdAt: Date;
+  updatedAt: Date;
+  description: string;
+  imageUrl: string;
+  groupId: string;
+  hasDelivery: string;
+  deliveryLinks: ILink[];
 }

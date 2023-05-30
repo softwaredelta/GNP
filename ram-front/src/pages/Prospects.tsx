@@ -1,16 +1,27 @@
 // (c) Delta Software 2023, rights reserved.
-
-import wip_3 from "../assets/imgs/wip_3.svg";
 import Wrapper from "../containers/Wrapper";
 import { AiOutlinePlus } from "react-icons/ai";
 import useModal from "../hooks/useModal";
 import ModalProspectForm from "../components/forms/ModalProspectForm";
 import useAxios from "../hooks/useAxios";
 import { useEffect } from "react";
-import { IStatus } from "../types";
+import { IStatus, IProspect } from "../types";
 import Swal from "sweetalert2";
+import ListProspects from "../components/prospects/ListProspects";
 
 export default function Prospects() {
+  const {
+    response,
+    loading: prospectsLoading,
+    error: prospectsError,
+    callback: refresh,
+  } = useAxios<{
+    prospects: IProspect[];
+  }>({
+    url: "prospect/my-prospects",
+    method: "GET",
+  });
+
   const { isOpen, toggleModal } = useModal();
   const {
     response: statusResponse,
@@ -31,7 +42,35 @@ export default function Prospects() {
     method: "POST",
   });
 
+  const {
+    response: newStatus,
+    error: newStatusError,
+    callback: newStatusCallBack,
+  } = useAxios({
+    url: `prospect/update-prospect`,
+    method: "POST",
+  });
+
   useEffect(() => {
+    if (newStatus) {
+      Swal.fire({
+        title: "Estado del prospecto actualizado",
+        text: "El prospecto se ha actualizado correctamente",
+        icon: "success",
+      }).then(() => {
+        refresh();
+      });
+    }
+    if (prospectResponse) {
+      Swal.fire({
+        title: "Prospecto agregado",
+        text: "El prospecto se ha agregado correctamente",
+        icon: "success",
+      }).then(() => {
+        refresh();
+        toggleModal();
+      });
+    }
     if (statusError) {
       Swal.fire({
         title: "Error",
@@ -40,11 +79,11 @@ export default function Prospects() {
       });
     }
 
-    if (prospectResponse) {
+    if (newStatusError) {
       Swal.fire({
-        title: "Prospecto agregado",
-        text: "El prospecto se ha agregado correctamente",
-        icon: "success",
+        title: "Prospecto no actualizado",
+        text: "El estado del prospecto no se actualizo correctamente",
+        icon: "error",
       });
     }
 
@@ -55,16 +94,31 @@ export default function Prospects() {
         icon: "error",
       });
     }
-  }, [statusResponse, statusError, prospectResponse, prospectError]);
 
-  if (statusLoading || prospectLoading) {
+    if (prospectsError) {
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo obtener la lista de prospectos, intente más tarde",
+        icon: "error",
+      });
+    }
+  }, [
+    statusResponse,
+    statusError,
+    prospectResponse,
+    prospectError,
+    prospectsError,
+    newStatus,
+  ]);
+
+  if (statusLoading || prospectLoading || prospectsLoading) {
     return <p>Loading...</p>;
   }
 
   return (
     <Wrapper>
       <>
-        {statusResponse && (
+        {statusResponse && response && (
           <ModalProspectForm
             isOpenModal={isOpen}
             closeModal={toggleModal}
@@ -79,25 +133,24 @@ export default function Prospects() {
         <div className="mt-8">
           <div className=" flex justify-end px-5">
             <div className="flex">
-              <button className="btn-secondary" onClick={toggleModal}>
+              <button className="btn-primary" onClick={toggleModal}>
                 Agregar prospecto
                 <AiOutlinePlus className="ml-1 inline font-bold" />
               </button>
             </div>
           </div>
-          <div className="flex items-center justify-center p-4">
-            <img
-              src={wip_3}
-              className="h-1/2 w-1/2 md:h-1/5 md:w-1/5"
-              alt="Work in progress"
-            />
+
+          <div>
+            {response && (
+              <ListProspects
+                listStatus={statusResponse as IStatus[]}
+                prospects={response.prospects}
+                handleStatusEdit={({ prospectId, statusId, statusComment }) => {
+                  newStatusCallBack?.({ prospectId, statusId, statusComment });
+                }}
+              />
+            )}
           </div>
-          <h1 className="flex justify-center text-3xl font-bold text-gnp-blue-900">
-            Estamos trabajando en
-          </h1>
-          <h1 className="flex justify-center text-3xl font-bold text-orange-500">
-            Prospectos
-          </h1>
         </div>
       </>
     </Wrapper>

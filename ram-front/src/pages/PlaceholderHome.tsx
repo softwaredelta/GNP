@@ -1,8 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 
 import React from "react";
-import Wrapper from "../../containers/Wrapper";
-import { useAuthentication } from "../../lib/api/api-auth";
+import Wrapper from "../containers/Wrapper";
+import { useAuthentication } from "../lib/api/api-auth";
 
 export default function PlaceholderHome() {
   const { auth } = useAuthentication();
@@ -13,8 +13,8 @@ export default function PlaceholderHome() {
         <div className="px-28 pt-24">
           <div className="container px-3">
             <div className="w-full items-start justify-center text-center md:w-2/5 md:text-left">
-              <p className="tracking-loose w-full uppercase">
-                Hola {auth?.username}
+              <p className="tracking-loose w-full text-2xl uppercase">
+                Hola, {`${auth?.name} ${auth?.lastName}`}
               </p>
               <h1 className="my-4 text-5xl font-bold leading-tight">
                 Bienvenido al portal de Grupo Asesores Ram

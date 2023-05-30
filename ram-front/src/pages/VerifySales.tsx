@@ -1,47 +1,61 @@
 // (c) Delta Software 2023, rights reserved.
 
-import {
-  AssuranceType,
-  User,
-  VerifySalesTable,
-} from "../components/sales/VerifySalesTable";
-import useAxios from "../hooks/useAxios";
+import { Tabs } from "flowbite-react";
+import { VerifySalesTable } from "../components/sales/VerifySalesTable";
 import Wrapper from "../containers/Wrapper";
+import useAxios from "../hooks/useAxios";
+import { ISell } from "../types";
 
 export default function VerifySales() {
-  const { response, loading } = useAxios<{
-    sales: {
-      id: string;
-      policyNumber: string;
-      assuranceType: AssuranceType;
-      paidDate: Date;
-      yearlyFee: string;
-      contractingClient: string;
-      status: string;
-      periodicity: string;
-      user: User;
-      evidenceUrl: string;
-    }[];
+  const { response: pendingResponse, loading: loadingResponse } = useAxios<{
+    sales: ISell[];
   }>({
-    url: `sales/verify-sales`,
+    url: `sales/verify-sales/pending`,
+    method: "GET",
+  });
+  const { response: verifiedResponse, loading: loadingVerified } = useAxios<{
+    sales: ISell[];
+  }>({
+    url: `sales/verify-sales/aproved`,
+    method: "GET",
+  });
+  const { response: refusedResponse, loading: loadingRefused } = useAxios<{
+    sales: ISell[];
+  }>({
+    url: `sales/verify-sales/refused`,
     method: "GET",
   });
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loadingResponse) return <h1>Loading...</h1>;
+  if (loadingVerified) return <h1>Loading...</h1>;
+  if (loadingRefused) return <h1>Loading...</h1>;
 
   return (
     <>
-      <Wrapper>
-        <div>
-          <div className="flex w-full items-center justify-start pt-8">
-            <h1 className=" rounded-r-2xl bg-gnp-orange-500 py-3 px-20 text-xl font-bold text-white">
-              Verificar ventas
-            </h1>
-          </div>
-          <div className="mt-8 flex flex-col items-center justify-center">
-            {response && <VerifySalesTable sales={response.sales} />}
-          </div>
-        </div>
+      <Wrapper title="Ventas">
+        <Tabs.Group
+          aria-label="Default tabs"
+          className="px-8 py-4"
+          style="default"
+        >
+          <Tabs.Item active={true} title="Sin Revisar">
+            <div className="mt-1 flex items-center justify-center">
+              {pendingResponse && (
+                <VerifySalesTable sales={pendingResponse.sales} />
+              )}
+            </div>
+          </Tabs.Item>
+          <Tabs.Item title="Revisados">
+            {verifiedResponse && (
+              <VerifySalesTable sales={verifiedResponse.sales} />
+            )}
+          </Tabs.Item>
+          <Tabs.Item title="Rechazados">
+            {refusedResponse && (
+              <VerifySalesTable sales={refusedResponse.sales} />
+            )}
+          </Tabs.Item>
+        </Tabs.Group>
       </Wrapper>
     </>
   );

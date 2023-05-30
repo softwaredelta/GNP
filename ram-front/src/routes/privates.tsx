@@ -13,21 +13,27 @@ const SalesHistory = lazy(async () => import("../pages/SalesHistory"));
 const VerifySales = lazy(async () => import("../pages/VerifySales"));
 const FunnelProspects = lazy(async () => import("../pages/ProspectsFunnel"));
 const ModifySale = lazy(async () => import("../pages/ModifySale"));
+const ProspectsHistory = lazy(async () => import("../pages/ProspectsHistory"));
 
 const ManagerGroup = lazy(async () => import("../pages/ManagerGroup"));
 const ManagerGroups = lazy(async () => import("../pages/ManagerGroups"));
 const ManagerDelivery = lazy(async () => import("../pages/ManagerDelivery"));
+const ManageProspects = lazy(async () => import("../pages/ManageProspects"));
 
 const MySalesMetrics = lazy(async () => import("../pages/TODO/MySalesMetrics"));
-const GoalsHistory = lazy(async () => import("../pages/TODO/GoalsHistory"));
-const NewGoal = lazy(async () => import("../pages/TODO/NewGoal"));
 const Prospects = lazy(async () => import("../pages/Prospects"));
 const Help = lazy(async () => import("../pages/TODO/Help"));
-const PlaceholderHome = lazy(
-  async () => import("../pages/TODO/PlaceholderHome"),
-);
+const PlaceholderHome = lazy(async () => import("../pages/PlaceholderHome"));
 const EditGroup = lazy(async () => import("../pages/EditGroup"));
 const AddUser = lazy(async () => import("../pages/AddUser"));
+const Members = lazy(async () => import("../pages/Members"));
+const DeliveryGroup = lazy(async () => import("../pages/DeliveryGroup"));
+const ManagerDeliveryGroup = lazy(
+  async () => import("../pages/ManagerDeliveryGroup"),
+);
+const Profile = lazy(async () => import("../pages/Profile"));
+const MyProfile = lazy(async () => import("../pages/MyProfile"));
+const ViewProfile = lazy(async () => import("../pages/ViewProfile"));
 
 export const CommonUserRoutes: IRoute[] = [
   {
@@ -66,14 +72,6 @@ export const RegularUserRoutes: IRoute[] = [
     Component: () => <MySalesMetrics />,
   },
   {
-    path: "/goals-history",
-    Component: () => <GoalsHistory />,
-  },
-  {
-    path: "/new-goal",
-    Component: () => <NewGoal />,
-  },
-  {
     path: "/prospects",
     Component: () => <Prospects />,
   },
@@ -84,6 +82,18 @@ export const RegularUserRoutes: IRoute[] = [
   {
     path: "/modify-sale/:id",
     Component: () => <ModifySale />,
+  },
+  {
+    path: "/group-delivery/:id",
+    Component: () => <DeliveryGroup />,
+  },
+  {
+    path: "/my-profile",
+    Component: () => <MyProfile />,
+  },
+  {
+    path: "/prospect-history/:id",
+    Component: () => <ProspectsHistory />,
   },
 ];
 
@@ -121,7 +131,31 @@ export const ManagerUserRoutes: IRoute[] = [
     Component: () => <AddUser />,
   },
   {
-    path: "/goals",
-    Component: () => <GoalsHistory />,
+    path: "/members",
+    Component: () => <Members />,
+  },
+  {
+    path: "/prospect-history/:id",
+    Component: () => <ProspectsHistory />,
+  },
+  {
+    path: "/group-delivery/:id",
+    Component: () => <ManagerDeliveryGroup />,
+  },
+  {
+    path: "/profile/:id",
+    Component: () => <Profile />,
+  },
+  {
+    path: "/agent-prospects/:id",
+    Component: () => <ManageProspects />,
+  },
+  {
+    path: "/my-profile",
+    Component: () => <MyProfile />,
+  },
+  {
+    path: "/view-profile/:id",
+    Component: () => <ViewProfile />,
   },
 ];

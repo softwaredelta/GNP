@@ -1,6 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { getDataSource } from "../arch/db-client";
+import { DeliveryLinkEnt } from "../entities/delivery-link.entity";
 import { DeliveryEnt } from "../entities/delivery.entity";
 import {
   UserDeliveryEnt,
@@ -17,6 +18,7 @@ export async function createDelivery(params: {
   deliveryName: string;
   description: string;
   imageUrl: string;
+  hasDelivery?: string;
 }): Promise<{
   delivery: DeliveryEnt;
   error?: DeliveryError;
@@ -31,6 +33,7 @@ export async function createDelivery(params: {
         description: params.description,
         imageUrl: params.imageUrl,
         groupId: params.idGroup,
+        hasDelivery: params.hasDelivery || "true",
       }),
     )
     .then((delivery) => {
@@ -43,46 +46,89 @@ export async function createDelivery(params: {
     }));
 }
 
+export async function createLinkDelivery(params: {
+  deliveryId: string;
+  link: string;
+  name: string;
+}): Promise<{
+  link: DeliveryLinkEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+
+  return ds.manager
+    .save(
+      ds.manager.create(DeliveryLinkEnt, {
+        deliveryId: params.deliveryId,
+        link: params.link,
+        name: params.name,
+      }),
+    )
+    .then((link) => {
+      return { link };
+    })
+    .catch((e) => ({
+      error: DeliveryError.UNHANDLED,
+      errorReason: e,
+      link: {} as DeliveryLinkEnt,
+    }));
+}
+
 export async function updateDelivery(params: {
   deliveryId: string;
   deliveryName?: string;
   description?: string;
   imageUrl?: string;
+  hasDelivery?: string;
 }): Promise<{
   delivery: DeliveryEnt;
   error?: DeliveryError;
   errorReason?: Error;
 }> {
-  if (!params.deliveryName && !params.description && !params.imageUrl) {
-    return {
-      delivery: {} as DeliveryEnt,
-      error: DeliveryError.UNHANDLED,
-      errorReason: new Error("No fields to update"),
-    };
-  }
-
   const ds = await getDataSource();
-  const query = ds.createQueryBuilder().update(DeliveryEnt);
-  (["deliveryName", "description", "imageUrl"] as const).forEach((field) => {
-    if (params[field]) {
-      query.set({ [field]: params[field] });
-    }
-  });
-
-  await query.where("id = :id", { id: params.deliveryId }).execute();
-
-  const delivery = await ds.manager.findOne(DeliveryEnt, {
+  const existingDelivery = await ds.manager.findOne(DeliveryEnt, {
     where: { id: params.deliveryId },
   });
-  if (!delivery) {
+
+  if (!existingDelivery) {
     return {
-      delivery: {} as DeliveryEnt,
       error: DeliveryError.NOT_FOUND,
-      errorReason: new Error("No delivery found"),
+      delivery: {} as DeliveryEnt,
     };
   }
 
-  return { delivery };
+  if (
+    !params.deliveryName &&
+    !params.description &&
+    !params.imageUrl &&
+    !params.hasDelivery
+  )
+    return {
+      error: DeliveryError.NOT_FOUND,
+      delivery: {} as DeliveryEnt,
+    };
+
+  return ds.manager
+    .update(DeliveryEnt, params.deliveryId, {
+      deliveryName: params.deliveryName,
+      description: params.description,
+      imageUrl: params.imageUrl,
+      hasDelivery: params.hasDelivery,
+    })
+    .then(async () => {
+      const delivery = await ds.manager.findOneOrFail(DeliveryEnt, {
+        where: { id: params.deliveryId },
+      });
+      if (delivery) return { delivery };
+      else
+        return { delivery: {} as DeliveryEnt, error: DeliveryError.NOT_FOUND };
+    })
+    .catch((e) => ({
+      error: DeliveryError.UNHANDLED as DeliveryError,
+      errorReason: e as Error,
+      delivery: {} as DeliveryEnt,
+    }));
 }
 
 export async function setDeliveryToAllUsers(params: {
@@ -245,4 +291,94 @@ export async function deleteDelivery(params: {
 
   await ds.manager.delete(DeliveryEnt, params.deliveryId);
   return {};
+}
+
+// Obtain a delivery from a group where the deliveryId is the same as the params.deliveryId
+export async function getDeliveryGroup(params: {
+  deliveryId: string;
+}): Promise<{
+  delivery: DeliveryEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+
+  try {
+    const delivery = await ds.manager.findOne(DeliveryEnt, {
+      relations: {
+        deliveryLinks: {
+          delivery: false,
+        },
+        userDeliveries: {
+          delivery: false,
+        },
+      },
+      where: { id: params.deliveryId },
+    });
+
+    return { delivery: delivery as DeliveryEnt };
+  } catch (e) {
+    return {
+      error: DeliveryError.UNHANDLED,
+      errorReason: e as Error,
+      delivery: {} as DeliveryEnt,
+    };
+  }
+}
+//Delete link from delivery
+export async function deleteLinkDelivery(params: {
+  id: string;
+}): Promise<{ error?: DeliveryError; reason?: Error }> {
+  const ds = await getDataSource();
+
+  await ds.manager.delete(DeliveryLinkEnt, params.id);
+  return {};
+}
+
+//Update a link from a delivery
+export async function updateLinkDelivery(params: {
+  id: string;
+  link?: string;
+  name?: string;
+}): Promise<{
+  link: DeliveryLinkEnt;
+  error?: DeliveryError;
+  errorReason?: Error;
+}> {
+  const ds = await getDataSource();
+  const existingLink = await ds.manager.findOne(DeliveryLinkEnt, {
+    where: { id: params.id },
+  });
+
+  if (!existingLink) {
+    return {
+      error: DeliveryError.NOT_FOUND,
+      link: {} as DeliveryLinkEnt,
+    };
+  }
+
+  if (!params.link && !params.name)
+    return {
+      error: DeliveryError.NOT_FOUND,
+      link: {} as DeliveryLinkEnt,
+    };
+
+  return ds.manager
+    .update(DeliveryLinkEnt, params.id, {
+      name: params.name,
+      link: params.link,
+    })
+    .then(async () => {
+      const link = await ds.manager.findOneOrFail(DeliveryLinkEnt, {
+        where: { id: params.id },
+      });
+      if (link) return { link };
+      else
+        return { link: {} as DeliveryLinkEnt, error: DeliveryError.NOT_FOUND };
+    })
+    .catch((e) => ({
+      error: DeliveryError.UNHANDLED as DeliveryError,
+      errorReason: e as Error,
+      link: {} as DeliveryLinkEnt,
+    }));
 }

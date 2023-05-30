@@ -1,11 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
+import { Alert, Tabs } from "flowbite-react";
+import { AiFillWarning } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
 import { IDelivery } from "../types";
-import { Tabs, Alert } from "flowbite-react";
-import { AiFillWarning } from "react-icons/ai";
 
 export default function ManagerDeliveries(): JSX.Element {
   const { id } = useParams();
@@ -63,11 +63,22 @@ export default function ManagerDeliveries(): JSX.Element {
             )}
           </Tabs.Item>
           <Tabs.Item title="Revisados">
-            {ReviewedDeliveries && (
+            {ReviewedDeliveries ? (
               <UserDeliveriesTable
                 onUpdate={() => handleChange()}
                 userDeliveries={ReviewedDeliveries.userDeliveries ?? []}
               />
+            ) : (
+              <div className="flex-grid flex justify-center">
+                <Alert
+                  color="info"
+                  icon={AiFillWarning}
+                  className="w-2/3 text-center font-bold"
+                >
+                  {" "}
+                  <h1 className="text-base"> No hay entregables revisados</h1>
+                </Alert>
+              </div>
             )}
           </Tabs.Item>
         </Tabs.Group>

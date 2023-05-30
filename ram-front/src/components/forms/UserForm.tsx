@@ -3,6 +3,8 @@
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { IUser } from "../../types";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import usePasswordVisibility from "../../hooks/usePasswordVisibility";
 
 const defaultValues: IUser = {
   id: "",
@@ -21,6 +23,14 @@ export interface IModalProspectFormProps {
 }
 export default function UserForm({ handlePost }: IModalProspectFormProps) {
   const { register, reset, handleSubmit, watch } = useForm<IUser>();
+
+  const { handlePasswordVisibility, typeInput, passwordVisible } =
+    usePasswordVisibility();
+  const {
+    handlePasswordVisibility: handlePasswordVisibilityConfirm,
+    typeInput: typeInputConfirm,
+    passwordVisible: passwordVisibleConfirm,
+  } = usePasswordVisibility();
 
   return (
     <div className=" grid w-full  grid-cols-3 gap-4">
@@ -83,13 +93,14 @@ export default function UserForm({ handlePost }: IModalProspectFormProps) {
         />
       </div>
 
-      <div>
+      <div className="relative justify-center">
+        {/* <div> */}
         <label htmlFor="password" className="label-primary ">
           Contraseña
         </label>
         <input
           className="input-primary"
-          type="password"
+          type={typeInput()}
           {...register("password", {
             required: "La contraseña es requerida",
             minLength: {
@@ -98,20 +109,42 @@ export default function UserForm({ handlePost }: IModalProspectFormProps) {
             },
           })}
         />
+        <button
+          type="button"
+          onClick={handlePasswordVisibility}
+          className="absolute right-[15%] top-14 focus:outline-none"
+        >
+          {passwordVisible ? (
+            <AiFillEye size={20} color="#012356" />
+          ) : (
+            <AiFillEyeInvisible size={20} color="#012356" />
+          )}
+        </button>
       </div>
-      <div>
+      <div className="relative justify-center">
         <label htmlFor="confirmPassword" className="label-primary ">
           Confirmar Contraseña{" "}
         </label>
         <input
           className="input-primary"
-          type="password"
+          type={typeInputConfirm()}
           {...register("confirmPassword", {
             required: "La confirmación de contraseña es requerida",
             validate: (value) =>
               value === watch("password") || "Las contraseñas no coinciden",
           })}
         />
+        <button
+          type="button"
+          onClick={handlePasswordVisibilityConfirm}
+          className="absolute right-[15%] top-14 focus:outline-none"
+        >
+          {passwordVisibleConfirm ? (
+            <AiFillEye size={20} color="#012356" />
+          ) : (
+            <AiFillEyeInvisible size={20} color="#012356" />
+          )}
+        </button>
       </div>
       <div>
         <label htmlFor="pp200" className="label-primary ">

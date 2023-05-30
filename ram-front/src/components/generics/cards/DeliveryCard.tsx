@@ -4,10 +4,10 @@ import {
   BsSendCheck,
   BsSendExclamation,
   BsSendPlus,
+  BsArrowRight,
 } from "react-icons/bs";
-import { FiEye, FiUpload } from "react-icons/fi";
 import { DeliveryStatus } from "../../../types";
-import { useOpenFile } from "../../../lib/files";
+import { useUrlFile } from "../../../lib/files";
 
 export type Colors = "blue" | "orange";
 
@@ -15,7 +15,7 @@ export interface DeliveryCardProps {
   deliveryId: string;
   nameDelivery: string;
   image: string;
-  onFileSubmit: (id: string) => void;
+  hasDelivery?: string;
   color: Colors;
   status: DeliveryStatus;
   fileUrl?: string;
@@ -29,20 +29,18 @@ const iconList = {
 };
 
 export default function DeliveryCard({
-  deliveryId,
   nameDelivery,
-  image,
   color,
   status,
-  onFileSubmit,
   fileUrl,
+  hasDelivery,
 }: DeliveryCardProps): JSX.Element {
   const colorOptions = {
     blue: "bg-gnp-blue-500",
     orange: "bg-gnp-orange-500",
   };
 
-  const openFileInNewTab = useOpenFile();
+  const file = useUrlFile();
 
   return (
     <div
@@ -51,7 +49,10 @@ export default function DeliveryCard({
     >
       <div className="grid grid-cols-3 ">
         <div className="relative">
-          <img className="h-20 w-full object-cover" src={image} />
+          <img
+            className="h-20 w-full object-cover"
+            src={file(fileUrl as string)}
+          />
           <div
             className={`absolute top-0 left-0 h-full w-full ${colorOptions[color]} bg-opacity-50`}
           ></div>
@@ -62,29 +63,17 @@ export default function DeliveryCard({
       </div>
       <div className="grid grid-cols-3 border-l-2 border-l-gray-300">
         <div className="col-span-2 flex items-center justify-center text-center font-semibold">
-          <div className="mr-4">{iconList[status]}</div>
-          {status}
+          {hasDelivery === "true" && (
+            <div className="col-span-2 flex items-center justify-center text-center font-semibold">
+              <div className="mr-4">{iconList[status]}</div>
+              {status}
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-center text-center">
-          {fileUrl && "Sin enviar" !== status && (
-            <button className="mr-4">
-              <FiEye
-                onClick={() => openFileInNewTab(fileUrl)}
-                color="gray"
-                size={25}
-              />
-            </button>
-          )}
-
-          {"Aceptado" !== status && (
-            <button>
-              <FiUpload
-                color="gray"
-                size={25}
-                onClick={() => onFileSubmit(deliveryId)}
-              />
-            </button>
-          )}
+          <button className="pl-10">
+            <BsArrowRight color="gray" size={35} />
+          </button>
         </div>
       </div>
     </div>

@@ -1,15 +1,15 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Table } from "flowbite-react";
-import { IUserDelivery } from "../../types";
 import { useMemo } from "react";
-import { RiFileSearchFill } from "react-icons/ri";
-import { type IconType } from "react-icons/lib";
 import { FcCheckmark } from "react-icons/fc";
+import { type IconType } from "react-icons/lib";
+import { RiFileSearchFill } from "react-icons/ri";
 import { RxCross1 } from "react-icons/rx";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
 import { useOpenFile } from "../../lib/files";
+import { IUserDelivery } from "../../types";
 
 function ActionButton({
   color,
@@ -60,7 +60,7 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
 
     let dateString = dateFormatter.format(
       Math.floor(
-        (new Date(delivery.dateDelivery).getTime() - new Date().getTime()) /
+        (new Date().getTime() - new Date(delivery.dateDelivery).getTime()) /
           (1000 * 60 * 60 * 24),
       ),
       "day",
@@ -103,11 +103,13 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
         <img
           className="h-10 w-10 rounded-full"
-          src={delivery.user.imageURL}
+          src={delivery.user.imageUrl}
           alt="Rounded avatar"
         />
       </Table.Cell>
-      <Table.Cell>{delivery.user.email}</Table.Cell>
+      <Table.Cell>
+        {delivery.user.name + " " + delivery.user.lastName}
+      </Table.Cell>
 
       <Table.Cell>
         {delivery.status === "Aceptado" ? (

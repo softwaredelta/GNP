@@ -1,5 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-import { Checkbox, Table } from "flowbite-react";
+import { Table } from "flowbite-react";
 import { RxCross1 } from "react-icons/rx";
 import { IUser } from "../../types";
 
@@ -13,12 +13,9 @@ export const SearchAgentRow = ({ agent, deleteAgent }: IListSearchProps) => {
     <>
       <Table.Row key={agent.id} className="border-2 border-gray-300">
         <Table.Cell>
-          <Checkbox className="border-gray-400" />
-        </Table.Cell>
-        <Table.Cell>
           <img
             className="h-14 w-14 rounded-full"
-            src={agent.imageURL}
+            src={agent.imageUrl}
             alt="Profile Image"
           />
         </Table.Cell>

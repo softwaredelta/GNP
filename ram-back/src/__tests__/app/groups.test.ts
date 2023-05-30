@@ -38,14 +38,14 @@ describe("app:groups", () => {
         groupNames.map((name) =>
           createGroup({
             name,
-            imageURL: "",
+            imageUrl: "",
           }),
         ),
       );
 
       await ds.manager.find(GroupEnt).then((groups) => {
         expect(groups).toHaveLength(5);
-        expect(groups[0].imageURL).toBe("");
+        expect(groups[0].imageUrl).toBe("");
       });
     });
 
@@ -63,10 +63,10 @@ describe("app:groups", () => {
         imageFile: file,
       });
       expect(error).toBeUndefined();
-      expect(group.imageURL).toMatch(/\d+\.png/);
+      expect(group.imageUrl).toMatch(/\d+\.png/);
 
       const s3 = await getS3Api();
-      const fileContents = await s3.getObjectPromise(group.imageURL);
+      const fileContents = await s3.getObjectPromise(group.imageUrl);
       expect(fileContents.toString()).toBe("file contents");
     });
   });
@@ -90,7 +90,7 @@ describe("app:groups", () => {
         groupNames.map((name) =>
           createGroup({
             name,
-            imageURL: "",
+            imageUrl: "",
           }).then(({ group }) => group),
         ),
       );
@@ -127,7 +127,7 @@ describe("app:groups", () => {
       groupNames.map((name) =>
         createGroup({
           name,
-          imageURL: "",
+          imageUrl: "",
         }).then(({ group }) => group),
       ),
     );
@@ -276,7 +276,7 @@ describe("app:groups", () => {
         groupId: group.id,
         name: "test-group-001-updated",
         description: "test-group-001-description-updated",
-        imageURL: "test-group-001-image-url-updated",
+        imageUrl: "test-group-001-image-url-updated",
       });
 
       expect(updatedGroup.group).toHaveProperty(
@@ -288,7 +288,7 @@ describe("app:groups", () => {
         "test-group-001-description-updated",
       );
       expect(updatedGroup.group).toHaveProperty(
-        "imageURL",
+        "imageUrl",
         "test-group-001-image-url-updated",
       );
     });
@@ -298,7 +298,7 @@ describe("app:groups", () => {
         groupId: "some-bad-id",
         name: "test-group-001-updated",
         description: "test-group-001-description-updated",
-        imageURL: "test-group-001-image-url-updated",
+        imageUrl: "test-group-001-image-url-updated",
       });
       expect(updatedGroup.error).toBe("NOT_FOUND");
     });

@@ -22,6 +22,13 @@ export const LAST_NAME_COLUMN: ColumnOptions = {
   nullable: false,
 };
 
+export const UNIQUE_AGENT_KEY_COLUMN: ColumnOptions = {
+  name: "unique_agent_key",
+  type: "varchar",
+  length: 255,
+  nullable: false,
+};
+
 export const UNIQUE_NAME_COLUMN: ColumnOptions = {
   name: "name",
   type: "varchar",
@@ -90,7 +97,6 @@ export const POLICY_NUMBER_COLUMN: ColumnOptions = {
   type: "varchar",
   length: 255,
   nullable: false,
-  unique: true,
 };
 
 export const MONEY_COLUMN: ColumnOptions = {
@@ -113,3 +119,15 @@ export const ID_COLUMN = (
   nullable,
   primary,
 });
+
+export const IS_ACTIVE_COLUMN: ColumnOptions = {
+  type: "int",
+  nullable: false,
+  default: true,
+};
+
+export const BOOLEAN_COLUMN: ColumnOptions = {
+  type: "int",
+  nullable: true,
+  default: true,
+};

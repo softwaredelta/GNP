@@ -46,7 +46,7 @@ export const allUserDeliveries$ = selectorFamily<
             user: {
               id: "test-user",
               email: "test@delta.tec.mx",
-              imageURL: "https://picsum.photos/200",
+              imageUrl: "https://picsum.photos/200",
               lastName: "Test",
               name: "Test",
             },
@@ -91,7 +91,7 @@ export const authenticatedUserDelivery$ = selectorFamily<
           user: {
             id: "test-user",
             email: "test@delta.tec.mx",
-            imageURL: "https://picsum.photos/200",
+            imageUrl: "https://picsum.photos/200",
             lastName: "Test",
             name: "Test",
           },

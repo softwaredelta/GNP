@@ -30,14 +30,14 @@ describe("ListGroups", () => {
               name: "Group 1",
               progress: 50,
               description: "test-delivery-1",
-              imageURL: "https://picsum.photos/200",
+              imageUrl: "https://picsum.photos/200",
             },
             {
               id: "fdsf-fdsfsf-fddfs",
               name: "Group 2",
               progress: 80,
               description: "test-delivery-2",
-              imageURL: "https://picsum.photos/200",
+              imageUrl: "https://picsum.photos/200",
             },
           ]}
         />
@@ -73,7 +73,7 @@ describe("ListGroups", () => {
               name: "Group 1",
               progress: 50,
               description: "test-delivery-1",
-              imageURL: "https://picsum.photos/200",
+              imageUrl: "https://picsum.photos/200",
             },
           ]}
         />

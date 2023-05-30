@@ -5,15 +5,16 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import LogoRAM from "../../../assets/imgs/Ram_LogoInv.png";
 import { Link, useLocation } from "react-router-dom";
 import { useCallback } from "react";
+import { Authentication } from "../../../lib/api/api-auth";
+import { useUrlFile } from "../../../lib/files";
 
 interface Props {
   onLogout: () => void;
-  username?: string;
-  useremail?: string;
+  user?: Authentication | null;
   role?: string;
 }
 
-function NavBar({ onLogout, useremail, username, role }: Props) {
+function NavBar({ onLogout, user, role }: Props) {
   const route = useLocation();
   const isActive = useCallback(
     (link: RegExp) => {
@@ -21,6 +22,7 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
     },
     [route.pathname],
   );
+  const fileurl = useUrlFile();
 
   return (
     <Navbar
@@ -43,29 +45,24 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
               size="lg"
               rounded={true}
               alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+              img={fileurl(user?.imageUrl as string)}
             />
           }
         >
           <Dropdown.Header>
-            <span className="block text-sm">{username}</span>
+            <span className="block text-sm">
+              {user?.name + " " + user?.lastName}
+            </span>
             <span className="block truncate text-sm font-medium">
-              {useremail}
+              {user?.username}
             </span>
           </Dropdown.Header>
-          <Link to="/">
+          <Link to="/my-profile">
             <Dropdown.Item>Ver Perfil</Dropdown.Item>
           </Link>
           <Link to="/help">
             <Dropdown.Item>Ayuda</Dropdown.Item>
           </Link>
-          {role === "manager" ? (
-            <Link to="/add-user">
-              <Dropdown.Item>Agregar usuarios</Dropdown.Item>
-            </Link>
-          ) : (
-            <></>
-          )}
           <Dropdown.Divider />
           <Dropdown.Item onClick={onLogout} data-testid="logout-button">
             Salir
@@ -106,7 +103,7 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
                 <Dropdown.Item>Métricas de Ventas</Dropdown.Item>
               </Link>
               <Link to="/new-sale">
-                <Dropdown.Item>Agregar Venta</Dropdown.Item>
+                <Dropdown.Item>Nueva Venta</Dropdown.Item>
               </Link>
               <Link to="/sales-history">
                 <Dropdown.Item>Mis ventas</Dropdown.Item>
@@ -124,14 +121,6 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
             >
               Prospectos
             </Navbar.Link>
-            <Navbar.Link
-              as={Link}
-              to="/goals"
-              className="mx-8 text-lg text-gray-900"
-              active={isActive(/^\/goal/i)}
-            >
-              Metas
-            </Navbar.Link>
           </>
         ) : (
           <>
@@ -143,17 +132,22 @@ function NavBar({ onLogout, useremail, username, role }: Props) {
             >
               Prospectos
             </Navbar.Link>
-            <div className="mx-8 text-lg text-gray-900">
-              <Dropdown label="Metas" size="xl" inline={true}>
-                <Link to="/new-goal">
-                  <Dropdown.Item>Mis metas</Dropdown.Item>
-                </Link>
-                <Link to="/goals-history">
-                  <Dropdown.Item>Agregar Metas</Dropdown.Item>
-                </Link>
-              </Dropdown>
-            </div>
           </>
+        )}
+
+        {role === "manager" ? (
+          <>
+            <Navbar.Link
+              as={Link}
+              to="/members"
+              className="mx-8 text-lg text-gray-900"
+              active={isActive(/^\/members/i)}
+            >
+              Miembros
+            </Navbar.Link>
+          </>
+        ) : (
+          <></>
         )}
       </Navbar.Collapse>
     </Navbar>

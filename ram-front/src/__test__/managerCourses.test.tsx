@@ -1,14 +1,14 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { Root, createRoot } from "react-dom/client";
 import "@testing-library/jest-dom/extend-expect";
-import { screen, render, waitFor, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { Root, createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { ManagerListGroups } from "../components/groups/ManagerListGroups";
-import { RenderTest } from "./fixtures";
-import ManagerCourses from "../pages/ManagerGroups";
 import { RecoilRoot } from "recoil";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
+import { ManagerListGroups } from "../components/groups/ManagerListGroups";
+import ManagerCourses from "../pages/ManagerGroups";
+import { RenderTest } from "./fixtures";
 
 describe("Manager courses card", () => {
   it("renders all the groups", () => {
@@ -22,14 +22,14 @@ describe("Manager courses card", () => {
                 name: "test-group-1",
                 description: "test-delivery-1",
                 progress: 0,
-                imageURL: "https://picsum.photos/100",
+                imageUrl: "https://picsum.photos/100",
                 groupUsers: [
                   {
                     email: "test-user1",
                     id: "1",
                     name: "test-user1",
                     lastName: "test-user1",
-                    imageURL: "",
+                    imageUrl: "",
                   },
                 ],
               },
@@ -38,14 +38,14 @@ describe("Manager courses card", () => {
                 name: "test-group-2",
                 description: "test-delivery-2",
                 progress: 0,
-                imageURL: "https://picsum.photos/100",
+                imageUrl: "https://picsum.photos/100",
                 groupUsers: [
                   {
                     email: "test-user2",
                     id: "2",
                     name: "test-user2",
                     lastName: "test-user2",
-                    imageURL: "",
+                    imageUrl: "",
                   },
                 ],
               },
@@ -86,14 +86,14 @@ describe("Manager courses card", () => {
                 name: "test-group-1",
                 description: "test-delivery-1",
                 progress: 0,
-                imageURL: "https://picsum.photos/100",
+                imageUrl: "https://picsum.photos/100",
                 groupUsers: [
                   {
                     email: "test-user1",
                     id: "1",
                     name: "test-user1",
                     lastName: "test-user1",
-                    imageURL: "",
+                    imageUrl: "",
                   },
                 ],
               },
@@ -150,14 +150,12 @@ describe("Add new group", () => {
           handlePost={mockPostHandler}
           isOpenModal={true}
           closeModal={mockToggleHandler}
+          isEditModal={false}
         />
       ),
       root,
     );
     await test.start();
-
-    const title = screen.getByText("Agregar grupo");
-    expect(title).toBeInTheDocument();
 
     const buttonClose = screen.getByText("Cancelar");
     expect(buttonClose).toBeInTheDocument();

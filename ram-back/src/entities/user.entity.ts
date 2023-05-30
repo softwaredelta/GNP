@@ -23,14 +23,17 @@ import {
   PASSWORD_COLUMN,
   REQUIRED_STRING_COLUMN,
   TELEPHONE_COLUMN,
+  UNIQUE_AGENT_KEY_COLUMN,
   URL_COLUMN,
   USERNAME_COLUMN,
+  IS_ACTIVE_COLUMN,
 } from "./columns";
 import { GroupUserEnt } from "./group-user.entity";
 import { OriginEnt } from "./origin.entity";
 import { SellEnt } from "./sell.entity";
 import { StateEnt } from "./state.entity";
 import { UserLevelEnt } from "./user-level.entity";
+import { UserLinkEnt } from "./user-link.entity";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -75,6 +78,9 @@ export class UserEnt {
   // @ManyToMany(() => RoleEnt, (role) => role.users)
   // roles: RoleEnt[];
 
+  @Column(UNIQUE_AGENT_KEY_COLUMN)
+  CUA?: string;
+
   @ManyToOne(() => UserLevelEnt, (level) => level.users, { eager: true })
   level: UserLevelEnt;
 
@@ -102,6 +108,9 @@ export class UserEnt {
   @OneToMany(() => GroupUserEnt, (groupUser) => groupUser.user)
   groupUsers: GroupUserEnt[];
 
+  @OneToMany(() => UserLinkEnt, (userLink) => userLink.user)
+  userLinks: UserLinkEnt[];
+
   @Column(TELEPHONE_COLUMN)
   phone!: number;
 
@@ -115,7 +124,10 @@ export class UserEnt {
   updatedAt!: Date;
 
   @Column(URL_COLUMN)
-  imageURL?: string;
+  imageUrl?: string;
+
+  @Column(IS_ACTIVE_COLUMN)
+  isActive!: boolean;
 
   @Column(REQUIRED_STRING_COLUMN("roles"))
   rolesString!: string;

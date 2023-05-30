@@ -22,7 +22,11 @@ export interface Authentication {
   refreshToken: string;
   refreshTokenExpiresAt: number;
   username: string;
+  name: string;
+  lastName: string;
   roles: string[];
+  imageUrl: string;
+  CUA: string;
 }
 
 export interface AuthenticationError {
@@ -127,7 +131,11 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
                 refreshTokenExpiresAt:
                   new Date().getTime() + 24 * 60 * 60 * 1000,
                 username: "username",
+                name: "name",
+                lastName: "lastName",
                 roles: ["regular"],
+                imageUrl: "",
+                CUA: "CUA",
               });
               set(authenticationError$, null);
 
@@ -149,8 +157,8 @@ const authenticationApi$ = selectorFamily<AuthenticationApi, { hash: string }>({
                   }),
                 },
               );
-              const result = await response.json();
               set(isLoading$, false);
+              const result = await response.json();
               if (response.ok) {
                 set(authentication$, result);
                 set(authenticationError$, null);
@@ -291,7 +299,11 @@ export function AuthenticationInitializationHandler() {
             refreshToken: "refreshToken",
             refreshTokenExpiresAt: 3600,
             username: "username",
+            name: "name",
+            lastName: "lastName",
             roles: ["regular"],
+            imageUrl: "",
+            CUA: "CUA",
           });
         } else {
           setAuthentication(null);

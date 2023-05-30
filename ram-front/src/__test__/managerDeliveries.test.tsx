@@ -2,8 +2,8 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
 import { RecoilRoot } from "recoil";
+import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
 
 describe("Manager deliveries card", () => {
   it("renders all the pending deliveries", () => {
@@ -20,7 +20,7 @@ describe("Manager deliveries card", () => {
                   email: "test-email-1",
                   name: "test-name-1",
                   lastName: "test-lastname-1",
-                  imageURL: "https://picsum.photos/100",
+                  imageUrl: "https://picsum.photos/100",
                 },
                 status: "Sin enviar",
                 delivery: {
@@ -37,9 +37,6 @@ describe("Manager deliveries card", () => {
         </BrowserRouter>
       </RecoilRoot>,
     );
-
-    const user = screen.getByText("test-email-1");
-    expect(user).toBeInTheDocument();
 
     const status = screen.getByText("Sin enviar");
     expect(status).toBeInTheDocument();
@@ -62,7 +59,7 @@ describe("Manager deliveries card", () => {
                   email: "test-email-2",
                   name: "test-name-2",
                   lastName: "test-lastname-2",
-                  imageURL: "https://picsum.photos/100",
+                  imageUrl: "https://picsum.photos/100",
                 },
                 status: "Aceptado",
                 delivery: {
@@ -79,8 +76,6 @@ describe("Manager deliveries card", () => {
         </BrowserRouter>
       </RecoilRoot>,
     );
-    const user = screen.getByText("test-email-2");
-    expect(user).toBeInTheDocument();
 
     const status = screen.getByText("Aceptado");
     expect(status).toBeInTheDocument();

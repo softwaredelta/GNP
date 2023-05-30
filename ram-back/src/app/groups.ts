@@ -34,7 +34,7 @@ export async function deleteGroup(params: {
 export async function createGroup(params: {
   name: string;
   description?: string;
-  imageURL?: string;
+  imageUrl?: string;
 }): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
   const ds = await getDataSource();
 
@@ -54,7 +54,7 @@ export async function createGroup(params: {
       ds.manager.create(GroupEnt, {
         name: params.name,
         description: params.description,
-        imageURL: params.imageURL,
+        imageUrl: params.imageUrl,
       }),
     )
     .then((group) => {
@@ -76,7 +76,7 @@ export async function createGroupWithFile(params: {
   return createGroup({
     name: params.name,
     description: params.description,
-    imageURL: filename,
+    imageUrl: filename,
   });
 }
 
@@ -213,7 +213,7 @@ export async function updateGroup(params: {
   groupId: string;
   name?: string;
   description?: string;
-  imageURL?: string;
+  imageUrl?: string;
 }): Promise<{ group: GroupEnt; error?: GroupError; errorReason?: Error }> {
   const ds = await getDataSource();
 
@@ -230,7 +230,7 @@ export async function updateGroup(params: {
     .update(GroupEnt, params.groupId, {
       name: params.name,
       description: params.description,
-      imageURL: params.imageURL,
+      imageUrl: params.imageUrl,
     })
     .then(async () => {
       const group = await ds.manager.findOneOrFail(GroupEnt, {
@@ -256,6 +256,6 @@ export async function updateGroupWithFile(params: {
     groupId: params.groupId,
     name: params.name,
     description: params.description,
-    imageURL: filename,
+    imageUrl: filename,
   });
 }

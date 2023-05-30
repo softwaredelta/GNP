@@ -1,16 +1,26 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { RequestHandler, Router } from "express";
-import { getDataSource } from "../arch/db-client";
-import { UserEnt, UserRole } from "../entities/user.entity";
+import * as j from "joi";
 import { TokenType, generateToken, verifyToken } from "../app/auth";
 import {
   authenticateUser,
   createUser,
   fuzzySearchUsers,
   validateUserToken,
+  getAllUserRol,
+  updateUser,
+  resetPassword,
+  addLink,
+  updateLink,
 } from "../app/user";
-import * as j from "joi";
+import { getDataSource } from "../arch/db-client";
+import { UserEnt, UserRole } from "../entities/user.entity";
+import multer from "multer";
+import { uploadFile } from "../app/file";
+import { UserLinkEnt } from "../entities/user-link.entity";
+
+const upload = multer();
 
 export const authRouter = Router();
 
@@ -23,7 +33,22 @@ const userParameters = j.object({
   mobile: j.number().optional(),
   role: j.string().valid(UserRole.MANAGER, UserRole.REGULAR).optional(),
   urlPP200: j.string().optional().allow("").default(""),
+  CUA: j.string().optional().allow("").default(""),
 });
+
+const resetPasswordParameters = j.object({
+  email: j.string().email().required(),
+  password: j.string().min(8).required(),
+});
+
+const resetPasswordParametersMiddleware: RequestHandler = (req, res, next) => {
+  const { error } = resetPasswordParameters.validate(req.body);
+  if (error) {
+    res.status(400).json({ message: "BAD_DATA", reason: error });
+    return;
+  }
+  next();
+};
 
 const userParametersMiddleware: RequestHandler = (req, res, next) => {
   const { error } = userParameters.validate(req.body);
@@ -92,7 +117,7 @@ authRouter.post(
   userParametersMiddleware,
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
   async (req, res) => {
-    const { email, password, name, lastName, role, mobile, urlPP200 } =
+    const { email, password, name, lastName, role, mobile, urlPP200, CUA } =
       req.body;
     // TODO: validation
 
@@ -102,6 +127,7 @@ authRouter.post(
       name,
       lastName,
       urlPP200,
+      CUA,
       roles: [role],
       mobile,
     });
@@ -127,13 +153,20 @@ authRouter.post("/authenticate", userParametersMiddleware, async (req, res) => {
   res.json(auth);
 });
 
-authRouter.get(
-  "/me",
-  authMiddleware({ neededRoles: [UserRole.REGULAR] }),
-  async (req, res) => {
-    res.json(req.user);
-  },
-);
+authRouter.get("/me", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  if (!req.user) {
+    res.status(401).json({ message: "NO USER" });
+    return;
+  }
+
+  const user = await db.manager.findOne(UserEnt, {
+    where: {
+      id: req.user.id,
+    },
+  });
+  res.json(user);
+});
 
 authRouter.get("/all-agents", async (req, res) => {
   const db = await getDataSource();
@@ -141,7 +174,7 @@ authRouter.get("/all-agents", async (req, res) => {
     where: {
       rolesString: UserRole.REGULAR,
     },
-    select: ["id", "email"],
+    select: ["id", "email", "name", "lastName", "CUA", "urlPP200"],
   });
   res.json(sales);
 });
@@ -170,7 +203,15 @@ authRouter.post("/refresh", async (req, res) => {
     where: {
       id: auth.id,
     },
-    select: ["id", "email", "rolesString"],
+    select: [
+      "id",
+      "email",
+      "name",
+      "lastName",
+      "rolesString",
+      "imageUrl",
+      "CUA",
+    ],
   });
 
   if (!user) {
@@ -186,7 +227,11 @@ authRouter.post("/refresh", async (req, res) => {
     refreshToken,
     refreshTokenExpiresAt,
     username: user.email,
+    name: user.name,
+    lastName: user.lastName,
     roles: user.roles,
+    imageUrl: user.imageUrl,
+    CUA: user.CUA,
   });
 });
 
@@ -202,7 +247,6 @@ authRouter.get(
       res.status(400).json({ message: "BAD_DATA", reason: error });
       return;
     }
-
     next();
   },
   async (req, res) => {
@@ -213,3 +257,184 @@ authRouter.get(
     res.json(users);
   },
 );
+
+authRouter.get(
+  "/members",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const { userRol } = await getAllUserRol();
+    res.json(userRol);
+  },
+);
+
+authRouter.get("/:id", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const user = await db.manager.findOne(UserEnt, {
+    where: { id: req.params.id },
+    relations: ["userLinks"],
+  });
+
+  res.json(user);
+});
+
+authRouter.post(
+  "/update/:id",
+  authMiddleware(),
+  upload.single("file"),
+  async (req, res) => {
+    const { email, name, lastName, mobile, urlPP200, CUA } = req.body;
+    const { user } = req;
+    if (!user) {
+      res.status(401).json({ message: "NO_USER" });
+      return;
+    }
+
+    const { file } = req;
+
+    if (!file && !req.body.imageUrl) {
+      res.status(400).json({ message: "NO_FILE_UPLOAD" });
+      return;
+    }
+
+    const imageUrl = !!file ? await uploadFile({ file }) : req.body.imageUrl;
+
+    const { user: modifiedUser, error } = await updateUser({
+      id: req.params.id,
+      email,
+      name,
+      lastName,
+      mobile,
+      urlPP200,
+      CUA,
+      imageUrl: imageUrl,
+    });
+
+    if (error) {
+      res.status(500).json({ message: error });
+      return;
+    }
+
+    res.json({ modifiedUser });
+  },
+);
+
+authRouter.post(
+  "/reset-password",
+  authMiddleware(),
+  resetPasswordParametersMiddleware,
+  async (req, res) => {
+    const { email, password } = req.body;
+    const { error } = await resetPassword({ email, password });
+    if (error) {
+      return res.status(500).json({ message: error });
+    }
+    return res.json({ message: "Password reset successfully" });
+  },
+);
+
+authRouter.post("/add-link/:id", authMiddleware(), async (req, res) => {
+  const { link, name } = req.body;
+
+  const { user } = req;
+
+  if (!user) {
+    res.status(401).json({ message: "NO_USER" });
+    return;
+  }
+
+  const { link: newLink, error } = await addLink({
+    id: req.params.id,
+    link,
+    name,
+  });
+
+  if (error) {
+    res.status(500).json({ message: error });
+    return;
+  }
+
+  res.json({ newLink });
+});
+
+authRouter.post("/edit-link", authMiddleware(), async (req, res) => {
+  const { link, name, id } = req.body;
+
+  const { user } = req;
+
+  if (!user) {
+    res.status(401).json({ message: "NO_USER" });
+    return;
+  }
+
+  const { link: uLink, error } = await updateLink({
+    id,
+    link,
+    name,
+  });
+
+  if (error) {
+    res.status(500).json({ message: error });
+    return;
+  }
+
+  res.json({ uLink });
+});
+
+authRouter.delete("/delete-link", authMiddleware(), async (req, res) => {
+  const { user } = req;
+
+  if (!user) {
+    res.status(401).json({ message: "NO_USER" });
+    return;
+  }
+
+  const db = await getDataSource();
+  const links = await db.manager
+    .getRepository(UserLinkEnt)
+    .delete(req.body.id)
+    .catch((err) => {
+      res.status(500).json({ message: err });
+      return;
+    });
+
+  res.json({ links });
+});
+
+authRouter.get("/links/:id", authMiddleware(), async (req, res) => {
+  const { user } = req;
+
+  if (!user) {
+    res.status(401).json({ message: "NO_USER" });
+    return;
+  }
+
+  const db = await getDataSource();
+  const links = await db.manager.find(UserLinkEnt, {
+    where: { userId: req.params.id },
+  });
+
+  res.json({ links });
+});
+
+authRouter.get("/my-links/:email", authMiddleware(), async (req, res) => {
+  if (!req.user) {
+    res.status(401).json({ message: "NO USER" });
+    return;
+  }
+
+  const db = await getDataSource();
+  const FindUser = await db.manager.findOne(UserEnt, {
+    where: { email: req.user.email },
+  });
+
+  if (!FindUser) {
+    res.status(401).json({ message: "NO USER" });
+    return;
+  }
+
+  const links = await db.manager.find(UserLinkEnt, {
+    where: { userId: FindUser.id },
+  });
+
+  res.json({ links });
+});

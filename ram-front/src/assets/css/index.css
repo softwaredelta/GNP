@@ -22,6 +22,10 @@
   @apply mb-8 h-12 w-full rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
 }
 
+.input-primary-table {
+  @apply h-10 w-full rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
+}
+
 .text-area-primary {
   @apply mb-8 h-full w-full rounded-lg border-2 border-gnp-blue-500 pl-3 text-base shadow-lg;
 }
@@ -39,7 +43,7 @@
 }
 
 .label-primary {
-  @apply text-base font-bold text-gnp-blue-500 block mb-1 mt-3;
+  @apply mb-1 mt-3 block text-base font-bold text-gnp-blue-500;
 }
 
 .custom-scroll {

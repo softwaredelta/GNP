@@ -10,9 +10,15 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { DESCRIPTION_COLUMN, ID_COLUMN, URL_COLUMN } from "./columns";
+import {
+  DESCRIPTION_COLUMN,
+  ID_COLUMN,
+  URL_COLUMN,
+  BOOLEAN_COLUMN,
+} from "./columns";
 import { UserDeliveryEnt } from "./user-delivery.entity";
 import { GroupEnt } from "./group.entity";
+import { DeliveryLinkEnt } from "./delivery-link.entity";
 
 @Entity({ name: "delivery" })
 export class DeliveryEnt {
@@ -34,8 +40,14 @@ export class DeliveryEnt {
   @Column(URL_COLUMN)
   imageUrl: string;
 
+  @Column(BOOLEAN_COLUMN)
+  hasDelivery: string;
+
   @OneToMany(() => UserDeliveryEnt, (userDelivery) => userDelivery.delivery)
   userDeliveries!: UserDeliveryEnt[];
+
+  @OneToMany(() => DeliveryLinkEnt, (deliveryLink) => deliveryLink.delivery)
+  deliveryLinks: DeliveryLinkEnt[];
 
   @ManyToOne(() => GroupEnt, {
     nullable: false,

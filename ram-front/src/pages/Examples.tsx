@@ -11,7 +11,7 @@ import CardInfoTopFive from "../components/generics/cards/info/CardInfoTopFive";
 import { BsHouses } from "react-icons/bs";
 import { IoPawSharp } from "react-icons/io5";
 import { RiPencilFill } from "react-icons/ri";
-import ModalDeliveryForm from "../components/forms/ModalDeliveryForm";
+import ModalDeliveryForm from "../components/forms/ModalDeliveryFormCreate";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
 import Modal from "../components/generics/Modal";
 import ManagerDelivery from "../components/generics/cards/info/ManagerDelivery";
@@ -24,7 +24,6 @@ import useAlert from "../hooks/useAlert";
 import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
 
-// import DeliveryCard from "./cards/DeliveryCard";
 export default function Examples() {
   const listDeliveries = [
     {
@@ -45,14 +44,14 @@ export default function Examples() {
     {
       id: "1",
       email: "user-tets@tec.mx",
-      imageURL:
+      imageUrl:
         "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
       name: "Juan",
       lastName: "Velasco",
     },
     {
       email: "user-tets@tec.mx",
-      imageURL:
+      imageUrl:
         "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
       id: "2",
       name: "Juan",
@@ -60,7 +59,7 @@ export default function Examples() {
     },
     {
       email: "user-tets@tec.mx",
-      imageURL:
+      imageUrl:
         "https://www.icegif.com/wp-content/uploads/2023/01/icegif-1544.gif",
       id: "3",
       name: "Pedro",
@@ -186,8 +185,6 @@ export default function Examples() {
       </div>
       <div className="md:col-span-3 ">
         <DeliveryCard
-          // deliveryID="test-delivery"
-          // onFileSubmit={() => {}}
           color="blue"
           nameDelivery="Nombre de la entrega"
           image="https://i.blogs.es/799a0e/ydray-mew_27_articuno_45l_hyperx_environment_front/1366_2000.jpeg"
@@ -272,6 +269,7 @@ export default function Examples() {
           handlePost={(image, name) => {
             alert(`Nombre: ${name} Imagen: ${image}`);
           }}
+          isEditModal={false}
         />
       </div>
       <div className="w-11/12">
@@ -295,6 +293,15 @@ export default function Examples() {
           deliveries={listDeliveries}
           onReloadDeliveries={() => {}}
         ></SearchDeliveryTable>
+      </div>
+      {}
+      <div className="col-span-3 w-10/12"></div>
+      <div className="col-span-3 w-10/12">
+        {/* <ProspectListHistory
+          state={"Cliente"}
+          comment={"Hola"}
+          date={new Date()}
+        /> */}
       </div>
     </div>
   );
