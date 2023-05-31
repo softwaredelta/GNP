@@ -7,9 +7,12 @@ import {
   fuzzySearchUsers,
   getAllUserRol,
   resetPassword,
+  addLink,
+  updateLink,
 } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { UserEnt, UserRole } from "../../entities/user.entity";
+import { UserLinkEnt } from "../../entities/user-link.entity";
 
 describe("app:user", () => {
   beforeEach(async () => {
@@ -225,16 +228,64 @@ describe("app:user", () => {
   });
 
   describe("user links work", () => {
+    let addedLink: UserLinkEnt;
+
+    beforeEach(async () => {
+      const { link, error } = await addLink({
+        id: "1",
+        link: "https://example.com",
+        name: "Example",
+      });
+
+      expect(error).toBeUndefined();
+      addedLink = link;
+    });
+
     it("adds a link to a user's link array", async () => {
-      // ! TODO: Implement this test
+      const { link, error } = await addLink({
+        id: "1",
+        link: "https://example.com",
+        name: "Example Link",
+      });
+
+      expect(error).toBeUndefined();
+      expect(link).toHaveProperty("id");
+      expect(link).toHaveProperty("link", "https://example.com");
+      expect(link).toHaveProperty("name", "Example Link");
     });
 
     it("modifies an already existing link", async () => {
-      // ! TODO: Implement this test
+      const linkId = addedLink.id;
+      const newLink = "https://exampleAdd.com";
+      const newName = "Example Link Add";
+
+      const { link, error } = await updateLink({
+        id: linkId,
+        link: newLink,
+        name: newName,
+      });
+
+      expect(error).toBeUndefined();
+      expect(link).toHaveProperty("id", linkId);
+      expect(link).toHaveProperty("link", newLink);
+      expect(link).toHaveProperty("name", newName);
     });
   });
 
   describe("user password reset work", () => {
+    let addedUser: UserEnt;
+    beforeEach(async () => {
+      const { user, error } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+        imageUrl: "https://example.com/image.png",
+      });
+      expect(error).toBeUndefined();
+      addedUser = user;
+    });
+
     it("changes the password", async () => {
       await createUser({
         email: "test-u-1@delta.tec.mx",
@@ -250,7 +301,24 @@ describe("app:user", () => {
     });
 
     it("password is hashed", async () => {
-      // ! TODO: Implement this test. Change the password then authenticate again.
+      const email = addedUser.email;
+      const newPassword = "password1234";
+
+      await resetPassword({ email: email, password: newPassword });
+
+      const { auth, error } = await authenticateUser({
+        email: email,
+        password: newPassword,
+      });
+
+      expect(error).toBeUndefined();
+      expect(auth).toHaveProperty("accessToken");
+      expect(auth).toHaveProperty("accessTokenExpiresAt");
+      expect(auth).toHaveProperty("refreshToken");
+      expect(auth).toHaveProperty("refreshTokenExpiresAt");
+      expect(auth).toHaveProperty("username", email);
+      expect(auth).toHaveProperty("name", addedUser.name);
+      expect(auth).toHaveProperty("lastName", addedUser.lastName);
     });
   });
 });
