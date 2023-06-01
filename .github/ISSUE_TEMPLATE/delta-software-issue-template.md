@@ -7,18 +7,13 @@ assignees: ''
 
 ---
 
-- type: markdown
-  attributes:
-    value: "### Expected behaviour: "
-- type: markdown
-  attributes:
-    value: "### Defective behaviour: "
-- type: markdown
-  attributes:
-    value: "#### Steps to replicate defect (optional if defect is not aparent): "
-- type: markdown
-  attributes:
-    value: "#### View and User in which the defect happend: "
-- type: markdown
-  attributes:
-    value: "#### File where the defect is located (optional): "
+### Expected behaviour: 
+* 
+### Defective behaviour: 
+* 
+#### Steps to replicate defect (optional if defect is not aparent): 
+* 
+#### View and User in which the defect happend:
+* 
+#### File where the defect is located (optional): 
+*
