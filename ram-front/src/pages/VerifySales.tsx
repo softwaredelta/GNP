@@ -7,31 +7,19 @@ import useAxios from "../hooks/useAxios";
 import { ISell } from "../types";
 
 export default function VerifySales() {
-  const {
-    response: pendingResponse,
-    loading: loadingResponse,
-    callback: pendingSales,
-  } = useAxios<{
+  const { response: pendingResponse, loading: loadingResponse } = useAxios<{
     sales: ISell[];
   }>({
     url: `sales/verify-sales/pending`,
     method: "GET",
   });
-  const {
-    response: verifiedResponse,
-    loading: loadingVerified,
-    callback: aprovedSales,
-  } = useAxios<{
+  const { response: verifiedResponse, loading: loadingVerified } = useAxios<{
     sales: ISell[];
   }>({
     url: `sales/verify-sales/aproved`,
     method: "GET",
   });
-  const {
-    response: refusedResponse,
-    loading: loadingRefused,
-    callback: refusedSales,
-  } = useAxios<{
+  const { response: refusedResponse, loading: loadingRefused } = useAxios<{
     sales: ISell[];
   }>({
     url: `sales/verify-sales/refused`,

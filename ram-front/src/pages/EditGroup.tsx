@@ -72,13 +72,10 @@ export default function EditGroup() {
   }
   return (
     <div>
-      <Wrapper>
+      <Wrapper title={"Editando: " + group?.name}>
         <>
-          <div className="flex w-full items-center justify-between py-8">
-            <h1 className=" rounded-r-2xl bg-gnp-blue-500 py-3 px-20 text-xl font-bold text-white">
-              {"Editando: " + group?.name}
-            </h1>
-            <div className="flex w-auto pr-8">
+          <div className="flex w-full items-end justify-end justify-items-end py-8 pl-4">
+            <div>
               <button
                 onClick={toggleModalGroupForm}
                 className="btn-primary pr-4"
@@ -86,39 +83,42 @@ export default function EditGroup() {
               >
                 Editar Grupo
               </button>
-              {group && (
-                <ModalGroupForm
-                  isOpenModal={isOpenGroupForm}
-                  closeModal={toggleModalGroupForm}
-                  handlePost={(image, name) => {
-                    if (!image) {
-                      Swal.fire({
-                        title: "Imagen faltante",
-                        text: "Inserte una imagen en el campo",
-                        icon: "error",
-                      });
-                      return;
-                    }
-                    if (callback) {
-                      const data: FormData = new FormData();
-                      data.append("image", image);
-                      data.append("name", name);
-                      callback(data);
-                    }
-                  }}
-                  isEditModal={true}
-                  initialValues={{ name: group.name, imageUrl: group.imageUrl }}
-                />
-              )}
-              <div className="pl-4">
-                <button
-                  onClick={toggleModalDeliveryForm}
-                  className="btn-primary flex-grid flex items-center"
-                >
-                  {"Agregar entregable"}
-                  <RiAddBoxFill className="ml-2 inline-block" size={20} />
-                </button>
-              </div>
+            </div>
+            {group && (
+              <ModalGroupForm
+                isOpenModal={isOpenGroupForm}
+                closeModal={toggleModalGroupForm}
+                handlePost={(image, name) => {
+                  if (!image) {
+                    Swal.fire({
+                      title: "Imagen faltante",
+                      text: "Inserte una imagen en el campo",
+                      icon: "error",
+                    });
+                    return;
+                  }
+                  if (callback) {
+                    const data: FormData = new FormData();
+                    data.append("image", image);
+                    data.append("name", name);
+                    callback(data);
+                  }
+                }}
+                isEditModal={true}
+                initialValues={{
+                  name: group.name,
+                  imageUrl: group.imageUrl,
+                }}
+              />
+            )}
+            <div className="pr-20 pl-6">
+              <button
+                onClick={toggleModalDeliveryForm}
+                className="btn-primary flex-grid flex items-end"
+              >
+                {"Agregar entregable"}
+                <RiAddBoxFill className="ml-2 inline-block" size={20} />
+              </button>
             </div>
             <ModalDeliveryFormCreate
               isOpenModal={isOpenDeliveryForm}
