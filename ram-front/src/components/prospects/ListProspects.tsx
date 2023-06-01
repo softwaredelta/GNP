@@ -30,9 +30,19 @@ export default function ListProspects({
     key: "fullName",
   });
 
-  if (prospects.length === 0)
-    return <h1 className="px-16">No hay prospectos</h1>;
-
+  if (prospects.length === 0) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <h1 className="mb-4 text-3xl font-bold text-gray-700">
+          No hay prospectos
+        </h1>
+        <p className="text-lg text-gray-500">
+          Parece que no hay prospectos en este momento. Por favor, inténtelo de
+          nuevo más tarde.
+        </p>
+      </div>
+    );
+  }
   return (
     <div>
       <div className="mx-auto mt-5 grid w-10/12 grid-cols-1">
