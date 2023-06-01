@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
-import { IDelivery } from "../../types";
+import { IDeliveryObject } from "../../types";
 
 export interface IModalDeliveryFormProps {
   closeModal: VoidFunction;
@@ -22,7 +22,7 @@ export default function ModalDeliveryFormCreate({
   const [file, setFile] = useState<File | null>(null);
   const navigate = useNavigate();
 
-  const { response, error, callback } = useAxios<IDelivery>({
+  const { response, error, callback } = useAxios<IDeliveryObject>({
     url: `deliveries/create-delivery/${id}`,
     method: "POST",
     headers: {

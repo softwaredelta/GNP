@@ -50,6 +50,10 @@ export interface IDelivery {
   hasDelivery?: string;
 }
 
+export interface IDeliveryObject {
+  delivery: IDelivery;
+}
+
 export interface IUserDelivery {
   fileUrl: string;
   dateDelivery: string;
