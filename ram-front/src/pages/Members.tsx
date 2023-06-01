@@ -8,10 +8,13 @@ import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
 import { IMembers } from "../types";
 export default function Members() {
+  const { isOpen, toggleModal } = useModal();
+
   const {
     response: membersResponse,
     loading: loadingMembers,
     error: errorMembers,
+    callback: refreshMembers,
   } = useAxios<IMembers[]>({
     url: "user/members",
     method: "GET",
@@ -33,6 +36,8 @@ export default function Members() {
         text: "El usuario se ha creado correctamente",
         icon: "success",
       });
+      refreshMembers();
+      toggleModal();
     }
     if (createError) {
       Swal.fire({
@@ -42,8 +47,6 @@ export default function Members() {
       });
     }
   }, [createResponse, createError]);
-
-  const { isOpen, toggleModal } = useModal();
 
   if (loadingMembers) return <h1>Loading ...</h1>;
   if (errorMembers) return <h1>Error ...</h1>;

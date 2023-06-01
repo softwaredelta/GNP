@@ -4,8 +4,9 @@ import usePreviewImage from "../../hooks/usePreviewImage";
 import Modal from "../generics/Modal";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
+import { IDeliveryObject } from "../../types";
 
 export interface IModalDeliveryFormProps {
   closeModal: VoidFunction;
@@ -19,8 +20,9 @@ export default function ModalDeliveryFormCreate({
   const { setPreviewImage, imgRef, resetImage } = usePreviewImage();
   const { id } = useParams();
   const [file, setFile] = useState<File | null>(null);
+  const navigate = useNavigate();
 
-  const { response, error, callback } = useAxios({
+  const { response, error, callback } = useAxios<IDeliveryObject>({
     url: `deliveries/create-delivery/${id}`,
     method: "POST",
     headers: {
@@ -62,14 +64,16 @@ export default function ModalDeliveryFormCreate({
         title: "Success!",
         text: "El entregable se ha registrado correctamente.",
         icon: "success",
+      }).then(() => {
+        const auxResponse = response.delivery.id;
+        closeModal();
+        navigate(`/group-delivery/${auxResponse}`);
+        reset({
+          name: "",
+          description: "",
+        });
       });
-      reset({
-        name: "",
-        description: "",
-      });
-      closeModal();
     } else if (error) {
-      console.log({ error });
       Swal.fire({
         title: "Error!",
         text: `Ocurrió un error al registrar el entregable.\n

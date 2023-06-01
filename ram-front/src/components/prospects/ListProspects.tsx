@@ -30,7 +30,8 @@ export default function ListProspects({
     key: "fullName",
   });
 
-  if (prospects.length === 0) return <h1>No hay prospectos</h1>;
+  if (prospects.length === 0)
+    return <h1 className="px-16">No hay prospectos</h1>;
 
   return (
     <div>
