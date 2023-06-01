@@ -69,9 +69,10 @@ export default function ProfileCard({
             {user.rolesString &&
               user.rolesString
                 .split("_")
-                .map(
-                  (role) =>
-                    role.charAt(0).toUpperCase() + role.slice(1).toLowerCase(),
+                .map((role) =>
+                  role === "manager" || role === "manager,admin"
+                    ? "Gerente"
+                    : "Agente",
                 )
                 .join(" ")}
           </div>
