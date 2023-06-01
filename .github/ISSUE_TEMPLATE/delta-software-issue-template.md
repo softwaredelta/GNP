@@ -14,4 +14,10 @@ body:
 - type: markdown
   attributes:
     value: "#### Steps to replicate defect: "
+- type: markdown
+  attributes:
+    value: "#### View and User in which the defect happend: "
+- type: markdown
+  attributes:
+    value: "#### File where the defect is located (optional): "
 ---
