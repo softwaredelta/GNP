@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
-import "react-datepicker/dist/react-datepicker.css";
 import { Table } from "flowbite-react";
+import "react-datepicker/dist/react-datepicker.css";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import useAxios from "../../hooks/useAxios";
 
@@ -10,6 +10,7 @@ type Props = {
   link: string;
   name: string;
   lastName?: string;
+  urlPP200?: string;
   handleOnClick?: (id: string) => void;
 };
 
@@ -18,6 +19,7 @@ export default function FunnelRow({
   name,
   link,
   lastName,
+  urlPP200,
   handleOnClick,
 }: Props) {
   const { response: prospects } = useAxios<number>({
@@ -52,14 +54,26 @@ export default function FunnelRow({
         {(propspectsCount * 0.04).toFixed(0)}
       </Table.Cell>
       <Table.Cell align="center">
-        <RiFileExcel2Fill
-          size={20}
-          className="transition-all  duration-300 ease-in-out hover:scale-125 hover:fill-green-500"
-          onClick={(event) => {
-            event.stopPropagation();
-            window.open(link, "_blank");
-          }}
-        />
+        {urlPP200 ? (
+          <RiFileExcel2Fill
+            size={20}
+            className="transition-all  duration-300 ease-in-out hover:scale-125 hover:fill-green-500"
+            onClick={(event) => {
+              event.stopPropagation();
+              window.open(link, "_blank");
+            }}
+          />
+        ) : (
+          <button disabled>
+            <RiFileExcel2Fill
+              size={20}
+              className="cursor-not-allowed"
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            />
+          </button>
+        )}
       </Table.Cell>
     </Table.Row>
   );
