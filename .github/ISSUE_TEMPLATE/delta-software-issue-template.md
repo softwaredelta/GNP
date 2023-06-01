@@ -13,7 +13,7 @@ body:
     value: "### Defective behaviour: "
 - type: markdown
   attributes:
-    value: "#### Steps to replicate defect: "
+    value: "#### Steps to replicate defect (optional if defect is not aparent): "
 - type: markdown
   attributes:
     value: "#### View and User in which the defect happend: "
