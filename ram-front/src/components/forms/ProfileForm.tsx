@@ -228,7 +228,7 @@ export default function ProfileForm({
                     PP200
                   </dt>
                   <dd className="text-lg font-semibold">
-                    {(
+                    {initialUser.urlPP200 ? (
                       <div
                         className="cursor-pointer text-blue-500 underline hover:text-blue-700"
                         onClick={() => {
@@ -238,7 +238,9 @@ export default function ProfileForm({
                         {" "}
                         Link al PP200
                       </div>
-                    ) || "No tienes ligado tu PP200"}
+                    ) : (
+                      "No tienes ligado tu PP200"
+                    )}
                   </dd>
                 </div>
               </dl>
