@@ -94,8 +94,7 @@ salesRouter.post(
     });
 
     if (error) {
-      res.status(500).json({ message: error });
-      console.error(reason);
+      res.status(500).json({ message: error, reason });
       return;
     }
 
