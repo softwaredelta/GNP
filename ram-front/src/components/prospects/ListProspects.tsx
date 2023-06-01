@@ -36,9 +36,10 @@ export default function ListProspects({
         <h1 className="mb-4 text-3xl font-bold text-gray-700">
           No hay prospectos
         </h1>
-        <p className="text-lg text-gray-500">
-          Parece que no hay prospectos en este momento. Por favor, inténtelo de
-          nuevo más tarde.
+        <p className="text-center text-lg text-gray-500">
+          No hay prospectos registrados en este momento.
+          <br />
+          Por favor, inténtelo de nuevo más tarde.
         </p>
       </div>
     );
