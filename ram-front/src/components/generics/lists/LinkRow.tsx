@@ -2,8 +2,8 @@
 
 import { Table } from "flowbite-react";
 import { useState } from "react";
-import { FiTrash2, FiEdit } from "react-icons/fi";
 import { BsFillCheckSquareFill } from "react-icons/bs";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import Swal from "sweetalert2";
 
 interface LinkRowProps {
@@ -71,7 +71,9 @@ export default function LinkRow({
           <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
             <a
               href={urlLink}
+              target="_blank"
               className="overflow-hidden hover:text-sky-500 hover:underline"
+              rel="noreferrer"
             >
               {nameLink}
             </a>
@@ -113,7 +115,9 @@ export default function LinkRow({
         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
           <a
             href={urlLink}
+            target="_blank"
             className="overflow-hidden hover:text-sky-500 hover:underline"
+            rel="noreferrer"
           >
             {nameLink}
           </a>

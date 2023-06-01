@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdLockReset } from "react-icons/md";
+import { RiFileExcel2Fill } from "react-icons/ri";
 import { TbSend } from "react-icons/tb";
 import Swal from "sweetalert2";
 import { ILink, IUser } from "../../types";
@@ -228,17 +229,19 @@ export default function ProfileForm({
                     PP200
                   </dt>
                   <dd className="text-lg font-semibold">
-                    {(
+                    {initialUser.urlPP200 ? (
                       <div
-                        className="cursor-pointer text-blue-500 underline hover:text-blue-700"
+                        className="flex cursor-pointer items-center text-[#157013]  hover:text-[#2d572c]"
                         onClick={() => {
                           window.open(initialUser.urlPP200, "_blank");
                         }}
                       >
-                        {" "}
-                        Link al PP200
+                        <span>Link al PP200</span>
+                        <RiFileExcel2Fill className="ml-2 underline transition-all ease-in-out hover:scale-105" />
                       </div>
-                    ) || "No tienes ligado tu PP200"}
+                    ) : (
+                      "No tienes ligado tu PP200"
+                    )}
                   </dd>
                 </div>
               </dl>
