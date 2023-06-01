@@ -4,6 +4,7 @@ import { Table } from "flowbite-react";
 import { useState } from "react";
 import { FiTrash2, FiEdit } from "react-icons/fi";
 import { BsFillCheckSquareFill } from "react-icons/bs";
+import Swal from "sweetalert2";
 
 interface LinkRowProps {
   id: string;
@@ -90,7 +91,18 @@ export default function LinkRow({
                   size={20}
                   className="text-red-500"
                   onClick={() => {
-                    if (onDeleted) onDeleted(id);
+                    Swal.fire({
+                      title: "¿Estás seguro?",
+                      text: "No podrás revertir esta acción",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonText: "Sí, eliminar",
+                      cancelButtonText: "Cancelar",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        if (onDeleted) onDeleted(id);
+                      }
+                    });
                   }}
                 />
               </div>
