@@ -24,7 +24,6 @@ const LinkList = ({
   isEdit = true,
 }: ILinkListProps) => {
   const { isOpen: isOpenLinkModal, toggleModal: toggleModalLink } = useModal();
-  console.log(links);
   return (
     <>
       <div className="mb-3 inline-block flex items-center justify-between">
