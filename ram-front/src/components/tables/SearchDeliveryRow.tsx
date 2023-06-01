@@ -55,9 +55,10 @@ export const SearchDeliveryRow = ({
     if (!response.ok) {
       Swal.fire(
         "Error",
-        "No se pudo eliminar el agente. Por favor intenta más tarde.",
+        "No se pudo eliminar el entregable. Por favor intenta más tarde.",
         "error",
       );
+      onReloadDeliveries();
     } else {
       Swal.fire(
         "Eliminado",
