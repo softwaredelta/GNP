@@ -70,14 +70,14 @@ export default function Profile() {
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Success!",
+        title: "¡Éxito!",
         text: "El usuario se ha modificado correctamente.",
         icon: "success",
       });
       navigate("/members");
     } else if (error) {
       Swal.fire({
-        title: "Error!",
+        title: "¡Error!",
         text: `Ocurrió un error al modificar al usuario.\n
         ${(error as any).response.data.message}`,
         icon: "error",
@@ -95,7 +95,7 @@ export default function Profile() {
       });
     } else if (errorResetPassword) {
       Swal.fire({
-        title: "Error!",
+        title: "¡Error!",
         text: `Ocurrió un error al resetear la contraseña.\n
         ${(error as any).response.data.message}`,
         icon: "error",
@@ -175,7 +175,7 @@ export default function Profile() {
                 }
               } else {
                 Swal.fire({
-                  title: "Error!",
+                  title: "¡Error!",
                   text: `No seleccionaste archivo.`,
                   icon: "error",
                   confirmButtonText: "OK",
@@ -205,7 +205,7 @@ export default function Profile() {
           handlePost={(confirmationPassword, password) => {
             if (!password) {
               Swal.fire({
-                title: "Contraseña faltante",
+                title: "¡Error!",
                 text: "Ingresa una nueva contraseña",
                 icon: "error",
               });
@@ -213,8 +213,8 @@ export default function Profile() {
             }
             if (!confirmationPassword) {
               Swal.fire({
-                title: "Confirmación faltante",
-                text: "Ingresa la confirmación de la nueva contraseña",
+                title: "¡Error!",
+                text: "Confirma la nueva contraseña",
                 icon: "error",
               });
               return;

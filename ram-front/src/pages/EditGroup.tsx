@@ -1,12 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { useEffect, useState } from "react";
-import { RiAddBoxFill } from "react-icons/ri";
+import { FiPlus } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
-import ModalGroupForm from "../components/forms/ModalGroupForm";
 import ModalDeliveryFormCreate from "../components/forms/ModalDeliveryFormCreate";
+import ModalGroupForm from "../components/forms/ModalGroupForm";
 import SearchAgentTable from "../components/tables/SearchAgentTable";
 import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import Wrapper from "../containers/Wrapper";
@@ -45,7 +45,7 @@ export default function EditGroup() {
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Grupo modificado",
+        title: "¡Éxito!",
         text: "El grupo se ha modificado correctamente",
         icon: "success",
       });
@@ -53,7 +53,7 @@ export default function EditGroup() {
 
     if (error) {
       Swal.fire({
-        title: "Grupo no modificado",
+        title: "¡Error!",
         text: "El grupo no se ha modificado correctamente",
         icon: "error",
       });
@@ -72,19 +72,50 @@ export default function EditGroup() {
   }
   return (
     <div>
-      <Wrapper>
+      <Wrapper title={"Editando: " + group?.name}>
         <>
-          <div className="flex w-full items-center justify-between py-8">
-            <h1 className=" rounded-r-2xl bg-gnp-blue-500 py-3 px-20 text-xl font-bold text-white">
-              {"Editando: " + group?.name}
-            </h1>
-            <div className="flex w-auto pr-8">
+          <div className="flex w-full items-end justify-end justify-items-end py-8 pl-4">
+            <div>
               <button
                 onClick={toggleModalGroupForm}
                 className="btn-primary pr-4"
                 data-testid="button-modal"
               >
                 Editar Grupo
+              </button>
+            </div>
+            {group && (
+              <ModalGroupForm
+                isOpenModal={isOpenGroupForm}
+                closeModal={toggleModalGroupForm}
+                handlePost={(image, name) => {
+                  if (
+                    callback &&
+                    (image !== group.imageUrl || name !== group.name)
+                  ) {
+                    const data: FormData = new FormData();
+                    if (image) {
+                      data.append("image", image);
+                    }
+                    data.append("name", name);
+                    callback(data);
+                  }
+                }}
+                isEditModal={true}
+                initialValues={{
+                  name: group.name,
+                  imageUrl: group.imageUrl,
+                  deliveries: group.deliveries,
+                }}
+              />
+            )}
+            <div className="pr-20 pl-6">
+              <button
+                onClick={toggleModalDeliveryForm}
+                className="btn-primary flex-grid flex items-end"
+              >
+                {"Agregar entregable"}
+                <FiPlus className="ml-2 inline-block" size={22} />
               </button>
               {group && (
                 <ModalGroupForm

@@ -1,12 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MdLockReset } from "react-icons/md";
-import { TbSend } from "react-icons/tb";
+import { FiShield } from "react-icons/fi";
 import Swal from "sweetalert2";
 import { ILink, IUser } from "../../types";
 import ProfileCard from "../generics/cards/ProfileCard";
 import LinkList from "../generics/lists/LinkList";
+import { RiFileExcel2Fill } from "react-icons/ri";
 
 export interface IUserFormProps {
   initialUser: IUser;
@@ -126,7 +126,7 @@ export default function ProfileForm({
                     <span className="text-md font-semibold">
                       Reestablecer contraseña
                     </span>
-                    <MdLockReset size={25} className="ml-2" />
+                    <FiShield size={20} className="ml-2" />
                   </button>
                 </div>
               </div>
@@ -175,7 +175,7 @@ export default function ProfileForm({
                       },
                       (errorsFields) => {
                         Swal.fire({
-                          title: "Error!",
+                          title: "¡Error!",
                           text: `Ocurrió un error al modificar el usuario.\n
                   ${Object.values(errorsFields).map((e) => e.message + " ")}`,
                           icon: "error",
@@ -185,7 +185,6 @@ export default function ProfileForm({
                     )}
                   >
                     <span className="text-lg font-semibold">Guardar</span>
-                    <TbSend size={20} className="ml-2" />
                   </button>
                 </div>
               </div>
@@ -228,17 +227,19 @@ export default function ProfileForm({
                     PP200
                   </dt>
                   <dd className="text-lg font-semibold">
-                    {(
+                    {initialUser.urlPP200 ? (
                       <div
-                        className="cursor-pointer text-blue-500 underline hover:text-blue-700"
+                        className="flex cursor-pointer items-center text-[#157013]  hover:text-[#2d572c]"
                         onClick={() => {
                           window.open(initialUser.urlPP200, "_blank");
                         }}
                       >
-                        {" "}
-                        Link al PP200
+                        <span>Link al PP200</span>
+                        <RiFileExcel2Fill className="ml-2 underline transition-all ease-in-out hover:scale-105" />
                       </div>
-                    ) || "No tienes ligado tu PP200"}
+                    ) : (
+                      "No tienes ligado tu PP200"
+                    )}
                   </dd>
                 </div>
               </dl>

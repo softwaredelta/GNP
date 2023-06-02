@@ -140,7 +140,7 @@ export default function ModalProspectForm({
                   className="btn-primary"
                   onClick={handleSubmit(handlePost, (errorsFields) => {
                     Swal.fire({
-                      title: "Error!",
+                      title: "¡Error!",
                       text: `Ocurrió un error al registrar el prospecto.\n
                         ${Object.values(errorsFields).map(
                           (e) => e.message + " ",

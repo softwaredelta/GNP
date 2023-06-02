@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { useForm } from "react-hook-form";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import Swal from "sweetalert2";
 import usePasswordVisibility from "../../hooks/usePasswordVisibility";
 import { IUser } from "../../types";
@@ -117,9 +117,9 @@ export default function ModalAddUser({
                 className="absolute right-[15%] top-14 focus:outline-none"
               >
                 {passwordVisible ? (
-                  <AiFillEye size={20} color="#012356" />
+                  <FiEye size={20} color="#012356" />
                 ) : (
-                  <AiFillEyeInvisible size={20} color="#012356" />
+                  <FiEyeOff size={20} color="#012356" />
                 )}
               </button>
             </div>
@@ -143,9 +143,9 @@ export default function ModalAddUser({
                 className="absolute right-[15%] top-14 focus:outline-none"
               >
                 {passwordVisibleConfirm ? (
-                  <AiFillEye size={20} color="#012356" />
+                  <FiEye size={20} color="#012356" />
                 ) : (
-                  <AiFillEyeInvisible size={20} color="#012356" />
+                  <FiEyeOff size={20} color="#012356" />
                 )}
               </button>
             </div>
@@ -203,8 +203,8 @@ export default function ModalAddUser({
                     },
                     (errorsFields) => {
                       Swal.fire({
-                        title: "Error!",
-                        text: `Ocurrió un error al registrar la venta.\n
+                        title: "¡Error!",
+                        text: `Ocurrió un error al registrar el usuario.\n
                       ${Object.values(errorsFields).map(
                         (e) => e.message + " ",
                       )}`,

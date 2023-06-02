@@ -1,6 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 import { Alert, Tabs } from "flowbite-react";
-import { AiFillWarning } from "react-icons/ai";
+
+import { FiAlertTriangle } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
 import Wrapper from "../containers/Wrapper";
@@ -53,7 +54,7 @@ export default function ManagerDeliveries(): JSX.Element {
               <div className="flex-grid flex justify-center">
                 <Alert
                   color="info"
-                  icon={AiFillWarning}
+                  icon={FiAlertTriangle}
                   className="w-2/3 text-center font-bold"
                 >
                   {" "}
@@ -72,7 +73,7 @@ export default function ManagerDeliveries(): JSX.Element {
               <div className="flex-grid flex justify-center">
                 <Alert
                   color="info"
-                  icon={AiFillWarning}
+                  icon={FiAlertTriangle}
                   className="w-2/3 text-center font-bold"
                 >
                   {" "}

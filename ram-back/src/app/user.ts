@@ -13,15 +13,15 @@ import { TokenType, generateToken, verifyToken } from "./auth";
 import { UserLinkEnt } from "../entities/user-link.entity";
 
 export enum UserError {
-  USER_EXISTS = "USER_EXISTS",
-  USER_NOT_FOUND = "USER_NOT_FOUND",
-  USER_TOKEN_INVALID = "USER_TOKEN_INVALID",
-  UNHANDLED_ERROR = "UNHANDLED_ERROR",
+  USER_EXISTS = "Este correo ya está registrado en la aplicación.",
+  USER_NOT_FOUND = "No se encontró el usuario o la contraseña es incorrecta.",
+  USER_TOKEN_INVALID = "Usuario no encontrado o token inválido.",
+  UNHANDLED_ERROR = "Ocurrió un error inesperado.",
 }
 
 export enum UserLinkError {
-  NOT_FOUND = "LINK_NOT_FOUND",
-  EXISTS = "LINK_EXISTS",
+  NOT_FOUND = "El link no existe.",
+  EXISTS = "Este link ya existe.",
 }
 
 export interface UserRol {
@@ -87,7 +87,7 @@ export async function createUser(params: {
         lastName: params.lastName,
         password: hashedPassword,
         rolesString: buildRoleString(roles),
-        imageUrl: params.imageUrl ?? "https://picsum.photos/200",
+        imageUrl: params.imageUrl ?? "https://picsum.photos/300",
       }),
     )
     .then((user) => {
@@ -171,6 +171,7 @@ export async function authenticateUser(params: {
   const user = await ds.manager.findOne(UserEnt, {
     where: {
       email: params.email,
+      isActive: true,
     },
     select: [
       "id",
