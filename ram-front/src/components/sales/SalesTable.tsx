@@ -11,7 +11,7 @@ import { NumericFormat } from "react-number-format";
 
 export interface IListSalesProps {
   sales: ISell[];
-  onDeleted: () => void;
+  updateSales: () => void;
 }
 
 const columns: Column<ISell>[] = [
@@ -54,8 +54,11 @@ const columns: Column<ISell>[] = [
   },
 ];
 
-export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
+export const SalesTable = ({ sales, updateSales }: IListSalesProps) => {
   const [data, setData] = useState<ISell[]>(sales);
+  useEffect(() => {
+    setData(sales);
+  }, [sales]);
   const {
     page,
     pageOptions,
@@ -72,14 +75,6 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
     },
     usePagination,
   );
-
-  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
-  useEffect(() => {
-    if (shouldUpdate) {
-      onDeleted();
-      setShouldUpdate(false);
-    }
-  }, [onDeleted, shouldUpdate]);
 
   return (
     <div data-testid="sales-table" className="grid-row grid w-full px-8 pb-4">
@@ -105,9 +100,7 @@ export const SalesTable = ({ sales, onDeleted }: IListSalesProps) => {
               <SalesRow
                 key={sale.id}
                 sale={sale.original}
-                onDeleted={() => {
-                  setShouldUpdate(true);
-                }}
+                updateSales={updateSales}
               />
             );
           })}

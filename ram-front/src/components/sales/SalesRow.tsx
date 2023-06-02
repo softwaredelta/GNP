@@ -8,20 +8,30 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { ISell } from "../../types";
 import { NumericFormat } from "react-number-format";
+import { useEffect } from "react";
 
 type Props = {
   sale: ISell;
-  onDeleted: () => void;
+  updateSales: () => void;
 };
 
-export default function SalesRow({ sale, onDeleted }: Props) {
-  const { callback } = useAxios({
+export default function SalesRow({ sale, updateSales }: Props) {
+  const { response, callback } = useAxios({
     url: `sales/delete/${sale.id}`,
     method: "POST",
-    body: {},
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (response) {
+      Swal.fire("Eliminado", "La venta ha sido eliminada", "success").then(
+        () => {
+          updateSales();
+        },
+      );
+    }
+  }, [response]);
 
   function handleDelete() {
     Swal.fire({
@@ -34,11 +44,6 @@ export default function SalesRow({ sale, onDeleted }: Props) {
     }).then((result) => {
       if (result.isConfirmed && callback) {
         callback();
-        Swal.fire("Eliminado", "La venta ha sido eliminada", "success").then(
-          () => {
-            onDeleted();
-          },
-        );
       }
     });
   }
@@ -51,7 +56,7 @@ export default function SalesRow({ sale, onDeleted }: Props) {
       key={sale.id}
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
-      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+      <Table.Cell className="w-max max-w-[200px] overflow-hidden whitespace-nowrap  pr-10 font-medium text-gray-900 dark:text-white">
         {sale.contractingClient}
       </Table.Cell>
       <Table.Cell>{sale.policyNumber}</Table.Cell>
@@ -87,17 +92,22 @@ export default function SalesRow({ sale, onDeleted }: Props) {
       </Table.Cell>
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
-        <div className="grid grid-cols-2 items-center justify-center ">
-          <FaEdit
-            onClick={() => navigate(`/modify-sale/${sale.id}`)}
-            color="gray"
-            size={20}
-            className="hover:scale-105 hover:fill-blue-700"
-          />
-          <FaTrash
-            onClick={handleDelete}
-            className="hover:scale-105 hover:fill-red-500"
-          />
+        <div className="grid w-full min-w-[50px] grid-cols-2 items-center justify-center gap-5 ">
+          <div>
+            <FaEdit
+              onClick={() => navigate(`/modify-sale/${sale.id}`)}
+              color="gray"
+              className="hover:scale-105 hover:fill-blue-700"
+              size={20}
+            />
+          </div>
+          <div>
+            <FaTrash
+              onClick={handleDelete}
+              className="hover:scale-105 hover:fill-red-500"
+              size={17}
+            />
+          </div>
         </div>
       </Table.Cell>
     </Table.Row>

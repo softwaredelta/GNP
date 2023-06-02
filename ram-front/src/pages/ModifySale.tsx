@@ -1,18 +1,19 @@
 // (c) Delta Software 2023, rights reserved.
 
 import Wrapper from "../containers/Wrapper";
-import { allAssuranceTypes$ } from "../lib/api/api-assurance-type";
-import { useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
-import { ISell } from "../types";
+import { IAssuranceType, ISell } from "../types";
 import { useEffect } from "react";
 import SaleForm from "../components/forms/SaleForm";
 import Swal from "sweetalert2";
 import { useUrlFile } from "../lib/files";
 
 export default function NewSale() {
-  const assuranceTypes = useRecoilValue(allAssuranceTypes$);
+  const { response: assuranceTypes } = useAxios<IAssuranceType[]>({
+    url: "assurance-types/all",
+    method: "GET",
+  });
   const { id: idSale } = useParams();
   const fileUrl = useUrlFile();
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export default function NewSale() {
   return (
     <Wrapper>
       <div className="flex flex-col items-center justify-center pt-8">
-        {sale && (
+        {sale && assuranceTypes && (
           <SaleForm
             initialSell={{
               ...sale,
