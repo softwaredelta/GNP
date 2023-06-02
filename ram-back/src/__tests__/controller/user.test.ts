@@ -2,7 +2,12 @@
 
 import request from "supertest";
 import { app } from "../../controller";
-import { authenticateUser, createUser, addLink } from "../../app/user";
+import {
+  authenticateUser,
+  createUser,
+  addLink,
+  UserError,
+} from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { adminSeeds, userSeeds } from "../../seeds";
 import { UserEnt } from "../../entities/user.entity";
@@ -67,7 +72,10 @@ describe("controller:user", () => {
         .expect("Content-Type", /json/)
         .expect(400)
         .then((response) => {
-          expect(response.body).toHaveProperty("message", "USER_EXISTS");
+          expect(response.body).toHaveProperty(
+            "message",
+            UserError.USER_EXISTS,
+          );
         });
     });
 
@@ -135,7 +143,10 @@ describe("controller:user", () => {
         })
         .expect(401)
         .then((response) => {
-          expect(response.body).toHaveProperty("message", "USER_NOT_FOUND");
+          expect(response.body).toHaveProperty(
+            "message",
+            UserError.USER_NOT_FOUND,
+          );
         });
     });
 
@@ -184,7 +195,10 @@ describe("controller:user", () => {
         .set("Authorization", `Bearer blablabla`)
         .expect(401)
         .then((res) => {
-          expect(res.body).toHaveProperty("message", "USER_TOKEN_INVALID");
+          expect(res.body).toHaveProperty(
+            "message",
+            UserError.USER_TOKEN_INVALID,
+          );
         });
     });
   });
