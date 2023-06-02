@@ -50,7 +50,7 @@ export default function ModalDeliveryFormCreate({
       }
     } else {
       Swal.fire({
-        title: "Error!",
+        title: "¡Error!",
         text: `No seleccionaste archivo.`,
         icon: "error",
         confirmButtonText: "OK",
@@ -61,7 +61,7 @@ export default function ModalDeliveryFormCreate({
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Success!",
+        title: "¡Éxito!",
         text: "El entregable se ha registrado correctamente.",
         icon: "success",
       }).then(() => {
@@ -75,9 +75,8 @@ export default function ModalDeliveryFormCreate({
       });
     } else if (error) {
       Swal.fire({
-        title: "Error!",
-        text: `Ocurrió un error al registrar el entregable.\n
-        ${(error as any).response.data.message}`,
+        title: "¡Error!",
+        text: "Ocurrió un error al registrar el entregable.",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -182,8 +181,8 @@ export default function ModalDeliveryFormCreate({
                   className="btn-primary"
                   onClick={handleSubmit(uploadFile, (errorsFields) => {
                     Swal.fire({
-                      title: "Error!",
-                      text: `Ocurrió un error al registrar la venta.\n
+                      title: "¡Error!",
+                      text: `Ocurrió un error al registrar el entregable.\n
                         ${Object.values(errorsFields).map(
                           (e) => e.message + " ",
                         )}`,

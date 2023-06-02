@@ -3,7 +3,7 @@
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { IUser } from "../../types";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import usePasswordVisibility from "../../hooks/usePasswordVisibility";
 
 const defaultValues: IUser = {
@@ -115,9 +115,9 @@ export default function UserForm({ handlePost }: IModalProspectFormProps) {
           className="absolute right-[15%] top-14 focus:outline-none"
         >
           {passwordVisible ? (
-            <AiFillEye size={20} color="#012356" />
+            <FiEye size={20} color="#012356" />
           ) : (
-            <AiFillEyeInvisible size={20} color="#012356" />
+            <FiEyeOff size={20} color="#012356" />
           )}
         </button>
       </div>
@@ -140,9 +140,9 @@ export default function UserForm({ handlePost }: IModalProspectFormProps) {
           className="absolute right-[15%] top-14 focus:outline-none"
         >
           {passwordVisibleConfirm ? (
-            <AiFillEye size={20} color="#012356" />
+            <FiEye size={20} color="#012356" />
           ) : (
-            <AiFillEyeInvisible size={20} color="#012356" />
+            <FiEyeOff size={20} color="#012356" />
           )}
         </button>
       </div>
@@ -178,8 +178,8 @@ export default function UserForm({ handlePost }: IModalProspectFormProps) {
               },
               (errorsFields) => {
                 Swal.fire({
-                  title: "Error!",
-                  text: `Ocurrió un error al registrar la venta.\n
+                  title: "¡Error!",
+                  text: `Ocurrió un error al registrar el usuario.\n
                   ${Object.values(errorsFields).map((e) => e.message + " ")}`,
                   icon: "error",
                   confirmButtonText: "OK",

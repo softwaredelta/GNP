@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Table } from "flowbite-react";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { FiTrash, FiEdit } from "react-icons/fi";
 import useAxios from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 
@@ -36,7 +36,7 @@ export default function SalesRow({ sale, updateSales }: Props) {
   function handleDelete() {
     Swal.fire({
       title: "¿Estás seguro?",
-      text: "No podrás revertir esta acción",
+      text: "No podrás revertir esta acción.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
@@ -92,22 +92,17 @@ export default function SalesRow({ sale, updateSales }: Props) {
       </Table.Cell>
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
-        <div className="grid w-full min-w-[50px] grid-cols-2 items-center justify-center gap-5 ">
-          <div>
-            <FaEdit
-              onClick={() => navigate(`/modify-sale/${sale.id}`)}
-              color="gray"
-              className="hover:scale-105 hover:fill-blue-700"
-              size={20}
-            />
-          </div>
-          <div>
-            <FaTrash
-              onClick={handleDelete}
-              className="hover:scale-105 hover:fill-red-500"
-              size={17}
-            />
-          </div>
+        <div className="grid grid-cols-2 items-center justify-center ">
+          <FiEdit
+            onClick={() => navigate(`/modify-sale/${sale.id}`)}
+            size={20}
+            className="hover:scale-105 hover:fill-blue-700"
+          />
+          <FiTrash
+            onClick={handleDelete}
+            size={20}
+            className="hover:scale-105 hover:fill-red-500"
+          />
         </div>
       </Table.Cell>
     </Table.Row>

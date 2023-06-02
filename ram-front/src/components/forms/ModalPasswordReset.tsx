@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 import { useRef } from "react";
 import Modal from "../generics/Modal";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import usePasswordVisibility from "../../hooks/usePasswordVisibility";
 
 export interface IModalPasswordResetProps {
@@ -61,9 +61,9 @@ export default function ModalPasswordReset({
                     className="absolute right-[4%] top-4 focus:outline-none"
                   >
                     {passwordVisible ? (
-                      <AiFillEye size={20} color="#012356" />
+                      <FiEye size={20} color="#012356" />
                     ) : (
-                      <AiFillEyeInvisible size={20} color="#012356" />
+                      <FiEyeOff size={20} color="#012356" />
                     )}
                   </button>
                 </div>
@@ -85,9 +85,9 @@ export default function ModalPasswordReset({
                     className="absolute right-[4%] top-4 focus:outline-none"
                   >
                     {passwordVisibleConfirm ? (
-                      <AiFillEye size={20} color="#012356" />
+                      <FiEye size={20} color="#012356" />
                     ) : (
-                      <AiFillEyeInvisible size={20} color="#012356" />
+                      <FiEyeOff size={20} color="#012356" />
                     )}
                   </button>
                 </div>

@@ -1,6 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-import { BsFillPeopleFill } from "react-icons/bs";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiUsers } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAxios from "../../../../hooks/useAxios";
@@ -29,7 +28,7 @@ export default function CardInfoNumMembers({
   function handleDelete() {
     Swal.fire({
       title: "¿Estás seguro?",
-      text: "No podrás revertir esta acción",
+      text: "No podrás revertir esta acción.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
@@ -37,7 +36,7 @@ export default function CardInfoNumMembers({
     }).then((result) => {
       if (result.isConfirmed && callback) {
         callback();
-        Swal.fire("Eliminado", "El grupo ha sido eliminado", "success").then(
+        Swal.fire("¡Éxito!", "El grupo ha sido eliminado", "success").then(
           () => {
             updateGroups();
           },
@@ -76,7 +75,7 @@ export default function CardInfoNumMembers({
       </div>
       <div className="mx-auto flex w-11/12 items-center justify-end">
         <div className="pr-2">
-          <BsFillPeopleFill color="gray" />
+          <FiUsers size={20} color="gray" />
         </div>
         {number} Miembros
       </div>

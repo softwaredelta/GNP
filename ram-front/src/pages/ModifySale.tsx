@@ -30,14 +30,14 @@ export default function NewSale() {
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Success!",
+        title: "¡Éxito!",
         text: "La venta se ha registrado correctamente.",
         icon: "success",
       });
       navigate("/sales-history");
     } else if (error) {
       Swal.fire({
-        title: "Error!",
+        title: "¡Error!",
         text: `Ocurrió un error al registrar la venta.\n
         ${(error as any).response.data.message}`,
         icon: "error",
@@ -87,7 +87,7 @@ export default function NewSale() {
                 }
               } else {
                 Swal.fire({
-                  title: "Error!",
+                  title: "¡Error!",
                   text: `No seleccionaste archivo.`,
                   icon: "error",
                   confirmButtonText: "OK",

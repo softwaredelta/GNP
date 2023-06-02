@@ -1,7 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { FiEdit } from "react-icons/fi";
-import { MdRemoveRedEye } from "react-icons/md";
+import { FiEdit, FiEye } from "react-icons/fi";
 import useModal from "../../hooks/useModal";
 import { useAuthentication } from "../../lib/api/api-auth";
 import { IStatus } from "../../types";
@@ -85,18 +84,18 @@ export default function RowProspect({
           />
           <div>
             {auth?.roles[0] === "manager" ? (
-              <button className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125">
-                <MdRemoveRedEye className="text-2xl" />
+              <button className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-110">
+                <FiEye size={25} />
               </button>
             ) : (
               <button
-                className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-125"
+                className="mr-2 cursor-pointer transition-all ease-in-out hover:scale-110"
                 onClick={(event) => {
                   event.stopPropagation();
                   toggleModal();
                 }}
               >
-                <FiEdit className="text-2xl" />
+                <FiEdit size={25} />
               </button>
             )}
           </div>

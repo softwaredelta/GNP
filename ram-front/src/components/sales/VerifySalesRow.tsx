@@ -2,9 +2,7 @@
 
 import { Table } from "flowbite-react";
 import React from "react";
-import { AiOutlineEye } from "react-icons/ai";
-import { FcCheckmark } from "react-icons/fc";
-import { RxCross1 } from "react-icons/rx";
+import { FiEye, FiCheck, FiX } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
@@ -31,7 +29,7 @@ export default function SalesRow({ sale, onUpdated }: Props) {
   async function handleUpdate(statusChange: string) {
     Swal.fire({
       title: "¿Estás seguro?",
-      text: "No podrás revertir esta acción",
+      text: "No podrás revertir esta acción.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, aceptar",
@@ -42,8 +40,8 @@ export default function SalesRow({ sale, onUpdated }: Props) {
           statusChange,
         });
         Swal.fire(
-          `¡${statusChange}!`,
-          `La venta ha sido ${statusChange}`,
+          `¡Éxito!`,
+          `La venta ha sido ${statusChange}.`,
           "success",
         ).then(() => {
           onUpdated();
@@ -97,8 +95,8 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
         <div className="grid grid-cols-3 items-center justify-center ">
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <AiOutlineEye
+          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-110 active:scale-95">
+            <FiEye
               size={20}
               className="text-gray-500"
               onClick={() => openFile(sale.evidenceUrl as string)}
@@ -117,14 +115,14 @@ export default function SalesRow({ sale, onUpdated }: Props) {
             </Modal>
           )}
           <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <FcCheckmark
+            <FiCheck
               size={20}
               className="text-green-500"
               onClick={() => handleUpdate("aceptada")}
             />
           </div>
           <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <RxCross1
+            <FiX
               size={20}
               className="text-red-500"
               onClick={() => handleUpdate("rechazada")}

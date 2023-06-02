@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 import LogoRAM from "../../assets/imgs/Ram_LogoInv.png";
 import usePasswordVisibility from "../../hooks/usePasswordVisibility";
@@ -68,9 +68,9 @@ function LoginForm({
             className="absolute right-[7%] top-3 focus:outline-none"
           >
             {passwordVisible ? (
-              <AiFillEye size={20} color="#012356" />
+              <FiEye size={20} color="#012356" />
             ) : (
-              <AiFillEyeInvisible size={20} color="#012356" />
+              <FiEyeOff size={20} color="#012356" />
             )}
           </button>
         </div>

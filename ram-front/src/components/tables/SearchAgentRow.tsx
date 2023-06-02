@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 import { Table } from "flowbite-react";
-import { RxCross1 } from "react-icons/rx";
+import { FiX } from "react-icons/fi";
 import { IUser } from "../../types";
 
 export interface IListSearchProps {
@@ -23,7 +23,7 @@ export const SearchAgentRow = ({ agent, deleteAgent }: IListSearchProps) => {
           {agent.name} {agent.lastName}
         </Table.Cell>
         <Table.Cell>
-          <RxCross1
+          <FiX
             size={20}
             color="#A11A1A"
             className="cursor-pointer transition-all ease-in-out hover:scale-150"

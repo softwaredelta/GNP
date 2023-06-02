@@ -20,7 +20,6 @@ const ManagerGroups = lazy(async () => import("../pages/ManagerGroups"));
 const ManagerDelivery = lazy(async () => import("../pages/ManagerDelivery"));
 const ManageProspects = lazy(async () => import("../pages/ManageProspects"));
 
-const MySalesMetrics = lazy(async () => import("../pages/TODO/MySalesMetrics"));
 const Prospects = lazy(async () => import("../pages/Prospects"));
 const Help = lazy(async () => import("../pages/TODO/Help"));
 const PlaceholderHome = lazy(async () => import("../pages/PlaceholderHome"));
@@ -66,10 +65,6 @@ export const RegularUserRoutes: IRoute[] = [
   {
     path: "/new-sale",
     Component: () => <NewSale />,
-  },
-  {
-    path: "/my-sales-metrics",
-    Component: () => <MySalesMetrics />,
   },
   {
     path: "/prospects",
