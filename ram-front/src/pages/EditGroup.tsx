@@ -5,8 +5,8 @@ import { FiPlus } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
-import ModalGroupForm from "../components/forms/ModalGroupForm";
 import ModalDeliveryFormCreate from "../components/forms/ModalDeliveryFormCreate";
+import ModalGroupForm from "../components/forms/ModalGroupForm";
 import SearchAgentTable from "../components/tables/SearchAgentTable";
 import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import Wrapper from "../containers/Wrapper";
@@ -89,17 +89,14 @@ export default function EditGroup() {
                 isOpenModal={isOpenGroupForm}
                 closeModal={toggleModalGroupForm}
                 handlePost={(image, name) => {
-                  if (!image) {
-                    Swal.fire({
-                      title: "¡Error!",
-                      text: "Inserte una imagen en el campo",
-                      icon: "error",
-                    });
-                    return;
-                  }
-                  if (callback) {
+                  if (
+                    callback &&
+                    (image !== group.imageUrl || name !== group.name)
+                  ) {
                     const data: FormData = new FormData();
-                    data.append("image", image);
+                    if (image) {
+                      data.append("image", image);
+                    }
                     data.append("name", name);
                     callback(data);
                   }

@@ -40,24 +40,26 @@ function LoginForm({
           ¡Bienvenido al Portal de RAM!
         </h1>
         <label className="w-9/12 justify-between text-sm font-bold text-[#424242] ">
-          Nombre de Usuario
+          Correo Electrónico
         </label>
         <div className="w-[79%]">
-          <input className="input-primary" type="email" name="username" />
+          <input
+            placeholder="ejemplo@ram.mx"
+            className="input-primary"
+            type="email"
+            name="username"
+          />
         </div>
 
         <div className="flex w-9/12 justify-between">
           <label className=" text-sm font-bold text-[#424242]">
             Contraseña
           </label>
-
-          <a href="#" className="ml-1 text-xs text-gray-600 underline">
-            ¿Olvidaste tu contraseña?
-          </a>
         </div>
 
         <div className="relative flex w-[79%] justify-center">
           <input
+            placeholder="***********"
             className="input-primary pr-10"
             type={typeInput()}
             name="password"
@@ -82,16 +84,6 @@ function LoginForm({
         >
           Login
         </button>
-
-        {/* No tienes cuenta? */}
-        <div className=" mt-4  w-56">
-          <p className="text-center text-sm text-black">
-            ¿No tienes cuenta? Solicita una cuenta
-            <a href="#" className="ml-1 text-sm text-gnp-blue-300">
-              aquí.
-            </a>{" "}
-          </p>
-        </div>
       </form>
     </div>
   );
