@@ -25,11 +25,7 @@ export default function SalesRow({ sale, updateSales }: Props) {
 
   useEffect(() => {
     if (response) {
-      Swal.fire("Eliminado", "La venta ha sido eliminada", "success").then(
-        () => {
-          updateSales();
-        },
-      );
+      updateSales();
     }
   }, [response]);
 
