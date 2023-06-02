@@ -117,6 +117,30 @@ export default function EditGroup() {
                 {"Agregar entregable"}
                 <FiPlus className="ml-2 inline-block" size={22} />
               </button>
+              {group && (
+                <ModalGroupForm
+                  isOpenModal={isOpenGroupForm}
+                  closeModal={toggleModalGroupForm}
+                  handlePost={(image, name) => {
+                    if (!image) {
+                      Swal.fire({
+                        title: "Imagen faltante",
+                        text: "Inserte una imagen en el campo",
+                        icon: "error",
+                      });
+                      return;
+                    }
+                    if (callback) {
+                      const data: FormData = new FormData();
+                      data.append("image", image);
+                      data.append("name", name);
+                      callback(data);
+                    }
+                  }}
+                  isEditModal={true}
+                  initialValues={{ name: group.name, imageUrl: group.imageUrl }}
+                />
+              )}
             </div>
             <ModalDeliveryFormCreate
               isOpenModal={isOpenDeliveryForm}

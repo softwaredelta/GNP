@@ -31,7 +31,7 @@ export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
               <CardInfoGroup
                 color={index % 2 ? "orange" : "blue"}
                 nameGroup={group.name}
-                progress={(group.progress as number) || 0} // fixed here
+                progress={(group.progress as number) || 0}
               />
             </Card>
           </button>

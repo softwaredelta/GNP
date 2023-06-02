@@ -4,9 +4,9 @@ import Wrapper from "../containers/Wrapper";
 import { useNavigate } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import { useEffect } from "react";
-import SaleForm from "../components/forms/SaleForm";
 import Swal from "sweetalert2";
 import { IAssuranceType } from "../types";
+import SaleForm from "../components/forms/SaleForm";
 
 export default function NewSale() {
   const { response: assuranceTypes } = useAxios<IAssuranceType[]>({

@@ -15,7 +15,6 @@ const Wrapper = ({ children, title }: IWrapperProps): JSX.Element => {
   const { logout, auth } = useAuthentication();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-  // const isGroupsPage = location.pathname === "/groups";
 
   return (
     <main className="flex min-h-screen flex-col justify-between overflow-y-auto">

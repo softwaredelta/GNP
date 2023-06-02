@@ -76,7 +76,7 @@ export default function SaleForm({
               placeholder="Ingrese el número de póliza"
               type="text"
               {...register("policyNumber", {
-                required: "El campo poliza es requerido\n",
+                required: "El campo poliza es requerido",
               })}
             />
             <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
