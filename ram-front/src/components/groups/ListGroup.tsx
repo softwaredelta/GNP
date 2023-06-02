@@ -1,9 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 import { useNavigate } from "react-router-dom";
+import { useUrlFile } from "../../lib/files";
+import { IGroup } from "../../types";
 import Card from "../generics/cards/base/Card";
 import CardInfoGroup from "../generics/cards/info/CardInfoGroup";
-import { IGroup } from "../../types";
-import { useUrlFile } from "../../lib/files";
 
 export interface IListGroupProps {
   groups: IGroup[];
@@ -31,7 +31,7 @@ export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
               <CardInfoGroup
                 color={index % 2 ? "orange" : "blue"}
                 nameGroup={group.name}
-                progress={group.progress as number}
+                progress={(group.progress as number) || 0}
               />
             </Card>
           </button>

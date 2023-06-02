@@ -2,7 +2,6 @@
 
 import { Badge } from "flowbite-react";
 import { ChangeEvent } from "react";
-import { BsCameraFill } from "react-icons/bs";
 import { FiEdit2 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import usePreviewImage from "../../../hooks/usePreviewImage";
@@ -51,11 +50,22 @@ export default function ProfileCard({
               }
             />
             {isEdit && (
-              <BsCameraFill
-                size={30}
-                className="absolute bottom-0.5 right-0.5 mr-2 hover:scale-110 hover:text-orange-500"
-                onClick={handleIconClick}
-              />
+              <div className="absolute bottom-0 right-1">
+                <button
+                  className="floating-button-primary hover:bg-orange-500"
+                  onClick={() => {
+                    navigate(`/profile/${user.id}`);
+                  }}
+                >
+                  {
+                    <FiEdit2
+                      className="m-2"
+                      size={22}
+                      onClick={handleIconClick}
+                    />
+                  }
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -69,9 +79,10 @@ export default function ProfileCard({
             {user.rolesString &&
               user.rolesString
                 .split("_")
-                .map(
-                  (role) =>
-                    role.charAt(0).toUpperCase() + role.slice(1).toLowerCase(),
+                .map((role) =>
+                  role === "manager" || role === "manager,admin"
+                    ? "Gerente"
+                    : "Agente",
                 )
                 .join(" ")}
           </div>

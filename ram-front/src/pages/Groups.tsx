@@ -24,7 +24,7 @@ export default function Groups(): JSX.Element {
   return (
     <Wrapper title="Grupos">
       <div>
-        <div className=" grid place-items-center gap-10 sm:grid-cols-2 xl:grid-cols-4">
+        <div className=" mt-10 grid place-items-center gap-10 sm:grid-cols-2 xl:grid-cols-4">
           {response && (
             <ListGroup
               groups={response?.data.groups.map(

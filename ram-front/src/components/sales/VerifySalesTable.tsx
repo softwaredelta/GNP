@@ -11,7 +11,7 @@ import { NumericFormat } from "react-number-format";
 import ManagerSalesFilters from "./ManagerSalesFilters";
 export interface IListSalesProps {
   sales: ISell[];
-  onUpdated?: () => void;
+  onUpdatedVerifySales: () => void;
 }
 
 const columns: Column<ISell>[] = [
@@ -54,10 +54,16 @@ const columns: Column<ISell>[] = [
   },
 ];
 
-export const VerifySalesTable = ({ sales }: IListSalesProps) => {
-  const [handleUpdate, setHandleUpdate] = useState<boolean>(false);
-
+export const VerifySalesTable = ({
+  sales,
+  onUpdatedVerifySales,
+}: IListSalesProps) => {
   const [data, setData] = useState<ISell[]>(sales);
+
+  useEffect(() => {
+    setData(sales);
+  }, [sales]);
+
   const {
     page,
     pageOptions,
@@ -74,14 +80,6 @@ export const VerifySalesTable = ({ sales }: IListSalesProps) => {
     },
     usePagination,
   );
-
-  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
-  useEffect(() => {
-    if (shouldUpdate) {
-      setHandleUpdate(false);
-      if (handleUpdate) setShouldUpdate(false);
-    }
-  }, [shouldUpdate]);
 
   return (
     <div data-testid="Table" className="w-full p-8">
@@ -108,7 +106,7 @@ export const VerifySalesTable = ({ sales }: IListSalesProps) => {
                 key={sale.id}
                 sale={sale.original}
                 onUpdated={() => {
-                  setHandleUpdate(true);
+                  onUpdatedVerifySales();
                 }}
               />
             );

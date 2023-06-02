@@ -24,7 +24,7 @@ export default function Group(): JSX.Element {
   return (
     <Wrapper title={group?.name as string}>
       <div>
-        {deliveriesList && deliveriesList.length ? (
+        {deliveriesList ? (
           <>
             <ListDeliverables deliverables={deliveriesList} />
           </>

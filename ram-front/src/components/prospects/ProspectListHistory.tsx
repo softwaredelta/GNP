@@ -40,18 +40,18 @@ export function ProspectListHistory({
         <div className="flex w-1/3 items-center justify-center">
           <div className="mr-2 flex items-center justify-center text-center">
             <div
-              className={`h-4 w-4 rounded-full ${getColorClass(
+              className={`h-4 w-4 rounded-full  ${getColorClass(
                 status?.statusName || "",
               )}`}
             ></div>
           </div>
-          <p className="font-semibold text-gray-500">{status?.statusName}</p>
+          <p className="text-center font-semibold text-gray-500">
+            {status?.statusName}
+          </p>
         </div>
-        <div className="flex w-3/4 items-center justify-center">
-          <div className="mb-2 text-right">
-            <p className="text-justify font-semibold text-gray-500">
-              {statusComment}
-            </p>
+        <div className="flex w-5/6 items-center justify-center">
+          <div className="mb-2 text-center">
+            <p className="font-semibold text-gray-500">{statusComment}</p>
           </div>
         </div>
         <div className="flex w-2/3 items-center justify-center">

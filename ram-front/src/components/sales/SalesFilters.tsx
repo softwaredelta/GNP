@@ -4,7 +4,7 @@ import useSearch from "../../hooks/useSearch";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ISell } from "../../types";
-import { FaPlus } from "react-icons/fa";
+import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import useFilterDate from "../../hooks/useFilterDate";
 
@@ -95,7 +95,7 @@ export default function SalesFilters({
         <Link to="/new-sale">
           <button className="btn-primary flex h-full items-center justify-center">
             <span className="font-semibold"> Agregar </span>
-            <FaPlus size={15} className="ml-2" />
+            <FiPlus size={20} className="ml-2" />
           </button>
         </Link>
       </div>

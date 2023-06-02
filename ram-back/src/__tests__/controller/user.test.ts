@@ -2,10 +2,16 @@
 
 import request from "supertest";
 import { app } from "../../controller";
-import { authenticateUser, createUser, addLink } from "../../app/user";
+import {
+  authenticateUser,
+  createUser,
+  addLink,
+  UserError,
+} from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { adminSeeds, userSeeds } from "../../seeds";
 import { UserEnt } from "../../entities/user.entity";
+import { UserLinkEnt } from "../../entities/user-link.entity";
 
 describe("controller:user", () => {
   let adminAccessToken: string;
@@ -66,7 +72,10 @@ describe("controller:user", () => {
         .expect("Content-Type", /json/)
         .expect(400)
         .then((response) => {
-          expect(response.body).toHaveProperty("message", "USER_EXISTS");
+          expect(response.body).toHaveProperty(
+            "message",
+            UserError.USER_EXISTS,
+          );
         });
     });
 
@@ -134,7 +143,10 @@ describe("controller:user", () => {
         })
         .expect(401)
         .then((response) => {
-          expect(response.body).toHaveProperty("message", "USER_NOT_FOUND");
+          expect(response.body).toHaveProperty(
+            "message",
+            UserError.USER_NOT_FOUND,
+          );
         });
     });
 
@@ -183,7 +195,10 @@ describe("controller:user", () => {
         .set("Authorization", `Bearer blablabla`)
         .expect(401)
         .then((res) => {
-          expect(res.body).toHaveProperty("message", "USER_TOKEN_INVALID");
+          expect(res.body).toHaveProperty(
+            "message",
+            UserError.USER_TOKEN_INVALID,
+          );
         });
     });
   });
@@ -508,16 +523,17 @@ describe("controller:user", () => {
   });
 
   describe("Functions of user's links", () => {
+    let linkAdded: UserLinkEnt;
     let user: UserEnt;
     let regularAccessToken: string;
     beforeEach(async () => {
-      const { link: addedLink, error: errorlink } = await addLink({
+      const { link, error: errorlink } = await addLink({
         id: "1",
         link: "https://example.com",
         name: "Example",
       });
       expect(errorlink).toBeUndefined();
-      expect(addedLink).toBeDefined();
+      linkAdded = link;
 
       const { user: createdUser, error } = await createUser({
         email: "test-u-1@delta.tec.mx",
@@ -543,33 +559,68 @@ describe("controller:user", () => {
       regularAccessToken = regularAuthenticationResponse.accessToken;
     });
 
-    it("rejects unauthenticated request", async () => {});
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .get("/user/reset-password")
+        .query({ query: "use" })
+        .send()
+        .expect(401);
+    });
 
     it("adds new link to a user's links", async () => {
-      const link = "https://example.com";
-      const name = "Example";
+      const name = "Example Link";
 
       const res = await request(app)
         .post(`/user/add-link/${user.id}`)
         .set("Authorization", `Bearer ${regularAccessToken}`)
-        .send({ link, name })
+        .send({ link: linkAdded.link, name })
         .expect(200);
 
       expect(res.body.newLink).toBeDefined();
-      expect(res.body.newLink.link).toEqual(link);
+      expect(res.body.newLink.link).toEqual(linkAdded.link);
       expect(res.body.newLink.name).toEqual(name);
     });
 
     it("modifies an existing user link", async () => {
-      // TODO: Implement this test (Fermin)
+      const updatedLink = {
+        link: "https://newexample.com",
+        name: "New Example",
+      };
+
+      const res = await request(app)
+        .post("/user/edit-link")
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .send({ id: linkAdded.id, ...updatedLink })
+        .expect(200);
+
+      const { uLink } = res.body;
+
+      expect(uLink).toHaveProperty("id", linkAdded.id);
+      expect(uLink).toHaveProperty("link", updatedLink.link);
+      expect(uLink).toHaveProperty("name", updatedLink.name);
     });
 
     it("deletes existing user link", async () => {
-      // ! TODO: Implement this test
+      const res = await request(app)
+        .delete("/user/delete-link")
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .send({ id: linkAdded.id })
+        .expect(200);
+
+      expect(res.body.links).toBeDefined();
+      expect(res.body.links.affected).toBe(1);
     });
 
     it("gets a user with their links", async () => {
-      // ! TODO: Implement this test
+      const res = await request(app)
+        .get(`/user/links/${user.id}`)
+        .set("Authorization", `Bearer ${regularAccessToken}`)
+        .expect(200);
+
+      const { links } = res.body;
+
+      expect(Array.isArray(links)).toBe(true);
+      expect(links.length).toBeGreaterThan(0);
     });
   });
 });

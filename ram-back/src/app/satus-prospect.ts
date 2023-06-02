@@ -51,6 +51,7 @@ export async function getProspectStatus(params: {
     .find(ProspectStatusEnt, {
       where: { prospectId },
       relations: ["status"],
+      order: { updatedStatusDate: "DESC" },
     })
     .then((prospectStatus) => {
       return prospectStatus;

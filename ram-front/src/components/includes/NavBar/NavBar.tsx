@@ -99,9 +99,6 @@ function NavBar({ onLogout, user, role }: Props) {
         ) : (
           <div className="mx-8 text-lg text-gray-900">
             <Dropdown label="Ventas" size="xl" inline={true}>
-              <Link to="/my-sales-metrics">
-                <Dropdown.Item>Métricas de Ventas</Dropdown.Item>
-              </Link>
               <Link to="/new-sale">
                 <Dropdown.Item>Nueva Venta</Dropdown.Item>
               </Link>

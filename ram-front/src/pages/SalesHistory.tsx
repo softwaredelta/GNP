@@ -2,18 +2,20 @@
 
 import { SalesTable } from "../components/sales/SalesTable";
 import Wrapper from "../containers/Wrapper";
-import { allSales$, useUpdateSales } from "../lib/api/api-sales";
-import { useRecoilValue } from "recoil";
+import useAxios from "../hooks/useAxios";
+import { ISell } from "../types";
 
 export default function SalesHistory() {
-  const sales = useRecoilValue(allSales$);
-  const updateSales = useUpdateSales();
+  const { response: sales, callback: updateSales } = useAxios<ISell[]>({
+    url: "sales/my-sales",
+    method: "GET",
+  });
 
   return (
     <Wrapper title="Mis ventas">
       <div>
         <div className="mt-3 flex flex-col items-center justify-center">
-          <SalesTable sales={sales} onDeleted={() => updateSales()} />
+          {sales && <SalesTable sales={sales} updateSales={updateSales} />}
         </div>
       </div>
     </Wrapper>
