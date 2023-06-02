@@ -7,24 +7,42 @@ import useAxios from "../hooks/useAxios";
 import { ISell } from "../types";
 
 export default function VerifySales() {
-  const { response: pendingResponse, loading: loadingResponse } = useAxios<{
+  const {
+    response: pendingResponse,
+    loading: loadingResponse,
+    callback: updatePendingSales,
+  } = useAxios<{
     sales: ISell[];
   }>({
     url: `sales/verify-sales/pending`,
     method: "GET",
   });
-  const { response: verifiedResponse, loading: loadingVerified } = useAxios<{
+  const {
+    response: verifiedResponse,
+    loading: loadingVerified,
+    callback: updatedVerifiedSales,
+  } = useAxios<{
     sales: ISell[];
   }>({
     url: `sales/verify-sales/aproved`,
     method: "GET",
   });
-  const { response: refusedResponse, loading: loadingRefused } = useAxios<{
+  const {
+    response: refusedResponse,
+    loading: loadingRefused,
+    callback: updatedRefusedSales,
+  } = useAxios<{
     sales: ISell[];
   }>({
     url: `sales/verify-sales/refused`,
     method: "GET",
   });
+
+  const handleUpdate = () => {
+    updatePendingSales();
+    updatedVerifiedSales();
+    updatedRefusedSales();
+  };
 
   if (loadingResponse) return <h1>Loading...</h1>;
   if (loadingVerified) return <h1>Loading...</h1>;
@@ -41,18 +59,27 @@ export default function VerifySales() {
           <Tabs.Item active={true} title="Sin Revisar">
             <div className="mt-1 flex items-center justify-center">
               {pendingResponse && (
-                <VerifySalesTable sales={pendingResponse.sales} />
+                <VerifySalesTable
+                  sales={pendingResponse.sales}
+                  onUpdatedVerifySales={handleUpdate}
+                />
               )}
             </div>
           </Tabs.Item>
           <Tabs.Item title="Revisados">
             {verifiedResponse && (
-              <VerifySalesTable sales={verifiedResponse.sales} />
+              <VerifySalesTable
+                sales={verifiedResponse.sales}
+                onUpdatedVerifySales={handleUpdate}
+              />
             )}
           </Tabs.Item>
           <Tabs.Item title="Rechazados">
             {refusedResponse && (
-              <VerifySalesTable sales={refusedResponse.sales} />
+              <VerifySalesTable
+                sales={refusedResponse.sales}
+                onUpdatedVerifySales={handleUpdate}
+              />
             )}
           </Tabs.Item>
         </Tabs.Group>

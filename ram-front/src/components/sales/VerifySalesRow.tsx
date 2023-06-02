@@ -1,7 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Table } from "flowbite-react";
-import React from "react";
 import { FiEye, FiCheck, FiX } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 import Swal from "sweetalert2";
@@ -10,6 +9,7 @@ import useModal from "../../hooks/useModal";
 import { useOpenFile } from "../../lib/files";
 import { ISell } from "../../types";
 import Modal from "../generics/Modal";
+import { useEffect } from "react";
 
 type Props = {
   sale: ISell;
@@ -18,7 +18,7 @@ type Props = {
 
 export default function SalesRow({ sale, onUpdated }: Props) {
   const { isOpen, toggleModal } = useModal();
-  const { callback } = useAxios({
+  const { response, callback } = useAxios({
     url: `sales/update-status/${sale.id}`,
     method: "POST",
     body: {},
@@ -39,16 +39,20 @@ export default function SalesRow({ sale, onUpdated }: Props) {
         callback({
           statusChange,
         });
-        Swal.fire(
-          `¡Éxito!`,
-          `La venta ha sido ${statusChange}.`,
-          "success",
-        ).then(() => {
-          onUpdated();
-        });
+        // Swal.fire(`¡Éxito!`, `La venta ha sido ${statusChange}.`, "success");
       }
     });
   }
+
+  useEffect(() => {
+    if (response) {
+      Swal.fire(`¡Éxito!`, `La venta ha sido actualizada.`, "success").then(
+        () => {
+          onUpdated();
+        },
+      );
+    }
+  }, [response]);
 
   const capitalize = (word: string): string => {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
