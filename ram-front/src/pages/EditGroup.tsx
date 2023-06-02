@@ -14,6 +14,7 @@ import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
 import { useUpdateGroups } from "../lib/api/api-courses";
 import { IGroup, IUser } from "../types";
+import { RiAddBoxFill } from "react-icons/ri";
 
 export default function EditGroup() {
   const id = useParams().id as string;
@@ -83,6 +84,39 @@ export default function EditGroup() {
               >
                 Editar Grupo
               </button>
+              {group && (
+                <ModalGroupForm
+                  isOpenModal={isOpenGroupForm}
+                  closeModal={toggleModalGroupForm}
+                  handlePost={(image, name) => {
+                    if (!image) {
+                      Swal.fire({
+                        title: "Imagen faltante",
+                        text: "Inserte una imagen en el campo",
+                        icon: "error",
+                      });
+                      return;
+                    }
+                    if (callback) {
+                      const data: FormData = new FormData();
+                      data.append("image", image);
+                      data.append("name", name);
+                      callback(data);
+                    }
+                  }}
+                  isEditModal={true}
+                  initialValues={{ name: group.name, imageUrl: group.imageUrl }}
+                />
+              )}
+              <div className="pl-4">
+                <button
+                  onClick={toggleModalDeliveryForm}
+                  className="btn-primary flex-grid flex items-center"
+                >
+                  {"Agregar entregable"}
+                  <RiAddBoxFill className="ml-2 inline-block" size={20} />
+                </button>
+              </div>
             </div>
             {group && (
               <ModalGroupForm

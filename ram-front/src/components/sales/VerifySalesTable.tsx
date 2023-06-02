@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Table } from "flowbite-react";
 import Pagination from "../generics/Pagination";
