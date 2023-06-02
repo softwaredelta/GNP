@@ -13,7 +13,20 @@ interface Props {
 export default function ListDeliverables({ deliverables }: Props) {
   const navigate = useNavigate();
 
-  if (deliverables.length === 0) return <h1>No hay entregables</h1>;
+  if (deliverables.length === 0) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <h1 className="mb-4 text-3xl font-bold text-gray-700">
+          No hay entregables
+        </h1>
+        <p className="text-center text-lg text-gray-500">
+          No hay entregables registrados en este momento.
+          <br />
+          Por favor, inténtelo de nuevo más tarde.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto grid w-10/12 grid-cols-1 gap-10 p-12">
