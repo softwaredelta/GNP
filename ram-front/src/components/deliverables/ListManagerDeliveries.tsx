@@ -12,7 +12,7 @@ interface Props {
 
 function countSentDeliveries(delivery: IDelivery) {
   let count = 0;
-
+  if (!delivery.userDeliveries) return count;
   for (let i = 0; i < delivery.userDeliveries.length; i++) {
     if (delivery.userDeliveries[i].status !== "Sin enviar") {
       count++;

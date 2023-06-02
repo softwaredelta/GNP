@@ -108,6 +108,7 @@ export default function EditGroup() {
                 initialValues={{
                   name: group.name,
                   imageUrl: group.imageUrl,
+                  deliveries: group.deliveries,
                 }}
               />
             )}

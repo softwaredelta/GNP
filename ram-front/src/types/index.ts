@@ -45,7 +45,7 @@ export interface IDelivery {
   deliveryName: string;
   description: string;
   imageUrl: string;
-  userDeliveries: IUserDelivery[];
+  userDeliveries?: IUserDelivery[];
   group?: IGroup;
   hasDelivery?: string;
 }
