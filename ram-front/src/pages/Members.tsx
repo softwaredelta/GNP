@@ -9,6 +9,7 @@ import useModal from "../hooks/useModal";
 import { IMembers } from "../types";
 export default function Members() {
   const { isOpen, toggleModal } = useModal();
+
   const {
     response: membersResponse,
     loading: loadingMembers,
