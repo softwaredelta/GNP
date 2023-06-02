@@ -51,7 +51,7 @@ export function App({
         )}
       >
         <RecoilRoot>
-          <BrowserRouter>
+          <BrowserRouter basename="/app">
             <HashProvider value={hash}>
               <AuthWrapper>{children}</AuthWrapper>
             </HashProvider>
