@@ -92,7 +92,7 @@ export interface IGroup {
   imageUrl?: string;
   progress?: number;
   groupUsers?: IUser[];
-  deliveries: IDelivery[];
+  deliveries?: IDelivery[];
   userDeliveries?: IUserDelivery[];
 }
 
