@@ -1,32 +1,38 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Table } from "flowbite-react";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { FiTrash, FiEdit } from "react-icons/fi";
 import useAxios from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import { ISell } from "../../types";
 import { NumericFormat } from "react-number-format";
+import { useEffect } from "react";
 
 type Props = {
   sale: ISell;
-  onDeleted: () => void;
+  updateSales: () => void;
 };
 
-export default function SalesRow({ sale, onDeleted }: Props) {
-  const { callback } = useAxios({
+export default function SalesRow({ sale, updateSales }: Props) {
+  const { response, callback } = useAxios({
     url: `sales/delete/${sale.id}`,
     method: "POST",
-    body: {},
   });
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (response) {
+      updateSales();
+    }
+  }, [response]);
+
   function handleDelete() {
     Swal.fire({
       title: "¿Estás seguro?",
-      text: "No podrás revertir esta acción",
+      text: "No podrás revertir esta acción.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
@@ -34,11 +40,6 @@ export default function SalesRow({ sale, onDeleted }: Props) {
     }).then((result) => {
       if (result.isConfirmed && callback) {
         callback();
-        Swal.fire("Eliminado", "La venta ha sido eliminada", "success").then(
-          () => {
-            onDeleted();
-          },
-        );
       }
     });
   }
@@ -51,7 +52,7 @@ export default function SalesRow({ sale, onDeleted }: Props) {
       key={sale.id}
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
-      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+      <Table.Cell className="w-max max-w-[200px] overflow-hidden whitespace-nowrap  pr-10 font-medium text-gray-900 dark:text-white">
         {sale.contractingClient}
       </Table.Cell>
       <Table.Cell>{sale.policyNumber}</Table.Cell>
@@ -88,14 +89,14 @@ export default function SalesRow({ sale, onDeleted }: Props) {
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
         <div className="grid grid-cols-2 items-center justify-center ">
-          <FaEdit
+          <FiEdit
             onClick={() => navigate(`/modify-sale/${sale.id}`)}
-            color="gray"
             size={20}
             className="hover:scale-105 hover:fill-blue-700"
           />
-          <FaTrash
+          <FiTrash
             onClick={handleDelete}
+            size={20}
             className="hover:scale-105 hover:fill-red-500"
           />
         </div>

@@ -6,6 +6,7 @@ import usePreviewImage from "../../hooks/usePreviewImage";
 import useAxios from "../../hooks/useAxios";
 import { IDeliveryDescription, ILink } from "../../types";
 import LinkList from "../generics/lists/LinkList";
+import { useUrlFile } from "../../lib/files";
 
 export interface IEditDeliveryFormProps {
   delivery: IDeliveryDescription;
@@ -24,7 +25,9 @@ export default function EditDeliveryForm({
 }: IEditDeliveryFormProps) {
   const [file, setFile] = useState<File | null | string>(null);
 
-  const { setPreviewImage } = usePreviewImage();
+  const fileUrl = useUrlFile();
+
+  const { setPreviewImage, imgRef } = usePreviewImage();
 
   const [enabled, setEnabled] = useState<string>();
 
@@ -74,7 +77,7 @@ export default function EditDeliveryForm({
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Success!",
+        title: "¡Éxito!",
         text: "El entregable se ha modificado correctamente.",
         icon: "success",
       });
@@ -83,9 +86,8 @@ export default function EditDeliveryForm({
     if (error) {
       console.log({ error });
       Swal.fire({
-        title: "Error!",
-        text: `Ocurrió un error al modificar el entregable.\n
-        ${(error as any).response.data.message}`,
+        title: "¡Error!",
+        text: "Ocurrió un error al modificar el entregable.",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -146,7 +148,8 @@ export default function EditDeliveryForm({
           <div className="mt-10 aspect-video w-full overflow-hidden rounded-3xl border-4 border-gnp-orange-500">
             <img
               className="h-full w-full object-cover"
-              src={delivery.imageUrl || "/default.jfif"}
+              src={fileUrl(delivery.imageUrl as string) || "/default.jfif"}
+              ref={imgRef}
             />
           </div>
           <div className="flex w-11/12 place-items-center justify-center pt-8 pb-4">

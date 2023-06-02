@@ -1,16 +1,18 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { act } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
 import NewSale from "../pages/NewSale";
-import { RecoilRoot } from "recoil";
-import { Suspense } from "react";
-import { createRoot } from "react-dom/client";
+import { Root, createRoot } from "react-dom/client";
+import { RenderTest } from "./fixtures";
 
 describe("NewSale", () => {
   let container: HTMLDivElement;
+  let root: Root;
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
+
+    root = createRoot(container);
   });
   afterEach(() => {
     document.body.removeChild(container);
@@ -18,14 +20,7 @@ describe("NewSale", () => {
   });
 
   it("renders correctly", async () => {
-    act(() => {
-      createRoot(container).render(
-        <RecoilRoot>
-          <Suspense>
-            <NewSale />
-          </Suspense>
-        </RecoilRoot>,
-      );
-    });
+    const test = new RenderTest("Render the sale form", <NewSale />, root);
+    await test.start();
   });
 });

@@ -30,7 +30,7 @@ export default function ManagerCourses() {
   useEffect(() => {
     if (error) {
       Swal.fire({
-        title: "Error",
+        title: "¡Error!",
         text: "No se pudo registrar el grupo",
         icon: "error",
       });
@@ -38,7 +38,7 @@ export default function ManagerCourses() {
 
     if (response) {
       Swal.fire({
-        title: "Grupo agregado",
+        title: "¡Éxito!",
         text: "Grupo agregado exitosamente",
         icon: "success",
         timer: 5000,
@@ -79,7 +79,7 @@ export default function ManagerCourses() {
                 handlePost={(image, name) => {
                   if (!name) {
                     Swal.fire({
-                      title: "Nombre faltante",
+                      title: "¡Error!",
                       text: "Ingrese nombre del grupo en el campo",
                       icon: "error",
                     });
@@ -87,7 +87,7 @@ export default function ManagerCourses() {
                   }
                   if (!image) {
                     Swal.fire({
-                      title: "Imagen faltante",
+                      title: "¡Éxito!",
                       text: "Inserte una imagen en el campo",
                       icon: "error",
                     });
