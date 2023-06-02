@@ -1,13 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MdLockReset } from "react-icons/md";
-import { RiFileExcel2Fill } from "react-icons/ri";
-import { TbSend } from "react-icons/tb";
+import { FiShield } from "react-icons/fi";
 import Swal from "sweetalert2";
 import { ILink, IUser } from "../../types";
 import ProfileCard from "../generics/cards/ProfileCard";
 import LinkList from "../generics/lists/LinkList";
+import { RiFileExcel2Fill } from "react-icons/ri";
 
 export interface IUserFormProps {
   initialUser: IUser;
@@ -127,7 +126,7 @@ export default function ProfileForm({
                     <span className="text-md font-semibold">
                       Reestablecer contraseña
                     </span>
-                    <MdLockReset size={25} className="ml-2" />
+                    <FiShield size={20} className="ml-2" />
                   </button>
                 </div>
               </div>
@@ -176,7 +175,7 @@ export default function ProfileForm({
                       },
                       (errorsFields) => {
                         Swal.fire({
-                          title: "Error!",
+                          title: "¡Error!",
                           text: `Ocurrió un error al modificar el usuario.\n
                   ${Object.values(errorsFields).map((e) => e.message + " ")}`,
                           icon: "error",
@@ -186,7 +185,6 @@ export default function ProfileForm({
                     )}
                   >
                     <span className="text-lg font-semibold">Guardar</span>
-                    <TbSend size={20} className="ml-2" />
                   </button>
                 </div>
               </div>

@@ -1,12 +1,11 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { BsCheckCircleFill, BsFillInfoCircleFill } from "react-icons/bs";
-import { ImWarning } from "react-icons/im";
-import { MdError } from "react-icons/md";
+import { BsCheckCircleFill } from "react-icons/bs";
 import ReactDOM from "react-dom";
 import { IAlert } from "../../../recoil/visual";
 import useAlert from "../../../hooks/useAlert";
 import { AiOutlineClose } from "react-icons/ai";
+import { FiAlertCircle } from "react-icons/fi";
 
 const ALERT_OPTIONS = {
   success: {
@@ -14,15 +13,15 @@ const ALERT_OPTIONS = {
     color: "bg-green-500",
   },
   error: {
-    icon: <MdError size={25} />,
+    icon: <FiAlertCircle size={25} />,
     color: "bg-red-500",
   },
   warning: {
-    icon: <ImWarning size={25} />,
+    icon: <FiAlertCircle size={25} />,
     color: "bg-yellow-500",
   },
   info: {
-    icon: <BsFillInfoCircleFill size={25} />,
+    icon: <FiAlertCircle size={25} />,
     color: "bg-blue-500",
   },
 };

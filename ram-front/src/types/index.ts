@@ -45,7 +45,7 @@ export interface IDelivery {
   deliveryName: string;
   description: string;
   imageUrl: string;
-  userDeliveries?: IUserDelivery[];
+  userDeliveries: IUserDelivery[];
   group?: IGroup;
   hasDelivery?: string;
 }
@@ -92,7 +92,7 @@ export interface IGroup {
   imageUrl?: string;
   progress?: number;
   groupUsers?: IUser[];
-  deliveries?: IDelivery[];
+  deliveries: IDelivery[];
   userDeliveries?: IUserDelivery[];
 }
 

@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
-import { IoArrowBackCircle } from "react-icons/io5";
+import { FiArrowLeftCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 export function BackButton() {
@@ -15,8 +15,8 @@ export function BackButton() {
       className="relative flex items-center justify-center text-gnp-orange-500 transition-transform duration-300 hover:scale-110"
       onClick={handleGoBack}
     >
-      <IoArrowBackCircle size={30} className="mr-1" />
-      <div className="  transform text-sm font-bold opacity-100 transition-opacity duration-300">
+      <FiArrowLeftCircle size={30} className="mr-1" />
+      <div className="mb-1 transform font-bold opacity-100 transition-opacity duration-300">
         Regresar
       </div>
     </button>

@@ -23,12 +23,11 @@ export function UserDeliveriesTable({ userDeliveries, onUpdate }: Props) {
     <div data-testid="Table" className="w-full">
       <Table hoverable={true}>
         <Table.Head>
-          <Table.HeadCell>Agente</Table.HeadCell>
-          <Table.HeadCell></Table.HeadCell>
-          <Table.HeadCell>Estado</Table.HeadCell>
-          <Table.HeadCell>Entregable</Table.HeadCell>
-          <Table.HeadCell>Fecha de Subida</Table.HeadCell>
-          <Table.HeadCell>Acciones</Table.HeadCell>
+          <Table.HeadCell align="center">Agente</Table.HeadCell>
+          <Table.HeadCell align="center">Correo </Table.HeadCell>
+          <Table.HeadCell align="center">Estado</Table.HeadCell>
+          <Table.HeadCell align="center">Fecha de Subida</Table.HeadCell>
+          <Table.HeadCell align="center">Acciones</Table.HeadCell>
         </Table.Head>
 
         <Table.Body className="divide-y">

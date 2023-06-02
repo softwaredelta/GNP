@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { useEffect, useState } from "react";
-import { RiAddBoxFill } from "react-icons/ri";
+import { FiPlus } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
@@ -45,7 +45,7 @@ export default function EditGroup() {
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Grupo modificado",
+        title: "¡Éxito!",
         text: "El grupo se ha modificado correctamente",
         icon: "success",
       });
@@ -53,7 +53,7 @@ export default function EditGroup() {
 
     if (error) {
       Swal.fire({
-        title: "Grupo no modificado",
+        title: "¡Error!",
         text: "El grupo no se ha modificado correctamente",
         icon: "error",
       });
@@ -91,7 +91,7 @@ export default function EditGroup() {
                 handlePost={(image, name) => {
                   if (!image) {
                     Swal.fire({
-                      title: "Imagen faltante",
+                      title: "¡Error!",
                       text: "Inserte una imagen en el campo",
                       icon: "error",
                     });
@@ -117,7 +117,7 @@ export default function EditGroup() {
                 className="btn-primary flex-grid flex items-end"
               >
                 {"Agregar entregable"}
-                <RiAddBoxFill className="ml-2 inline-block" size={20} />
+                <FiPlus className="ml-2 inline-block" size={22} />
               </button>
             </div>
             <ModalDeliveryFormCreate

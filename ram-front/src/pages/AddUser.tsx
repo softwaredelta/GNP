@@ -15,14 +15,14 @@ export default function AddUser() {
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Usuario creado",
+        title: "¡Éxito!",
         text: "El usuario se ha creado correctamente",
         icon: "success",
       });
     }
     if (error) {
       Swal.fire({
-        title: "Error",
+        title: "¡Error!",
         text: `Ha ocurrido un error al crear el usuario.`,
         icon: "error",
       });

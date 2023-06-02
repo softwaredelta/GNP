@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import moneyGrowth from "../../assets/imgs/moneyGrowth.png";
 import Swal from "sweetalert2";
 import { FileInput } from "flowbite-react";
-import { TbSend } from "react-icons/tb";
+import { FiSend } from "react-icons/fi";
 import "react-datepicker/dist/react-datepicker.css";
 
 export interface ISaleFormProps {
@@ -248,7 +248,7 @@ export default function SaleForm({
                 },
                 (errorsFields) => {
                   Swal.fire({
-                    title: "Error!",
+                    title: "¡Error!",
                     text: `Ocurrió un error al registrar la venta.\n
                   ${Object.values(errorsFields).map((e) => e.message + " ")}`,
                     icon: "error",
@@ -258,7 +258,7 @@ export default function SaleForm({
               )}
             >
               <span className="text-lg font-semibold"> Enviar </span>
-              <TbSend size={20} className="ml-2" />
+              <FiSend size={20} className="ml-2" />
             </button>
           </div>
         </div>

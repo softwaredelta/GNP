@@ -10,6 +10,17 @@ interface Props {
   deliveries: IDelivery[];
 }
 
+function countSentDeliveries(delivery: IDelivery) {
+  let count = 0;
+
+  for (let i = 0; i < delivery.userDeliveries.length; i++) {
+    if (delivery.userDeliveries[i].status !== "Sin enviar") {
+      count++;
+    }
+  }
+  return count;
+}
+
 export function ManagerListGroupDeliveries({ deliveries }: Props) {
   const urlFile = useUrlFile();
 
@@ -27,7 +38,7 @@ export function ManagerListGroupDeliveries({ deliveries }: Props) {
                   image={finalUrl}
                 >
                   <ManagerDelivery
-                    membersNumber={delivery.userDeliveries?.length ?? 0}
+                    membersNumber={countSentDeliveries(delivery)}
                   />
                 </DeliveryCard>
               </Link>

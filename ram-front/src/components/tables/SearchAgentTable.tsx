@@ -26,7 +26,7 @@ export default function SearchAgentTable({
     async (agent: IUser) => {
       const result = await Swal.fire({
         title: "¿Estás seguro?",
-        text: "No podrás revertir esta acción",
+        text: "No podrás revertir esta acción.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Sí, eliminar",
@@ -51,7 +51,7 @@ export default function SearchAgentTable({
 
       if (!response.ok) {
         Swal.fire(
-          "Error",
+          "¡Error!",
           "No se pudo eliminar el agente. Por favor intenta más tarde.",
           "error",
         );

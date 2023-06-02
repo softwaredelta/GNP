@@ -1,8 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Table } from "flowbite-react";
-import { AiOutlineEye } from "react-icons/ai";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiEye } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useUrlFile } from "../../lib/files";
 
@@ -71,7 +70,7 @@ export default function RowMember({
         <div className=" grid grid-cols-2 ">
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <Link to={`/view-profile/${id}`}>
-              <AiOutlineEye size={24} className="text-gray-500" />
+              <FiEye size={20} className="text-gray-500" />
             </Link>
           </div>
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">

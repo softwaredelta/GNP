@@ -2,8 +2,7 @@
 
 import { Table } from "flowbite-react";
 import { useState } from "react";
-import { BsFillCheckSquareFill } from "react-icons/bs";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiTrash2, FiEdit, FiCheckSquare } from "react-icons/fi";
 import Swal from "sweetalert2";
 
 interface LinkRowProps {
@@ -54,8 +53,8 @@ export default function LinkRow({
           <Table.Cell>
             <div className="flex items-center justify-center ">
               <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-                <BsFillCheckSquareFill
-                  size={20}
+                <FiCheckSquare
+                  size={25}
                   className="text-green-500"
                   onClick={() => {
                     if (onEdited) onEdited(id, nameLink, urlLink);
@@ -95,7 +94,7 @@ export default function LinkRow({
                   onClick={() => {
                     Swal.fire({
                       title: "¿Estás seguro?",
-                      text: "No podrás revertir esta acción",
+                      text: "No podrás revertir esta acción.",
                       icon: "warning",
                       showCancelButton: true,
                       confirmButtonText: "Sí, eliminar",

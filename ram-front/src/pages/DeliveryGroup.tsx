@@ -3,7 +3,6 @@ import LinkDelivery from "../components/deliverables/LinkDelivery";
 import Wrapper from "../containers/Wrapper";
 import { FileInput, Toast } from "flowbite-react";
 import { useState, useEffect } from "react";
-import { TbSend } from "react-icons/tb";
 import DeliveryDescription from "../components/deliverables/DeliveryDescription";
 import ImageURL from "../components/Image";
 import { useParams } from "react-router-dom";
@@ -12,7 +11,7 @@ import { IDeliveryDescription, IUserDelivery } from "../types";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { useOpenFile } from "../lib/files";
-import { FiEye } from "react-icons/fi";
+import { FiEye, FiSend } from "react-icons/fi";
 
 export default function DeliveryGroup(): JSX.Element {
   const [file, setFile] = useState<File | null | string>(null);
@@ -48,7 +47,7 @@ export default function DeliveryGroup(): JSX.Element {
   useEffect(() => {
     if (responsePost) {
       Swal.fire({
-        title: "Success!",
+        title: "¡Éxito!",
         text: "El entregable se ha guardado correctamente.",
         icon: "success",
       });
@@ -68,7 +67,7 @@ export default function DeliveryGroup(): JSX.Element {
       }
     } else {
       Swal.fire({
-        title: "Error!",
+        title: "¡Error!",
         text: `No seleccionaste archivo.`,
         icon: "error",
         confirmButtonText: "OK",
@@ -141,14 +140,14 @@ export default function DeliveryGroup(): JSX.Element {
                     />
                     <div className="flex w-1/2 items-center justify-center pt-4">
                       <button
-                        className="btn-primary flex h-8 items-center justify-center pt-10"
+                        className="btn-primary flex items-center justify-center pt-10"
                         onClick={handleSubmit(
                           () => {
                             uploadFile();
                           },
                           (errorsFields) => {
                             Swal.fire({
-                              title: "Error!",
+                              title: "¡Error!",
                               text: `Ocurrió un error al enviar la evidencia.\n
                 ${Object.values(errorsFields).map((e) => e.message + " ")}`,
                               icon: "error",
@@ -158,7 +157,7 @@ export default function DeliveryGroup(): JSX.Element {
                         )}
                       >
                         <span className="text-lg font-semibold"> Enviar </span>
-                        <TbSend size={20} className="ml-2" />
+                        <FiSend size={20} className="ml-2" />
                       </button>
                     </div>
                   </>
