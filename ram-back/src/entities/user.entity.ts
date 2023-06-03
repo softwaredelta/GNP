@@ -127,7 +127,7 @@ export class UserEnt {
   imageUrl?: string;
 
   @Column(IS_ACTIVE_COLUMN)
-  isActive!: boolean;
+  isActive!: number;
 
   @Column(REQUIRED_STRING_COLUMN("roles"))
   rolesString!: string;

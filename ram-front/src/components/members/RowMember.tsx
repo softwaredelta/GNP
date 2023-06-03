@@ -4,6 +4,7 @@ import { Table } from "flowbite-react";
 import { FiEdit, FiEye } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useUrlFile } from "../../lib/files";
+import { TableCell } from "flowbite-react/lib/esm/components/Table/TableCell";
 
 export interface MembersCardProps {
   id: string;
@@ -101,6 +102,7 @@ export default function RowMember({
           </button>
         )}
       </Table.Cell>
-    </Table.Row>
+          
+      </Table.Row>
   );
 }
