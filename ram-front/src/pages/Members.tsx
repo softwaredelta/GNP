@@ -9,7 +9,6 @@ import useModal from "../hooks/useModal";
 import { IMembers } from "../types";
 export default function Members() {
   const { isOpen, toggleModal } = useModal();
-
   const {
     response: membersResponse,
     loading: loadingMembers,
@@ -32,7 +31,7 @@ export default function Members() {
   useEffect(() => {
     if (createResponse) {
       Swal.fire({
-        title: "Usuario creado",
+        title: "¡Éxito!",
         text: "El usuario se ha creado correctamente",
         icon: "success",
       });
@@ -41,7 +40,7 @@ export default function Members() {
     }
     if (createError) {
       Swal.fire({
-        title: "Error",
+        title: "¡Error!",
         text: `Ha ocurrido un error al crear el usuario.`,
         icon: "error",
       });

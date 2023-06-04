@@ -3,6 +3,7 @@ import { useRef } from "react";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import { IGroup } from "../../types";
 import Modal from "../generics/Modal";
+import { useUrlFile } from "../../lib/files";
 
 export interface IModalGroupFormProps {
   handlePost: (image: File | null | string, name: string) => void;
@@ -21,6 +22,7 @@ export default function ModalGroupForm({
 }: IModalGroupFormProps) {
   const { image, setPreviewImage, imgRef, resetImage } = usePreviewImage();
   const nameRef = useRef<HTMLInputElement>(null);
+  const fileUrl = useUrlFile();
 
   return (
     <>
@@ -66,7 +68,10 @@ export default function ModalGroupForm({
                 >
                   <img
                     className="h-full w-full object-cover"
-                    src={initialValues?.imageUrl || "/default.jfif"}
+                    src={
+                      fileUrl(initialValues?.imageUrl as string) ||
+                      "/default.jfif"
+                    }
                     ref={imgRef}
                   />
                 </div>

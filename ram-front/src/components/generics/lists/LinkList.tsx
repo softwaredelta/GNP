@@ -6,7 +6,7 @@ import useModal from "../../../hooks/useModal";
 import Swal from "sweetalert2";
 import ModalLinks from "../../forms/ModalLinks";
 import { ILink } from "../../../types";
-import { MdAddLink } from "react-icons/md";
+import { FiLink2 } from "react-icons/fi";
 
 interface ILinkListProps {
   links: ILink[];
@@ -35,7 +35,7 @@ const LinkList = ({
               onClick={toggleModalLink}
             >
               Agregar
-              {<MdAddLink className="ml-2" size={20} />}
+              {<FiLink2 className="ml-2" size={20} />}
             </button>
           )}
         </div>
@@ -47,16 +47,16 @@ const LinkList = ({
           handlePost={(link, name) => {
             if (!name) {
               Swal.fire({
-                title: "Texto faltante",
-                text: "Ingrese texto con el que se identificará el link",
+                title: "¡Error!",
+                text: "Falta registrar el texto",
                 icon: "error",
               });
               return;
             }
             if (!link) {
               Swal.fire({
-                title: "Link faltante",
-                text: "Ingrese el hipervínculo que desea agregar",
+                title: "¡Error!",
+                text: "Falta registrar el hipervínculo",
                 icon: "error",
               });
               return;

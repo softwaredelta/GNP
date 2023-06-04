@@ -32,7 +32,7 @@ export const SearchDeliveryRow = ({
   const deleteDelivery = useCallback(async () => {
     const result = await Swal.fire({
       title: "¿Estás seguro?",
-      text: "No podrás revertir esta acción",
+      text: "No podrás revertir esta acción.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
@@ -54,17 +54,13 @@ export const SearchDeliveryRow = ({
 
     if (!response.ok) {
       Swal.fire(
-        "Error",
-        "No se pudo eliminar el entregable. Por favor intenta más tarde.",
+        "¡Error!",
+        "No se pudo eliminar el agente. Por favor intenta más tarde.",
         "error",
       );
       onReloadDeliveries();
     } else {
-      Swal.fire(
-        "Eliminado",
-        "El entregable ha sido eliminado con éxito",
-        "success",
-      );
+      Swal.fire("¡Éxito!", "El entregable ha sido eliminado.", "success");
       onReloadDeliveries();
     }
   }, [accessToken, apiBase, delivery, onReloadDeliveries]);

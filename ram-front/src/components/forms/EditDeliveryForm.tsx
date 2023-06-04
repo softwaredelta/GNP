@@ -77,7 +77,7 @@ export default function EditDeliveryForm({
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Success!",
+        title: "¡Éxito!",
         text: "El entregable se ha modificado correctamente.",
         icon: "success",
       });
@@ -86,9 +86,8 @@ export default function EditDeliveryForm({
     if (error) {
       console.log({ error });
       Swal.fire({
-        title: "Error!",
-        text: `Ocurrió un error al modificar el entregable.\n
-        ${(error as any).response.data.message}`,
+        title: "¡Error!",
+        text: "Ocurrió un error al modificar el entregable.",
         icon: "error",
         confirmButtonText: "OK",
       });

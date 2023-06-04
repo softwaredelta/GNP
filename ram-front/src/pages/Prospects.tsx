@@ -1,6 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 import Wrapper from "../containers/Wrapper";
-import { AiOutlinePlus } from "react-icons/ai";
+import { FiPlus } from "react-icons/fi";
 import useModal from "../hooks/useModal";
 import ModalProspectForm from "../components/forms/ModalProspectForm";
 import useAxios from "../hooks/useAxios";
@@ -54,8 +54,8 @@ export default function Prospects() {
   useEffect(() => {
     if (newStatus) {
       Swal.fire({
-        title: "Estado del prospecto actualizado",
-        text: "El prospecto se ha actualizado correctamente",
+        title: "¡Éxito!",
+        text: "El prospecto se ha actualizado correctamente.",
         icon: "success",
       }).then(() => {
         refresh();
@@ -63,8 +63,8 @@ export default function Prospects() {
     }
     if (prospectResponse) {
       Swal.fire({
-        title: "Prospecto agregado",
-        text: "El prospecto se ha agregado correctamente",
+        title: "¡Éxito!",
+        text: "El prospecto se ha agregado correctamente.",
         icon: "success",
       }).then(() => {
         refresh();
@@ -73,32 +73,32 @@ export default function Prospects() {
     }
     if (statusError) {
       Swal.fire({
-        title: "Error",
-        text: "No se pudo obtener la lista de estatus",
+        title: "¡Error!",
+        text: "No se pudo obtener la lista de estatus.",
         icon: "error",
       });
     }
 
     if (newStatusError) {
       Swal.fire({
-        title: "Prospecto no actualizado",
-        text: "El estado del prospecto no se actualizo correctamente",
+        title: "¡Error!",
+        text: "El estado del prospecto no se actualizo correctamente.",
         icon: "error",
       });
     }
 
     if (prospectError) {
       Swal.fire({
-        title: "Prospecto no agregado",
-        text: "El prospecto no se ha agregado correctamente",
+        title: "¡Error!",
+        text: "El prospecto no se ha agregado correctamente.",
         icon: "error",
       });
     }
 
     if (prospectsError) {
       Swal.fire({
-        title: "Error",
-        text: "No se pudo obtener la lista de prospectos, intente más tarde",
+        title: "¡Error!",
+        text: "No se pudo obtener la lista de prospectos, intente más tarde.",
         icon: "error",
       });
     }
@@ -135,7 +135,7 @@ export default function Prospects() {
             <div className="flex">
               <button className="btn-primary" onClick={toggleModal}>
                 Agregar prospecto
-                <AiOutlinePlus className="ml-1 inline font-bold" />
+                <FiPlus size={22} className="ml-1 inline font-bold" />
               </button>
             </div>
           </div>

@@ -38,7 +38,7 @@ describe("Verify sales table", () => {
                 },
               },
             ]}
-            onUpdated={() => {}}
+            onUpdatedVerifySales={() => {}}
           ></VerifySalesTable>
         </BrowserRouter>
       </RecoilRoot>,

@@ -1,12 +1,12 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { useEffect, useState } from "react";
-import { RiAddBoxFill } from "react-icons/ri";
+import { FiPlus } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import AgentFuzzyFinder from "../components/agent/AgentFuzzyFinder";
-import ModalGroupForm from "../components/forms/ModalGroupForm";
 import ModalDeliveryFormCreate from "../components/forms/ModalDeliveryFormCreate";
+import ModalGroupForm from "../components/forms/ModalGroupForm";
 import SearchAgentTable from "../components/tables/SearchAgentTable";
 import SearchDeliveryTable from "../components/tables/SearchDeliveryTable";
 import Wrapper from "../containers/Wrapper";
@@ -45,7 +45,7 @@ export default function EditGroup() {
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Grupo modificado",
+        title: "¡Éxito!",
         text: "El grupo se ha modificado correctamente",
         icon: "success",
       });
@@ -53,7 +53,7 @@ export default function EditGroup() {
 
     if (error) {
       Swal.fire({
-        title: "Grupo no modificado",
+        title: "¡Error!",
         text: "El grupo no se ha modificado correctamente",
         icon: "error",
       });
@@ -89,17 +89,14 @@ export default function EditGroup() {
                 isOpenModal={isOpenGroupForm}
                 closeModal={toggleModalGroupForm}
                 handlePost={(image, name) => {
-                  if (!image) {
-                    Swal.fire({
-                      title: "Imagen faltante",
-                      text: "Inserte una imagen en el campo",
-                      icon: "error",
-                    });
-                    return;
-                  }
-                  if (callback) {
+                  if (
+                    callback &&
+                    (image !== group.imageUrl || name !== group.name)
+                  ) {
                     const data: FormData = new FormData();
-                    data.append("image", image);
+                    if (image) {
+                      data.append("image", image);
+                    }
                     data.append("name", name);
                     callback(data);
                   }
@@ -108,6 +105,7 @@ export default function EditGroup() {
                 initialValues={{
                   name: group.name,
                   imageUrl: group.imageUrl,
+                  deliveries: group.deliveries,
                 }}
               />
             )}
@@ -117,8 +115,32 @@ export default function EditGroup() {
                 className="btn-primary flex-grid flex items-end"
               >
                 {"Agregar entregable"}
-                <RiAddBoxFill className="ml-2 inline-block" size={20} />
+                <FiPlus className="ml-2 inline-block" size={22} />
               </button>
+              {group && (
+                <ModalGroupForm
+                  isOpenModal={isOpenGroupForm}
+                  closeModal={toggleModalGroupForm}
+                  handlePost={(image, name) => {
+                    if (!image) {
+                      Swal.fire({
+                        title: "Imagen faltante",
+                        text: "Inserte una imagen en el campo",
+                        icon: "error",
+                      });
+                      return;
+                    }
+                    if (callback) {
+                      const data: FormData = new FormData();
+                      data.append("image", image);
+                      data.append("name", name);
+                      callback(data);
+                    }
+                  }}
+                  isEditModal={true}
+                  initialValues={{ name: group.name, imageUrl: group.imageUrl }}
+                />
+              )}
             </div>
             <ModalDeliveryFormCreate
               isOpenModal={isOpenDeliveryForm}

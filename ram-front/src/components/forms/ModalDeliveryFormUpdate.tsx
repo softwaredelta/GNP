@@ -59,7 +59,7 @@ export default function ModalDeliveryFormUpdate({
   useEffect(() => {
     if (response) {
       Swal.fire({
-        title: "Success!",
+        title: "¡Éxito!",
         text: "El entregable se ha modificado correctamente.",
         icon: "success",
       });
@@ -73,9 +73,8 @@ export default function ModalDeliveryFormUpdate({
     if (error) {
       console.log({ error });
       Swal.fire({
-        title: "Error!",
-        text: `Ocurrió un error al modificar el entregable.\n
-        ${(error as any).response.data.message}`,
+        title: "¡Error!",
+        text: "Ocurrió un error al modificar el entregable.",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -182,7 +181,7 @@ export default function ModalDeliveryFormUpdate({
                   className="btn-primary"
                   onClick={handleSubmit(uploadFile, (errorsFields) => {
                     Swal.fire({
-                      title: "Error!",
+                      title: "¡Error!",
                       text: `Ocurrió un error al modificar el entregable.\n
                         ${Object.values(errorsFields).map(
                           (e) => e.message + " ",

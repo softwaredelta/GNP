@@ -2,13 +2,11 @@
 
 import { Table } from "flowbite-react";
 import { useMemo } from "react";
-import { FcCheckmark } from "react-icons/fc";
+import { FiCheck, FiEye, FiX } from "react-icons/fi";
 import { type IconType } from "react-icons/lib";
-import { RiFileSearchFill } from "react-icons/ri";
-import { RxCross1 } from "react-icons/rx";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
-import { useOpenFile } from "../../lib/files";
+import { useOpenFile, useUrlFile } from "../../lib/files";
 import { IUserDelivery } from "../../types";
 
 function ActionButton({
@@ -42,6 +40,7 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
     throw new Error("User is undefined");
   }
 
+  const urlfile = useUrlFile();
   const idDelivery = delivery.deliveryId;
 
   const openFile = useOpenFile();
@@ -75,7 +74,7 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
   async function handleUpdate(statusChange: string) {
     Swal.fire({
       title: "¿Estás seguro?",
-      text: "No podrás revertir esta acción",
+      text: "No podrás revertir esta acción.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, aceptar",
@@ -88,8 +87,8 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
           userId: delivery.user?.id,
         });
         Swal.fire(
-          `¡${statusChange}!`,
-          `El entregable ha sido ${statusChange}`,
+          `¡Éxito!`,
+          `El entregable ha sido ${statusChange}.`,
           "success",
         ).then(() => {
           onUpdate();
@@ -100,18 +99,25 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
 
   return (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        <img
-          className="h-10 w-10 rounded-full"
-          src={delivery.user.imageUrl}
-          alt="Rounded avatar"
-        />
-      </Table.Cell>
-      <Table.Cell>
-        {delivery.user.name + " " + delivery.user.lastName}
+      <Table.Cell
+        align="center"
+        className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
+      >
+        <div className="flex justify-center">
+          <img
+            className="mx-2 h-10 w-10 rounded-full"
+            src={urlfile(delivery.user.imageUrl || "default.png")}
+            alt="Rounded avatar"
+          ></img>
+          <div className="mt-2 text-base">
+            {delivery.user.name + " " + delivery.user.lastName}
+          </div>
+        </div>
       </Table.Cell>
 
-      <Table.Cell>
+      <Table.Cell align="center">{delivery.user.email}</Table.Cell>
+
+      <Table.Cell align="center">
         {delivery.status === "Aceptado" ? (
           <div className="inline-block rounded-full bg-green-500 py-1 px-2 font-bold text-white">
             {delivery.status}
@@ -122,27 +128,27 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
           </div>
         )}
       </Table.Cell>
-      <Table.Cell>
-        <ActionButton
-          color="text-gnp-blue-700"
-          Icon={RiFileSearchFill}
-          onClick={() => openFile(delivery.fileUrl)}
-          size={30}
-        />
-      </Table.Cell>
-      <Table.Cell>{date}</Table.Cell>
-      <Table.Cell>
-        <div className="grid grid-cols-3 items-center justify-center ">
+      <Table.Cell align="center">{date}</Table.Cell>
+      <Table.Cell align="center">
+        <div className="grid w-3/4 grid-cols-3 items-center justify-center ">
+          <div className="cursor-pointer transition-all ease-in-out active:scale-95">
+            <ActionButton
+              color="text-gnp-blue-700"
+              Icon={FiEye}
+              onClick={() => openFile(delivery.fileUrl)}
+              size={25}
+            />
+          </div>
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <FcCheckmark
-              size={20}
+            <FiCheck
+              size={25}
               className="text-green-500"
               onClick={() => handleUpdate("aceptado")}
             />
           </div>
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <RxCross1
-              size={20}
+            <FiX
+              size={25}
               className="text-red-500"
               onClick={() => handleUpdate("rechazado")}
             />
