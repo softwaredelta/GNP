@@ -48,6 +48,8 @@ export default function EditGroup() {
         title: "¡Éxito!",
         text: "El grupo se ha modificado correctamente",
         icon: "success",
+      }).then(() => {
+        updateGroupDeliveries();
       });
     }
 
@@ -122,15 +124,12 @@ export default function EditGroup() {
                   isOpenModal={isOpenGroupForm}
                   closeModal={toggleModalGroupForm}
                   handlePost={(image, name) => {
-                    if (!image) {
-                      Swal.fire({
-                        title: "Imagen faltante",
-                        text: "Inserte una imagen en el campo",
-                        icon: "error",
-                      });
-                      return;
+                    if (!image && callback) {
+                      const data: FormData = new FormData();
+                      data.append("name", name);
+                      callback(data);
                     }
-                    if (callback) {
+                    if (image && callback) {
                       const data: FormData = new FormData();
                       data.append("image", image);
                       data.append("name", name);

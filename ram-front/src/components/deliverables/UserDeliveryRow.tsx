@@ -1,7 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { Table } from "flowbite-react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { FiCheck, FiEye, FiX } from "react-icons/fi";
 import { type IconType } from "react-icons/lib";
 import Swal from "sweetalert2";
@@ -45,10 +45,9 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
 
   const openFile = useOpenFile();
 
-  const { callback } = useAxios({
+  const { response, callback } = useAxios({
     url: `deliveries/update-status/${idDelivery}`,
     method: "POST",
-    body: {},
   });
 
   const date = useMemo(() => {
@@ -81,21 +80,26 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed && callback) {
-        const bool = statusChange === "aceptado" ? true : false;
+        const bool = statusChange === "Aceptado" ? true : false;
         callback({
           statusChange: bool,
           userId: delivery.user?.id,
         });
-        Swal.fire(
-          `¡Éxito!`,
-          `El entregable ha sido ${statusChange}.`,
-          "success",
-        ).then(() => {
-          onUpdate();
-        });
       }
     });
   }
+
+  useEffect(() => {
+    if (response) {
+      Swal.fire(
+        `¡Éxito!`,
+        `El entregable ha sido actualizado.`,
+        "success",
+      ).then(() => {
+        onUpdate();
+      });
+    }
+  }, [response]);
 
   return (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -106,16 +110,16 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
         <div className="flex justify-center">
           <img
             className="mx-2 h-10 w-10 rounded-full"
-            src={urlfile(delivery.user.imageUrl || "default.png")}
+            src={urlfile(delivery.user?.imageUrl || "default.png")}
             alt="Rounded avatar"
           ></img>
           <div className="mt-2 text-base">
-            {delivery.user.name + " " + delivery.user.lastName}
+            {delivery.user?.name + " " + delivery?.user?.lastName}
           </div>
         </div>
       </Table.Cell>
 
-      <Table.Cell align="center">{delivery.user.email}</Table.Cell>
+      <Table.Cell align="center">{delivery.user?.email}</Table.Cell>
 
       <Table.Cell align="center">
         {delivery.status === "Aceptado" ? (
@@ -143,14 +147,14 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
             <FiCheck
               size={25}
               className="text-green-500"
-              onClick={() => handleUpdate("aceptado")}
+              onClick={() => handleUpdate("Aceptado")}
             />
           </div>
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <FiX
               size={25}
               className="text-red-500"
-              onClick={() => handleUpdate("rechazado")}
+              onClick={() => handleUpdate("Rechazado")}
             />
           </div>
         </div>
