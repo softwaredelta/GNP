@@ -18,6 +18,7 @@ const upload = multer();
 
 userDeliveryRouter.get(
   "/:id",
+  authMiddleware(),
   async (req: Request, res: Response): Promise<void> => {
     try {
       const id: string = req.params.id;
@@ -46,6 +47,7 @@ userDeliveryRouter.get(
 
 userDeliveryRouter.get(
   "/",
+  authMiddleware(),
   async (req: Request, res: Response): Promise<void> => {
     try {
       const ds: DataSource = await getDataSource();
