@@ -1,15 +1,14 @@
 // (c) Delta Software 2023, rights reserved.
 
-import "reflect-metadata";
-import path from "path";
-import express, { Application } from "express";
-import cors from "cors";
 import bodyParser from "body-parser";
+import cors from "cors";
 import * as dotenv from "dotenv";
-import { router } from "./routes";
-import { getDataSource } from "../arch/db-client";
+import express, { Application } from "express";
+import path from "path";
+import "reflect-metadata";
 import { log } from "../app/log";
-
+import { getDataSource } from "../arch/db-client";
+import { router } from "./routes";
 
 /* This code block checks if the `NODE_ENV` environment variable is not set. If it is not set, it logs
 a message to the console indicating that it is using a local `.env.development` file, and then loads
@@ -49,10 +48,9 @@ app.use((req, res) => {
   res.redirect(process.env.APP_URL || "/");
 });
 
-
 /* This code block defines an error handling middleware function that will be called whenever an error
 occurs in the application. It takes four parameters: `err`, `req`, `res`, and `next`. */
-app.use(async (err: any, req: any, res: any, next: any) => {
+app.use(async (err: any, req: any, res: any) => {
   console.error(err);
   res.status(500).send("Internal server error");
   await log("unhandled-error", err);

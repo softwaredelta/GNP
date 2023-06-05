@@ -17,7 +17,7 @@ export enum DeliveryError {
  * This function creates a delivery entity with the given parameters and returns it along with any
  * errors that may occur during the process.
  * @param params - The function `createDelivery` takes in an object `params` with the following
- * properties: idGroup of type string, deliveryName of type string, description of type string, 
+ * properties: idGroup of type string, deliveryName of type string, description of type string,
  * imageUrl of type string, hasDelivery of type string.
  * @returns a Promise that resolves to an object with two properties: "delivery" and "error" (which is
  * optional). If the Promise resolves successfully, the "delivery" property will contain a DeliveryEnt
@@ -99,7 +99,7 @@ export async function createLinkDelivery(params: {
 /**
  * This is an async function that updates a delivery entity with the given parameters and returns the
  * updated delivery entity or an error if it fails.
- * @param params - The `params` object contains the following properties: deliveryId of type string, 
+ * @param params - The `params` object contains the following properties: deliveryId of type string,
  * deliveryName of type string, description of type string, imageUrl of type string, hasDelivery
  * of type string.
  * @returns a Promise that resolves to an object with a `delivery` property that contains a
@@ -166,7 +166,7 @@ export async function updateDelivery(params: {
  * This function sets a delivery to all users in a group and returns an array of objects containing
  * information about the user delivery and any errors that occurred.
  * @param params - The `setDeliveryToAllUsers` function takes in an object `params` with the following
- * properties: idGroup of type string, idDelivery of type string, dateDelivery of type Date, status 
+ * properties: idGroup of type string, idDelivery of type string, dateDelivery of type Date, status
  * of type string, fileUrl of type string.
  * @returns a Promise that resolves to an array of objects. Each object in the array contains a
  * `userDelivery` property which is an instance of the `UserDeliveryEnt` class, and may also contain an
@@ -230,7 +230,7 @@ export async function setDeliveryToAllUsers(params: {
  * This function sets a delivery to a user and returns the user delivery entity along with any errors
  * encountered.
  * @param params - The function `setDeliverieToUser` takes in an object `params` with the following
- * properties: idUser of type string, idDelivery of type string, dateDelivery of type Date, status, 
+ * properties: idUser of type string, idDelivery of type string, dateDelivery of type Date, status,
  * fileUrl of type string.
  * @returns a Promise that resolves to an object with two properties: "userDelivery" and "error" (which
  * is optional). The "userDelivery" property contains an instance of the "UserDeliveryEnt" entity that
@@ -315,7 +315,7 @@ export async function getUserDeliveriesbyGroup(params: {
 /**
  * The code exports two async functions, one for updating the delivery status and one for deleting a
  * delivery.
- * @param params - The parameters for the two functions are as follows: userId of type string, 
+ * @param params - The parameters for the two functions are as follows: userId of type string,
  * deliveryId of type string, statusChange of type boolean.
  * @returns The `updateDeliveryStatus` function returns an object with a property `changedDelivery`
  * which is of type `UserDeliveryEnt`. The `deleteDelivery` function returns an object with an optional
@@ -430,7 +430,7 @@ export async function deleteLinkDelivery(params: {
 /**
  * This is an async function that updates a delivery link's name and/or link and returns the updated
  * link or an error if it is not found or an unhandled error occurs.
- * @param params - The `params` object contains three properties: id of type string, link(Optional) 
+ * @param params - The `params` object contains three properties: id of type string, link(Optional)
  * of type string, name(Optional) of type string.
  * @returns a Promise that resolves to an object with a `link` property that contains a
  * `DeliveryLinkEnt` object and may also contain an `error` property of type `DeliveryError` and an

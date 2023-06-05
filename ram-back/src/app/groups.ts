@@ -92,8 +92,8 @@ export async function createGroup(params: {
 /**
  * This function creates a group with a name, description, and image file, and returns a promise with
  * the group object and optional error information.
- * @param params - The `params` object contains the following properties:name of type string, 
- * description(Optional) of type string, imageFile of type `Express.Multer.File`, which is an 
+ * @param params - The `params` object contains the following properties:name of type string,
+ * description(Optional) of type string, imageFile of type `Express.Multer.File`, which is an
  * interface for files uploaded using the Multer middleware in an Express.js application..
  * @returns The function `createGroupWithFile` returns a Promise that resolves to an object with a
  * `group` property that contains a `GroupEnt` object, and optionally an `error` property of type
@@ -147,7 +147,7 @@ export async function addUserToGroup(params: {
 /**
  * This function removes a user from a group and returns an empty object or an error object if there
  * was an issue.
- * @param params - The `params` object contains two properties: userId of type string, groupId of 
+ * @param params - The `params` object contains two properties: userId of type string, groupId of
  * typoe string.
  * @returns a Promise that resolves to an empty object ({}) if the deletion is successful. If there is
  * an error, it returns an object with an error property set to GroupError.UNHANDLED and an errorReason
