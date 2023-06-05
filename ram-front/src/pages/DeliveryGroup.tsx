@@ -30,6 +30,21 @@ export default function DeliveryGroup(): JSX.Element {
     method: "GET",
   });
 
+  const { response: responsePostNoEvidence, callback: callBackPostNoEvidence } =
+    useAxios<{
+      dateDelivery: string;
+      deliveryId: string;
+      fileUrl: string;
+      status: string;
+      userId: string;
+    }>({
+      url: `user-delivery"/complete-no-evidence/${id}`,
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
   const { response: responsePost, callback } = useAxios<{
     dateDelivery: string;
     deliveryId: string;
@@ -45,7 +60,7 @@ export default function DeliveryGroup(): JSX.Element {
   });
 
   useEffect(() => {
-    if (responsePost) {
+    if (responsePost ) {
       Swal.fire({
         title: "¡Éxito!",
         text: "El entregable se ha guardado correctamente.",
@@ -54,7 +69,19 @@ export default function DeliveryGroup(): JSX.Element {
 
       updateDeliveryStatus();
     }
-  }, [responsePost]);
+    else if (responsePostNoEvidence) {
+      Swal.fire({
+        title: "¿Quieres marcar esta tarea como completada?",
+        text: "Confiamos que has completado esta tarea.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, marcar como completada",
+        cancelButtonText: "Cancelar",
+      });
+      updateDeliveryStatus();
+    }
+
+  }, [responsePost, responsePostNoEvidence]);
 
   const uploadFile = (): void => {
     if (file) {
@@ -76,6 +103,10 @@ export default function DeliveryGroup(): JSX.Element {
   };
 
   const { handleSubmit } = useForm<IUserDelivery>();
+
+  function handleCompleteNoEvidenceDelivery() {
+   
+  }
 
   return (
     <Wrapper title={delivery?.deliveryName || ""}>
@@ -162,6 +193,21 @@ export default function DeliveryGroup(): JSX.Element {
                     </div>
                   </>
                 )}
+              </>
+            )}
+            {delivery?.hasDelivery && delivery?.hasDelivery === "false" && (
+              <>
+                <div className="flex w-1/2 items-center justify-center pt-4">
+                  <button
+                    className="btn-primary flex items-center justify-center pt-10"
+                    onClick={() => {
+                      callBackPostNoEvidence();
+                    }}
+                  >
+                    <span className="text-lg font-semibold"> Completar </span>
+                    <FiSend size={20} className="ml-2" />
+                  </button>
+                </div>
               </>
             )}
           </div>
