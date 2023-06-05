@@ -101,6 +101,7 @@ export default function ManagerDeliveryGroup(): JSX.Element {
             handleLinkDelete={(idLink) => {
               deleteLinkCallback?.({ id: idLink });
             }}
+            updateDelivery={() => refresh()}
           />
         )}
       </div>

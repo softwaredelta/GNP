@@ -39,7 +39,6 @@ export default function SalesRow({ sale, onUpdated }: Props) {
         callback({
           statusChange,
         });
-        // Swal.fire(`¡Éxito!`, `La venta ha sido ${statusChange}.`, "success");
       }
     });
   }
