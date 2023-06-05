@@ -79,7 +79,10 @@ export default function Members() {
         <div className="mt-5 flex w-full justify-center">
           {membersResponse && (
             <div className="w-4/5">
-              <TableMembers members={membersResponse} />
+              <TableMembers
+                members={membersResponse}
+                updateMembers={refreshMembers}
+              />
             </div>
           )}
         </div>
