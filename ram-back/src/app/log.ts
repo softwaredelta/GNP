@@ -4,7 +4,6 @@ import { getDataSource } from "../arch/db-client";
 import { INSTANCE_ID } from "../arch/instance";
 import { LogEnt } from "../entities/log.entity";
 
-
 /**
  * This TypeScript function logs data to a database using an instance ID, kind, and message.
  * @param {string} kind - The `kind` parameter is a string that represents the type or category of the

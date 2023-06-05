@@ -13,7 +13,7 @@ export enum ProspectError {
  * This function creates a new prospect with optional status and commentary fields and returns the
  * prospect entity or an error if it fails.
  * @param params - The function `createProspect` takes in an object `params` with the following
- * properties: name of type string, firtSurname of type string, secondSurname of type string, 
+ * properties: name of type string, firtSurname of type string, secondSurname of type string,
  * comentary of type string, statusId of type string, userId of type string.
  * @returns a Promise that resolves to an object with the created prospect entity and an optional error
  * or reason if the creation process fails. The object has the following structure: `{ prospect:
