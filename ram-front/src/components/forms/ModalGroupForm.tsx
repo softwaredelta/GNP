@@ -1,5 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import usePreviewImage from "../../hooks/usePreviewImage";
 import { IGroup } from "../../types";
 import Modal from "../generics/Modal";
@@ -20,7 +20,8 @@ export default function ModalGroupForm({
   isEditModal,
   initialValues,
 }: IModalGroupFormProps) {
-  const { image, setPreviewImage, imgRef, resetImage } = usePreviewImage();
+  const { setPreviewImage, imgRef, resetImage } = usePreviewImage();
+  const [file, setFile] = useState<File | null | string>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const fileUrl = useUrlFile();
 
@@ -86,7 +87,12 @@ export default function ModalGroupForm({
                 <input
                   className="text-grat-700 focus-outline block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm"
                   type="file"
-                  onChange={setPreviewImage}
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      setFile(e.target.files[0]);
+                      setPreviewImage(e);
+                    } else setFile(null);
+                  }}
                   placeholder="Selecciona una imagen"
                   accept=".jpg,.png,.jpeg"
                 />
@@ -111,7 +117,8 @@ export default function ModalGroupForm({
                   onClick={() => {
                     if (nameRef.current) {
                       const nameGroup = nameRef.current.value.toString();
-                      handlePost(image, nameGroup);
+                      handlePost(file, nameGroup);
+                      closeModal();
                     }
                   }}
                 >
