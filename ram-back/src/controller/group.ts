@@ -92,7 +92,11 @@ middleware function, which requires the user to be authenticated to access this 
 user is not authenticated, a 401 response with a "No user" message is returned. If the user is
 authenticated, their user ID is extracted from the request object and passed to the `getUserGroups`
 function, which retrieves the user's groups from the database. The groups data is then sent as a
-JSON response to the client. */
+JSON response to the client. 
+
+Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=957708639
+M1_S01
+*/
 groupsRouter.get("/my-groups", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });

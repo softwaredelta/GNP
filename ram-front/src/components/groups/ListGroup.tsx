@@ -1,4 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
+
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=957708639
+// * M1_S01
 import { useNavigate } from "react-router-dom";
 import { useUrlFile } from "../../lib/files";
 import { IGroup } from "../../types";
