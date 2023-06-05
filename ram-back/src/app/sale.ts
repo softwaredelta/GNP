@@ -10,6 +10,18 @@ export enum SaleError {
   UNHANDLED = "UNHANDLED",
 }
 
+/**
+ * This function creates a new sale record in a data source and returns the sale object or an error if
+ * the policy number is duplicated or there is a sale error.
+ * @param params - The function `createSale` takes in an object `params` with the following
+ * properties: policyNumber of type string, assuranceTypeId of type string, userId of type string,
+ * paidDate of type Date, yearlyFee of type string, contractingClient of type string, status(Optional) of
+ * type string, periodicity of type string, evidenceUrl(Optional) of type string, id(Optional) of type
+ * string, paidFee of type string, insuredCostumer of type string, emissionDate of type Date.
+ * @returns a Promise that resolves to an object with a "sale" property that contains a SellEnt object,
+ * and optionally an "error" property with a SaleError value and a "reason" property with an Error
+ * object.
+ */
 export async function createSale(params: {
   policyNumber: string;
   assuranceTypeId: string;
@@ -59,6 +71,19 @@ export async function createSale(params: {
     });
 }
 
+/**
+ * This function updates a sale record in a database and returns the updated sale or an error if the
+ * sale is not found or an unhandled error occurs.
+ * @param params - The `params` object is a set of optional parameters used to update a sale record in
+ * a database. It includes the following properties: id of type string, policyNumber(Optional) of type
+ * string, assuranceType(Optional) of type string, userId of type string, paidDate(Optional) of type
+ * Date, yearlyFee of type string, contractingClient(Optional) of type string, status(Optional) of
+ * type string, periodicity(Optional) of type string, evidenceUrl(Optional) of type string,
+ * paidFee(Optional) of type string, insuredCostumer(Optional) of type string, emissionDate(Optional)
+ * of type Date.
+ * @returns a Promise that resolves to an object containing the updated sale object and optionally an
+ * error and/or an error reason.
+ */
 export async function updateSale(params: {
   id: string;
   policyNumber?: string;
