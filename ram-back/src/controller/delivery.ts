@@ -272,25 +272,29 @@ deliveriesRouter.get(
   },
 );
 
-deliveriesRouter.post("/delete-delivery-link", async (req, res) => {
-  if (!req.body.id) {
-    res.status(400).json({ message: "El campo 'id' es requerido." });
-    return;
-  }
+deliveriesRouter.post(
+  "/delete-delivery-link",
+  authMiddleware(),
+  async (req, res) => {
+    if (!req.body.id) {
+      res.status(400).json({ message: "El campo 'id' es requerido." });
+      return;
+    }
 
-  try {
-    const db = await getDataSource();
-    const result = await db.manager
-      .getRepository(DeliveryLinkEnt)
-      .delete(req.body.id);
+    try {
+      const db = await getDataSource();
+      const result = await db.manager
+        .getRepository(DeliveryLinkEnt)
+        .delete(req.body.id);
 
-    res.json({ links: result });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Ocurrió un error al eliminar el enlace." });
-  }
-});
+      res.json({ links: result });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Ocurrió un error al eliminar el enlace." });
+    }
+  },
+);
 
 deliveriesRouter.post(
   "/create-delivery-link/:deliveryId",

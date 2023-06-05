@@ -102,7 +102,7 @@ salesRouter.post(
   },
 );
 
-salesRouter.get("/all", async (req, res) => {
+salesRouter.get("/all",authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager
     .createQueryBuilder(SellEnt, "sell")
@@ -111,7 +111,7 @@ salesRouter.get("/all", async (req, res) => {
   res.json(sales);
 });
 
-salesRouter.post("/delete/:id", async (req, res) => {
+salesRouter.post("/delete/:id",authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.getRepository(SellEnt).delete(req.params.id);
   res.json(sales);
