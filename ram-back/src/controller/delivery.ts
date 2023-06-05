@@ -319,7 +319,11 @@ using an authentication middleware to ensure that the user is authenticated befo
 the user is not authenticated, it returns a 401 status code with a message "No user". If the user is
 authenticated, it retrieves the delivery group information for the specified deliveryId using the
 getDeliveryGroup function. If there is an error, it throws an error. If there is no error, it
-returns the delivery group information in JSON format. */
+returns the delivery group information in JSON format.
+
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1855489237
+ * M1_S02
+*/
 deliveriesRouter.get(
   "/group-delivery/:deliveryId",
   authMiddleware(),
