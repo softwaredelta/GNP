@@ -93,8 +93,9 @@ export async function createProspect(params: {
  * - prospects: an array of ProspectEnt objects with their corresponding ProspectStatus object (only
  * the first one) included as a relation. The array is mapped to include only the first ProspectStatus
  * object for each ProspectEnt.
- * - error: an optional property that indicates if there was an error while executing the function. It
- * can have
+ * - error: an optional property that indicates if there was an error while executing the function.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1001315964
+ * M5_S01
  */
 export async function getProspectStatus(params: { userId: string }): Promise<{
   prospects: ProspectEnt[];

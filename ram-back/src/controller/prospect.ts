@@ -90,7 +90,10 @@ prospectRouter.post(
 /* This code block defines a route handler function for getting the prospects of the currently logged
 in user. It uses the `prospectRouter` object to define a GET route with the path `/my-prospects`.
 The route handler function is composed of two middleware functions: `authMiddleware` and an async
-function that retrieves the prospects of the user. */
+function that retrieves the prospects of the user.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1001315964
+// * M5_S01
+*/
 prospectRouter.get("/my-prospects", authMiddleware(), async (req, res) => {
   const { user } = req;
   if (!user) {
