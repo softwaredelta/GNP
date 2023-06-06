@@ -10,8 +10,11 @@ import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
 import { useUrlFile } from "../lib/files";
 import { ILink, IUser } from "../types";
+import { useAuthentication } from "../lib/api/api-auth";
 
 export default function Profile() {
+  const { refresh } = useAuthentication();
+
   const { id } = useParams<{ id: string }>();
   const { response: user } = useAxios<IUser>({
     url: `user/${id}`,
@@ -174,6 +177,7 @@ export default function Profile() {
                 );
                 try {
                   callback?.(formData);
+                  refresh();
                 } catch (err) {
                   console.error(err);
                 }
