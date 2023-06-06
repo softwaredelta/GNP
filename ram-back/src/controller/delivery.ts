@@ -384,6 +384,8 @@ generated link if successful. If there is an error, it returns a 500 status code
 message. 
  * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1667428796
  * M1_S03
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1287058613
+ * M1_S05
 */
 deliveriesRouter.post(
   "/create-delivery-link/:deliveryId",
