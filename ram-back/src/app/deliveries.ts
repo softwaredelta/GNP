@@ -108,6 +108,8 @@ export async function createLinkDelivery(params: {
  * @returns a Promise that resolves to an object with a `delivery` property that contains a
  * `DeliveryEnt` object and an optional `error` property of type `DeliveryError` and an optional
  * `errorReason` property of type `Error`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+ * M1_S011
  */
 export async function updateDelivery(params: {
   deliveryId: string;
@@ -370,6 +372,8 @@ export async function updateDeliveryStatus(params: {
  * @param params - The function `deleteDelivery` takes in an object `params` with a single property
  * `deliveryId` which is a string representing the ID of the delivery to be deleted.
  * @returns An empty object is being returned.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+ * M1_S011
  */
 export async function deleteDelivery(params: {
   deliveryId: string;

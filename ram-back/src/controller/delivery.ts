@@ -314,7 +314,10 @@ authentication middleware to ensure that only users with the role of MANAGER can
 endpoint. It then calls the `deleteDelivery` function with the delivery ID extracted from the
 request parameters. If there is an error, it logs the reason and returns a 500 error response with
 the error and reason. If the deletion is successful, it returns a 200 response with a message
-indicating that the delivery has been deleted. */
+indicating that the delivery has been deleted. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+// * M1_S011
+*/
 deliveriesRouter.delete(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -454,7 +457,10 @@ protected by an authentication middleware that only allows users with the role o
 access it. The route expects a JSON payload with optional fields for deliveryName, description, and
 hasDelivery. The route also expects a single file upload with the key "image". If the payload or
 file is invalid, the route will return a 400 error. If the delivery with the specified ID is not
-found, the route will return a 404 error. If there is an error during the update process, the */
+found, the route will return a 404 error. If there is an error during the update process, the 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+// * M1_S011
+*/
 deliveriesRouter.post(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
