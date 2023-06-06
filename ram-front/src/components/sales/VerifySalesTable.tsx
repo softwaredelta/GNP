@@ -16,8 +16,12 @@ export interface IListSalesProps {
 
 const columns: Column<ISell>[] = [
   {
-    Header: "Nombre del Cliente",
+    Header: "Nombre del agente",
     accessor: "user",
+  },
+  {
+    Header: "Nombre del Cliente",
+    accessor: "contractingClient",
   },
   {
     Header: "Póliza",
@@ -90,7 +94,10 @@ export const VerifySalesTable = ({
         <Table.Head>
           {columns.map((column) => {
             return (
-              <Table.HeadCell key={column.accessor as string}>
+              <Table.HeadCell
+                key={column.accessor as string}
+                className="text-center"
+              >
                 {column.Header as string}
               </Table.HeadCell>
             );
@@ -99,7 +106,7 @@ export const VerifySalesTable = ({
             <span className="sr-only">Edit</span>
           </Table.HeadCell>
         </Table.Head>
-        <Table.Body className="divide-y">
+        <Table.Body className="divide-y text-center">
           {page.map((sale) => {
             return (
               <VerifySalesRow
@@ -112,6 +119,7 @@ export const VerifySalesTable = ({
             );
           })}
           <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+            <Table.Cell />
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
               {"Total"}
             </Table.Cell>
