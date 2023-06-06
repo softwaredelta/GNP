@@ -369,7 +369,10 @@ authRouter.get(
 /* The above code is defining a GET endpoint for the authRouter that takes an ID parameter. It is using
 an authMiddleware function to authenticate the request. Once authenticated, it connects to a
 database using the getDataSource function and retrieves a user entity with the specified ID and its
-associated userLinks. Finally, it sends the retrieved user entity as a JSON response. */
+associated userLinks. Finally, it sends the retrieved user entity as a JSON response. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=718703983
+// * M3_S05
+*/
 authRouter.get("/:id", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const user = await db.manager.findOne(UserEnt, {
@@ -384,7 +387,10 @@ authRouter.get("/:id", authMiddleware(), async (req, res) => {
 "/update/:id" with authentication middleware and a file upload. It extracts user information from
 the request body and the authenticated user object. If there is no authenticated user or no
 file/image uploaded, it returns an error response. Otherwise, it updates the user information with
-the provided data and the uploaded image (if any) and returns the modified user object. */
+the provided data and the uploaded image (if any) and returns the modified user object. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=718703983
+// * M3_S05
+*/
 authRouter.post(
   "/update/:id",
   authMiddleware(),
@@ -452,7 +458,10 @@ to the endpoint "/add-link/:id" with the link and name data in the request body.
 authentication middleware to ensure that the user is logged in. If the user is not authenticated, it
 will return a 401 error with the message "NO_USER". If the user is authenticated, it will call the
 "addLink" function with the provided data and the user's ID. If there is an error, it will return a
-500 error with the error message. */
+500 error with the error message. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=718703983
+// * M3_S05
+*/
 authRouter.post("/add-link/:id", authMiddleware(), async (req, res) => {
   const { link, name } = req.body;
 
@@ -479,7 +488,10 @@ authRouter.post("/add-link/:id", authMiddleware(), async (req, res) => {
 
 /* The above code is defining a route for editing a link. It expects a POST request to the "/edit-link"
 endpoint with a request body containing the link, name, and id of the link to be edited. It also
-requires authentication middleware to be passed before the route handler is executed. */
+requires authentication middleware to be passed before the route handler is executed. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=718703983
+// * M3_S05
+*/
 authRouter.post("/edit-link", authMiddleware(), async (req, res) => {
   const { link, name, id } = req.body;
 
