@@ -127,6 +127,8 @@ request parameters and includes the related userDeliveries and user entities. If
 found, it returns a 404 error. Otherwise, it returns the delivery object in JSON format. 
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
 // * M1_S06 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
+// * M1_S07
 */
 deliveriesRouter.get(
   "/:id",
@@ -158,6 +160,8 @@ status of "sending". If there are no pending deliveries, it returns a 404 error.
 returns the delivery object with the associated user deliveries and users. 
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
 // * M1_S06
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
+// * M1_S07
 */
 deliveriesRouter.get(
   "/pending/:id",
@@ -229,7 +233,10 @@ deliveriesRouter.get(
 
 /* The above code is defining a route for updating the status of a delivery. It is using the Express
 framework for Node.js and TypeScript. The route is accessed via a POST request to
-"/update-status/:id", where ":id" is the ID of the delivery to be updated. */
+"/update-status/:id", where ":id" is the ID of the delivery to be updated.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
+// * M1_S07
+*/
 deliveriesRouter.post(
   "/update-status/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),

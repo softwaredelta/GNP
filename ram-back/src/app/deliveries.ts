@@ -327,6 +327,8 @@ export async function getUserDeliveriesbyGroup(params: {
  * @returns The `updateDeliveryStatus` function returns an object with a property `changedDelivery`
  * which is of type `UserDeliveryEnt`. The `deleteDelivery` function returns an object with an optional
  * property `error` of type `DeliveryError` and an optional property `reason` of type `Error`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
+ * M1_S07
  */
 export async function updateDeliveryStatus(params: {
   userId: string;
