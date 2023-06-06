@@ -57,6 +57,8 @@ export async function setStatusToProspect(params: {
  * The function retrieves this data from a data source using the `getDataSource` function and the
  * `manager.find` method of the data source's manager object. The function also specifies that the
  * `status` relation should
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=790712334
+ * M5_S06
  */
 export async function getProspectStatus(params: {
   prospectId: string;

@@ -11,7 +11,10 @@ before accessing the route. When a request is made to this route, the `getProspe
 is called with the `prospectId` parameter extracted from the URL. If the function call is
 successful, the response is sent with a status code of 201 and the `prospectStatus` object as JSON.
 If there is an error, the response is sent with a status code of 400 and a JSON object with a
-`message` property set to "BAD_DATA". */
+`message` property set to "BAD_DATA". 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=790712334
+// * M5_S06
+*/
 statusProspectRouter.get("/:id", authMiddleware(), async (req, res) => {
   const prospectId = req.params.id;
   try {

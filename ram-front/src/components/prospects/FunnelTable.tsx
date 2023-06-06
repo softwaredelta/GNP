@@ -1,6 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=716285224
 // * M5_S05
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=790712334
+// * M5_S06
+
 import "react-datepicker/dist/react-datepicker.css";
 import { Table } from "flowbite-react";
 import { IUser } from "../../types";
