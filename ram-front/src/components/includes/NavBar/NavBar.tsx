@@ -4,7 +4,7 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
 import LogoRAM from "../../../assets/imgs/Ram_LogoInv.png";
 import { Link, useLocation } from "react-router-dom";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { Authentication } from "../../../lib/api/api-auth";
 import { useUrlFile } from "../../../lib/files";
 
@@ -12,10 +12,9 @@ interface Props {
   onLogout: () => void;
   user?: Authentication | null;
   role?: string;
-  refresh: () => void;
 }
 
-function NavBar({ onLogout, user, role, refresh }: Props) {
+function NavBar({ onLogout, user, role }: Props) {
   const route = useLocation();
   const isActive = useCallback(
     (link: RegExp) => {
@@ -24,10 +23,6 @@ function NavBar({ onLogout, user, role, refresh }: Props) {
     [route.pathname],
   );
   const fileurl = useUrlFile();
-
-  useEffect(() => {
-    refresh();
-  }, []);
 
   return (
     <Navbar

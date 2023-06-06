@@ -77,6 +77,7 @@ export default function Profile() {
         text: "El usuario se ha modificado correctamente.",
         icon: "success",
       });
+      refresh(); // Refresh the user data
       if (user.rolesString === "regular") {
         navigate(`/my-profile`);
       } else {
@@ -177,7 +178,6 @@ export default function Profile() {
                 );
                 try {
                   callback?.(formData);
-                  refresh();
                 } catch (err) {
                   console.error(err);
                 }
