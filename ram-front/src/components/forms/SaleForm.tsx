@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=924979067
+// * M2_S01
 import DatePicker from "react-datepicker";
 import { IAssuranceType, ISell } from "../../types";
 import { useState } from "react";

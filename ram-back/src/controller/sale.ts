@@ -102,7 +102,10 @@ user or file, it sends an appropriate error response. If a file was uploaded, it
 Then, it calls the `createSale` function to create a new sale in the database with the extracted
 data and the URL of the uploaded file. If there is an error during the creation of the sale, it
 sends an error response with the error message and reason. If the sale is created successfully, it
-sends a response with a status code of 201 and the created sale object. */
+sends a response with a status code of 201 and the created sale object. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=924979067
+// * M2_S01
+*/
 salesRouter.post(
   "/create",
   authMiddleware(),
@@ -191,7 +194,10 @@ there is a user authenticated using the `authMiddleware()` function. If there is
 user, it returns a 401 Unauthorized response. If there is an authenticated user, it retrieves the
 user's ID from the request object and uses it to query the database for all sales records associated
 with that user. The `relations` option is used to include related entities (assuranceType and user)
-in the query results. Finally, it returns the sales data in JSON format. */
+in the query results. Finally, it returns the sales data in JSON format. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=832442920
+// * M2_S02
+*/
 salesRouter.get("/my-sales", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });

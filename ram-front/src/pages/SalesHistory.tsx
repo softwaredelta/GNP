@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=832442920
+// * M2_S02
 
 import { SalesTable } from "../components/sales/SalesTable";
 import Wrapper from "../containers/Wrapper";

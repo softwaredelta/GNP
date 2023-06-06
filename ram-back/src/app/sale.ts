@@ -21,6 +21,8 @@ export enum SaleError {
  * @returns a Promise that resolves to an object with a "sale" property that contains a SellEnt object,
  * and optionally an "error" property with a SaleError value and a "reason" property with an Error
  * object.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=924979067
+ * M2_S01
  */
 export async function createSale(params: {
   policyNumber: string;
