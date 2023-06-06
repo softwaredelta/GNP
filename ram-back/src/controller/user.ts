@@ -173,7 +173,10 @@ password, name, lastName, role, mobile, urlPP200, and CUA. It includes middlewar
 validating user parameters and checking authentication with the required role of MANAGER. If the
 validation and authentication are successful, it creates a new user with the provided parameters and
 returns the user object in the response. If there is an error during the user creation process, it
-returns a 400 status code with an error message. */
+returns a 400 status code with an error message.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=749196783
+// * M3_S03
+*/
 authRouter.post(
   "/create",
   userParametersMiddleware,

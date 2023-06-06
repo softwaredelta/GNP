@@ -52,6 +52,8 @@ export interface UserAuthentication {
   mobile?: number;
 }
 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=749196783
+// * M3_S03
 export async function createUser(params: {
   email: string;
   password: string;
