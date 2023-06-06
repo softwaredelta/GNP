@@ -3,6 +3,8 @@
 // * M2_S02
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1423929641
 // * M2_S03
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1535256513
+// * M2_S07
 
 import { SalesTable } from "../components/sales/SalesTable";
 import Wrapper from "../containers/Wrapper";
