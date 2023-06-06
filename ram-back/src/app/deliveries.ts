@@ -236,6 +236,8 @@ export async function setDeliveryToAllUsers(params: {
  * is optional). The "userDelivery" property contains an instance of the "UserDeliveryEnt" entity that
  * was saved to the database, while the "error" property contains an error code (of the "DeliveryError"
  * enum) if an error occurred during the save operation.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1667428796
+ * M1_S03
  */
 export async function setDeliverieToUser(params: {
   idUser: string;
