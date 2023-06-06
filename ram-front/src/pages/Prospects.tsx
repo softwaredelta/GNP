@@ -1,6 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1001315964
 // * M5_S01
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=334967464
+// * M5_S02
 import Wrapper from "../containers/Wrapper";
 import { FiPlus } from "react-icons/fi";
 import useModal from "../hooks/useModal";
