@@ -55,7 +55,10 @@ const prospectParametersMiddleware: RequestHandler = (req, res, next) => {
 /* This code block is defining a route handler function for creating a new prospect. It is using the
 `prospectRouter` object to define a POST route with the path `/create`. The route handler function
 is composed of three middleware functions: `authMiddleware`, `prospectParametersMiddleware`, and an
-async function that creates a new prospect. */
+async function that creates a new prospect. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1119997643
+// * M5_S03
+*/
 prospectRouter.post(
   "/create",
   authMiddleware(),

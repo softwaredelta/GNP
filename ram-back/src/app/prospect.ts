@@ -18,6 +18,8 @@ export enum ProspectError {
  * @returns a Promise that resolves to an object with the created prospect entity and an optional error
  * or reason if the creation process fails. The object has the following structure: `{ prospect:
  * ProspectEnt; error?: ProspectError; reason?: Error }`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1119997643
+ * M5_S03
  */
 export async function createProspect(params: {
   name: string;
