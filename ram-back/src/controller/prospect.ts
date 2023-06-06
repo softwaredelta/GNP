@@ -161,7 +161,10 @@ prospectRouter.get("/get-agentprospect/:id", async (req, res) => {
 /* This code block defines a route handler function for updating the status and status comment of a
 prospect. It uses the `prospectRouter` object to define a POST route with the path
 `/update-prospect`. The route handler function is composed of two middleware functions:
-`authMiddleware` and an async function that modifies the status and status comment of a prospect. */
+`authMiddleware` and an async function that modifies the status and status comment of a prospect.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=148429501
+// * M5_S04
+*/
 prospectRouter.post("/update-prospect", authMiddleware(), async (req, res) => {
   const { statusId, statusComment, prospectId } = req.body;
   const { user } = req;
