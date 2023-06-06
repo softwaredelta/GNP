@@ -1,6 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
 // * M2_S04
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=224223021
+// * M2_S05
 
 import { Tabs } from "flowbite-react";
 import { VerifySalesTable } from "../components/sales/VerifySalesTable";

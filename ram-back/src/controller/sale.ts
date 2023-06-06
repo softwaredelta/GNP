@@ -223,6 +223,8 @@ user and assuranceType entities. Finally, it sends a JSON response containing th
 sales. 
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
 // * M2_S04
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=224223021
+// * M2_S05
 */
 salesRouter.get("/verify-sales/pending", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
@@ -240,6 +242,8 @@ the related user and assuranceType entities in the query results. Finally, the c
 response containing the retrieved sales data. 
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
 // * M2_S04
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=224223021
+// * M2_S05
 */
 
 salesRouter.get("/verify-sales/aproved", authMiddleware(), async (req, res) => {
@@ -257,6 +261,8 @@ returns a JSON response containing the retrieved sales data, including related u
 assuranceType information. 
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
 // * M2_S04
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=224223021
+// * M2_S05
 */
 salesRouter.get("/verify-sales/refused", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
@@ -273,6 +279,8 @@ updated. The route is protected by an authentication middleware and a middleware
 request parameters.
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
 // * M2_S04
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=224223021
+// * M2_S05
 */
 salesRouter.post(
   "/update-status/:id",
@@ -302,7 +310,10 @@ accessed via a POST request to "/update/:id". The route is protected by an authe
 function. The route expects the request body to contain data for updating the sale record, including
 policyNumber, paidDate, yearlyFee, contractingClient, assuranceTypeId, periodicity, emissionDate,
 insuredCostumer, and paidFee. The route also expects a file to be uploaded or an evidenceUrl to be
-provided in the request body. The file or evidenceUrl is used as evidence for the sale record */
+provided in the request body. The file or evidenceUrl is used as evidence for the sale record 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=877323064
+// * M2_S06
+*/
 salesRouter.post(
   "/update/:id",
   authMiddleware(),
@@ -366,7 +377,10 @@ database using the `getDataSource()` function and retrieves a sale entity from t
 the `findOne()` method of the entity manager. The `findOne()` method takes in the `SellEnt` entity
 as the first argument, and an object as the second argument that specifies the relations to be
 loaded and the conditions for the query. In this case, it loads the `assuranceType` and `user`
-relations */
+relations 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=877323064
+// * M2_S06
+*/
 salesRouter.get("/:id", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sale = await db.manager.findOne(SellEnt, {

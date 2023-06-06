@@ -85,6 +85,8 @@ export async function createSale(params: {
  * of type Date.
  * @returns a Promise that resolves to an object containing the updated sale object and optionally an
  * error and/or an error reason.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=877323064
+ * M2_S06
  */
 export async function updateSale(params: {
   id: string;
