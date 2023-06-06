@@ -68,13 +68,17 @@ export default function Profile() {
   const fileUrl = useUrlFile();
 
   useEffect(() => {
-    if (response) {
+    if (response && user) {
       Swal.fire({
         title: "¡Éxito!",
         text: "El usuario se ha modificado correctamente.",
         icon: "success",
       });
-      navigate("/members");
+      if (user.rolesString === "regular") {
+        navigate(`/my-profile`);
+      } else {
+        navigate(`/members`);
+      }
     } else if (error) {
       Swal.fire({
         title: "¡Error!",

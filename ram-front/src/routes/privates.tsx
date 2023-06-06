@@ -90,6 +90,10 @@ export const RegularUserRoutes: IRoute[] = [
     path: "/prospect-history/:id",
     Component: () => <ProspectsHistory />,
   },
+  {
+    path: "/profile/:id",
+    Component: () => <Profile />,
+  },
 ];
 
 export const ManagerUserRoutes: IRoute[] = [
