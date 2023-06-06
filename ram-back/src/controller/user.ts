@@ -247,7 +247,10 @@ to this endpoint, the code retrieves a database connection using the `getDataSou
 then queries the database to find all users with the role of "regular" using the `find()` method of
 the `manager` object. The query selects specific fields from the `UserEnt` entity, including id,
 email, name, lastName, CUA, and urlPP200. Finally, the code sends a JSON response containing the
-results of the query to the client. */
+results of the query to the client. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=716285224
+// * M5_S05
+*/
 authRouter.get(
   "/all-agents",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),

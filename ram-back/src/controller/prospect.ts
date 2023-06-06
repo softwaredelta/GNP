@@ -123,7 +123,10 @@ user. It uses the `prospectRouter` object to define a GET route with the path
 handler function retrieves the user ID from the request parameters, then uses the `getDataSource()`
 function to get a connection to the database. It then uses the `count()` method of the `manager`
 object to count the number of `ProspectEnt` entities that have a `userId` property equal to the user
-ID. Finally, it sends a JSON response with the count of prospects. */
+ID. Finally, it sends a JSON response with the count of prospects. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=716285224
+// * M5_S05
+*/
 prospectRouter.get("/count-prospects-new/:id", async (req, res) => {
   const db = await getDataSource();
   const id = req.params.id;
