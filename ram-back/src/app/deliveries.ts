@@ -25,7 +25,7 @@ export enum DeliveryError {
  * "errorReason" property will contain an Error object.
  * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1167543919
  * M1_S010
- * 
+ *
  */
 export async function createDelivery(params: {
   idGroup: string;
@@ -286,7 +286,7 @@ export async function setDeliverieToUser(params: {
  * an array of UserDeliveryEnt objects that match the given parameters. If there is an error, "error"
  * will be set to a DeliveryError enum value and "errorReason" will contain the error object. If there
  * is no error, "error
- * 
+ *
  * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1855489237
  * M1_S02
  * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1287058613

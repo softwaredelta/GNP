@@ -356,7 +356,10 @@ authRouter.get(
 authentication middleware function that checks if the user making the request has the role of
 "MANAGER". If the user has the required role, the route handler function is executed. The route
 handler function retrieves all user roles using the "getAllUserRol" function and sends the response
-as a JSON object containing the user roles. */
+as a JSON object containing the user roles.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2023282790
+// * M4_S01
+*/
 authRouter.get(
   "/members",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),

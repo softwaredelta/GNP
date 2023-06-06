@@ -246,7 +246,7 @@ interface GroupUser {
  * property, which is an array of `GroupUser` objects. If there is an error, the object also includes
  * an `error` property with a value of `GroupError.UNHANDLED`, an `errorReason` property with the error
  * object, and an empty array for `groups`.
- * 
+ *
  * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=957708639
  * M1_S01
  *  Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
