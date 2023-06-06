@@ -1,6 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
 // * M1_S04
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1943755342
+// * M1_S08
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

@@ -52,6 +52,8 @@ export async function deleteGroup(params: {
  * property that contains a `GroupEnt` object if the group was successfully created, or an `error`
  * property with a value of `GroupError.CONFLICT` if a group with the same name already exists. If
  * there is an unhandled error during the creation of the group, the Promise will reject with
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1943755342
+ * M1_S08
  */
 export async function createGroup(params: {
   name: string;
@@ -98,6 +100,8 @@ export async function createGroup(params: {
  * @returns The function `createGroupWithFile` returns a Promise that resolves to an object with a
  * `group` property that contains a `GroupEnt` object, and optionally an `error` property of type
  * `GroupError` and an `errorReason` property of type `Error`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1943755342
+ * M1_S08
  */
 export async function createGroupWithFile(params: {
   name: string;

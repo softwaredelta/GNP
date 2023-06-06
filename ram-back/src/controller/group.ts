@@ -179,7 +179,10 @@ role of MANAGER. It expects a POST request with a JSON body containing a name (s
 length of 3) and an optional description (string). It also allows for an image file to be uploaded
 with the request. The code then validates the input using a JSON schema and creates a new group with
 the provided information. If the group already exists, it returns a 409 conflict error. If there is
-any other error, it returns a 500 error. If the group is created successfully, */
+any other error, it returns a 500 error. If the group is created successfully. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1943755342
+// * M1_S08
+*/
 groupsRouter.post(
   "/create",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
