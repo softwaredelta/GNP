@@ -1,6 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=832442920
 // * M2_S02
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1423929641
+// * M2_S03
 
 import { useState, useEffect } from "react";
 import { Table } from "flowbite-react";

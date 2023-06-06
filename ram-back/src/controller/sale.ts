@@ -197,6 +197,8 @@ with that user. The `relations` option is used to include related entities (assu
 in the query results. Finally, it returns the sales data in JSON format. 
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=832442920
 // * M2_S02
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1423929641
+// * M2_S03 
 */
 salesRouter.get("/my-sales", authMiddleware(), async (req, res) => {
   if (!req.user) {
@@ -218,7 +220,10 @@ sales that have not been reviewed yet. It uses an authentication middleware to e
 authorized users can access the endpoint. The code then connects to a database, retrieves all sales
 that have a status of "sin revisar" (which means "unreviewed" in Spanish), and includes the related
 user and assuranceType entities. Finally, it sends a JSON response containing the list of pending
-sales. */
+sales. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
+// * M2_S04
+*/
 salesRouter.get("/verify-sales/pending", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
@@ -232,7 +237,10 @@ salesRouter.get("/verify-sales/pending", authMiddleware(), async (req, res) => {
 middleware. When a GET request is made to this endpoint, the code retrieves a database connection
 and uses it to find all sales that have been approved (status: "aceptada"). The code also includes
 the related user and assuranceType entities in the query results. Finally, the code sends a JSON
-response containing the retrieved sales data. */
+response containing the retrieved sales data. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
+// * M2_S04
+*/
 
 salesRouter.get("/verify-sales/aproved", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
@@ -246,7 +254,10 @@ salesRouter.get("/verify-sales/aproved", authMiddleware(), async (req, res) => {
 middleware. When a GET request is made to this endpoint, the code retrieves a database connection
 and queries the database for all sales that have a status of "rechazada" (rejected). The code then
 returns a JSON response containing the retrieved sales data, including related user and
-assuranceType information. */
+assuranceType information. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
+// * M2_S04
+*/
 salesRouter.get("/verify-sales/refused", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
@@ -259,7 +270,10 @@ salesRouter.get("/verify-sales/refused", authMiddleware(), async (req, res) => {
 /* The above code is defining a route for updating the status of a sale in a sales system. The route is
 accessed via a POST request to "/update-status/:id", where ":id" is the ID of the sale to be
 updated. The route is protected by an authentication middleware and a middleware for validating the
-request parameters. */
+request parameters.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
+// * M2_S04
+*/
 salesRouter.post(
   "/update-status/:id",
   authMiddleware(),
