@@ -394,6 +394,8 @@ export async function deleteDelivery(params: {
  * - `error` (optional): a `DeliveryError` enum value indicating the type of error that occurred during
  * the function execution, if any.
  * - `errorReason` (optional): an `Error` object containing more information about the error
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2139953787
+ * M1_S012
  */
 export async function getDeliveryGroup(params: {
   deliveryId: string;

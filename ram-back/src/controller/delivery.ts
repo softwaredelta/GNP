@@ -345,6 +345,8 @@ returns the delivery group information in JSON format.
 
  * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1855489237
  * M1_S02
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2139953787
+ * M1_S012
 */
 deliveriesRouter.get(
   "/group-delivery/:deliveryId",
