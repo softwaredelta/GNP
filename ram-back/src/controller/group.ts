@@ -235,7 +235,10 @@ request body is validated using a schema and if there are any validation errors,
 sent. The request body is then used to update the group with the given groupId. If an image file is
 included in the request, the group is updated with the image file, otherwise, only the name and
 description are updated. If there is an error during the update process, an appropriate error
-response is sent, otherwise, the */
+response is sent.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
+// * M1_S09
+*/
 groupsRouter.post(
   "/update/:groupId",
   updateParametersMiddleware,

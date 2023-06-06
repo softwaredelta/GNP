@@ -24,6 +24,8 @@ export enum GroupError {
  * deletion of the group with the specified `groupId` is successful. If there is an error during the
  * deletion process, the Promise rejects with an object containing an `error` property set to
  * `GroupError.UNHANDLED` and a `reason` property set to the error that caused the rejection.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
+ * M1_S09
  */
 export async function deleteGroup(params: {
   groupId: string;
@@ -298,6 +300,16 @@ export async function getUserGroups(params: {
   }
 }
 
+/**
+ * This is a TypeScript function that updates a group's name, description, and image URL in a database
+ * and returns the updated group or an error.
+ * @param params - The `params` object contains the following properties:
+ * @returns a Promise that resolves to an object with a `group` property that contains the updated
+ * `GroupEnt` object, and optionally an `error` property of type `GroupError` and an `errorReason`
+ * property of type `Error`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
+ * M1_S09
+ */
 export async function updateGroup(params: {
   groupId: string;
   name?: string;
@@ -334,6 +346,15 @@ export async function updateGroup(params: {
     }));
 }
 
+/**
+ * This function updates a group with a new image file and returns the updated group or an error.
+ * @param params - The `params` object contains the following properties:
+ * @returns a Promise that resolves to an object with a `group` property that contains the updated
+ * group information, and optionally an `error` property if there was an error during the update
+ * process, and an `errorReason` property that provides more information about the error.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
+ * M1_S09
+ */
 export async function updateGroupWithFile(params: {
   groupId: string;
   name?: string;
