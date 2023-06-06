@@ -5,6 +5,8 @@
 // * M5_S02
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=148429501
 // * M5_S04
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=790712334
+// * M5_S06
 import { useNavigate } from "react-router-dom";
 import useSearch from "../../hooks/useSearch";
 import { IProspect, IStatus } from "../../types";

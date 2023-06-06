@@ -143,6 +143,8 @@ export async function getProspectStatus(params: { userId: string }): Promise<{
  * property filtered to only include the most recent status update.
  * - error: an optional ProspectError enum value if there was an error retrieving the prospects.
  * - reason: an optional Error object that provides more information about the error.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=790712334
+ * M5_S06
  */
 export async function getProspectsByAgent(params: {
   agentId: string;
