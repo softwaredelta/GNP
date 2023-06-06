@@ -30,19 +30,10 @@ export default function DeliveryGroup(): JSX.Element {
     method: "GET",
   });
 
-  const { response: responsePostNoEvidence, callback: callBackPostNoEvidence } =
-    useAxios<{
-      dateDelivery: string;
-      deliveryId: string;
-      fileUrl: string;
-      status: string;
-      userId: string;
-    }>({
-      url: `user-delivery"/complete-no-evidence/${id}`,
+  const { response: responsePostNoEvidence, callback: callBackPostNoEvidenceDelivery } =
+    useAxios<IUserDelivery>({
+      url: `/update-status/${id}`,
       method: "POST",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
     });
 
   const { response: responsePost, callback } = useAxios<{
@@ -60,7 +51,7 @@ export default function DeliveryGroup(): JSX.Element {
   });
 
   useEffect(() => {
-    if (responsePost ) {
+    if (responsePost) {
       Swal.fire({
         title: "¡Éxito!",
         text: "El entregable se ha guardado correctamente.",
@@ -68,8 +59,7 @@ export default function DeliveryGroup(): JSX.Element {
       });
 
       updateDeliveryStatus();
-    }
-    else if (responsePostNoEvidence) {
+    } else if (responsePostNoEvidence) {
       Swal.fire({
         title: "¿Quieres marcar esta tarea como completada?",
         text: "Confiamos que has completado esta tarea.",
@@ -80,7 +70,6 @@ export default function DeliveryGroup(): JSX.Element {
       });
       updateDeliveryStatus();
     }
-
   }, [responsePost, responsePostNoEvidence]);
 
   const uploadFile = (): void => {
@@ -104,9 +93,6 @@ export default function DeliveryGroup(): JSX.Element {
 
   const { handleSubmit } = useForm<IUserDelivery>();
 
-  function handleCompleteNoEvidenceDelivery() {
-   
-  }
 
   return (
     <Wrapper title={delivery?.deliveryName || ""}>
@@ -201,7 +187,7 @@ export default function DeliveryGroup(): JSX.Element {
                   <button
                     className="btn-primary flex items-center justify-center pt-10"
                     onClick={() => {
-                      callBackPostNoEvidence();
+                      callBackPostNoEvidenceDelivery();
                     }}
                   >
                     <span className="text-lg font-semibold"> Completar </span>

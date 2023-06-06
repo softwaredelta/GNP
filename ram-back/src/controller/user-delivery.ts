@@ -12,8 +12,6 @@ import { UserDeliveryEnt } from "../entities/user-delivery.entity";
 import { authMiddleware } from "./user";
 import { UserRole } from "../entities/user.entity";
 import { uploadFile } from "../app/file";
-import { updateDeliveryStatus } from "../app/deliveries";
-import { StatusUserDelivery } from "../entities/user-delivery.entity";
 
 export const userDeliveryRouter: Router = Router();
 const upload = multer();
@@ -116,21 +114,5 @@ userDeliveryRouter.post(
     } catch (error) {
       console.error(error);
     }
-  },
-);
-
-userDeliveryRouter.post(
-  "/complete-no-evidence/:id",
-  authMiddleware(),
-  async (req, res) => {
-    console.log("complete-no-evidence");
-    const { userId } = req.body;
-    const deliveryId = req.params.id;
-    const changedDelivery = await updateDeliveryStatus({
-      userId,
-      deliveryId,
-      statusChange: true,
-    });
-    res.json({ changedDelivery });
   },
 );
