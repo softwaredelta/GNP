@@ -8,6 +8,7 @@ import { createSale, updateSale } from "../app/sale";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
+import { Between, Like } from "typeorm";
 export const salesRouter = Router();
 
 const upload = multer();
@@ -192,16 +193,70 @@ user, it returns a 401 Unauthorized response. If there is an authenticated user,
 user's ID from the request object and uses it to query the database for all sales records associated
 with that user. The `relations` option is used to include related entities (assuranceType and user)
 in the query results. Finally, it returns the sales data in JSON format. */
-salesRouter.get("/my-sales", authMiddleware(), async (req, res) => {
+salesRouter.post("/my-sales", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });
     return;
   }
   const userId = req.user.id;
+  const policyNumber = req.body.policyNumber || "";
+  const periodicity = req.body.periodicity || "";
+  const assuranceTypeId = req.body.assuranceTypeId || "";
+  const contractingClient = req.body.contractingClient || "";
+  const currentDate = new Date();
+  const currentDateMinusOneWeek = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate() - 7,
+  );
+  const startDate =
+    req.body.startDate && req.body.endDate
+      ? new Date(req.body.startDate as string)
+      : currentDateMinusOneWeek;
+  const endDate =
+    req.body.endDate && req.body.startDate
+      ? new Date(req.body.endDate as string)
+      : currentDate;
+  const status = req.body.status || "";
+
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
-    relations: { assuranceType: true, user: true },
-    where: { userId },
+    relations: {
+      assuranceType: true,
+      user: true,
+    },
+    select: {
+      id: true,
+      policyNumber: true,
+      paidDate: true,
+      yearlyFee: true,
+      contractingClient: true,
+      periodicity: true,
+      emissionDate: true,
+      insuredCostumer: true,
+      paidFee: true,
+      evidenceUrl: true,
+      status: true,
+      assuranceType: {
+        id: true,
+        name: true,
+      },
+      user: {
+        id: true,
+        name: true,
+        lastName: true,
+        password: false,
+      },
+    },
+    where: {
+      userId,
+      policyNumber: Like(`%${policyNumber}%`),
+      periodicity: Like(`%${periodicity}%`),
+      assuranceTypeId: Like(`%${assuranceTypeId}%`),
+      contractingClient: Like(`%${contractingClient}%`),
+      paidDate: Between(startDate, endDate),
+      status: Like(`%${status}%`),
+    },
   });
 
   res.json(sales);
