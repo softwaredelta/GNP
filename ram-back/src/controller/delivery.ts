@@ -124,7 +124,10 @@ deliveriesRouter.get("/all-user", async (req, res) => {
 /* The above code is defining a route for getting a delivery by its ID. It requires authentication with
 the role of MANAGER. It then retrieves the delivery from the database using the ID provided in the
 request parameters and includes the related userDeliveries and user entities. If the delivery is not
-found, it returns a 404 error. Otherwise, it returns the delivery object in JSON format. */
+found, it returns a 404 error. Otherwise, it returns the delivery object in JSON format. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
+// * M1_S06 
+*/
 deliveriesRouter.get(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -152,7 +155,10 @@ deliveriesRouter.get(
 requires authentication with the role of MANAGER. It then retrieves the delivery from the database
 using the provided ID and checks if there are any user deliveries associated with it that have a
 status of "sending". If there are no pending deliveries, it returns a 404 error. Otherwise, it
-returns the delivery object with the associated user deliveries and users. */
+returns the delivery object with the associated user deliveries and users. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
+// * M1_S06
+*/
 deliveriesRouter.get(
   "/pending/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -183,7 +189,10 @@ deliveriesRouter.get(
 by a manager. The route requires authentication with a manager role. The route takes an ID parameter
 for the delivery to be retrieved. The code then queries the database to find the delivery with the
 specified ID and with user deliveries that have been accepted or refused. If the delivery is found,
-it is returned in the response. If not, a 404 error is returned. */
+it is returned in the response. If not, a 404 error is returned.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
+// * M1_S06
+*/
 deliveriesRouter.get(
   "/reviewed/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
