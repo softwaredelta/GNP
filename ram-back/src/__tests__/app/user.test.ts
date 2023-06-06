@@ -9,6 +9,7 @@ import {
   resetPassword,
   addLink,
   updateLink,
+  deleteUser,
 } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { UserEnt, UserRole } from "../../entities/user.entity";
@@ -319,6 +320,40 @@ describe("app:user", () => {
       expect(auth).toHaveProperty("username", email);
       expect(auth).toHaveProperty("name", addedUser.name);
       expect(auth).toHaveProperty("lastName", addedUser.lastName);
+    });
+  });
+
+  describe("Delete user", () => {
+    let addedUser: UserEnt;
+    beforeEach(async () => {
+      const { user, error } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+        imageUrl: "https://example.com/image.png",
+      });
+      expect(error).toBeUndefined();
+      addedUser = user;
+    });
+
+    it("delete user", async () => {
+      const result = await deleteUser({
+        id: addedUser.id,
+      });
+
+      expect(result.error).toBeUndefined();
+      expect(result.user).toBeDefined();
+      expect(result.user.id).toEqual(addedUser.id);
+    });
+
+    it("returns error if user is not found", async () => {
+      const userId = "non_existing_user_id";
+
+      const result = await deleteUser({ id: userId });
+
+      expect(result.user).toEqual({} as UserEnt);
+      expect(result.errorReason).toBeInstanceOf(Error);
     });
   });
 });
