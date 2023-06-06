@@ -4,6 +4,7 @@ import { Table } from "flowbite-react";
 import "react-datepicker/dist/react-datepicker.css";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import useAxios from "../../hooks/useAxios";
+import { IProspectStatus } from "../../types";
 
 type Props = {
   id: string;
@@ -14,6 +15,31 @@ type Props = {
   handleOnClick?: (id: string) => void;
 };
 
+function calculateValues(
+  prospectsStatus: IProspectStatus,
+  citaAgendada: number,
+) {
+  const citaEfectiva = prospectsStatus?.["Cita efectiva"] ?? 0;
+  const polizaPagada = prospectsStatus?.["Poliza pagada"] ?? 0;
+  const solicitudSeguro = prospectsStatus?.["Solicitud de seguro"] ?? 0;
+
+  const citaAgendadaTotal =
+    citaAgendada + citaEfectiva + solicitudSeguro + polizaPagada;
+  const citaEfectivaTotal = citaEfectiva + solicitudSeguro + polizaPagada;
+  const solicitudSeguroTotal = solicitudSeguro + polizaPagada;
+
+  return {
+    citaAgendadaTotal,
+    citaEfectivaTotal,
+    solicitudSeguroTotal,
+    polizaPagada,
+  };
+}
+
+function getCellBackgroundColor(value: number, referenceValue: number) {
+  return value > referenceValue ? "bg-[#28A954]" : "bg-[#E6003D]";
+}
+
 export default function FunnelRow({
   id,
   name,
@@ -22,12 +48,30 @@ export default function FunnelRow({
   urlPP200,
   handleOnClick,
 }: Props) {
-  const { response: prospects } = useAxios<number>({
-    url: `prospect/count-prospects-new/${id}`,
+  const { response: prospects } = useAxios<
+    {
+      count: number;
+    }[]
+  >({
+    url: `status-prospect/count-new-prospects/${id}`,
     method: "GET",
   });
 
-  const propspectsCount = prospects ? prospects : 0;
+  const { response: prospectsStatus } = useAxios<IProspectStatus>({
+    url: `status-prospect/status-by-agents/${id}`,
+    method: "GET",
+  });
+
+  const prospectsCount = prospects?.[0]?.count ?? 0;
+  const citaAgendada = prospectsStatus?.["Cita agendada"] ?? 0;
+
+  const {
+    citaAgendadaTotal,
+    citaEfectivaTotal,
+    solicitudSeguroTotal,
+    polizaPagada,
+  } = calculateValues(prospectsStatus as IProspectStatus, citaAgendada);
+
   return (
     <Table.Row
       onClick={() => handleOnClick && handleOnClick(id)}
@@ -40,18 +84,50 @@ export default function FunnelRow({
       >
         {name} {lastName}
       </Table.Cell>
-      <Table.Cell align="center">{prospects}</Table.Cell>
-      <Table.Cell align="center">
-        {(propspectsCount * 0.48).toFixed(0)}
+      <Table.Cell>
+        <div
+          className={`flex items-center justify-center rounded-full py-2 text-lg font-bold text-white ${getCellBackgroundColor(
+            prospectsCount,
+            30,
+          )}`}
+        >
+          {prospectsCount}
+        </div>
       </Table.Cell>
       <Table.Cell align="center">
-        {(propspectsCount * 0.4).toFixed(0)}
+        <div className="flex items-center justify-center rounded-full bg-[#28A954] py-2 text-lg  font-bold text-white">
+          {citaAgendadaTotal}
+        </div>
       </Table.Cell>
       <Table.Cell align="center">
-        {(propspectsCount * 0.08).toFixed(0)}
+        <div
+          className={`flex items-center justify-center rounded-full py-2 text-lg font-bold text-white ${getCellBackgroundColor(
+            citaEfectivaTotal,
+            Number(((citaAgendada * 0.4) / 0.48).toFixed(0)),
+          )}`}
+        >
+          {citaEfectivaTotal} / {((citaAgendada * 0.4) / 0.48).toFixed(0)}
+        </div>
       </Table.Cell>
       <Table.Cell align="center">
-        {(propspectsCount * 0.04).toFixed(0)}
+        <div
+          className={`flex items-center justify-center rounded-full py-2 text-lg font-bold text-white ${getCellBackgroundColor(
+            solicitudSeguroTotal,
+            Number(((citaAgendada * 0.08) / 0.48).toFixed(0)),
+          )}`}
+        >
+          {solicitudSeguroTotal} / {((citaAgendada * 0.08) / 0.48).toFixed(0)}
+        </div>
+      </Table.Cell>
+      <Table.Cell align="center">
+        <div
+          className={`flex items-center justify-center rounded-full py-2 text-lg font-bold text-white ${getCellBackgroundColor(
+            polizaPagada,
+            Number(((citaAgendada * 0.04) / 0.48).toFixed(0)),
+          )}`}
+        >
+          {polizaPagada} / {((citaAgendada * 0.04) / 0.48).toFixed(0)}
+        </div>
       </Table.Cell>
       <Table.Cell align="center">
         {urlPP200 ? (

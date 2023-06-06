@@ -1,10 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
 
-import "react-datepicker/dist/react-datepicker.css";
 import { Table } from "flowbite-react";
+import "react-datepicker/dist/react-datepicker.css";
+import useSearch from "../../hooks/useSearch";
 import { IUser } from "../../types";
 import FunnelRow from "./FunnelRow";
-import useSearch from "../../hooks/useSearch";
 
 interface Props {
   agents: IUser[];
@@ -45,7 +45,7 @@ const FunnelProspect = ({ agents, handleOnClick }: Props) => {
             </Table.HeadCell>
             <Table.HeadCell align="center">Citas agendadas</Table.HeadCell>
             <Table.HeadCell align="center">Citas efectivas</Table.HeadCell>
-            <Table.HeadCell align="center">Solicitudes de vida</Table.HeadCell>
+            <Table.HeadCell align="center">Solicitudes</Table.HeadCell>
             <Table.HeadCell align="center">Poliza pagada</Table.HeadCell>
             <Table.HeadCell align="center">PP200</Table.HeadCell>
           </Table.Head>
