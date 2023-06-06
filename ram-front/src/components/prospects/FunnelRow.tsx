@@ -95,7 +95,13 @@ export default function FunnelRow({
         </div>
       </Table.Cell>
       <Table.Cell align="center">
-        <div className="flex items-center justify-center rounded-full bg-[#28A954] py-2 text-lg  font-bold text-white">
+        <div
+          className={`flex items-center justify-center rounded-full py-2 text-lg font-bold text-white ${getCellBackgroundColor(
+            citaAgendadaTotal,
+            Number((prospectsCount * 0.48).toFixed(0)),
+          )}`}
+        >
+          {" "}
           {citaAgendadaTotal}
         </div>
       </Table.Cell>

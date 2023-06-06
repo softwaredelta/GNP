@@ -79,6 +79,17 @@ statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
   }
 });
 
+/* This code defines a route for the `statusProspectRouter` object using the HTTP GET method and a URL
+parameter `:AgentId`. When a request is made to this route, it retrieves the count of new prospects
+for the given agent ID. It does this by querying the database using the `getDataSource()` function
+to get a connection to the database, and then using the `ProspectStatusEnt` entity to retrieve the
+count of new prospects. The count is calculated by counting the number of prospect status records
+that have a status name other than "Nuevo prospecto" for each prospect, and then subtracting that
+count from the total number of prospect status records for each prospect. Finally, the counts are
+accumulated into an object with the status ID, status name, and count, and the response is sent with
+a status code of 200 and the accumulated counts as JSON. If there is an error, the response is sent
+with a status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a
+`reason` property with the error message. */
 statusProspectRouter.get("/count-new-prospects/:AgentId", async (req, res) => {
   const AgentId = req.params.AgentId;
   try {
