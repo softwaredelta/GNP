@@ -23,6 +23,9 @@ export enum DeliveryError {
  * optional). If the Promise resolves successfully, the "delivery" property will contain a DeliveryEnt
  * object. If there is an error, the "error" property will contain a DeliveryError value and the
  * "errorReason" property will contain an Error object.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1167543919
+ * M1_S010
+ * 
  */
 export async function createDelivery(params: {
   idGroup: string;

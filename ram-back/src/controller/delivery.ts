@@ -259,7 +259,10 @@ authentication with a manager role. It also allows for uploading an image file. 
 information is extracted from the request body and a file is extracted if it exists. If a file
 exists, it is uploaded to an S3 bucket and the filename is stored in the delivery object. The
 delivery is then created and associated with all users in the group. Finally, a response is sent
-with the created delivery object. */
+with the created delivery object. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1167543919
+// * M1_S010
+*/
 deliveriesRouter.post(
   "/create-delivery/:groupId",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
