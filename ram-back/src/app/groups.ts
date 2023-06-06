@@ -182,6 +182,8 @@ export async function removeUserFromGroup(params: {
  * the data source to query the database for all GroupUserEnt objects that have a groupId matching the
  * provided parameter. Finally, the function maps the resulting array of GroupUserEnt objects to an
  * array of UserEnt
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
+ * M1_S04
  */
 export async function getUsersByGroup(groupId: string): Promise<UserEnt[]> {
   const ds = await getDataSource();
@@ -241,6 +243,8 @@ interface GroupUser {
  * 
  * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=957708639
  * M1_S01
+ *  Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
+ * M1_S04
  */
 export async function getUserGroups(params: {
   userId: string;

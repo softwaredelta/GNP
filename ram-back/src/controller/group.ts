@@ -70,7 +70,10 @@ route is protected by the `authMiddleware` middleware function, which requires t
 the database, and the `GroupEnt` entity is used to query the groups table. The `select` option is
 used to specify which columns to include in the result set, and the `relations` option is used to
 specify which related entities to include in the result set. Finally, the `res.json` method is used
-to send the groups data as a JSON response to the client. */
+to send the groups data as a JSON response to the client. 
+* Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
+* M1_S04
+*/
 groupsRouter.get(
   "/all",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -135,7 +138,10 @@ database and returns them as a JSON response. The route is protected by the `aut
 middleware function, which requires the user to have the `MANAGER` role to access this endpoint. The
 `getUsersByGroup` function is used to retrieve the users data from the database, and the `res.json`
 method is used to send the users data as a JSON response to the client. If there is an error in
-retrieving the users data, a 500 response with an error message is returned. */
+retrieving the users data, a 500 response with an error message is returned.
+* Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
+* M1_S04
+*/
 groupsRouter.get(
   "/users/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
