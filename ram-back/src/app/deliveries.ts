@@ -331,7 +331,6 @@ export async function updateDeliveryStatus(params: {
   const status = params.statusChange
     ? StatusUserDelivery.accepted
     : StatusUserDelivery.refused;
-  console.log(status);
 
   await db.manager
     .createQueryBuilder()
@@ -345,7 +344,6 @@ export async function updateDeliveryStatus(params: {
     where: { deliveryId: params.deliveryId, userId: params.userId },
   });
 
-  console.log(changedDelivery);
 
   return { changedDelivery: changedDelivery as UserDeliveryEnt };
 }
