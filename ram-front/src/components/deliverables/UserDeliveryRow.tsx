@@ -97,7 +97,6 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
     });
   }
 
-  
   return (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell

@@ -47,7 +47,6 @@ const updateParametersMiddleware: RequestHandler = (req, res, next) => {
   next();
 };
 
-
 deliveriesRouter.get(
   "/my-deliveries/:groupId",
   authMiddleware(),
