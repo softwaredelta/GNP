@@ -30,11 +30,13 @@ export default function DeliveryGroup(): JSX.Element {
     method: "GET",
   });
 
-  const { response: responsePostNoEvidence, callback: callBackPostNoEvidenceDelivery } =
-    useAxios<IUserDelivery>({
-      url: `/update-status/${id}`,
-      method: "POST",
-    });
+  const {
+    response: responsePostNoEvidence,
+    callback: callBackPostNoEvidenceDelivery,
+  } = useAxios<IUserDelivery>({
+    url: `deliveries/update-status-no-evidence/${id}`,
+    method: "POST",
+  });
 
   const { response: responsePost, callback } = useAxios<{
     dateDelivery: string;
@@ -60,14 +62,6 @@ export default function DeliveryGroup(): JSX.Element {
 
       updateDeliveryStatus();
     } else if (responsePostNoEvidence) {
-      Swal.fire({
-        title: "¿Quieres marcar esta tarea como completada?",
-        text: "Confiamos que has completado esta tarea.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sí, marcar como completada",
-        cancelButtonText: "Cancelar",
-      });
       updateDeliveryStatus();
     }
   }, [responsePost, responsePostNoEvidence]);
@@ -93,6 +87,20 @@ export default function DeliveryGroup(): JSX.Element {
 
   const { handleSubmit } = useForm<IUserDelivery>();
 
+  function handleSubmitNoDelivery() {
+    Swal.fire({
+      title: "¿Quieres marcar esta tarea como completada?",
+      text: "Confiamos que has completado esta tarea.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, marcar como completada",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        callBackPostNoEvidenceDelivery();
+      }
+    });
+  }
 
   return (
     <Wrapper title={delivery?.deliveryName || ""}>
@@ -181,21 +189,33 @@ export default function DeliveryGroup(): JSX.Element {
                 )}
               </>
             )}
-            {delivery?.hasDelivery && delivery?.hasDelivery === "false" && (
-              <>
-                <div className="flex w-1/2 items-center justify-center pt-4">
-                  <button
-                    className="btn-primary flex items-center justify-center pt-10"
-                    onClick={() => {
-                      callBackPostNoEvidenceDelivery();
-                    }}
-                  >
-                    <span className="text-lg font-semibold"> Completar </span>
-                    <FiSend size={20} className="ml-2" />
-                  </button>
-                </div>
-              </>
-            )}
+            {delivery?.hasDelivery &&
+              delivery?.hasDelivery === "false" &&
+              userDelivery?.status === "Sin enviar" && (
+                <>
+                  <div className="flex w-1/2 items-center justify-center pt-4">
+                    <button
+                      className="btn-primary flex items-center justify-center pt-10"
+                      onClick={handleSubmitNoDelivery}
+                    >
+                      <span className="text-lg font-semibold"> Completar </span>
+                      <FiSend size={20} className="ml-2" />
+                    </button>
+                  </div>
+                </>
+              )}
+
+            {delivery?.hasDelivery &&
+              delivery?.hasDelivery === "false" &&
+              userDelivery?.status === "Aceptado" && (
+                <>
+                  <div className="col-span-1 mt-3 w-2/3 rounded-md bg-gnp-blue-500">
+                    <p className="px-2 py-2 text-center font-semibold text-white">
+                      Completado
+                    </p>
+                  </div>
+                </>
+              )}
           </div>
         </div>
       </>

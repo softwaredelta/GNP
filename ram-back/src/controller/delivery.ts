@@ -47,6 +47,7 @@ const updateParametersMiddleware: RequestHandler = (req, res, next) => {
   next();
 };
 
+
 deliveriesRouter.get(
   "/my-deliveries/:groupId",
   authMiddleware(),
@@ -170,7 +171,7 @@ deliveriesRouter.get(
 
 deliveriesRouter.post(
   "/update-status/:id",
-  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  authMiddleware({ neededRoles: [UserRole.MANAGER || UserRole.REGULAR] }),
   updateParametersMiddleware,
   async (req, res) => {
     const { userId, statusChange } = req.body;
@@ -334,14 +335,14 @@ deliveriesRouter.post(
 );
 
 deliveriesRouter.post(
-  "/update-status-no-evidence",
+  "/update-status-no-evidence/:deliveryId",
   authMiddleware({ neededRoles: [UserRole.REGULAR] }),
   async (req, res) => {
     if (!req.body) {
       res.status(400).json({ message: "No deliveryId" });
       return;
     }
-    const { deliveryId } = req.body;
+    const deliveryId = req.params.deliveryId;
     if (!req.user) {
       res.status(401).json({ message: "No user" });
       return;
@@ -353,8 +354,6 @@ deliveriesRouter.post(
       deliveryId,
       statusChange: true,
     });
-    console.log(changedDelivery);
-
     res.json(changedDelivery);
   },
 );

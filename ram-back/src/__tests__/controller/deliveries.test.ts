@@ -176,15 +176,11 @@ describe("controller:deliveries", () => {
       if (authError) {
         throw new Error(authError);
       }
-
+      const deliveryId = delivery1.delivery.id;
       const access = auth.accessToken;
       const response = await request(app)
-        .post("/deliveries/update-status-no-evidence")
+        .post(`/deliveries/update-status-no-evidence/${deliveryId}`)
         .set("Authorization", `Bearer ${access}`)
-        .send({
-          idUser: "1",
-          idDelivery: delivery1.delivery.id,
-        })
         .expect(200)
         .then((res) => {
           const deliveryEnt = res.body.changedDelivery;
@@ -193,8 +189,8 @@ describe("controller:deliveries", () => {
             StatusUserDelivery.accepted,
           );
         });
-      console.log(response);
       return response;
     });
+    it("refuse change status bad data", async () => {});
   });
 });
