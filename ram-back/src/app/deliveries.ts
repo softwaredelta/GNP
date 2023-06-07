@@ -344,7 +344,6 @@ export async function updateDeliveryStatus(params: {
     where: { deliveryId: params.deliveryId, userId: params.userId },
   });
 
-
   return { changedDelivery: changedDelivery as UserDeliveryEnt };
 }
 
