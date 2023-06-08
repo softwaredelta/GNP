@@ -198,7 +198,7 @@ salesRouter.post("/all", authMiddleware(), async (req, res) => {
   const currentDateMinusOneWeek = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
-    currentDate.getDate() - 8,
+    currentDate.getDate() - 7,
   );
   const initDate = new Date(req.body.startDate as string);
   const startDate =
