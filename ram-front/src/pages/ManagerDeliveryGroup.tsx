@@ -100,7 +100,7 @@ export default function ManagerDeliveryGroup(): JSX.Element {
               newLinkCallback?.({ link, name });
             }}
             handleLinkEdit={({ link, name, id: idLink }) => {
-              editLinkCallback?.({ link, name, idLink });
+              editLinkCallback?.({ link, name, id: idLink });
             }}
             handleLinkDelete={(idLink) => {
               deleteLinkCallback?.({ id: idLink });

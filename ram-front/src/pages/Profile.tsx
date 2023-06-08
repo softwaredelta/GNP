@@ -203,7 +203,7 @@ export default function Profile() {
               postLink?.({ link, name });
             }}
             handleLinkEdit={({ link, name, id: idLink }) => {
-              modifyLink?.({ link, name, idLink });
+              modifyLink?.({ link, name, id: idLink });
             }}
             links={links.links}
           />

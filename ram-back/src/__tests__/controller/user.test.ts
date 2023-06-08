@@ -593,11 +593,14 @@ describe("controller:user", () => {
         .send({ id: linkAdded.id, ...updatedLink })
         .expect(200);
 
-      const { uLink } = res.body;
+      const ds = await getDataSource();
+      const link = await ds.manager.findOneOrFail(UserLinkEnt, {
+        where: { id: linkAdded.id },
+      });
 
-      expect(uLink).toHaveProperty("id", linkAdded.id);
-      expect(uLink).toHaveProperty("link", updatedLink.link);
-      expect(uLink).toHaveProperty("name", updatedLink.name);
+      expect(link).toHaveProperty("id", linkAdded.id);
+      expect(link).toHaveProperty("link", updatedLink.link);
+      expect(link).toHaveProperty("name", updatedLink.name);
     });
 
     it("deletes existing user link", async () => {

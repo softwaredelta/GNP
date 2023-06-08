@@ -7,7 +7,7 @@ import { addUserToGroup, createGroup } from "../app/groups";
 import { createProspect } from "../app/prospect";
 import { createSale } from "../app/sale";
 import { createStatus } from "../app/status";
-import { UserError } from "../app/user";
+import { UserError, addLink } from "../app/user";
 import { createUser } from "../app/user";
 import { setUserToAllDeliveries } from "../app/user-delivery";
 import { StatusNames } from "../entities/status.entity";
@@ -431,6 +431,12 @@ export async function loadSeeds() {
       description: "Lorem ipsum",
       idGroup: groupNovelWeek3.group.id,
       imageUrl: "https://wallpaperaccess.com/full/2020044.jpg",
+    });
+
+    await addLink({
+      id: "2",
+      name: "Link 1",
+      link: "https://www.google.com",
     });
 
     //USER TO GROUPS
