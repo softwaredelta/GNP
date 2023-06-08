@@ -62,9 +62,9 @@ function NavBar({ onLogout, user, role }: Props) {
           <Link to="/my-profile">
             <Dropdown.Item>Ver perfil</Dropdown.Item>
           </Link>
-          <Link to="/help">
+          {/* <Link to="/help">
             <Dropdown.Item>Ayuda</Dropdown.Item>
-          </Link>
+          </Link> */}
           <Dropdown.Divider />
           <Dropdown.Item onClick={onLogout} data-testid="logout-button">
             Salir
