@@ -24,8 +24,6 @@ export default function ManagerDeliveries(): JSX.Element {
     updateDelivery();
   };
 
-  console.log(delivery);
-
   return (
     <Wrapper title={delivery?.deliveryName}>
       <div className="mt-8">
