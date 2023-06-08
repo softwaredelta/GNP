@@ -4,7 +4,12 @@ import { RequestHandler, Router } from "express";
 import * as j from "joi";
 import multer from "multer";
 import { uploadFile } from "../app/file";
-import { createSale, getSalesByUserId, updateSale } from "../app/sale";
+import {
+  createSale,
+  getSalesByMonth,
+  getSalesByUserId,
+  updateSale,
+} from "../app/sale";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
@@ -157,6 +162,101 @@ salesRouter.post(
     }
 
     res.status(201).json(sale);
+  },
+);
+
+salesRouter.get("/all", authMiddleware(), async (req, res) => {
+  const db = await getDataSource();
+  const sales = await db.manager
+    .createQueryBuilder(SellEnt, "sell")
+    .leftJoinAndSelect("sell.assuranceType", "assuranceType")
+    .getMany();
+  res.json(sales);
+});
+
+salesRouter.get("/line-graph/:id", authMiddleware(), async (req, res) => {
+  if (!req.user) {
+    res.status(401).json({ message: "No user" });
+    return;
+  }
+
+  const userId = req.params.id;
+
+  const finalDate = new Date();
+  const initialDate = new Date();
+  initialDate.setMonth(finalDate.getMonth() - 2);
+  let initialMonth = initialDate.getMonth();
+  const finalMonth = finalDate.getMonth();
+  const sales = [];
+  let i = 0;
+
+  const { results: pieChart } = await getSalesByMonth({
+    initialDate,
+    finalDate,
+    userId,
+  });
+
+  for (initialMonth; initialMonth <= finalMonth; initialMonth++) {
+    const { results } = await getSalesByMonth({
+      initialDate: new Date(
+        new Date(initialDate).getFullYear(),
+        new Date(initialDate).getMonth() + i,
+        1,
+      ),
+      finalDate: new Date(
+        new Date(initialDate).getFullYear(),
+        new Date(initialDate).getMonth() + i,
+        30,
+      ),
+      userId,
+    });
+    sales.push({ initialMonth, results });
+    i++;
+  }
+
+  res.json({ sales, pieChart });
+});
+
+salesRouter.post(
+  "/filters/line-graph/:id",
+  authMiddleware(),
+  async (req, res) => {
+    if (!req.user) {
+      res.status(401).json({ message: "No user" });
+      return;
+    }
+
+    const { initialDate, finalDate } = req.body;
+    const userId = req.params.id;
+
+    const { results: pieChart } = await getSalesByMonth({
+      finalDate,
+      initialDate,
+      userId,
+    });
+
+    let initialMonth = new Date(initialDate).getMonth();
+    const finalMonth = new Date(finalDate).getMonth();
+    const sales = [];
+    let i = 0;
+    for (initialMonth; initialMonth <= finalMonth; initialMonth++) {
+      const { results } = await getSalesByMonth({
+        initialDate: new Date(
+          new Date(initialDate).getFullYear(),
+          new Date(initialDate).getMonth() + i,
+          1,
+        ),
+        finalDate: new Date(
+          new Date(initialDate).getFullYear(),
+          new Date(initialDate).getMonth() + i,
+          30,
+        ),
+        userId,
+      });
+      sales.push({ initialMonth, results });
+      i++;
+    }
+    res.json({ sales, pieChart });
   },
 );
 
