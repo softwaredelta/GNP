@@ -3,6 +3,7 @@ import { useRef } from "react";
 import Modal from "../generics/Modal";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import usePasswordVisibility from "../../hooks/usePasswordVisibility";
+import Swal from "sweetalert2";
 
 export interface IModalPasswordResetProps {
   handlePost: (confirmationPassword: string, password: string) => void;
@@ -111,16 +112,38 @@ export default function ModalPasswordReset({
                   <button
                     className="btn-primary"
                     onClick={() => {
-                      if (passwordRef.current && confirmationRef.current) {
-                        const password = passwordRef.current.value.toString();
-                        const confirmationPassword =
-                          confirmationRef.current?.value.toString();
-                        handlePost(confirmationPassword, password);
+                      if (
+                        passwordRef.current &&
+                        passwordRef.current?.value?.length >= 8
+                      ) {
+                        if (
+                          passwordRef.current &&
+                          confirmationRef.current &&
+                          passwordRef.current.value.toString() ===
+                            confirmationRef.current.value.toString()
+                        ) {
+                          const password = passwordRef.current.value.toString();
+                          const confirmationPassword =
+                            confirmationRef.current?.value.toString();
+                          handlePost(confirmationPassword, password);
+                        } else {
+                          Swal.fire({
+                            title: "¡Error!",
+                            text: "Las contraseñas no coinciden",
+                            icon: "error",
+                            confirmButtonText: "OK",
+                          });
+                        }
+                      } else {
+                        Swal.fire({
+                          title: "¡Error!",
+                          text: "La contraseña debe tener al menos 8 caracteres",
+                          icon: "error",
+                          confirmButtonText: "OK",
+                        });
                       }
                     }}
-                  >
-                    Guardar
-                  </button>
+                  ></button>
                 </div>
               </div>
             </div>

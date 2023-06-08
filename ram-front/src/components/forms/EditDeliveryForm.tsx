@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+// * M1_S011
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -14,6 +16,7 @@ export interface IEditDeliveryFormProps {
   handleLinkPost: (data: { link: string; name: string }) => void;
   handleLinkDelete: (id: string) => void;
   handleLinkEdit: (data: ILink) => void;
+  updateDelivery: () => void;
 }
 
 export default function EditDeliveryForm({
@@ -22,6 +25,7 @@ export default function EditDeliveryForm({
   handleLinkPost,
   handleLinkEdit,
   handleLinkDelete,
+  updateDelivery,
 }: IEditDeliveryFormProps) {
   const [file, setFile] = useState<File | null | string>(null);
 
@@ -31,7 +35,7 @@ export default function EditDeliveryForm({
 
   const [enabled, setEnabled] = useState<string>();
 
-  const { response, error, callback } = useAxios({
+  const { response, error, callback } = useAxios<IDeliveryDescription>({
     url: `deliveries/${deliveryId}`,
     method: "POST",
     headers: {
@@ -47,9 +51,9 @@ export default function EditDeliveryForm({
 
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      deliveryName: delivery.deliveryName,
-      description: delivery.description,
-      hasDelivery: delivery.hasDelivery,
+      deliveryName: delivery?.deliveryName,
+      description: delivery?.description,
+      hasDelivery: delivery?.hasDelivery,
     },
   });
 
@@ -80,6 +84,8 @@ export default function EditDeliveryForm({
         title: "¡Éxito!",
         text: "El entregable se ha modificado correctamente.",
         icon: "success",
+      }).then(() => {
+        updateDelivery();
       });
     }
 

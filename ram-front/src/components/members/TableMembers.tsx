@@ -1,19 +1,30 @@
 // (c) Delta Software 2023, rights reserved.
-
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=718703983
+// * M3_S05
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2023282790
+// * M4_S01
 import { Table } from "flowbite-react";
 import { IMembers } from "../../types";
 import RowMember from "./RowMember";
 import useSearch from "../../hooks/useSearch";
+import { useEffect, useState } from "react";
 
 export interface IListMembersProps {
   members: IMembers[];
+  updateMembers: () => void;
 }
 
 export default function TableMembers({
   members,
+  updateMembers,
 }: IListMembersProps): JSX.Element {
+  const [newMembers, setData] = useState<IMembers[]>(members);
+  useEffect(() => {
+    setData(members);
+  }, [members]);
+
   const { handleSearch, data } = useSearch({
-    info: members.map((member) => ({
+    info: newMembers.map((member) => ({
       ...member,
       fullName: `${member.name} ${member.lastName}`,
     })),
@@ -46,7 +57,7 @@ export default function TableMembers({
             <Table.HeadCell align="center">Resumen</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {members.length === 0 && (
+            {newMembers.length === 0 && (
               <div className="text-center">No hay usuarios en el sistema</div>
             )}
             {data.map((member) => {
@@ -60,6 +71,7 @@ export default function TableMembers({
                   rol={member.rol}
                   email={member.email}
                   isActive={member.isActive}
+                  updateMembers={updateMembers}
                 />
               );
             })}

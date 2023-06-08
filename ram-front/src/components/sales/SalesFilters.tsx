@@ -1,68 +1,58 @@
 // (c) Delta Software 2023, rights reserved.
-import { useEffect } from "react";
-import useSearch from "../../hooks/useSearch";
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=832442920
+// * M2_S02
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1535256513
+// * M2_S07
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ISell } from "../../types";
-import { FiPlus } from "react-icons/fi";
-import { Link } from "react-router-dom";
-import useFilterDate from "../../hooks/useFilterDate";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { IAssuranceType } from "../../types";
 
-export interface IListAssuranceTypesProps {
-  sales: ISell[];
-  setSales: (sales: ISell[]) => void;
+interface IFiltersSales {
+  policyNumber: string;
+  periodicity: string;
+  assuranceTypeId: string;
+  contractingClient: string;
+  status: string;
 }
 
+const currentDate = new Date();
+const currentDateMinusOneWeek = new Date(
+  currentDate.getFullYear(),
+  currentDate.getMonth(),
+  currentDate.getDate() - 7,
+);
+
 export default function SalesFilters({
-  sales,
-  setSales,
-}: IListAssuranceTypesProps) {
-  const { data: dataName, handleSearch } = useSearch<ISell>({
-    info: sales,
-    key: "contractingClient",
-  });
-  const {
-    data: dataPolicy,
-    handleSearch: handleSearchPolicy,
-    updateInfo: updateInfoPolicy,
-  } = useSearch<ISell>({
-    info: dataName,
-    key: "policyNumber",
-  });
-
-  const { data, dateEnd, dateInit, setDateEnd, setDateInit, updateInfo } =
-    useFilterDate<ISell>({
-      info: dataPolicy,
-      key: "paidDate",
-      initialDate: dataPolicy.map((item) => item.paidDate).sort()[0] as string,
-      endDate: dataPolicy
-        .map((item) => item.paidDate)
-        .sort()
-        .reverse()[0] as string,
-    });
-
-  useEffect(() => {
-    setSales(data);
-  }, [data]);
-  useEffect(() => {
-    updateInfoPolicy(dataName);
-  }, [dataName]);
-  useEffect(() => {
-    updateInfo(dataPolicy);
-  }, [dataPolicy]);
-
+  updateSales,
+  assuranceTypes,
+}: {
+  updateSales: (newBody?: object) => Promise<boolean>;
+  assuranceTypes: IAssuranceType[];
+}) {
+  const [dateInit, setDateInit] = useState<Date | null>(
+    currentDateMinusOneWeek,
+  );
+  const [dateEnd, setDateEnd] = useState<Date | null>(currentDate);
+  const { register, handleSubmit } = useForm<IFiltersSales>();
   return (
-    <div className="grid w-full grid-cols-4 gap-5  py-5">
+    <div className="grid w-full grid-cols-4 gap-x-5  pb-5">
       <div className="">
         <label className="label-primary">Nombre del cliente</label>
-        <input type="text" onChange={handleSearch} className="input-primary" />
+        <input
+          type="text"
+          className="input-primary"
+          {...register("contractingClient")}
+        />
       </div>
       <div className="">
         <label className="label-primary">Poliza</label>
         <input
           type="text"
-          onChange={handleSearchPolicy}
           className="input-primary"
+          {...register("policyNumber")}
         />
       </div>
       <div>
@@ -91,13 +81,61 @@ export default function SalesFilters({
           required
         />
       </div>
-      <div className="col-span-2 col-start-2 mx-auto w-1/2 place-self-center pb-5">
-        <Link to="/new-sale">
-          <button className="btn-primary flex h-full items-center justify-center">
-            <span className="font-semibold"> Agregar </span>
-            <FiPlus size={20} className="ml-2" />
-          </button>
-        </Link>
+      <div className="">
+        <label className="label-primary">Tipo de seguro</label>
+        <select
+          className="input-primary"
+          {...register("assuranceTypeId")}
+          defaultValue=""
+        >
+          <option value="">Todos</option>
+          {assuranceTypes.map((assuranceType) => (
+            <option key={assuranceType.id} value={assuranceType.id}>
+              {assuranceType.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="">
+        <label className="label-primary">Periodicidad</label>
+        <select
+          className="input-primary"
+          {...register("periodicity")}
+          defaultValue=""
+        >
+          <option value="">Todos</option>
+          <option value={"Mensual"}> Mensual </option>
+          <option value={"Trimestral"}> Trimestral </option>
+          <option value={"Semestral"}> Semestral </option>
+          <option value={"Anual"}> Anual </option>
+        </select>
+      </div>
+      <div className="">
+        <label className="label-primary">Estado</label>
+        <select
+          className="input-primary"
+          {...register("status")}
+          defaultValue=""
+        >
+          <option value="">Todos</option>
+          <option value="Sin revisar">Sin revisar</option>
+          <option value="Rechazada">Rechazada</option>
+          <option value="Aceptada">Aceptada</option>
+        </select>
+      </div>
+      <div className=" w-full place-self-center">
+        <button
+          className="btn-primary"
+          onClick={handleSubmit((data) => {
+            updateSales({
+              ...data,
+              startDate: dateInit,
+              endDate: dateEnd,
+            });
+          })}
+        >
+          Filtrar
+        </button>
       </div>
     </div>
   );

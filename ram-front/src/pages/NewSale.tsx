@@ -1,12 +1,14 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=924979067
+// * M2_S01
 
 import Wrapper from "../containers/Wrapper";
 import { useNavigate } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import { useEffect } from "react";
-import SaleForm from "../components/forms/SaleForm";
 import Swal from "sweetalert2";
 import { IAssuranceType } from "../types";
+import SaleForm from "../components/forms/SaleForm";
 
 export default function NewSale() {
   const { response: assuranceTypes } = useAxios<IAssuranceType[]>({
@@ -45,8 +47,13 @@ export default function NewSale() {
           <SaleForm
             assuranceTypes={assuranceTypes}
             isEdit={false}
-            handlePost={({ emissionDate, file, form, paidDate }) => {
-              if (file) {
+            handlePost={async ({
+              emissionDate,
+              file,
+              form,
+              paidDate,
+            }): Promise<boolean> => {
+              if (file && callback) {
                 const formData: FormData = new FormData();
                 formData.append("file", file);
                 formData.append("policyNumber", form.policyNumber.toString());
@@ -65,9 +72,17 @@ export default function NewSale() {
                   emissionDate?.toString() as string,
                 );
                 try {
-                  callback?.(formData);
+                  const flag = await callback(formData);
+                  return flag;
                 } catch (err) {
-                  console.error(err);
+                  Swal.fire({
+                    title: "¡Error!",
+                    text: `Ocurrió un error al registrar la venta.\n
+                    ${(err as any).response.data.message}`,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                  });
+                  return false;
                 }
               } else {
                 Swal.fire({
@@ -76,6 +91,7 @@ export default function NewSale() {
                   icon: "error",
                   confirmButtonText: "OK",
                 });
+                return false;
               }
             }}
           />

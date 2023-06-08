@@ -1,4 +1,8 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1167543919
+// * M1_S010
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+// * M1_S011
 import Wrapper from "../containers/Wrapper";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -96,11 +100,12 @@ export default function ManagerDeliveryGroup(): JSX.Element {
               newLinkCallback?.({ link, name });
             }}
             handleLinkEdit={({ link, name, id: idLink }) => {
-              editLinkCallback?.({ link, name, idLink });
+              editLinkCallback?.({ link, name, id: idLink });
             }}
             handleLinkDelete={(idLink) => {
               deleteLinkCallback?.({ id: idLink });
             }}
+            updateDelivery={() => refresh()}
           />
         )}
       </div>

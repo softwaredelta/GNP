@@ -1,4 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
+
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=957708639
+// * M1_S01
 import { useNavigate } from "react-router-dom";
 import { useUrlFile } from "../../lib/files";
 import { IGroup } from "../../types";
@@ -31,7 +34,7 @@ export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
               <CardInfoGroup
                 color={index % 2 ? "orange" : "blue"}
                 nameGroup={group.name}
-                progress={(group.progress as number) || 0} // fixed here
+                progress={(group.progress as number) || 0}
               />
             </Card>
           </button>

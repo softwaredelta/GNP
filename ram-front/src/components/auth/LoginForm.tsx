@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=309925158
+// * M3_S01
 
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
@@ -16,7 +18,7 @@ function LoginForm({
     usePasswordVisibility();
 
   return (
-    <div className="flex h-full w-full items-start bg-slate-200">
+    <div className="flex h-full w-full select-none items-start bg-slate-200">
       <form
         className="flex h-auto w-full flex-col items-center rounded-xl bg-slate-200"
         onSubmit={(e) => {
@@ -31,7 +33,7 @@ function LoginForm({
         <img
           src={LogoRAM}
           alt="Logo de Grupo Asesores RAM"
-          className="mb-4 mt-9 w-48"
+          className="mb-4 mt-9 w-48 select-none"
         />
 
         {/* Divider */}
@@ -44,7 +46,7 @@ function LoginForm({
         </label>
         <div className="w-[79%]">
           <input
-            placeholder="ejemplo@ram.mx"
+            placeholder="Introduce tu correo electrónico"
             className="input-primary"
             type="email"
             name="username"
@@ -59,7 +61,7 @@ function LoginForm({
 
         <div className="relative flex w-[79%] justify-center">
           <input
-            placeholder="***********"
+            placeholder="Introduce tu contraseña"
             className="input-primary pr-10"
             type={typeInput()}
             name="password"

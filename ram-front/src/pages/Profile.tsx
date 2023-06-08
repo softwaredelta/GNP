@@ -1,5 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
-
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=718703983
+// * M3_S05
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -10,8 +11,11 @@ import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
 import { useUrlFile } from "../lib/files";
 import { ILink, IUser } from "../types";
+import { useAuthentication } from "../lib/api/api-auth";
 
 export default function Profile() {
+  const { refresh } = useAuthentication();
+
   const { id } = useParams<{ id: string }>();
   const { response: user } = useAxios<IUser>({
     url: `user/${id}`,
@@ -68,13 +72,18 @@ export default function Profile() {
   const fileUrl = useUrlFile();
 
   useEffect(() => {
-    if (response) {
+    if (response && user) {
       Swal.fire({
         title: "¡Éxito!",
         text: "El usuario se ha modificado correctamente.",
         icon: "success",
       });
-      navigate("/members");
+      refresh(); // Refresh the user data
+      if (user.rolesString === "regular") {
+        navigate(`/my-profile`);
+      } else {
+        navigate(`/members`);
+      }
     } else if (error) {
       Swal.fire({
         title: "¡Error!",
@@ -194,7 +203,7 @@ export default function Profile() {
               postLink?.({ link, name });
             }}
             handleLinkEdit={({ link, name, id: idLink }) => {
-              modifyLink?.({ link, name, idLink });
+              modifyLink?.({ link, name, id: idLink });
             }}
             links={links.links}
           />

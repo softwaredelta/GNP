@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=924979067
+// * M2_S01
 import DatePicker from "react-datepicker";
 import { IAssuranceType, ISell } from "../../types";
 import { useState } from "react";
@@ -18,7 +20,7 @@ export interface ISaleFormProps {
     paidDate: Date | null;
     emissionDate: Date | null;
     file: File | null | string;
-  }) => void;
+  }) => Promise<boolean>;
 }
 
 export default function SaleForm({
@@ -76,7 +78,7 @@ export default function SaleForm({
               placeholder="Ingrese el número de póliza"
               type="text"
               {...register("policyNumber", {
-                required: "El campo poliza es requerido\n",
+                required: "El campo poliza es requerido",
               })}
             />
             <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">
@@ -242,9 +244,14 @@ export default function SaleForm({
             <button
               className="btn-primary flex h-12 items-center justify-center"
               onClick={handleSubmit(
-                (form) => {
-                  handlePost({ form, emissionDate, file, paidDate });
-                  reset();
+                async (form) => {
+                  const result = await handlePost({
+                    form,
+                    emissionDate,
+                    file,
+                    paidDate,
+                  });
+                  if (result) reset();
                 },
                 (errorsFields) => {
                   Swal.fire({

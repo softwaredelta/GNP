@@ -1,7 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
+// * M2_S04
 
 import { Table } from "flowbite-react";
-import { FiEye, FiCheck, FiX } from "react-icons/fi";
+import { useEffect } from "react";
+import { FiCheck, FiEye, FiX } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
@@ -9,7 +12,6 @@ import useModal from "../../hooks/useModal";
 import { useOpenFile } from "../../lib/files";
 import { ISell } from "../../types";
 import Modal from "../generics/Modal";
-import { useEffect } from "react";
 
 type Props = {
   sale: ISell;
@@ -39,7 +41,6 @@ export default function SalesRow({ sale, onUpdated }: Props) {
         callback({
           statusChange,
         });
-        // Swal.fire(`¡Éxito!`, `La venta ha sido ${statusChange}.`, "success");
       }
     });
   }
@@ -63,12 +64,14 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+        {`${sale.user?.name} ${sale.user?.lastName}`}
+      </Table.Cell>
+      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
         {sale.contractingClient}
       </Table.Cell>
       <Table.Cell>{sale.policyNumber}</Table.Cell>
       <Table.Cell>
         <NumericFormat
-          value={sale.yearlyFee}
           displayType={"text"}
           thousandSeparator={true}
           decimalScale={2}
@@ -98,8 +101,8 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       </Table.Cell>
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
-        <div className="grid grid-cols-3 items-center justify-center ">
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-110 active:scale-95">
+        <div className="grid grid-cols-3 items-center justify-center gap-6">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-110 active:scale-95">
             <FiEye
               size={20}
               className="text-gray-500"
@@ -118,18 +121,18 @@ export default function SalesRow({ sale, onUpdated }: Props) {
               </div>
             </Modal>
           )}
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <FiCheck
               size={20}
               className="text-green-500"
-              onClick={() => handleUpdate("aceptada")}
+              onClick={() => handleUpdate("Aceptada")}
             />
           </div>
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+          <div className="cursor-pointer pr-12 transition-all ease-in-out hover:scale-125 active:scale-95">
             <FiX
               size={20}
               className="text-red-500"
-              onClick={() => handleUpdate("rechazada")}
+              onClick={() => handleUpdate("Rechazada")}
             />
           </div>
         </div>
