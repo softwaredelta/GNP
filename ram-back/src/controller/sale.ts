@@ -201,7 +201,6 @@ in the query results. Finally, it returns the sales data in JSON format.
 // * M2_S03 
 */
 salesRouter.post("/my-sales", authMiddleware(), async (req, res) => {
-
   if (!req.user) {
     res.status(401).json({ message: "No user" });
     return;

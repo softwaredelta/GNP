@@ -3,8 +3,7 @@
 // * M2_S02
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1535256513
 // * M2_S07
-import { useEffect } from "react";
-import useSearch from "../../hooks/useSearch";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
