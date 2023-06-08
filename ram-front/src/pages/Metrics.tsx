@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import LineGraph from "../components/graphs/LineGraph";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import ProfileMetrics from "../components/metrics/ProfileMetrics";
 interface IResult {
   key: string;
   totalPaidFee: number;
@@ -149,7 +149,22 @@ export default function Metrics(): JSX.Element {
   return (
     <Wrapper title={`Resumen de: ${user?.name} ${user?.lastName}`}>
       <div className="grid w-full grid-cols-2 grid-rows-2 gap-10 px-10 pt-6">
-        <div className="w-full rounded-xl bg-slate-200 p-12 py-6"></div>
+        <div className="relative w-full rounded-xl bg-slate-200 p-12">
+          <div className="absolute -top-5 left-0 right-0 col-span-1 grid justify-center">
+            <h1 className="rounded-3xl border border-solid border-slate-600 bg-slate-100 p-2 px-8 text-center text-2xl font-bold">
+              Perfil
+            </h1>
+          </div>
+          {user ? (
+            <ProfileMetrics user={user} />
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center">
+              <h1 className="mb-4 text-center text-2xl font-bold text-gray-700">
+                Algo salió mal
+              </h1>
+            </div>
+          )}
+        </div>
         <div className="relative w-full rounded-xl bg-slate-200 p-12 py-6">
           <div className="absolute -top-5 left-0 right-0 col-span-1 grid justify-center">
             <h1 className="rounded-3xl border border-solid border-slate-600 bg-slate-100 p-2 px-8 text-center text-2xl font-bold">
