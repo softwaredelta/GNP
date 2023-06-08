@@ -5,7 +5,7 @@ import HighchartsReact from "highcharts-react-official";
 import highchartsFunnel from "highcharts/modules/funnel";
 
 import { useRef } from "react";
-import { IProspectStatus } from "../types";
+import { IProspectStatus } from "../../types";
 
 highchartsFunnel(Highcharts);
 
@@ -45,6 +45,7 @@ export default function ProspectsChart({
     series: [
       {
         name: "Prospecto registrado",
+        type: "funnel",
         data: [
           ["Nuevo prospecto", prospectInfo?.["Nuevo prospecto"] ?? 0],
           ["Cita agendada", prospectInfo?.["Cita agendada"] ?? 0],
