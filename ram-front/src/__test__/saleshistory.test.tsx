@@ -37,7 +37,7 @@ describe("SalesHistory", () => {
               assuranceTypeId: "1",
             },
           ]}
-          updateSales={function (): Promise<boolean> {
+          updateSales={function (): void {
             throw new Error("Function not implemented.");
           }}
         />

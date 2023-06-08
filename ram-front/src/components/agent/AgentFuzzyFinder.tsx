@@ -11,7 +11,6 @@ import { IUser } from "../../types";
 import { accessToken$ } from "../../lib/api/api-auth";
 import { apiBase$ } from "../../lib/api/api-base";
 import { useUpdateGroups } from "../../lib/api/api-courses";
-import Swal from "sweetalert2";
 
 const TIMER_DELAY = 150;
 
@@ -146,12 +145,6 @@ export default function AgentFuzzyFinder({
               user={user}
               onClick={async () => {
                 await addUser(user.id as string);
-                Swal.fire({
-                  title: "¡Agente agregado!",
-                  text: "El agente se agregó correctamente al grupo",
-                  icon: "success",
-                  confirmButtonText: "OK",
-                });
                 onReloadAgents();
                 updateGroups();
               }}

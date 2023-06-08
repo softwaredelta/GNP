@@ -4,18 +4,12 @@ export interface IProgressBarProps {
   progress: number;
   textLabel?: string;
   color: "blue" | "orange";
-  height?: string;
-  fontSize?: number;
-  paddingTop?: number;
 }
 
 export default function ProgressBar({
   progress,
   textLabel,
   color,
-  height,
-  fontSize,
-  paddingTop,
 }: IProgressBarProps): JSX.Element {
   const colorOptions = {
     blue: {
@@ -35,15 +29,11 @@ export default function ProgressBar({
         {textLabel}
       </div>
       <div
-        className={`h-${height} w-full rounded-full  bg-opacity-50 ${colorOptions[color].back}`}
+        className={`w-full rounded-full  bg-opacity-50 ${colorOptions[color].back}`}
       >
         <div
-          style={{
-            width: `${progress < 12 ? 12 : progress}%`,
-            fontSize: fontSize,
-            paddingTop: paddingTop,
-          }}
-          className={`h-${height} text-xs font-bold text-white ${colorOptions[color].progress} rounded-full p-0.5 text-center`}
+          style={{ width: `${progress < 12 ? 12 : progress}%` }}
+          className={`text-xs font-bold text-white ${colorOptions[color].progress} rounded-full p-0.5 text-center`}
         >
           {progress}%
         </div>

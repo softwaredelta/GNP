@@ -1,10 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
-// * M1_S06
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
-// * M1_S07
 import { Alert, Tabs } from "flowbite-react";
-
 import { FiAlertTriangle } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import { UserDeliveriesTable } from "../components/deliverables/UserDeliveriesTable";
@@ -15,32 +10,44 @@ import { IDelivery } from "../types";
 export default function ManagerDeliveries(): JSX.Element {
   const { id } = useParams();
 
-  const { response: delivery, callback: updateDelivery } = useAxios<IDelivery>({
+  const { response: delivery } = useAxios<IDelivery>({
     url: `deliveries/${id}`,
     method: "GET",
   });
 
+  const { response: ReviewedDeliveries } = useAxios<IDelivery>({
+    url: `deliveries/reviewed/${id}`,
+    method: "GET",
+  });
+
+  const { response: PendingDeliveries } = useAxios<IDelivery>({
+    url: `deliveries/pending/${id}`,
+    method: "GET",
+  });
+
+  // TODO: Hacer que el componente se actualice cuando haya un cambio
   const handleChange = () => {
-    updateDelivery();
+    window.location.reload();
   };
 
   return (
-    <Wrapper title={delivery?.deliveryName}>
-      <div className="mt-8">
+    <Wrapper>
+      <div>
+        <div className="flex w-full items-center justify-start py-8">
+          <h1 className=" rounded-r-2xl bg-gnp-orange-500 py-3 px-20 text-xl font-bold text-white">
+            {delivery?.deliveryName}
+          </h1>
+        </div>
         <Tabs.Group
           aria-label="Default tabs"
           className="px-8 pb-4"
           style="default"
         >
           <Tabs.Item active={true} title="Sin Revisar">
-            {delivery ? (
+            {PendingDeliveries ? (
               <UserDeliveriesTable
-                onUpdate={handleChange}
-                userDeliveries={
-                  delivery.userDeliveries?.filter(
-                    (userDelivery) => userDelivery.status === "Enviado",
-                  ) ?? []
-                }
+                onUpdate={() => handleChange()}
+                userDeliveries={PendingDeliveries.userDeliveries ?? []}
               />
             ) : (
               <div className="flex-grid flex justify-center">
@@ -56,16 +63,10 @@ export default function ManagerDeliveries(): JSX.Element {
             )}
           </Tabs.Item>
           <Tabs.Item title="Revisados">
-            {delivery ? (
+            {ReviewedDeliveries ? (
               <UserDeliveriesTable
-                onUpdate={handleChange}
-                userDeliveries={
-                  delivery.userDeliveries?.filter(
-                    (userDelivery) =>
-                      userDelivery.status !== "Enviado" &&
-                      userDelivery.status !== "Sin enviar",
-                  ) ?? []
-                }
+                onUpdate={() => handleChange()}
+                userDeliveries={ReviewedDeliveries.userDeliveries ?? []}
               />
             ) : (
               <div className="flex-grid flex justify-center">

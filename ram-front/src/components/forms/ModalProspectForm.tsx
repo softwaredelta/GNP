@@ -1,6 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1119997643
-// * M5_S03
 import { useForm } from "react-hook-form";
 import Modal from "../generics/Modal";
 import Swal from "sweetalert2";

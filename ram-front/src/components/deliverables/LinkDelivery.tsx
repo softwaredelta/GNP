@@ -1,6 +1,5 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2139953787
-// * M1_S012
+
 import { ILink } from "../../types";
 
 interface Props {

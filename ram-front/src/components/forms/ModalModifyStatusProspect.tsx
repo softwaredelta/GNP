@@ -1,6 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=148429501
-// * M5_S04
 import { IStatus } from "../../types";
 import Modal from "../generics/Modal";
 import { useState } from "react";

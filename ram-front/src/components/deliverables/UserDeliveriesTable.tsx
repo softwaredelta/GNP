@@ -1,8 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
-// * M1_S06
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
-// * M1_S07
 import { Table } from "flowbite-react";
 import { IUserDelivery } from "../../types";
 import { UserDeliveryRow } from "./UserDeliveryRow";
@@ -14,11 +10,14 @@ interface Props {
 }
 
 export function UserDeliveriesTable({ userDeliveries, onUpdate }: Props) {
-  const [data, setData] = useState<IUserDelivery[]>(userDeliveries);
+  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
 
   useEffect(() => {
-    setData(userDeliveries);
-  }, [userDeliveries]);
+    if (shouldUpdate) {
+      onUpdate();
+      setShouldUpdate(false);
+    }
+  }, [shouldUpdate]);
 
   return (
     <div data-testid="Table" className="w-full">
@@ -32,13 +31,13 @@ export function UserDeliveriesTable({ userDeliveries, onUpdate }: Props) {
         </Table.Head>
 
         <Table.Body className="divide-y">
-          {data.map((delivery, index) => {
+          {userDeliveries.map((delivery, index) => {
             return (
               <UserDeliveryRow
                 key={index}
                 delivery={delivery}
                 onUpdate={() => {
-                  onUpdate();
+                  setShouldUpdate(true);
                 }}
               />
             );

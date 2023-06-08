@@ -5,12 +5,7 @@ import { INSTANCE_ID } from "../arch/instance";
 import { LogEnt } from "../entities/log.entity";
 
 /**
- * This TypeScript function logs data to a database using an instance ID, kind, and message.
- * @param {string} kind - The `kind` parameter is a string that represents the type or category of the
- * log message being recorded. It could be something like "error", "info", "debug", "warning", etc.
- * @param {string | object} data - The `data` parameter is either a string or an object. It represents
- * the information that needs to be logged. If it is a string, it will be saved as is. If it is an
- * object, it will be converted to a JSON string before being saved.
+ * This logs are accessible via the infra/log endpoint for admin users
  */
 export async function log(kind: string, data: string | object) {
   const ds = await getDataSource();

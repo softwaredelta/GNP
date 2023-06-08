@@ -1,6 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=877323064
-// * M2_S06
 
 import Wrapper from "../containers/Wrapper";
 import { useNavigate, useParams } from "react-router-dom";
@@ -59,13 +57,8 @@ export default function NewSale() {
             }}
             assuranceTypes={assuranceTypes}
             isEdit={true}
-            handlePost={async ({
-              emissionDate,
-              file,
-              form,
-              paidDate,
-            }): Promise<boolean> => {
-              if (file && callback) {
+            handlePost={({ emissionDate, file, form, paidDate }) => {
+              if (file) {
                 const formData: FormData = new FormData();
 
                 if (typeof file === "string")
@@ -88,17 +81,9 @@ export default function NewSale() {
                   emissionDate?.toString() as string,
                 );
                 try {
-                  const flag = await callback(formData);
-                  return flag;
+                  callback?.(formData);
                 } catch (err) {
-                  Swal.fire({
-                    title: "¡Error!",
-                    text: `Ocurrió un error al registrar la venta.\n
-                    ${(err as any).response.data.message}`,
-                    icon: "error",
-                    confirmButtonText: "OK",
-                  });
-                  return false;
+                  console.error(err);
                 }
               } else {
                 Swal.fire({
@@ -107,7 +92,6 @@ export default function NewSale() {
                   icon: "error",
                   confirmButtonText: "OK",
                 });
-                return false;
               }
             }}
           />

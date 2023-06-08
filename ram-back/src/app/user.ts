@@ -52,8 +52,6 @@ export interface UserAuthentication {
   mobile?: number;
 }
 
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=749196783
-// * M3_S03
 export async function createUser(params: {
   email: string;
   password: string;
@@ -273,8 +271,6 @@ const userToUserRol = (user: UserEnt): UserRol => {
   };
 };
 
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2023282790
-// * M4_S01
 export async function getAllUserRol(): Promise<{
   userRol: UserRol[];
   error?: UserError;
@@ -437,7 +433,6 @@ export async function updateLink(params: {
   if (!existingLink) {
     return { link: {} as UserLinkEnt, error: UserLinkError.NOT_FOUND };
   }
-
   return ds.manager
     .update(UserLinkEnt, params.id, { name: params.name, link: params.link })
     .then(async () => {
@@ -448,43 +443,6 @@ export async function updateLink(params: {
       else return { link: {} as UserLinkEnt, error: UserLinkError.NOT_FOUND };
     })
     .catch(() => {
-      return { error: UserLinkError.NOT_FOUND, link: {} as UserLinkEnt };
+      return { error: UserLinkError.EXISTS, link: {} as UserLinkEnt };
     });
-}
-
-export async function deleteUser(params: {
-  id: string;
-}): Promise<{ user: UserEnt; error?: UserError; errorReason?: Error }> {
-  const ds = await getDataSource();
-  const existingUser = await ds.manager.findOne(UserEnt, {
-    where: { id: params.id },
-  });
-  if (!existingUser) {
-    return {
-      error: UserError.USER_NOT_FOUND,
-      user: {} as UserEnt,
-      errorReason: new Error("User not found"),
-    };
-  }
-  return ds.manager
-    .update(UserEnt, params.id, {
-      isActive: false,
-    })
-    .then(async () => {
-      const user = await ds.manager.findOneOrFail(UserEnt, {
-        where: { id: params.id },
-      });
-      if (user) return { user };
-      else
-        return {
-          user: {} as UserEnt,
-          error: UserError.USER_NOT_FOUND,
-          errorReason: new Error("User not found"),
-        };
-    })
-    .catch((e) => ({
-      error: UserError.UNHANDLED_ERROR as UserError,
-      errorReason: e as Error,
-      user: {} as UserEnt,
-    }));
 }

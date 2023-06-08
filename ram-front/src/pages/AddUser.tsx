@@ -1,6 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=749196783
-// * M3_S03
 
 import Swal from "sweetalert2";
 import useAxios from "../hooks/useAxios";

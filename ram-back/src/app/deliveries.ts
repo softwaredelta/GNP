@@ -13,20 +13,6 @@ export enum DeliveryError {
   NOT_FOUND = "NOT_FOUND",
 }
 
-/**
- * This function creates a delivery entity with the given parameters and returns it along with any
- * errors that may occur during the process.
- * @param params - The function `createDelivery` takes in an object `params` with the following
- * properties: idGroup of type string, deliveryName of type string, description of type string,
- * imageUrl of type string, hasDelivery of type string.
- * @returns a Promise that resolves to an object with two properties: "delivery" and "error" (which is
- * optional). If the Promise resolves successfully, the "delivery" property will contain a DeliveryEnt
- * object. If there is an error, the "error" property will contain a DeliveryError value and the
- * "errorReason" property will contain an Error object.
- * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1167543919
- * M1_S010
- *
- */
 export async function createDelivery(params: {
   idGroup: string;
   deliveryName: string;
@@ -60,16 +46,6 @@ export async function createDelivery(params: {
     }));
 }
 
-/**
- * This function creates a delivery link with the given parameters and returns a promise with the
- * created link or an error.
- * @param params - The function `createLinkDelivery` takes in an object `params` with three properties:
- * deliveryId of type string, link of type string, name of type string.
- * @returns The function `createLinkDelivery` returns a Promise that resolves to an object with two
- * properties: `link` and `error` (optional). If the function is successful, the `link` property will
- * contain a `DeliveryLinkEnt` object. If there is an error, the `error` property will contain a
- * `DeliveryError` enum value and the `errorReason` property will contain the
- */
 export async function createLinkDelivery(params: {
   deliveryId: string;
   link: string;
@@ -99,18 +75,6 @@ export async function createLinkDelivery(params: {
     }));
 }
 
-/**
- * This is an async function that updates a delivery entity with the given parameters and returns the
- * updated delivery entity or an error if it fails.
- * @param params - The `params` object contains the following properties: deliveryId of type string,
- * deliveryName of type string, description of type string, imageUrl of type string, hasDelivery
- * of type string.
- * @returns a Promise that resolves to an object with a `delivery` property that contains a
- * `DeliveryEnt` object and an optional `error` property of type `DeliveryError` and an optional
- * `errorReason` property of type `Error`.
- * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
- * M1_S011
- */
 export async function updateDelivery(params: {
   deliveryId: string;
   deliveryName?: string;
@@ -167,17 +131,6 @@ export async function updateDelivery(params: {
     }));
 }
 
-/**
- * This function sets a delivery to all users in a group and returns an array of objects containing
- * information about the user delivery and any errors that occurred.
- * @param params - The `setDeliveryToAllUsers` function takes in an object `params` with the following
- * properties: idGroup of type string, idDelivery of type string, dateDelivery of type Date, status
- * of type string, fileUrl of type string.
- * @returns a Promise that resolves to an array of objects. Each object in the array contains a
- * `userDelivery` property which is an instance of the `UserDeliveryEnt` class, and may also contain an
- * `error` property which is an enum value from the `DeliveryError` enum, and an `errorReason` property
- * which is an instance of the `Error` class.
- */
 export async function setDeliveryToAllUsers(params: {
   idGroup: string;
   idDelivery: string;
@@ -231,19 +184,6 @@ export async function setDeliveryToAllUsers(params: {
   }
 }
 
-/**
- * This function sets a delivery to a user and returns the user delivery entity along with any errors
- * encountered.
- * @param params - The function `setDeliverieToUser` takes in an object `params` with the following
- * properties: idUser of type string, idDelivery of type string, dateDelivery of type Date, status,
- * fileUrl of type string.
- * @returns a Promise that resolves to an object with two properties: "userDelivery" and "error" (which
- * is optional). The "userDelivery" property contains an instance of the "UserDeliveryEnt" entity that
- * was saved to the database, while the "error" property contains an error code (of the "DeliveryError"
- * enum) if an error occurred during the save operation.
- * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1667428796
- * M1_S03
- */
 export async function setDeliverieToUser(params: {
   idUser: string;
   idDeliverie: string;
@@ -278,20 +218,8 @@ export async function setDeliverieToUser(params: {
     }));
 }
 
-/**
- * This function retrieves user deliveries based on the user ID and group ID parameters.
- * @param params - The function `getUserDeliveriesbyGroup` takes in an object `params` with two
- * properties: userId of type string, groupId of type string.
- * @returns an object with two properties: "userDeliveries" and "error" (optional). "userDeliveries" is
- * an array of UserDeliveryEnt objects that match the given parameters. If there is an error, "error"
- * will be set to a DeliveryError enum value and "errorReason" will contain the error object. If there
- * is no error, "error
- *
- * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1855489237
- * M1_S02
- * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1287058613
- * M1_S05
- */
+// Obtain the deliveries from UserDeliveries where the groupId is the same as the params.groupId
+// and the userId is the same as the params.userId
 export async function getUserDeliveriesbyGroup(params: {
   userId: string;
   groupId: string;
@@ -324,17 +252,6 @@ export async function getUserDeliveriesbyGroup(params: {
   }
 }
 
-/**
- * The code exports two async functions, one for updating the delivery status and one for deleting a
- * delivery.
- * @param params - The parameters for the two functions are as follows: userId of type string,
- * deliveryId of type string, statusChange of type boolean.
- * @returns The `updateDeliveryStatus` function returns an object with a property `changedDelivery`
- * which is of type `UserDeliveryEnt`. The `deleteDelivery` function returns an object with an optional
- * property `error` of type `DeliveryError` and an optional property `reason` of type `Error`.
- * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
- * M1_S07
- */
 export async function updateDeliveryStatus(params: {
   userId: string;
   deliveryId: string;
@@ -342,17 +259,23 @@ export async function updateDeliveryStatus(params: {
 }): Promise<{ changedDelivery: UserDeliveryEnt }> {
   const db = await getDataSource();
 
-  const status = params.statusChange
-    ? StatusUserDelivery.accepted
-    : StatusUserDelivery.refused;
-
-  await db.manager
-    .createQueryBuilder()
-    .update(UserDeliveryEnt)
-    .set({ status })
-    .where("deliveryId = :id", { id: params.deliveryId })
-    .andWhere("userId = :userId", { userId: params.userId })
-    .execute();
+  if (params.statusChange) {
+    await db.manager
+      .createQueryBuilder()
+      .update(UserDeliveryEnt)
+      .set({ status: StatusUserDelivery.accepted })
+      .where("deliveryId = :id", { id: params.deliveryId })
+      .andWhere("userId = :userId", { userId: params.userId })
+      .execute();
+  } else {
+    await db.manager
+      .createQueryBuilder()
+      .update(UserDeliveryEnt)
+      .set({ status: StatusUserDelivery.refused })
+      .where("deliveryId = :id", { id: params.deliveryId })
+      .andWhere("userId = :userId", { userId: params.userId })
+      .execute();
+  }
 
   const changedDelivery = await db.manager.findOne(UserDeliveryEnt, {
     where: { deliveryId: params.deliveryId, userId: params.userId },
@@ -361,14 +284,6 @@ export async function updateDeliveryStatus(params: {
   return { changedDelivery: changedDelivery as UserDeliveryEnt };
 }
 
-/**
- * This function deletes a delivery from a data source using its ID.
- * @param params - The function `deleteDelivery` takes in an object `params` with a single property
- * `deliveryId` which is a string representing the ID of the delivery to be deleted.
- * @returns An empty object is being returned.
- * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
- * M1_S011
- */
 export async function deleteDelivery(params: {
   deliveryId: string;
 }): Promise<{ error?: DeliveryError; reason?: Error }> {
@@ -378,19 +293,7 @@ export async function deleteDelivery(params: {
   return {};
 }
 
-/**
- * This function retrieves a delivery group based on a delivery ID and returns it along with any errors
- * encountered.
- * @param params - The function `getDeliveryGroup` takes in an object `params` with a single property
- * `deliveryId` which is a string representing the ID of a delivery.
- * @returns a Promise that resolves to an object with the following properties:
- * - `delivery`: a `DeliveryEnt` object retrieved from the data source.
- * - `error` (optional): a `DeliveryError` enum value indicating the type of error that occurred during
- * the function execution, if any.
- * - `errorReason` (optional): an `Error` object containing more information about the error
- * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2139953787
- * M1_S012
- */
+// Obtain a delivery from a group where the deliveryId is the same as the params.deliveryId
 export async function getDeliveryGroup(params: {
   deliveryId: string;
 }): Promise<{
@@ -422,14 +325,7 @@ export async function getDeliveryGroup(params: {
     };
   }
 }
-
-/**
- * This TypeScript function deletes a delivery link from a data source based on the provided ID.
- * @param params - The function `deleteLinkDelivery` takes in a single parameter `params` which is an
- * object with a required property `id` of type string. This `id` is used to identify the delivery link
- * that needs to be deleted. The function returns a Promise that resolves to an empty object or an
- * @returns An empty object is being returned.
- */
+//Delete link from delivery
 export async function deleteLinkDelivery(params: {
   id: string;
 }): Promise<{ error?: DeliveryError; reason?: Error }> {
@@ -439,15 +335,7 @@ export async function deleteLinkDelivery(params: {
   return {};
 }
 
-/**
- * This is an async function that updates a delivery link's name and/or link and returns the updated
- * link or an error if it is not found or an unhandled error occurs.
- * @param params - The `params` object contains three properties: id of type string, link(Optional)
- * of type string, name(Optional) of type string.
- * @returns a Promise that resolves to an object with a `link` property that contains a
- * `DeliveryLinkEnt` object and may also contain an `error` property of type `DeliveryError` and an
- * `errorReason` property of type `Error`.
- */
+//Update a link from a delivery
 export async function updateLinkDelivery(params: {
   id: string;
   link?: string;

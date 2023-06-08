@@ -57,10 +57,7 @@ export default function LinkRow({
                   size={25}
                   className="text-green-500"
                   onClick={() => {
-                    if (onEdited) {
-                      onEdited(id, nameLink, urlLink);
-                    }
-
+                    if (onEdited) onEdited(id, nameLink, urlLink);
                     setEdit(false);
                   }}
                 />

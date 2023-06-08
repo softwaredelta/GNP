@@ -1,28 +1,21 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
-// * M1_S04
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1943755342
-// * M1_S08
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
-// * M1_S09
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import Swal from "sweetalert2";
 import ModalGroupForm from "../components/forms/ModalGroupForm";
 import { ManagerListGroups } from "../components/groups/ManagerListGroups";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
 import useModal from "../hooks/useModal";
+import { allCourses$, useUpdateGroups } from "../lib/api/api-courses";
 import { IGroup } from "../types";
 
 // Manager view that list all groups
 export default function ManagerCourses() {
-  const { response: groups, callback: updateGroups } = useAxios<IGroup[]>({
-    url: `groups/all`,
-    method: "GET",
-  });
-
+  const groups = useRecoilValue(allCourses$);
+  const updateGroups = useUpdateGroups();
   const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -49,10 +42,14 @@ export default function ManagerCourses() {
         text: "Grupo agregado exitosamente",
         icon: "success",
         timer: 5000,
-      }).then(() => {
+      });
+
+      if (shouldUpdate) {
+        setShouldUpdate(false);
+        toggleModalGroupForm();
         updateGroups();
         navigate(`/group/edit/${response.id}`);
-      });
+      }
     }
   }, [
     error,
@@ -109,7 +106,7 @@ export default function ManagerCourses() {
             </div>
           </div>
           <div className="grid place-items-center md:grid-cols-4">
-            {groups && <ManagerListGroups groups={groups} />}
+            <ManagerListGroups groups={groups} />
           </div>
         </div>
       </Wrapper>

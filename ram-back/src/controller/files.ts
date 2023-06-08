@@ -5,10 +5,11 @@ import { getS3Api } from "../arch/s3-client";
 
 export const filesRouter = Router();
 
-/* This code defines a route handler for the `/` endpoint of the `filesRouter` router. When a GET
-request is made to this endpoint, the code first checks if a `fileUrl` query parameter is present
-and is a string. If not, it returns a 400 Bad Request response with a JSON error message. */
-
+// Send user to file
+// 1. On full urls, redirect to the file
+// 2. On filename
+// 2.1. On mocked s3, send file ourselves
+// 2.2. On real s3, redirect to the file with a signed url (TODO)
 filesRouter.get("/", async (req, res) => {
   const fileUrl = req.query.fileUrl;
   if (!fileUrl || typeof fileUrl !== "string") {

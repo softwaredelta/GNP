@@ -1,14 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2023282790
-// * M4_S01
 
 import { Table } from "flowbite-react";
-import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
+import { FiEdit, FiEye } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import { useUrlFile } from "../../lib/files";
-import useAxios from "../../hooks/useAxios";
-import Swal from "sweetalert2";
-import { useEffect } from "react";
 
 export interface MembersCardProps {
   id: string;
@@ -18,7 +13,6 @@ export interface MembersCardProps {
   isActive: number;
   imageUrl: string;
   email: string;
-  updateMembers: () => void;
 }
 
 export default function RowMember({
@@ -29,44 +23,8 @@ export default function RowMember({
   isActive,
   imageUrl,
   email,
-  updateMembers,
 }: MembersCardProps): JSX.Element {
   const urlfile = useUrlFile();
-  const navigate = useNavigate();
-
-  const { response, error, callback } = useAxios({
-    url: `user/delete/${id}`,
-    method: "POST",
-  });
-
-  useEffect(() => {
-    if (response) updateMembers();
-  }, [response, updateMembers]);
-
-  function handleDelete() {
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "No podrás revertir esta acción.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed && callback) {
-        callback();
-      }
-    });
-
-    if (error) {
-      Swal.fire({
-        title: "Error",
-        text: "No se pudo eliminar el usuario.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
-    }
-  }
-
   return (
     <Table.Row
       key={id}
@@ -109,45 +67,25 @@ export default function RowMember({
         )}
       </Table.Cell>
       <Table.Cell align="center">
-        <div className=" grid grid-cols-3 gap-2">
+        <div className=" grid grid-cols-2 ">
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <Link to={`/view-profile/${id}`}>
-              <FiEye
-                size={20}
-                className="text-gray-500 hover:stroke-gnp-blue-900"
-              />
+              <FiEye size={20} className="text-gray-500" />
             </Link>
           </div>
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <Link to={`/profile/${id}`}>
-              <FiEdit
-                color="gray"
-                size={20}
-                className="hover:scale-105 hover:stroke-gnp-blue-300"
-              />
+              <FiEdit color="gray" size={20} className="hover:scale-105" />
             </Link>
           </div>
-          {isActive === 1 ? (
-            <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-              <button onClick={() => handleDelete()}>
-                <FiTrash2
-                  color="gray"
-                  size={20}
-                  className="hover:scale-105 hover:stroke-red-800"
-                />
-              </button>
-            </div>
-          ) : (
-            <button disabled>
-              <FiTrash2 color="gray" size={20} className="cursor-not-allowed" />
-            </button>
-          )}
         </div>
       </Table.Cell>
       <Table.Cell align="center">
-        {rol === "regular" ? (
+        {rol === "Agente" ? (
           <button
-            onClick={() => navigate(`/metrics/${id}`)}
+            onClick={() => {
+              alert("Ver resumen");
+            }}
             className="btn-primary"
           >
             Ver resumen

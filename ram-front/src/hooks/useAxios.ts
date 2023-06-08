@@ -18,7 +18,7 @@ export interface IUseAxiosReturn<T> {
   response: T | null;
   error?: AxiosError | unknown;
   loading?: boolean;
-  callback: (newBody?: object) => Promise<boolean>;
+  callback: (newBody?: object) => void;
 }
 
 export default function useAxios<T>({
@@ -35,7 +35,7 @@ export default function useAxios<T>({
   const [loading, setLoading] = useState<boolean>(false);
   const [mount, setMount] = useState(false);
 
-  const fetchData = useCallback(async (): Promise<boolean> => {
+  const fetchData = useCallback(async (): Promise<void> => {
     try {
       setError(null);
       setLoading(true);
@@ -49,10 +49,8 @@ export default function useAxios<T>({
         },
       });
       setResponse(res.data);
-      return true;
     } catch (err) {
       setError(err);
-      return false;
     } finally {
       setLoading(false);
     }
@@ -65,11 +63,11 @@ export default function useAxios<T>({
     }
   }, [auth, method, fetchData, mount]);
 
-  const callback = (newBody?: object): Promise<boolean> => {
+  const callback = (newBody?: object) => {
     if (newBody) {
       body = newBody;
     }
-    return fetchData();
+    fetchData();
   };
 
   useEffect(() => {

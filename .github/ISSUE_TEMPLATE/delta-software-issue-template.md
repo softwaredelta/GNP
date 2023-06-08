@@ -7,8 +7,6 @@ assignees: ''
 
 ---
 
-### ID in the defect log: 
-*
 ### Expected behaviour: 
 * 
 ### Defective behaviour: 

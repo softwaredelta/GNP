@@ -1,7 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2023282790
-// * M4_S01
-
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import ModalAddUser from "../components/forms/ModalAddUser";
@@ -12,6 +9,7 @@ import useModal from "../hooks/useModal";
 import { IMembers } from "../types";
 export default function Members() {
   const { isOpen, toggleModal } = useModal();
+
   const {
     response: membersResponse,
     loading: loadingMembers,
@@ -82,10 +80,7 @@ export default function Members() {
         <div className="mt-5 flex w-full justify-center">
           {membersResponse && (
             <div className="w-4/5">
-              <TableMembers
-                members={membersResponse}
-                updateMembers={refreshMembers}
-              />
+              <TableMembers members={membersResponse} />
             </div>
           )}
         </div>

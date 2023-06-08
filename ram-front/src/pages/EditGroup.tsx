@@ -1,8 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
-// * M1_S08
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
-// * M1_S09
 
 import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
@@ -52,8 +48,6 @@ export default function EditGroup() {
         title: "¡Éxito!",
         text: "El grupo se ha modificado correctamente",
         icon: "success",
-      }).then(() => {
-        updateGroupDeliveries();
       });
     }
 
@@ -123,27 +117,6 @@ export default function EditGroup() {
                 {"Agregar entregable"}
                 <FiPlus className="ml-2 inline-block" size={22} />
               </button>
-              {group && (
-                <ModalGroupForm
-                  isOpenModal={isOpenGroupForm}
-                  closeModal={toggleModalGroupForm}
-                  handlePost={(image, name) => {
-                    if (!image && callback) {
-                      const data: FormData = new FormData();
-                      data.append("name", name);
-                      callback(data);
-                    }
-                    if (image && callback) {
-                      const data: FormData = new FormData();
-                      data.append("image", image);
-                      data.append("name", name);
-                      callback(data);
-                    }
-                  }}
-                  isEditModal={true}
-                  initialValues={{ name: group.name, imageUrl: group.imageUrl }}
-                />
-              )}
             </div>
             <ModalDeliveryFormCreate
               isOpenModal={isOpenDeliveryForm}

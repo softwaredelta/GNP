@@ -1,6 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=832442920
-// * M2_S02
 
 import { Table } from "flowbite-react";
 import { FiTrash, FiEdit } from "react-icons/fi";
@@ -90,16 +88,16 @@ export default function SalesRow({ sale, updateSales }: Props) {
       </Table.Cell>
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
-        <div className="grid grid-cols-2 items-center justify-center gap-5 ">
+        <div className="grid grid-cols-2 items-center justify-center ">
           <FiEdit
             onClick={() => navigate(`/modify-sale/${sale.id}`)}
             size={20}
-            className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:stroke-blue-700"
+            className="hover:scale-105 hover:fill-blue-700"
           />
           <FiTrash
             onClick={handleDelete}
             size={20}
-            className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:stroke-red-500"
+            className="hover:scale-105 hover:fill-red-500"
           />
         </div>
       </Table.Cell>

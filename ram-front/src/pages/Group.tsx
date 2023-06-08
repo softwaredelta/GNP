@@ -1,6 +1,4 @@
 // (c) Delta Software 2023, rights reserved.
-// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1855489237
-// * M1_S02
 import { useParams } from "react-router-dom";
 import ListDeliverables from "../components/deliverables/ListDeliverables";
 import Wrapper from "../containers/Wrapper";
