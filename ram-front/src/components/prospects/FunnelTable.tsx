@@ -11,7 +11,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import useSearch from "../../hooks/useSearch";
 import { IUser } from "../../types";
 import FunnelRow from "./FunnelRow";
-import useSearch from "../../hooks/useSearch";
 
 interface Props {
   agents: IUser[];
