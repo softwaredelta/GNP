@@ -127,7 +127,6 @@ export default function SalesFilters({
         <button
           className="btn-primary"
           onClick={handleSubmit((data) => {
-            console.log(data);
             updateSales({
               ...data,
               startDate: dateInit,
