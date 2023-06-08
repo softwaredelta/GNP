@@ -1,6 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { createAssuranceType } from "../app/assuranceType";
+import { updateDelivery } from "../app/deliveries";
 import { createDelivery, createLinkDelivery } from "../app/deliveries";
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createProspect } from "../app/prospect";
@@ -8,6 +9,7 @@ import { createSale } from "../app/sale";
 import { createStatus } from "../app/status";
 import { UserError } from "../app/user";
 import { createUser } from "../app/user";
+import { setUserToAllDeliveries } from "../app/user-delivery";
 import { StatusNames } from "../entities/status.entity";
 import { UserRole } from "../entities/user.entity";
 
@@ -340,7 +342,7 @@ export async function loadSeeds() {
       name: "Google",
     });
 
-    await createDelivery({
+    const deliveryExample = await createDelivery({
       deliveryName: "Primera cita con prospecto",
       description: "Seguimiento de primera cita con prospecto",
       idGroup: groupNovelWeek5.group.id,
@@ -477,6 +479,16 @@ export async function loadSeeds() {
     await addUserToGroup({
       userId: user.user.id,
       groupId: groupNovelWeek3.group.id,
+    });
+
+    await setUserToAllDeliveries({
+      userId: regular.id,
+      groupId: groupNovelWeek5.group.id,
+    });
+
+    await updateDelivery({
+      deliveryId: deliveryExample.delivery.id,
+      hasDelivery: "false",
     });
 
     // ASSURANCE TYPES

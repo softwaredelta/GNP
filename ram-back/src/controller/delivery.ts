@@ -223,7 +223,7 @@ framework for Node.js and TypeScript. The route is accessed via a POST request t
 "/update-status/:id", where ":id" is the ID of the delivery to be updated. */
 deliveriesRouter.post(
   "/update-status/:id",
-  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  authMiddleware({ neededRoles: [UserRole.MANAGER || UserRole.REGULAR] }),
   updateParametersMiddleware,
   async (req, res) => {
     const { userId, statusChange } = req.body;
@@ -233,7 +233,6 @@ deliveriesRouter.post(
       deliveryId,
       statusChange,
     });
-
     res.json({ changedDelivery });
   },
 );
@@ -427,6 +426,30 @@ access it. The route expects a JSON payload with optional fields for deliveryNam
 hasDelivery. The route also expects a single file upload with the key "image". If the payload or
 file is invalid, the route will return a 400 error. If the delivery with the specified ID is not
 found, the route will return a 404 error. If there is an error during the update process, the */
+deliveriesRouter.post(
+  "/update-status-no-evidence/:deliveryId",
+  authMiddleware({ neededRoles: [UserRole.REGULAR] }),
+  async (req, res) => {
+    if (!req.body) {
+      res.status(400).json({ message: "No deliveryId" });
+      return;
+    }
+    const deliveryId = req.params.deliveryId;
+    if (!req.user) {
+      res.status(401).json({ message: "No user" });
+      return;
+    }
+    const userId = req.user.id;
+
+    const changedDelivery = await updateDeliveryStatus({
+      userId,
+      deliveryId,
+      statusChange: true,
+    });
+    res.json(changedDelivery);
+  },
+);
+
 deliveriesRouter.post(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
