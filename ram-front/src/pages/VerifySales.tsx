@@ -9,7 +9,7 @@
 import { VerifySalesTable } from "../components/sales/VerifySalesTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
-import { ISell } from "../types";
+import { IAssuranceType, ISell, IUser } from "../types";
 import { useEffect } from "react";
 
 export default function VerifySales() {
@@ -17,6 +17,16 @@ export default function VerifySales() {
     url: "sales/all",
     method: "POST",
     body: { userId: "" },
+  });
+
+  const { response: agents } = useAxios<IUser[]>({
+    url: "user/all-agents",
+    method: "GET",
+  });
+
+  const { response: assuranceTypes } = useAxios<IAssuranceType[]>({
+    url: "assurance-types/all",
+    method: "GET",
   });
 
   useEffect(() => {
