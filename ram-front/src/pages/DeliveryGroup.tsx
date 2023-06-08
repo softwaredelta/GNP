@@ -160,12 +160,13 @@ export default function DeliveryGroup(): JSX.Element {
                     <FileInput
                       id="file"
                       className="w-full pt-6 text-xs"
+                      accept=".pdf,.jpg,.png,.jpeg"
                       onChange={(e: any) => {
                         if (e.target.files) {
                           setFile(e.target.files[0]);
                         } else setFile(null);
                       }}
-                      helperText="Sube la evidencia de la entrega"
+                      helperText="Sube la evidencia de la entrega (PDF, JPG, PNG, JPEG)"
                     />
                     <div className="flex w-1/2 items-center justify-center pt-4">
                       <button

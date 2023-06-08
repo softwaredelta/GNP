@@ -3,6 +3,7 @@ import { useRef } from "react";
 import Modal from "../generics/Modal";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import usePasswordVisibility from "../../hooks/usePasswordVisibility";
+import Swal from "sweetalert2";
 
 export interface IModalPasswordResetProps {
   handlePost: (confirmationPassword: string, password: string) => void;
@@ -111,11 +112,23 @@ export default function ModalPasswordReset({
                   <button
                     className="btn-primary"
                     onClick={() => {
-                      if (passwordRef.current && confirmationRef.current) {
+                      if (
+                        passwordRef.current &&
+                        confirmationRef.current &&
+                        passwordRef.current.value.toString() ===
+                          confirmationRef.current.value.toString()
+                      ) {
                         const password = passwordRef.current.value.toString();
                         const confirmationPassword =
                           confirmationRef.current?.value.toString();
                         handlePost(confirmationPassword, password);
+                      } else {
+                        Swal.fire({
+                          title: "¡Error!",
+                          text: "Las contraseñas no coinciden",
+                          icon: "error",
+                          confirmButtonText: "OK",
+                        });
                       }
                     }}
                   >

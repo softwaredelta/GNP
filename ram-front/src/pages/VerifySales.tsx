@@ -6,58 +6,47 @@
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1535256513
 // * M2_S07
 
-import { Tabs } from "flowbite-react";
 import { VerifySalesTable } from "../components/sales/VerifySalesTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
-import { ISell } from "../types";
+import { IAssuranceType, ISell, IUser } from "../types";
+import { useEffect } from "react";
 
 export default function VerifySales() {
-  const {
-    response: pendingResponse,
-    loading: loadingResponse,
-    callback: updatePendingSales,
-  } = useAxios<{
-    sales: ISell[];
-  }>({
-    url: `sales/verify-sales/pending`,
-    method: "GET",
+  const { response: sales, callback: updateSales } = useAxios<ISell[]>({
+    url: "sales/all",
+    method: "POST",
+    body: { userId: "" },
   });
-  const {
-    response: verifiedResponse,
-    loading: loadingVerified,
-    callback: updatedVerifiedSales,
-  } = useAxios<{
-    sales: ISell[];
-  }>({
-    url: `sales/verify-sales/aproved`,
-    method: "GET",
-  });
-  const {
-    response: refusedResponse,
-    loading: loadingRefused,
-    callback: updatedRefusedSales,
-  } = useAxios<{
-    sales: ISell[];
-  }>({
-    url: `sales/verify-sales/refused`,
+
+  const { response: agents } = useAxios<IUser[]>({
+    url: "user/all-agents",
     method: "GET",
   });
 
-  const handleUpdate = () => {
-    updatePendingSales();
-    updatedVerifiedSales();
-    updatedRefusedSales();
-  };
+  const { response: assuranceTypes } = useAxios<IAssuranceType[]>({
+    url: "assurance-types/all",
+    method: "GET",
+  });
 
-  if (loadingResponse) return <h1>Loading...</h1>;
-  if (loadingVerified) return <h1>Loading...</h1>;
-  if (loadingRefused) return <h1>Loading...</h1>;
+  useEffect(() => {
+    if (!sales) updateSales();
+  }, [sales, updateSales]);
 
   return (
     <>
       <Wrapper title="Ventas">
-        <Tabs.Group
+        <div>
+          {sales && agents && assuranceTypes && (
+            <VerifySalesTable
+              sales={sales}
+              updateSales={updateSales}
+              agents={agents}
+              assuranceTypes={assuranceTypes}
+            />
+          )}
+        </div>
+        {/* <Tabs.Group
           aria-label="Default tabs"
           className="px-8 py-4"
           style="default"
@@ -88,7 +77,7 @@ export default function VerifySales() {
               />
             )}
           </Tabs.Item>
-        </Tabs.Group>
+        </Tabs.Group> */}
       </Wrapper>
     </>
   );

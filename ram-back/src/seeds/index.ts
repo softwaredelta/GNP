@@ -90,7 +90,7 @@ export async function loadSeeds() {
       roles: [UserRole.MANAGER],
     });
 
-    const user2 = await createUser({
+    const agent1 = await createUser({
       email: "valeriaherrera@ram.mx",
       name: "Valeria",
       lastName: "Herrera",
@@ -144,7 +144,7 @@ export async function loadSeeds() {
       roles: [UserRole.MANAGER],
     });
 
-    await createUser({
+    const agent2 = await createUser({
       email: "marthaarriola@ram.mx",
       name: "Martha",
       lastName: "Arriola",
@@ -153,7 +153,7 @@ export async function loadSeeds() {
       roles: [UserRole.REGULAR],
     });
 
-    await createUser({
+    const agent3 = await createUser({
       email: "oliviahernandez@ram.mx",
       name: "Olivia",
       lastName: "Hernández",
@@ -451,7 +451,7 @@ export async function loadSeeds() {
     });
 
     await addUserToGroup({
-      userId: user2.user.id,
+      userId: agent1.user.id,
       groupId: group1.group.id,
     });
 
@@ -506,13 +506,13 @@ export async function loadSeeds() {
       id: "1",
     });
 
-    await createAssuranceType({
+    const { assuranceType: assuranceType3 } = await createAssuranceType({
       name: "VIDA",
       description: "Seguro de vida",
       id: "2",
     });
 
-    await createAssuranceType({
+    const { assuranceType: assuranceType2 } = await createAssuranceType({
       name: "PYMES",
       description: "Seguros para Pequeñas y Medianas Empresas",
       id: "3",
@@ -529,41 +529,117 @@ export async function loadSeeds() {
     await createSale({
       policyNumber: "523456789",
       assuranceTypeId: assuranceType.id,
-      paidDate: new Date(2023, 6, 5),
+      paidDate: new Date(),
       yearlyFee: "135000",
       contractingClient: "Eduardo García",
       periodicity: "Anual",
-      id: "1",
-      userId: "8",
-      emissionDate: new Date("2023-06-05"),
+      userId: agent1.user.id,
+      emissionDate: new Date(),
       insuredCostumer: "Clara Chia",
       paidFee: "2000",
     });
 
     await createSale({
       policyNumber: "423456789",
-      assuranceTypeId: assuranceType.id,
-      paidDate: new Date(2023, 5, 5),
+      assuranceTypeId: assuranceType2.id,
+      paidDate: new Date(),
       yearlyFee: "325000",
       contractingClient: "Juan Pedro Reyes",
       periodicity: "Anual",
-      id: "2",
-      userId: "8",
-      emissionDate: new Date("2023-06-05"),
+      userId: agent1.user.id,
+
+      emissionDate: new Date(),
       insuredCostumer: "Alejandro García",
       paidFee: "5000",
     });
 
     await createSale({
       policyNumber: "123456789",
-      assuranceTypeId: assuranceType.id,
-      paidDate: new Date(2023, 5, 5),
+      assuranceTypeId: assuranceType3.id,
+      paidDate: new Date(),
       yearlyFee: "134000",
       contractingClient: "Enrique Bonilla",
       periodicity: "Anual",
-      id: "3",
-      userId: "8",
-      emissionDate: new Date("2023-06-05"),
+      userId: agent1.user.id,
+
+      emissionDate: new Date(),
+      insuredCostumer: "Sofia Martínez",
+      paidFee: "1000",
+    });
+
+    await createSale({
+      policyNumber: "523456789",
+      assuranceTypeId: assuranceType.id,
+      paidDate: new Date(),
+      yearlyFee: "135000",
+      contractingClient: "Eduardo García",
+      periodicity: "Anual",
+      userId: agent2.user.id,
+      emissionDate: new Date(),
+      insuredCostumer: "Clara Chia",
+      paidFee: "2000",
+    });
+
+    await createSale({
+      policyNumber: "423456789",
+      assuranceTypeId: assuranceType2.id,
+      paidDate: new Date(),
+      yearlyFee: "325000",
+      contractingClient: "Juan Pedro Reyes",
+      periodicity: "Anual",
+      userId: agent2.user.id,
+      emissionDate: new Date(),
+      insuredCostumer: "Alejandro García",
+      paidFee: "5000",
+    });
+
+    await createSale({
+      policyNumber: "123456789",
+      assuranceTypeId: assuranceType3.id,
+      paidDate: new Date(),
+      yearlyFee: "134000",
+      contractingClient: "Enrique Bonilla",
+      periodicity: "Anual",
+      userId: agent2.user.id,
+      emissionDate: new Date(),
+      insuredCostumer: "Sofia Martínez",
+      paidFee: "1000",
+    });
+    await createSale({
+      policyNumber: "523456789",
+      assuranceTypeId: assuranceType.id,
+      paidDate: new Date(),
+      yearlyFee: "135000",
+      contractingClient: "Eduardo García",
+      periodicity: "Anual",
+      userId: agent3.user.id,
+      emissionDate: new Date(),
+      insuredCostumer: "Clara Chia",
+      paidFee: "2000",
+    });
+
+    await createSale({
+      policyNumber: "423456789",
+      assuranceTypeId: assuranceType2.id,
+      paidDate: new Date(),
+      yearlyFee: "325000",
+      contractingClient: "Juan Pedro Reyes",
+      periodicity: "Anual",
+      userId: agent3.user.id,
+      emissionDate: new Date(),
+      insuredCostumer: "Alejandro García",
+      paidFee: "5000",
+    });
+
+    await createSale({
+      policyNumber: "123456789",
+      assuranceTypeId: assuranceType3.id,
+      paidDate: new Date(),
+      yearlyFee: "134000",
+      contractingClient: "Enrique Bonilla",
+      periodicity: "Anual",
+      userId: agent3.user.id,
+      emissionDate: new Date(),
       insuredCostumer: "Sofia Martínez",
       paidFee: "1000",
     });
