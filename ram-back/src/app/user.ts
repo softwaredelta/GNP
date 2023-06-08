@@ -52,6 +52,8 @@ export interface UserAuthentication {
   mobile?: number;
 }
 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=749196783
+// * M3_S03
 export async function createUser(params: {
   email: string;
   password: string;
@@ -271,6 +273,8 @@ const userToUserRol = (user: UserEnt): UserRol => {
   };
 };
 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2023282790
+// * M4_S01
 export async function getAllUserRol(): Promise<{
   userRol: UserRol[];
   error?: UserError;
@@ -433,6 +437,7 @@ export async function updateLink(params: {
   if (!existingLink) {
     return { link: {} as UserLinkEnt, error: UserLinkError.NOT_FOUND };
   }
+
   return ds.manager
     .update(UserLinkEnt, params.id, { name: params.name, link: params.link })
     .then(async () => {
@@ -443,7 +448,7 @@ export async function updateLink(params: {
       else return { link: {} as UserLinkEnt, error: UserLinkError.NOT_FOUND };
     })
     .catch(() => {
-      return { error: UserLinkError.EXISTS, link: {} as UserLinkEnt };
+      return { error: UserLinkError.NOT_FOUND, link: {} as UserLinkEnt };
     });
 }
 

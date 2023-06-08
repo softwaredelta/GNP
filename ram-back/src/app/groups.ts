@@ -24,6 +24,8 @@ export enum GroupError {
  * deletion of the group with the specified `groupId` is successful. If there is an error during the
  * deletion process, the Promise rejects with an object containing an `error` property set to
  * `GroupError.UNHANDLED` and a `reason` property set to the error that caused the rejection.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
+ * M1_S09
  */
 export async function deleteGroup(params: {
   groupId: string;
@@ -52,6 +54,8 @@ export async function deleteGroup(params: {
  * property that contains a `GroupEnt` object if the group was successfully created, or an `error`
  * property with a value of `GroupError.CONFLICT` if a group with the same name already exists. If
  * there is an unhandled error during the creation of the group, the Promise will reject with
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1943755342
+ * M1_S08
  */
 export async function createGroup(params: {
   name: string;
@@ -98,6 +102,8 @@ export async function createGroup(params: {
  * @returns The function `createGroupWithFile` returns a Promise that resolves to an object with a
  * `group` property that contains a `GroupEnt` object, and optionally an `error` property of type
  * `GroupError` and an `errorReason` property of type `Error`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1943755342
+ * M1_S08
  */
 export async function createGroupWithFile(params: {
   name: string;
@@ -182,6 +188,8 @@ export async function removeUserFromGroup(params: {
  * the data source to query the database for all GroupUserEnt objects that have a groupId matching the
  * provided parameter. Finally, the function maps the resulting array of GroupUserEnt objects to an
  * array of UserEnt
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
+ * M1_S04
  */
 export async function getUsersByGroup(groupId: string): Promise<UserEnt[]> {
   const ds = await getDataSource();
@@ -238,6 +246,11 @@ interface GroupUser {
  * property, which is an array of `GroupUser` objects. If there is an error, the object also includes
  * an `error` property with a value of `GroupError.UNHANDLED`, an `errorReason` property with the error
  * object, and an empty array for `groups`.
+ *
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=957708639
+ * M1_S01
+ *  Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
+ * M1_S04
  */
 export async function getUserGroups(params: {
   userId: string;
@@ -296,6 +309,16 @@ export async function getUserGroups(params: {
   }
 }
 
+/**
+ * This is a TypeScript function that updates a group's name, description, and image URL in a database
+ * and returns the updated group or an error.
+ * @param params - The `params` object contains the following properties:
+ * @returns a Promise that resolves to an object with a `group` property that contains the updated
+ * `GroupEnt` object, and optionally an `error` property of type `GroupError` and an `errorReason`
+ * property of type `Error`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
+ * M1_S09
+ */
 export async function updateGroup(params: {
   groupId: string;
   name?: string;
@@ -332,6 +355,15 @@ export async function updateGroup(params: {
     }));
 }
 
+/**
+ * This function updates a group with a new image file and returns the updated group or an error.
+ * @param params - The `params` object contains the following properties:
+ * @returns a Promise that resolves to an object with a `group` property that contains the updated
+ * group information, and optionally an `error` property if there was an error during the update
+ * process, and an `errorReason` property that provides more information about the error.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
+ * M1_S09
+ */
 export async function updateGroupWithFile(params: {
   groupId: string;
   name?: string;

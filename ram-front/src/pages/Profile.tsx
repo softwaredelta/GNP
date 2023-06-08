@@ -1,5 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
-
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=718703983
+// * M3_S05
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -202,7 +203,7 @@ export default function Profile() {
               postLink?.({ link, name });
             }}
             handleLinkEdit={({ link, name, id: idLink }) => {
-              modifyLink?.({ link, name, idLink });
+              modifyLink?.({ link, name, id: idLink });
             }}
             links={links.links}
           />

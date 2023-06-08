@@ -53,6 +53,8 @@ export async function createStatus(params: {
  * - `status`: an array of `StatusEnt` objects.
  * - `error`: an optional `StatusError` value if there was an error retrieving the status.
  * - `reason`: an optional `Error` object that provides more information about the error.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1001315964
+ * M5_S01
  */
 export async function getStatus(): Promise<{
   status: StatusEnt[];

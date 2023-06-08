@@ -124,7 +124,12 @@ deliveriesRouter.get("/all-user", async (req, res) => {
 /* The above code is defining a route for getting a delivery by its ID. It requires authentication with
 the role of MANAGER. It then retrieves the delivery from the database using the ID provided in the
 request parameters and includes the related userDeliveries and user entities. If the delivery is not
-found, it returns a 404 error. Otherwise, it returns the delivery object in JSON format. */
+found, it returns a 404 error. Otherwise, it returns the delivery object in JSON format. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
+// * M1_S06 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
+// * M1_S07
+*/
 deliveriesRouter.get(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -152,7 +157,12 @@ deliveriesRouter.get(
 requires authentication with the role of MANAGER. It then retrieves the delivery from the database
 using the provided ID and checks if there are any user deliveries associated with it that have a
 status of "sending". If there are no pending deliveries, it returns a 404 error. Otherwise, it
-returns the delivery object with the associated user deliveries and users. */
+returns the delivery object with the associated user deliveries and users. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
+// * M1_S06
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
+// * M1_S07
+*/
 deliveriesRouter.get(
   "/pending/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -183,7 +193,10 @@ deliveriesRouter.get(
 by a manager. The route requires authentication with a manager role. The route takes an ID parameter
 for the delivery to be retrieved. The code then queries the database to find the delivery with the
 specified ID and with user deliveries that have been accepted or refused. If the delivery is found,
-it is returned in the response. If not, a 404 error is returned. */
+it is returned in the response. If not, a 404 error is returned.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=840613660
+// * M1_S06
+*/
 deliveriesRouter.get(
   "/reviewed/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -220,10 +233,13 @@ deliveriesRouter.get(
 
 /* The above code is defining a route for updating the status of a delivery. It is using the Express
 framework for Node.js and TypeScript. The route is accessed via a POST request to
-"/update-status/:id", where ":id" is the ID of the delivery to be updated. */
+"/update-status/:id", where ":id" is the ID of the delivery to be updated.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
+// * M1_S07
+*/
 deliveriesRouter.post(
   "/update-status/:id",
-  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  authMiddleware({ neededRoles: [UserRole.MANAGER || UserRole.REGULAR] }),
   updateParametersMiddleware,
   async (req, res) => {
     const { userId, statusChange } = req.body;
@@ -233,7 +249,6 @@ deliveriesRouter.post(
       deliveryId,
       statusChange,
     });
-
     res.json({ changedDelivery });
   },
 );
@@ -243,7 +258,10 @@ authentication with a manager role. It also allows for uploading an image file. 
 information is extracted from the request body and a file is extracted if it exists. If a file
 exists, it is uploaded to an S3 bucket and the filename is stored in the delivery object. The
 delivery is then created and associated with all users in the group. Finally, a response is sent
-with the created delivery object. */
+with the created delivery object. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1167543919
+// * M1_S010
+*/
 deliveriesRouter.post(
   "/create-delivery/:groupId",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -295,7 +313,10 @@ authentication middleware to ensure that only users with the role of MANAGER can
 endpoint. It then calls the `deleteDelivery` function with the delivery ID extracted from the
 request parameters. If there is an error, it logs the reason and returns a 500 error response with
 the error and reason. If the deletion is successful, it returns a 200 response with a message
-indicating that the delivery has been deleted. */
+indicating that the delivery has been deleted. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+// * M1_S011
+*/
 deliveriesRouter.delete(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -319,7 +340,13 @@ using an authentication middleware to ensure that the user is authenticated befo
 the user is not authenticated, it returns a 401 status code with a message "No user". If the user is
 authenticated, it retrieves the delivery group information for the specified deliveryId using the
 getDeliveryGroup function. If there is an error, it throws an error. If there is no error, it
-returns the delivery group information in JSON format. */
+returns the delivery group information in JSON format.
+
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1855489237
+ * M1_S02
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2139953787
+ * M1_S012
+*/
 deliveriesRouter.get(
   "/group-delivery/:deliveryId",
   authMiddleware(),
@@ -377,7 +404,12 @@ deliveriesRouter.post(
 authentication with a manager role. It receives the delivery ID, link, and name from the request
 body. It then calls the `createLinkDelivery` function with the provided data and returns the
 generated link if successful. If there is an error, it returns a 500 status code with the error
-message. */
+message. 
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1667428796
+ * M1_S03
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1287058613
+ * M1_S05
+*/
 deliveriesRouter.post(
   "/create-delivery-link/:deliveryId",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -426,7 +458,34 @@ protected by an authentication middleware that only allows users with the role o
 access it. The route expects a JSON payload with optional fields for deliveryName, description, and
 hasDelivery. The route also expects a single file upload with the key "image". If the payload or
 file is invalid, the route will return a 400 error. If the delivery with the specified ID is not
-found, the route will return a 404 error. If there is an error during the update process, the */
+found, the route will return a 404 error. If there is an error during the update process, the 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+// * M1_S011
+*/
+deliveriesRouter.post(
+  "/update-status-no-evidence/:deliveryId",
+  authMiddleware({ neededRoles: [UserRole.REGULAR] }),
+  async (req, res) => {
+    if (!req.body) {
+      res.status(400).json({ message: "No deliveryId" });
+      return;
+    }
+    const deliveryId = req.params.deliveryId;
+    if (!req.user) {
+      res.status(401).json({ message: "No user" });
+      return;
+    }
+    const userId = req.user.id;
+
+    const changedDelivery = await updateDeliveryStatus({
+      userId,
+      deliveryId,
+      statusChange: true,
+    });
+    res.json(changedDelivery);
+  },
+);
+
 deliveriesRouter.post(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),

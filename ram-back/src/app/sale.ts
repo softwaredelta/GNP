@@ -22,6 +22,8 @@ export enum SaleError {
  * @returns a Promise that resolves to an object with a "sale" property that contains a SellEnt object,
  * and optionally an "error" property with a SaleError value and a "reason" property with an Error
  * object.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=924979067
+ * M2_S01
  */
 export async function createSale(params: {
   policyNumber: string;
@@ -84,6 +86,8 @@ export async function createSale(params: {
  * of type Date.
  * @returns a Promise that resolves to an object containing the updated sale object and optionally an
  * error and/or an error reason.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=877323064
+ * M2_S06
  */
 export async function updateSale(params: {
   id: string;
@@ -203,7 +207,7 @@ export async function getSalesByUserId(params: {
         },
       },
       where: {
-        userId,
+        userId: Like(`%${userId}%`),
         policyNumber: Like(`%${policyNumber}%`),
         periodicity: Like(`%${periodicity}%`),
         assuranceTypeId: Like(`%${assuranceTypeId}%`),
@@ -220,4 +224,74 @@ export async function getSalesByUserId(params: {
       errorReason: e as Error,
     };
   }
+}
+
+type Result = {
+  key: string;
+  totalPaidFee: number;
+};
+
+export async function getSalesByMonth(params: {
+  userId: string;
+  initialDate: Date;
+  finalDate: Date;
+}): Promise<{ results: Result[]; error?: SaleError; errorReason?: Error }> {
+  const startDate = new Date(
+    new Date(params.initialDate).getFullYear(),
+    new Date(params.initialDate).getMonth(),
+    1,
+  );
+  const endDate = new Date(
+    new Date(params.finalDate).getFullYear(),
+    new Date(params.finalDate).getMonth() + 1,
+    0,
+  );
+  const db = await getDataSource();
+
+  const queries = [
+    { assuranceTypeId: 1, resultKey: "GMM" },
+    { assuranceTypeId: 2, resultKey: "Vida" },
+    { assuranceTypeId: 3, resultKey: "PYMES" },
+    { assuranceTypeId: 4, resultKey: "PATRIMONIAL" },
+    { assuranceTypeId: 5, resultKey: "AUTOS" },
+  ];
+
+  let results: Result[] = [];
+
+  try {
+    await db.manager.transaction(async (transactionalEntityManager) => {
+      results = await Promise.all(
+        queries.map(async (query) => {
+          try {
+            const result = await transactionalEntityManager
+              .createQueryBuilder(SellEnt, "sell")
+              .leftJoinAndSelect("sell.assuranceType", "assuranceType")
+              .leftJoinAndSelect("sell.user", "user")
+              .select("SUM(sell.paidFee)", "totalPaidFee")
+              .where("sell.userId = :userId", { userId: params.userId })
+              .andWhere("sell.assuranceTypeId = :assuranceTypeId", {
+                assuranceTypeId: query.assuranceTypeId,
+              })
+              .andWhere("sell.paidDate BETWEEN :startDate AND :endDate", {
+                startDate,
+                endDate,
+              })
+              .getRawOne();
+
+            return { key: query.resultKey, totalPaidFee: result.totalPaidFee };
+          } catch (e) {
+            return { key: query.resultKey, totalPaidFee: 0 };
+          }
+        }),
+      );
+    });
+  } catch (e) {
+    return {
+      results: [] as Result[],
+      error: SaleError.UNHANDLED,
+      errorReason: e as Error,
+    };
+  }
+
+  return { results };
 }

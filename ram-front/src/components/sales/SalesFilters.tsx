@@ -1,4 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=832442920
+// * M2_S02
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1535256513
+// * M2_S07
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
@@ -10,8 +15,6 @@ interface IFiltersSales {
   periodicity: string;
   assuranceTypeId: string;
   contractingClient: string;
-  // startDate: Date;
-  // endDate: Date;
   status: string;
 }
 
@@ -36,15 +39,6 @@ export default function SalesFilters({
   const { register, handleSubmit } = useForm<IFiltersSales>();
   return (
     <div className="grid w-full grid-cols-4 gap-x-5  pb-5">
-      {/* <div className="">
-        <label className="label-primary">Agente cliente</label>
-        <input
-          type="text"
-          className="input-primary"
-           {...register("user")}
-        />
-      </div> */}
-
       <div className="">
         <label className="label-primary">Nombre del cliente</label>
         <input
@@ -117,7 +111,7 @@ export default function SalesFilters({
         </select>
       </div>
       <div className="">
-        <label className="label-primary">Estatus</label>
+        <label className="label-primary">Estado</label>
         <select
           className="input-primary"
           {...register("status")}
@@ -133,7 +127,6 @@ export default function SalesFilters({
         <button
           className="btn-primary"
           onClick={handleSubmit((data) => {
-            console.log(data);
             updateSales({
               ...data,
               startDate: dateInit,

@@ -1,4 +1,10 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=832442920
+// * M2_S02
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1423929641
+// * M2_S03
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1535256513
+// * M2_S07
 
 import { useState, useEffect } from "react";
 import { Table } from "flowbite-react";
@@ -87,7 +93,7 @@ export const SalesTable = ({ sales, updateSales }: IListSalesProps) => {
 
   return (
     <div data-testid="sales-table" className="grid-row grid w-full px-8 pb-4">
-      <div className="flex items-center justify-center space-x-10 pb-10">
+      <div className="flex items-center justify-end space-x-10 pb-10">
         <Link to="/new-sale">
           <button className="btn-primary flex w-20 items-center justify-center">
             <span className="font-semibold"> Nueva venta </span>

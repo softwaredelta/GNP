@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1430135565
+// * M3_S02
 
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
@@ -58,7 +60,7 @@ function NavBar({ onLogout, user, role }: Props) {
             </span>
           </Dropdown.Header>
           <Link to="/my-profile">
-            <Dropdown.Item>Ver Perfil</Dropdown.Item>
+            <Dropdown.Item>Ver perfil</Dropdown.Item>
           </Link>
           <Link to="/help">
             <Dropdown.Item>Ayuda</Dropdown.Item>
