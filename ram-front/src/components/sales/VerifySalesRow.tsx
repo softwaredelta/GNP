@@ -124,14 +124,14 @@ export default function SalesRow({ sale, onUpdated }: Props) {
             <FiCheck
               size={20}
               className="text-green-500"
-              onClick={() => handleUpdate("aceptada")}
+              onClick={() => handleUpdate("Aceptada")}
             />
           </div>
           <div className="cursor-pointer pr-12 transition-all ease-in-out hover:scale-125 active:scale-95">
             <FiX
               size={20}
               className="text-red-500"
-              onClick={() => handleUpdate("rechazada")}
+              onClick={() => handleUpdate("Rechazada")}
             />
           </div>
         </div>

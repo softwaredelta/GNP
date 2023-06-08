@@ -1,5 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
 
+import { useEffect } from "react";
 import { SalesTable } from "../components/sales/SalesTable";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
@@ -8,8 +9,12 @@ import { ISell } from "../types";
 export default function SalesHistory() {
   const { response: sales, callback: updateSales } = useAxios<ISell[]>({
     url: "sales/my-sales",
-    method: "GET",
+    method: "POST",
   });
+
+  useEffect(() => {
+    if (!sales) updateSales();
+  }, [sales, updateSales]);
 
   return (
     <Wrapper title="Mis ventas">
