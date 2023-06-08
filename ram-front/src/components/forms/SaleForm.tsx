@@ -232,12 +232,13 @@ export default function SaleForm({
             <FileInput
               id="file"
               className="w-full"
+              accept=".pdf,.jpg,.png,.jpeg"
               onChange={(e: any) => {
                 if (e.target.files) {
                   setFile(e.target.files[0]);
                 } else setFile(null);
               }}
-              helperText="Sube la evidencia de tu venta"
+              helperText="Sube la evidencia de la venta (PDF, JPG, PNG, JPEG)"
             />
           </div>
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
