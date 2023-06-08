@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
+// * M2_S04
 
 import { Table } from "flowbite-react";
 import { FiEye, FiCheck, FiX } from "react-icons/fi";
@@ -39,7 +41,6 @@ export default function SalesRow({ sale, onUpdated }: Props) {
         callback({
           statusChange,
         });
-        // Swal.fire(`¡Éxito!`, `La venta ha sido ${statusChange}.`, "success");
       }
     });
   }
@@ -68,7 +69,6 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       <Table.Cell>{sale.policyNumber}</Table.Cell>
       <Table.Cell>
         <NumericFormat
-          value={sale.yearlyFee}
           displayType={"text"}
           thousandSeparator={true}
           decimalScale={2}
@@ -98,8 +98,8 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       </Table.Cell>
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
-        <div className="grid grid-cols-3 items-center justify-center ">
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-110 active:scale-95">
+        <div className="grid grid-cols-3 items-center justify-center gap-6">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-110 active:scale-95">
             <FiEye
               size={20}
               className="text-gray-500"
@@ -118,18 +118,18 @@ export default function SalesRow({ sale, onUpdated }: Props) {
               </div>
             </Modal>
           )}
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <FiCheck
               size={20}
               className="text-green-500"
-              onClick={() => handleUpdate("aceptada")}
+              onClick={() => handleUpdate("Aceptada")}
             />
           </div>
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+          <div className="cursor-pointer pr-12 transition-all ease-in-out hover:scale-125 active:scale-95">
             <FiX
               size={20}
               className="text-red-500"
-              onClick={() => handleUpdate("rechazada")}
+              onClick={() => handleUpdate("Rechazada")}
             />
           </div>
         </div>

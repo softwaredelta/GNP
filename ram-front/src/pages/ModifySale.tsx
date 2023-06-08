@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=877323064
+// * M2_S06
 
 import Wrapper from "../containers/Wrapper";
 import { useNavigate, useParams } from "react-router-dom";

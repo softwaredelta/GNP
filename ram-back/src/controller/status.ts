@@ -5,6 +5,11 @@ export const statusRouter = Router();
 import { authMiddleware } from "./user";
 import { getStatus } from "../app/status";
 
+/* This code defines a route for the `/all` endpoint on the `statusRouter` object. The route is
+accessed using the HTTP GET method. The `authMiddleware` function is used as middleware to
+authenticate the user before allowing access to the route. */
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1001315964
+// * M5_S01
 statusRouter.get("/all", authMiddleware(), async (req, res) => {
   const { user } = req;
 

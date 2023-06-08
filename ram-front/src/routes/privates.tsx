@@ -33,6 +33,7 @@ const ManagerDeliveryGroup = lazy(
 const Profile = lazy(async () => import("../pages/Profile"));
 const MyProfile = lazy(async () => import("../pages/MyProfile"));
 const ViewProfile = lazy(async () => import("../pages/ViewProfile"));
+const Metrics = lazy(async () => import("../pages/Metrics"));
 
 export const CommonUserRoutes: IRoute[] = [
   {
@@ -89,6 +90,10 @@ export const RegularUserRoutes: IRoute[] = [
   {
     path: "/prospect-history/:id",
     Component: () => <ProspectsHistory />,
+  },
+  {
+    path: "/profile/:id",
+    Component: () => <Profile />,
   },
 ];
 
@@ -152,5 +157,9 @@ export const ManagerUserRoutes: IRoute[] = [
   {
     path: "/view-profile/:id",
     Component: () => <ViewProfile />,
+  },
+  {
+    path: "/metrics/:id",
+    Component: () => <Metrics />,
   },
 ];

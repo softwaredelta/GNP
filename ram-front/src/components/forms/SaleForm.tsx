@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=924979067
+// * M2_S01
 import DatePicker from "react-datepicker";
 import { IAssuranceType, ISell } from "../../types";
 import { useState } from "react";
@@ -76,7 +78,7 @@ export default function SaleForm({
               placeholder="Ingrese el número de póliza"
               type="text"
               {...register("policyNumber", {
-                required: "El campo poliza es requerido\n",
+                required: "El campo poliza es requerido",
               })}
             />
             <label className="ml-3 mb-1 block text-lg font-bold text-gray-700">

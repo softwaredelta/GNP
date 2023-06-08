@@ -107,6 +107,14 @@ export interface IProspect {
     statusComment: string;
   }[];
 }
+export interface IProspectStatus {
+  "Nuevo prospecto": number;
+  "Cita agendada": number;
+  "Cita efectiva": number;
+  "Solicitud de seguro": number;
+  "Poliza pagada": number;
+  Retirado: number;
+}
 
 export interface IStatusProspect {
   id?: string;

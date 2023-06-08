@@ -7,6 +7,14 @@ export enum ProspectStatusError {
   STATUSPROSPECT_ERROR = "DEFAULT_ERROR",
 }
 
+/**
+ * This function sets the status of a prospect and returns the updated prospect status or an error if
+ * there was an issue.
+ * @param params - The function `setStatusToProspect` takes in an object `params` with three
+ * properties: statusId of type string, prospectId of type string, statusCooment of type string.
+ * @returns a Promise that resolves to an object with two properties: `prospectStatus` and either
+ * `error` or `reason`.
+ */
 export async function setStatusToProspect(params: {
   statusId: string;
   prospectId: string;
@@ -40,6 +48,18 @@ export async function setStatusToProspect(params: {
     });
 }
 
+/**
+ * This function retrieves the status history of a prospect from a data source.
+ * @param params - The function `getProspectStatus` takes in an object `params` with a single property
+ * `prospectId` which is a string representing the ID of a prospect.
+ * @returns This function returns a Promise that resolves to an array of `ProspectStatusEnt` objects.
+ * These objects represent the status history of a prospect identified by the `prospectId` parameter.
+ * The function retrieves this data from a data source using the `getDataSource` function and the
+ * `manager.find` method of the data source's manager object. The function also specifies that the
+ * `status` relation should
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=998764442
+ * M5_S07
+ */
 export async function getProspectStatus(params: {
   prospectId: string;
 }): Promise<ProspectStatusEnt[]> {

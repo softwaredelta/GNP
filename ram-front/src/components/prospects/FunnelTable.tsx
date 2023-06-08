@@ -1,7 +1,14 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=716285224
+// * M5_S05
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=790712334
+// * M5_S06
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1402812805
+// * M5_S08
 
-import "react-datepicker/dist/react-datepicker.css";
 import { Table } from "flowbite-react";
+import "react-datepicker/dist/react-datepicker.css";
+import useSearch from "../../hooks/useSearch";
 import { IUser } from "../../types";
 import FunnelRow from "./FunnelRow";
 import useSearch from "../../hooks/useSearch";
@@ -45,7 +52,7 @@ const FunnelProspect = ({ agents, handleOnClick }: Props) => {
             </Table.HeadCell>
             <Table.HeadCell align="center">Citas agendadas</Table.HeadCell>
             <Table.HeadCell align="center">Citas efectivas</Table.HeadCell>
-            <Table.HeadCell align="center">Solicitudes de vida</Table.HeadCell>
+            <Table.HeadCell align="center">Solicitudes</Table.HeadCell>
             <Table.HeadCell align="center">Poliza pagada</Table.HeadCell>
             <Table.HeadCell align="center">PP200</Table.HeadCell>
           </Table.Head>
