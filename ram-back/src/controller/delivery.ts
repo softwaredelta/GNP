@@ -451,30 +451,6 @@ deliveriesRouter.post(
 );
 
 deliveriesRouter.post(
-  "/update-status-no-evidence/:deliveryId",
-  authMiddleware({ neededRoles: [UserRole.REGULAR] }),
-  async (req, res) => {
-    if (!req.body) {
-      res.status(400).json({ message: "No deliveryId" });
-      return;
-    }
-    const deliveryId = req.params.deliveryId;
-    if (!req.user) {
-      res.status(401).json({ message: "No user" });
-      return;
-    }
-    const userId = req.user.id;
-
-    const changedDelivery = await updateDeliveryStatus({
-      userId,
-      deliveryId,
-      statusChange: true,
-    });
-    res.json(changedDelivery);
-  },
-);
-
-deliveriesRouter.post(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
   upload.single("image"),
