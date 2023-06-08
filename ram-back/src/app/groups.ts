@@ -256,15 +256,20 @@ export async function getUserGroups(params: {
       where: { userId: params.userId },
     });
 
+    let agentNumberOfDeliveries = 0;
+    let agentTotalDeliveries = 0;
+
     const groups = groupsBase.map((group) => {
       const deliveriesTotal = group.group.deliveries.length;
-      const deliceriesUser = group.group.deliveries.filter((delivery) =>
+      agentTotalDeliveries += deliveriesTotal;
+      const deliveriesUser = group.group.deliveries.filter((delivery) =>
         delivery.userDeliveries.some(
           (userDelivery) =>
             userDelivery.userId === params.userId &&
             userDelivery.status === StatusUserDelivery.accepted,
         ),
       ).length;
+      agentNumberOfDeliveries += deliveriesUser;
 
       const auxGroup: GroupEnt = {
         ...group.group,
@@ -272,12 +277,16 @@ export async function getUserGroups(params: {
       };
       return {
         group: auxGroup,
-        numberOfDeliveries: deliceriesUser,
+        numberOfDeliveries: deliveriesUser,
         totalDeliveries: deliveriesTotal,
+        agentNumberOfDeliveries: agentNumberOfDeliveries,
+        agentTotalDeliveries: agentTotalDeliveries,
       };
     });
 
-    return { groups };
+    return {
+      groups,
+    };
   } catch (e) {
     return {
       error: GroupError.UNHANDLED,
