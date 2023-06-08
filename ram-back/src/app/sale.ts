@@ -225,3 +225,73 @@ export async function getSalesByUserId(params: {
     };
   }
 }
+
+type Result = {
+  key: string;
+  totalPaidFee: number;
+};
+
+export async function getSalesByMonth(params: {
+  userId: string;
+  initialDate: Date;
+  finalDate: Date;
+}): Promise<{ results: Result[]; error?: SaleError; errorReason?: Error }> {
+  const startDate = new Date(
+    new Date(params.initialDate).getFullYear(),
+    new Date(params.initialDate).getMonth(),
+    1,
+  );
+  const endDate = new Date(
+    new Date(params.finalDate).getFullYear(),
+    new Date(params.finalDate).getMonth(),
+    30,
+  );
+  const db = await getDataSource();
+
+  const queries = [
+    { assuranceTypeId: 1, resultKey: "GMM" },
+    { assuranceTypeId: 2, resultKey: "Vida" },
+    { assuranceTypeId: 3, resultKey: "PYMES" },
+    { assuranceTypeId: 4, resultKey: "PATRIMONIAL" },
+    { assuranceTypeId: 5, resultKey: "AUTOS" },
+  ];
+
+  let results: Result[] = [];
+
+  try {
+    await db.manager.transaction(async (transactionalEntityManager) => {
+      results = await Promise.all(
+        queries.map(async (query) => {
+          try {
+            const result = await transactionalEntityManager
+              .createQueryBuilder(SellEnt, "sell")
+              .leftJoinAndSelect("sell.assuranceType", "assuranceType")
+              .leftJoinAndSelect("sell.user", "user")
+              .select("SUM(sell.paidFee)", "totalPaidFee")
+              .where("sell.userId = :userId", { userId: params.userId })
+              .andWhere("sell.assuranceTypeId = :assuranceTypeId", {
+                assuranceTypeId: query.assuranceTypeId,
+              })
+              .andWhere("sell.paidDate BETWEEN :startDate AND :endDate", {
+                startDate,
+                endDate,
+              })
+              .getRawOne();
+
+            return { key: query.resultKey, totalPaidFee: result.totalPaidFee };
+          } catch (e) {
+            return { key: query.resultKey, totalPaidFee: 0 };
+          }
+        }),
+      );
+    });
+  } catch (e) {
+    return {
+      results: [] as Result[],
+      error: SaleError.UNHANDLED,
+      errorReason: e as Error,
+    };
+  }
+
+  return { results };
+}

@@ -499,7 +499,7 @@ export async function loadSeeds() {
 
     // ASSURANCE TYPES
 
-    await createAssuranceType({
+    const { assuranceType: assuranceType } = await createAssuranceType({
       name: "GMM",
       description:
         "El seguro de gastos médicos mayores abarca los gastos de hospitalización, cirugía, medicamentos, estudios clínicos, honorarios médicos, entre otros.",
@@ -518,10 +518,16 @@ export async function loadSeeds() {
       id: "3",
     });
 
-    const { assuranceType } = await createAssuranceType({
+    await createAssuranceType({
       name: "PATRIMONIAL",
       description: "Seguros de patrimonio",
       id: "4",
+    });
+
+    await createAssuranceType({
+      name: "AUTOS",
+      description: "Seguros de auto",
+      id: "5",
     });
 
     // SALES
@@ -643,6 +649,354 @@ export async function loadSeeds() {
       insuredCostumer: "Sofia Martínez",
       paidFee: "1000",
     });
+
+    const saleData = [
+      {
+        policyNumber: "100100100",
+        assuranceTypeId: "2",
+      },
+      {
+        policyNumber: "100100101",
+        assuranceTypeId: "2",
+      },
+      {
+        policyNumber: "100100102",
+        assuranceTypeId: "2",
+      },
+      {
+        policyNumber: "100100202",
+        assuranceTypeId: "2",
+      },
+      {
+        policyNumber: "100100103",
+        assuranceTypeId: "2",
+      },
+      {
+        policyNumber: "100100104",
+        assuranceTypeId: "2",
+      },
+      {
+        policyNumber: "100100105",
+        assuranceTypeId: "3",
+      },
+      {
+        policyNumber: "100100109",
+        assuranceTypeId: "3",
+      },
+      {
+        policyNumber: "100100111",
+        assuranceTypeId: "3",
+      },
+      {
+        policyNumber: "100100112",
+        assuranceTypeId: "1",
+      },
+      {
+        policyNumber: "100100113",
+        assuranceTypeId: "1",
+      },
+      {
+        policyNumber: "100100114",
+        assuranceTypeId: "1",
+      },
+      {
+        policyNumber: "100100115",
+        assuranceTypeId: "1",
+      },
+      {
+        policyNumber: "100100116",
+        assuranceTypeId: "1",
+      },
+      {
+        policyNumber: "100100117",
+        assuranceTypeId: "4",
+      },
+      {
+        policyNumber: "100100118",
+        assuranceTypeId: "4",
+      },
+      {
+        policyNumber: "100100119",
+        assuranceTypeId: "4",
+      },
+      {
+        policyNumber: "100100120",
+        assuranceTypeId: "5",
+      },
+    ];
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          paidDate: new Date("2023-05-23"),
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: "2",
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "1500",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-04-12"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "1300",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-06-16"),
+          emissionDate: new Date("2023-06-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "3070",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: "2",
+          paidDate: new Date("2023-07-21"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "2000",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-08-11"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "3200",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-02-11"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "3200",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-03-10"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "200",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-05-11"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "3200",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-01-11"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "3200",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-09-11"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "3200",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-10-11"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "3200",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: agent2.user.id,
+          paidDate: new Date("2023-11-11"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "3200",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
+
+    await Promise.all(
+      saleData.map((s) =>
+        createSale({
+          ...s,
+          yearlyFee: "134000",
+          contractingClient: "Enrique Bonilla",
+          periodicity: "Anual",
+          userId: "2",
+          paidDate: new Date("2023-12-11"),
+          emissionDate: new Date("2021-01-01"),
+          insuredCostumer: "Prueba",
+          paidFee: "3200",
+        }).then(({ sale, error }) => {
+          if (error) {
+            throw new Error(error);
+          }
+          return sale;
+        }),
+      ),
+    );
 
     await Promise.all(
       Object.values(StatusNames).map((statusName) => {
