@@ -156,22 +156,7 @@ salesRouter.post(
     res.status(201).json(sale);
   },
 );
-/* This code defines a route handler for getting all sales from the database. It listens for GET
-requests to the "/all" endpoint of the salesRouter. The handler function first gets a database
-connection using the `getDataSource` function, then uses the `createQueryBuilder` method of the
-database manager to create a query builder for the `SellEnt` entity. It specifies that it wants to
-select all sales and join the `assuranceType` entity using a left join. Finally, it calls the
-`getMany` method to execute the query and get an array of all sales with their associated assurance
-types. The handler function sends the array of sales as a JSON response using the `res.json` method. */
 
-salesRouter.get("/all", authMiddleware(), async (req, res) => {
-  const db = await getDataSource();
-  const sales = await db.manager
-    .createQueryBuilder(SellEnt, "sell")
-    .leftJoinAndSelect("sell.assuranceType", "assuranceType")
-    .getMany();
-  res.json(sales);
-});
 /* This code defines a route handler for deleting a sale from the database. It listens for POST
 requests to the "/delete/:id" endpoint of the salesRouter, where ":id" is a parameter representing
 the ID of the sale to be deleted. The handler function first gets a database connection using the
@@ -192,12 +177,16 @@ user, it returns a 401 Unauthorized response. If there is an authenticated user,
 user's ID from the request object and uses it to query the database for all sales records associated
 with that user. The `relations` option is used to include related entities (assuranceType and user)
 in the query results. Finally, it returns the sales data in JSON format. */
-salesRouter.post("/my-sales", authMiddleware(), async (req, res) => {
+salesRouter.post("/all", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });
     return;
   }
-  const userId = req.user.id;
+
+  let userId = "";
+  if (req.user.rolesString === "manager") userId = req.body.userId || "";
+  else userId = req.user.id;
+
   const policyNumber = req.body.policyNumber || "";
   const periodicity = req.body.periodicity || "";
   const assuranceTypeId = req.body.assuranceTypeId || "";
@@ -262,7 +251,7 @@ salesRouter.get("/verify-sales/pending", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
     relations: { user: true, assuranceType: true },
-    where: { status: "sin revisar" },
+    where: { status: "Sin revisar" },
   });
 
   res.json({ sales });
@@ -277,7 +266,7 @@ salesRouter.get("/verify-sales/aproved", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
     relations: { user: true, assuranceType: true },
-    where: { status: "aceptada" },
+    where: { status: "Aceptada" },
   });
   res.json({ sales });
 });
@@ -290,7 +279,7 @@ salesRouter.get("/verify-sales/refused", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
     relations: { user: true, assuranceType: true },
-    where: { status: "rechazada" },
+    where: { status: "Rechazada" },
   });
   res.json({ sales });
 });

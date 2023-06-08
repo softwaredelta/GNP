@@ -10,8 +10,6 @@ interface IFiltersSales {
   periodicity: string;
   assuranceTypeId: string;
   contractingClient: string;
-  // startDate: Date;
-  // endDate: Date;
   status: string;
 }
 
@@ -36,15 +34,6 @@ export default function SalesFilters({
   const { register, handleSubmit } = useForm<IFiltersSales>();
   return (
     <div className="grid w-full grid-cols-4 gap-x-5  pb-5">
-      {/* <div className="">
-        <label className="label-primary">Agente cliente</label>
-        <input
-          type="text"
-          className="input-primary"
-           {...register("user")}
-        />
-      </div> */}
-
       <div className="">
         <label className="label-primary">Nombre del cliente</label>
         <input
@@ -117,7 +106,7 @@ export default function SalesFilters({
         </select>
       </div>
       <div className="">
-        <label className="label-primary">Estatus</label>
+        <label className="label-primary">Estado</label>
         <select
           className="input-primary"
           {...register("status")}
