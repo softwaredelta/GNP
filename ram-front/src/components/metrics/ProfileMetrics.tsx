@@ -1,14 +1,9 @@
 // (c) Delta Software 2023, rights reserved.
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=718703983
 // * M3_S05
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Swal from "sweetalert2";
-import useAxios from "../../hooks/useAxios";
-import { ILink, IUser } from "../../types";
-import ProfileForm from "../forms/ProfileForm";
+import { useNavigate } from "react-router-dom";
+import { IUser } from "../../types";
 import ProfileCard from "../generics/cards/ProfileCard";
-import LinkList from "../generics/lists/LinkList";
 
 interface ProfileMetricsProps {
   user: IUser;

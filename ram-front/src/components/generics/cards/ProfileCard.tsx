@@ -27,7 +27,7 @@ export default function ProfileCard({
     fileInput.onchange = (e) => {
       setPreviewImage(e as unknown as ChangeEvent<HTMLInputElement>);
       const selectedFile = (e.target as HTMLInputElement)?.files?.[0];
-      if (selectedFile && fileChanged ) {
+      if (selectedFile && fileChanged) {
         fileChanged(selectedFile);
       }
     };
