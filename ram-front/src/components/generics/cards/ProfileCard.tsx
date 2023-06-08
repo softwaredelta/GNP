@@ -9,8 +9,8 @@ import { IUser } from "../../../types";
 
 interface ProfileCardProps {
   user: IUser;
-  fileChanged: (file: File) => void;
-  isEdit: boolean;
+  fileChanged?: (file: File) => void;
+  isEdit?: boolean;
 }
 
 export default function ProfileCard({

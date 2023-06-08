@@ -2,7 +2,7 @@
 
 import { lazy } from "react";
 import { IRoute } from "../types";
-
+const Metrics = lazy(async () => import("../pages/Metrics"));
 const Components = lazy(async () => import("../pages/Examples"));
 const Infra = lazy(async () => import("../pages/InfraTest"));
 
@@ -33,7 +33,6 @@ const ManagerDeliveryGroup = lazy(
 const Profile = lazy(async () => import("../pages/Profile"));
 const MyProfile = lazy(async () => import("../pages/MyProfile"));
 const ViewProfile = lazy(async () => import("../pages/ViewProfile"));
-const Metrics = lazy(async () => import("../pages/Metrics"));
 
 export const CommonUserRoutes: IRoute[] = [
   {

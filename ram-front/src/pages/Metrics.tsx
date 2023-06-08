@@ -1,13 +1,15 @@
 // (c) Delta Software 2023, rights reserved.
-import { useParams } from "react-router-dom";
-import Wrapper from "../containers/Wrapper";
-import useAxios from "../hooks/useAxios";
-import { IGroup, IUser } from "../types";
-import GroupProgress from "../components/metrics/GroupProgress";
-import { useState, useEffect } from "react";
-import LineGraph from "../components/graphs/LineGraph";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useParams } from "react-router-dom";
+import ProfileCard from "../components/generics/cards/ProfileCard";
+import LineGraph from "../components/graphs/LineGraph";
+import GroupProgress from "../components/metrics/GroupProgress";
+import Wrapper from "../containers/Wrapper";
+import useAxios from "../hooks/useAxios";
+import { IGroup, IProspectStatus, IUser } from "../types";
+import ProspectsChart from "./ProspectsChart";
 
 interface IResult {
   key: string;
@@ -25,6 +27,15 @@ interface ILineData {
 export default function Metrics(): JSX.Element {
   const [pieData, setPieData] = useState<number[]>();
   const [lineData, setLineData] = useState<number[][]>();
+
+  function sumarElementosArrayBidimensional(array: number[][]) {
+    const flattenedArray = array.flat();
+    const sum = flattenedArray.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0,
+    );
+    return sum;
+  }
   const [startDate, setStartDate] = useState<Date>(
     new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1),
   );
@@ -77,6 +88,11 @@ export default function Metrics(): JSX.Element {
 
   let finalTotalDeliveries = 0;
   let finalNumberOfDeliveries = 0;
+
+  const { response: prospectsStatus } = useAxios<IProspectStatus>({
+    url: `status-prospect/status-by-agents/${id}`,
+    method: "GET",
+  });
 
   if (dataGroups && dataGroups.data.groups.length > 0) {
     const pos = dataGroups.data.groups.length - 1;
@@ -136,75 +152,105 @@ export default function Metrics(): JSX.Element {
   return (
     <Wrapper title={`Resumen de: ${user?.name} ${user?.lastName}`}>
       <div className="grid w-full grid-cols-2 grid-rows-2 gap-10 px-10 pt-6">
-        <div className="w-full rounded-xl bg-slate-200 p-12 py-6"></div>
-        <div className="relative w-full rounded-xl bg-slate-200 p-12 py-6">
+        <div className="w-full rounded-xl bg-slate-200 p-12 py-6">
+          {/* <ProfileCard user={user as IUser} /> */}
+        </div>
+        <div className="relative w-full rounded-xl bg-slate-200 p-12 py-6 shadow-md">
           <div className="absolute -top-5 left-0 right-0 col-span-1 grid justify-center">
             <h1 className="rounded-3xl border border-solid border-slate-600 bg-slate-100 p-2 px-8 text-center text-2xl font-bold">
               Ventas
             </h1>
           </div>
-          <div className="mt-4 grid grid-cols-3 gap-4">
-            <div>
-              <DatePicker
-                selected={startDate}
-                name="datePicker"
-                id="datePicker"
-                onChange={(date: Date) => setStartDate(date)}
-                dateFormat="MM/yyyy"
-                className="input-primary w-full"
-                placeholderText="mm/aaaa"
-                required
+          {lineData &&
+          pieData &&
+          sumarElementosArrayBidimensional(lineData) > 0 ? (
+            <>
+              <div className="mt-4 grid grid-cols-3 gap-4">
+                <div>
+                  <DatePicker
+                    selected={startDate}
+                    name="datePicker"
+                    id="datePicker"
+                    onChange={(date: Date) => setStartDate(date)}
+                    dateFormat="MM/yyyy"
+                    className="input-primary w-full"
+                    placeholderText="mm/aaaa"
+                    required
+                  />
+                </div>
+                <div>
+                  <DatePicker
+                    selected={endDate}
+                    name="datePicker"
+                    id="datePicker"
+                    onChange={(date: Date) => setEndDate(date)}
+                    dateFormat="MM/yyyy"
+                    className="input-primary w-full"
+                    placeholderText="mm/aaaa"
+                    minDate={startDate}
+                    required
+                  />
+                </div>
+                <div>
+                  <button
+                    className="btn-primary"
+                    onClick={() => {
+                      callbackLine({
+                        initialDate: startDate,
+                        finalDate: endDate,
+                      });
+                      setStartMonth(new Date(startDate).getMonth());
+                      setEndMonth(new Date(endDate).getMonth());
+                    }}
+                  >
+                    {" "}
+                    Filtrar{" "}
+                  </button>
+                </div>
+              </div>
+
+              <LineGraph
+                data={lineData}
+                dataPie={pieData}
+                firstMonth={startMonth}
+                lastMonth={endMonth}
               />
-            </div>
-            <div>
-              <DatePicker
-                selected={endDate}
-                name="datePicker"
-                id="datePicker"
-                onChange={(date: Date) => setEndDate(date)}
-                dateFormat="MM/yyyy"
-                className="input-primary w-full"
-                placeholderText="mm/aaaa"
-                minDate={startDate}
-                required
-              />
-            </div>
-            <div>
-              <button
-                className="btn-primary"
-                onClick={() => {
-                  callbackLine({
-                    initialDate: startDate,
-                    finalDate: endDate,
-                  });
-                  setStartMonth(new Date(startDate).getMonth());
-                  setEndMonth(new Date(endDate).getMonth());
-                }}
-              >
-                {" "}
-                Filtrar{" "}
-              </button>
-            </div>
-          </div>
-          {lineData && pieData ? (
-            <LineGraph
-              data={lineData}
-              dataPie={pieData}
-              firstMonth={startMonth}
-              lastMonth={endMonth}
-            />
+            </>
           ) : (
-            <div> No hay datos </div>
+            <div className="flex h-full flex-col items-center justify-center">
+              <h1 className="mb-4 text-center text-2xl font-bold text-gray-700">
+                El agente {user?.name} {user?.lastName} no tiene ventas
+                registrados.
+              </h1>
+              <p className="text-center text-lg text-gray-500">
+                Cuando {user?.name} registre <strong>ventas</strong>, se podrán
+                visualizar sus <strong>métricas</strong>.
+              </p>
+            </div>
           )}
         </div>
-        <div className="relative w-full rounded-xl bg-slate-200 p-12 py-6">
+        <div className="relative w-full rounded-xl bg-slate-200 p-12 py-6 shadow-md">
           <div className="absolute -top-5 left-0 right-0 col-span-1 grid justify-center">
             <h1 className="rounded-3xl border border-solid border-slate-600 bg-slate-100 p-2 px-8 text-center text-2xl font-bold">
               Prospectos
             </h1>
           </div>
+          {prospectsStatus && prospectsStatus?.lenght > 0 ? (
+            <ProspectsChart prospectInfo={prospectsStatus} />
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center">
+              <h1 className="mb-4 text-center text-2xl font-bold text-gray-700">
+                El agente {user?.name} {user?.lastName} no tiene prospectos
+                registrados.
+              </h1>
+              <p className="text-center text-lg text-gray-500">
+                Cuando {user?.name} registre <strong>prospectos</strong>, se
+                podrán visualizar sus <strong>métricas</strong>.
+              </p>
+            </div>
+          )}
         </div>
-        <div className="relative w-full rounded-xl bg-slate-200 p-12">
+        <div className="relative w-full rounded-xl bg-slate-200 p-12 shadow-md">
           <div className="absolute -top-5 left-0 right-0 col-span-1 grid justify-center">
             <h1 className="rounded-3xl border border-solid border-slate-600 bg-slate-100 p-2 px-8 text-center text-2xl font-bold">
               Grupos
@@ -223,8 +269,9 @@ export default function Metrics(): JSX.Element {
                 asignados.
               </h1>
               <p className="text-center text-lg text-gray-500">
-                Asigne a {user?.name} en un un grupo para poder visualizar sus
-                métricas.
+                Asigne a {user?.name} en un un <strong>grupo</strong> para poder
+                visualizar sus
+                <strong> métricas.</strong>
               </p>
             </div>
           )}
