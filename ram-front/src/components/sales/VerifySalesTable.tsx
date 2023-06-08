@@ -4,18 +4,22 @@
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1535256513
 // * M2_S07
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Table } from "flowbite-react";
 import Pagination from "../generics/Pagination";
 import VerifySalesRow from "./VerifySalesRow";
-import { ISell } from "../../types";
+import { IAssuranceType, ISell, IUser } from "../../types";
 import { Column, usePagination, useTable } from "react-table";
 import { NumericFormat } from "react-number-format";
 import ManagerSalesFilters from "./ManagerSalesFilters";
+import { useFilters } from "../../hooks/useFilters";
+import { FiFilter } from "react-icons/fi";
 export interface IListSalesProps {
   sales: ISell[];
-  onUpdatedVerifySales: () => void;
+  updateSales: (newBody?: object) => Promise<boolean>;
+  agents: IUser[];
+  assuranceTypes: IAssuranceType[];
 }
 
 const columns: Column<ISell>[] = [
@@ -64,9 +68,12 @@ const columns: Column<ISell>[] = [
 
 export const VerifySalesTable = ({
   sales,
-  onUpdatedVerifySales,
+  updateSales,
+  agents,
+  assuranceTypes,
 }: IListSalesProps) => {
   const [data, setData] = useState<ISell[]>(sales);
+  const { isFilterOpen, toggleFilter } = useFilters();
 
   useEffect(() => {
     setData(sales);
@@ -91,8 +98,27 @@ export const VerifySalesTable = ({
 
   return (
     <div data-testid="Table" className="w-full p-8">
-      <div>
-        <ManagerSalesFilters sales={sales} setSales={setData} />
+      <div className="flex flex-col py-5">
+        <div className="w-48 self-end">
+          <button
+            onClick={toggleFilter}
+            className={`${
+              isFilterOpen ? "btn-primary" : "btn-border"
+            } flex  items-center justify-center`}
+          >
+            {!isFilterOpen ? "Mostrar filtros" : "Ocultar filtros"}{" "}
+            <FiFilter className="ml-2 inline-block" />
+          </button>
+        </div>
+        <div>
+          {isFilterOpen && (
+            <ManagerSalesFilters
+              agents={agents}
+              assuranceTypes={assuranceTypes}
+              updateSales={updateSales}
+            />
+          )}
+        </div>
       </div>
       <Table className="row" hoverable={true}>
         <Table.Head>
@@ -117,7 +143,7 @@ export const VerifySalesTable = ({
                 key={sale.id}
                 sale={sale.original}
                 onUpdated={() => {
-                  onUpdatedVerifySales();
+                  updateSales();
                 }}
               />
             );

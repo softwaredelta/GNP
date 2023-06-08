@@ -14,7 +14,7 @@ import { ISell } from "../types";
 
 export default function SalesHistory() {
   const { response: sales, callback: updateSales } = useAxios<ISell[]>({
-    url: "sales/my-sales",
+    url: "sales/all",
     method: "POST",
   });
 
