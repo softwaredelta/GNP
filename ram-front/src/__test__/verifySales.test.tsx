@@ -13,6 +13,8 @@ describe("Verify sales table", () => {
       <RecoilRoot>
         <BrowserRouter>
           <VerifySalesTable
+            agents={[]}
+            assuranceTypes={[]}
             sales={[
               {
                 id: "test-sale4",
@@ -38,7 +40,12 @@ describe("Verify sales table", () => {
                 },
               },
             ]}
-            onUpdatedVerifySales={() => {}}
+            updateSales={(newBody?: object): Promise<boolean> => {
+              console.log(newBody);
+              return new Promise((resolve) => {
+                resolve(true);
+              });
+            }}
           ></VerifySalesTable>
         </BrowserRouter>
       </RecoilRoot>,
