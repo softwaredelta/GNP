@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams } from "react-router-dom";
-import ProfileCard from "../components/generics/cards/ProfileCard";
 import LineGraph from "../components/graphs/LineGraph";
 import GroupProgress from "../components/metrics/GroupProgress";
 import Wrapper from "../containers/Wrapper";
@@ -235,7 +234,8 @@ export default function Metrics(): JSX.Element {
               Prospectos
             </h1>
           </div>
-          {prospectsStatus && prospectsStatus?.lenght > 0 ? (
+          {/* FIXME Haz que esta cosa renderice el mensaje cuando no hay */}
+          {prospectsStatus ? (
             <ProspectsChart prospectInfo={prospectsStatus} />
           ) : (
             <div className="flex h-full flex-col items-center justify-center">
