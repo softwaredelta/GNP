@@ -55,7 +55,10 @@ const prospectParametersMiddleware: RequestHandler = (req, res, next) => {
 /* This code block is defining a route handler function for creating a new prospect. It is using the
 `prospectRouter` object to define a POST route with the path `/create`. The route handler function
 is composed of three middleware functions: `authMiddleware`, `prospectParametersMiddleware`, and an
-async function that creates a new prospect. */
+async function that creates a new prospect. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1119997643
+// * M5_S03
+*/
 prospectRouter.post(
   "/create",
   authMiddleware(),
@@ -90,7 +93,10 @@ prospectRouter.post(
 /* This code block defines a route handler function for getting the prospects of the currently logged
 in user. It uses the `prospectRouter` object to define a GET route with the path `/my-prospects`.
 The route handler function is composed of two middleware functions: `authMiddleware` and an async
-function that retrieves the prospects of the user. */
+function that retrieves the prospects of the user.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1001315964
+// * M5_S01
+*/
 prospectRouter.get("/my-prospects", authMiddleware(), async (req, res) => {
   const { user } = req;
   if (!user) {
@@ -117,7 +123,10 @@ user. It uses the `prospectRouter` object to define a GET route with the path
 handler function retrieves the user ID from the request parameters, then uses the `getDataSource()`
 function to get a connection to the database. It then uses the `count()` method of the `manager`
 object to count the number of `ProspectEnt` entities that have a `userId` property equal to the user
-ID. Finally, it sends a JSON response with the count of prospects. */
+ID. Finally, it sends a JSON response with the count of prospects. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=716285224
+// * M5_S05
+*/
 prospectRouter.get("/count-prospects-new/:id", async (req, res) => {
   const db = await getDataSource();
   const id = req.params.id;
@@ -137,7 +146,10 @@ function to retrieve the prospects assigned to the agent. If there is an error i
 prospects, it sends a JSON response with a status code of 400 and an error message. If the prospects
 are successfully retrieved, it calls the `getAgentById()` function to retrieve the name of the
 agent, then sends a JSON response with a status code of 200 and an object containing the agent name
-and the prospects assigned to the agent. */
+and the prospects assigned to the agent. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=790712334
+// * M5_S06
+*/
 prospectRouter.get("/get-agentprospect/:id", async (req, res) => {
   const agentId = req.params.id;
 
@@ -155,7 +167,10 @@ prospectRouter.get("/get-agentprospect/:id", async (req, res) => {
 /* This code block defines a route handler function for updating the status and status comment of a
 prospect. It uses the `prospectRouter` object to define a POST route with the path
 `/update-prospect`. The route handler function is composed of two middleware functions:
-`authMiddleware` and an async function that modifies the status and status comment of a prospect. */
+`authMiddleware` and an async function that modifies the status and status comment of a prospect.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=148429501
+// * M5_S04
+*/
 prospectRouter.post("/update-prospect", authMiddleware(), async (req, res) => {
   const { statusId, statusComment, prospectId } = req.body;
   const { user } = req;

@@ -70,7 +70,10 @@ route is protected by the `authMiddleware` middleware function, which requires t
 the database, and the `GroupEnt` entity is used to query the groups table. The `select` option is
 used to specify which columns to include in the result set, and the `relations` option is used to
 specify which related entities to include in the result set. Finally, the `res.json` method is used
-to send the groups data as a JSON response to the client. */
+to send the groups data as a JSON response to the client. 
+* Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
+* M1_S04
+*/
 groupsRouter.get(
   "/all",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -92,7 +95,11 @@ middleware function, which requires the user to be authenticated to access this 
 user is not authenticated, a 401 response with a "No user" message is returned. If the user is
 authenticated, their user ID is extracted from the request object and passed to the `getUserGroups`
 function, which retrieves the user's groups from the database. The groups data is then sent as a
-JSON response to the client. */
+JSON response to the client. 
+
+Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=957708639
+M1_S01
+*/
 groupsRouter.get("/my-groups", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });
@@ -131,7 +138,10 @@ database and returns them as a JSON response. The route is protected by the `aut
 middleware function, which requires the user to have the `MANAGER` role to access this endpoint. The
 `getUsersByGroup` function is used to retrieve the users data from the database, and the `res.json`
 method is used to send the users data as a JSON response to the client. If there is an error in
-retrieving the users data, a 500 response with an error message is returned. */
+retrieving the users data, a 500 response with an error message is returned.
+* Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2144727033
+* M1_S04
+*/
 groupsRouter.get(
   "/users/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -169,7 +179,10 @@ role of MANAGER. It expects a POST request with a JSON body containing a name (s
 length of 3) and an optional description (string). It also allows for an image file to be uploaded
 with the request. The code then validates the input using a JSON schema and creates a new group with
 the provided information. If the group already exists, it returns a 409 conflict error. If there is
-any other error, it returns a 500 error. If the group is created successfully, */
+any other error, it returns a 500 error. If the group is created successfully. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1943755342
+// * M1_S08
+*/
 groupsRouter.post(
   "/create",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),
@@ -222,7 +235,10 @@ request body is validated using a schema and if there are any validation errors,
 sent. The request body is then used to update the group with the given groupId. If an image file is
 included in the request, the group is updated with the image file, otherwise, only the name and
 description are updated. If there is an error during the update process, an appropriate error
-response is sent, otherwise, the */
+response is sent.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=819425274
+// * M1_S09
+*/
 groupsRouter.post(
   "/update/:groupId",
   updateParametersMiddleware,

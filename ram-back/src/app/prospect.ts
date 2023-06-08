@@ -18,6 +18,8 @@ export enum ProspectError {
  * @returns a Promise that resolves to an object with the created prospect entity and an optional error
  * or reason if the creation process fails. The object has the following structure: `{ prospect:
  * ProspectEnt; error?: ProspectError; reason?: Error }`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1119997643
+ * M5_S03
  */
 export async function createProspect(params: {
   name: string;
@@ -93,8 +95,9 @@ export async function createProspect(params: {
  * - prospects: an array of ProspectEnt objects with their corresponding ProspectStatus object (only
  * the first one) included as a relation. The array is mapped to include only the first ProspectStatus
  * object for each ProspectEnt.
- * - error: an optional property that indicates if there was an error while executing the function. It
- * can have
+ * - error: an optional property that indicates if there was an error while executing the function.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1001315964
+ * M5_S01
  */
 export async function getProspectStatus(params: { userId: string }): Promise<{
   prospects: ProspectEnt[];
@@ -140,6 +143,8 @@ export async function getProspectStatus(params: { userId: string }): Promise<{
  * property filtered to only include the most recent status update.
  * - error: an optional ProspectError enum value if there was an error retrieving the prospects.
  * - reason: an optional Error object that provides more information about the error.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=790712334
+ * M5_S06
  */
 export async function getProspectsByAgent(params: {
   agentId: string;
@@ -187,6 +192,9 @@ export async function getProspectsByAgent(params: {
  * modification process.
  * - `reason`: an optional `Error` object that represents the reason why the modification process
  * failed.
+ *
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=148429501
+ * M5_S04
  */
 export async function modifyProspect(params: {
   prospectId: string;

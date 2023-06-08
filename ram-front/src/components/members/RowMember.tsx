@@ -1,4 +1,6 @@
 // (c) Delta Software 2023, rights reserved.
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2023282790
+// * M4_S01
 
 import { Table } from "flowbite-react";
 import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";

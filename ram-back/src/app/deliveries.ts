@@ -23,6 +23,9 @@ export enum DeliveryError {
  * optional). If the Promise resolves successfully, the "delivery" property will contain a DeliveryEnt
  * object. If there is an error, the "error" property will contain a DeliveryError value and the
  * "errorReason" property will contain an Error object.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1167543919
+ * M1_S010
+ *
  */
 export async function createDelivery(params: {
   idGroup: string;
@@ -105,6 +108,8 @@ export async function createLinkDelivery(params: {
  * @returns a Promise that resolves to an object with a `delivery` property that contains a
  * `DeliveryEnt` object and an optional `error` property of type `DeliveryError` and an optional
  * `errorReason` property of type `Error`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+ * M1_S011
  */
 export async function updateDelivery(params: {
   deliveryId: string;
@@ -236,6 +241,8 @@ export async function setDeliveryToAllUsers(params: {
  * is optional). The "userDelivery" property contains an instance of the "UserDeliveryEnt" entity that
  * was saved to the database, while the "error" property contains an error code (of the "DeliveryError"
  * enum) if an error occurred during the save operation.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1667428796
+ * M1_S03
  */
 export async function setDeliverieToUser(params: {
   idUser: string;
@@ -279,6 +286,11 @@ export async function setDeliverieToUser(params: {
  * an array of UserDeliveryEnt objects that match the given parameters. If there is an error, "error"
  * will be set to a DeliveryError enum value and "errorReason" will contain the error object. If there
  * is no error, "error
+ *
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1855489237
+ * M1_S02
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1287058613
+ * M1_S05
  */
 export async function getUserDeliveriesbyGroup(params: {
   userId: string;
@@ -320,6 +332,8 @@ export async function getUserDeliveriesbyGroup(params: {
  * @returns The `updateDeliveryStatus` function returns an object with a property `changedDelivery`
  * which is of type `UserDeliveryEnt`. The `deleteDelivery` function returns an object with an optional
  * property `error` of type `DeliveryError` and an optional property `reason` of type `Error`.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=95397343
+ * M1_S07
  */
 export async function updateDeliveryStatus(params: {
   userId: string;
@@ -352,6 +366,8 @@ export async function updateDeliveryStatus(params: {
  * @param params - The function `deleteDelivery` takes in an object `params` with a single property
  * `deliveryId` which is a string representing the ID of the delivery to be deleted.
  * @returns An empty object is being returned.
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
+ * M1_S011
  */
 export async function deleteDelivery(params: {
   deliveryId: string;
@@ -372,6 +388,8 @@ export async function deleteDelivery(params: {
  * - `error` (optional): a `DeliveryError` enum value indicating the type of error that occurred during
  * the function execution, if any.
  * - `errorReason` (optional): an `Error` object containing more information about the error
+ * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2139953787
+ * M1_S012
  */
 export async function getDeliveryGroup(params: {
   deliveryId: string;

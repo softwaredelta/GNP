@@ -70,7 +70,12 @@ assuranceTypeRouter.post(
 through the URL path "/all". When a request is made to this route, it retrieves all assurance types
 from the database using the "getDataSource" function and the "find" method of the "manager" property
 of the database object. The retrieved assurance types are then sent as a JSON response using the
-"res.json" method. */
+"res.json" method. 
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=924979067
+// * M2_S01
+// * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=877323064
+// * M2_S06
+*/
 assuranceTypeRouter.get("/all", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const assuranceTypes = await db.manager.find(AssuranceTypeEnt);
