@@ -150,7 +150,7 @@ export async function loadSeeds() {
       lastName: "Arriola",
       password: "password",
       id: "8",
-      roles: [UserRole.MANAGER],
+      roles: [UserRole.REGULAR],
     });
 
     await createUser({
@@ -512,7 +512,7 @@ export async function loadSeeds() {
       id: "3",
     });
 
-    await createAssuranceType({
+    const { assuranceType } = await createAssuranceType({
       name: "PATRIMONIAL",
       description: "Seguros de patrimonio",
       id: "4",
@@ -522,42 +522,42 @@ export async function loadSeeds() {
 
     await createSale({
       policyNumber: "523456789",
-      assuranceTypeId: "1",
-      paidDate: new Date("2021-01-01"),
+      assuranceTypeId: assuranceType.id,
+      paidDate: new Date(2023, 6, 5),
       yearlyFee: "135000",
       contractingClient: "Eduardo García",
       periodicity: "Anual",
       id: "1",
-      userId: "1",
-      emissionDate: new Date("2021-01-01"),
-      insuredCostumer: "Clara Sánchez",
+      userId: "8",
+      emissionDate: new Date("2023-06-05"),
+      insuredCostumer: "Clara Chia",
       paidFee: "2000",
     });
 
     await createSale({
       policyNumber: "423456789",
-      assuranceTypeId: "2",
-      paidDate: new Date("2021-02-01"),
+      assuranceTypeId: assuranceType.id,
+      paidDate: new Date(2023, 5, 5),
       yearlyFee: "325000",
       contractingClient: "Juan Pedro Reyes",
       periodicity: "Anual",
       id: "2",
-      userId: "1",
-      emissionDate: new Date("2021-01-01"),
+      userId: "8",
+      emissionDate: new Date("2023-06-05"),
       insuredCostumer: "Alejandro García",
       paidFee: "5000",
     });
 
     await createSale({
       policyNumber: "123456789",
-      assuranceTypeId: "2",
-      paidDate: new Date("2021-01-01"),
+      assuranceTypeId: assuranceType.id,
+      paidDate: new Date(2023, 5, 5),
       yearlyFee: "134000",
       contractingClient: "Enrique Bonilla",
       periodicity: "Anual",
       id: "3",
-      userId: "2",
-      emissionDate: new Date("2021-01-01"),
+      userId: "8",
+      emissionDate: new Date("2023-06-05"),
       insuredCostumer: "Sofia Martínez",
       paidFee: "1000",
     });
