@@ -5,7 +5,7 @@ import { getDataSource } from "../../arch/db-client";
 import { app } from "../../controller";
 import { authenticateUser, createUser } from "../../app/user";
 import { createGroup } from "../../app/groups";
-import { createDelivery } from "../../app/deliveries";
+import { createDelivery, updateDelivery } from "../../app/deliveries";
 import { setDeliverieToUser } from "../../app/deliveries";
 import { StatusUserDelivery } from "../../entities/user-delivery.entity";
 import { DeliveryEnt } from "../../entities/delivery.entity";
@@ -147,5 +147,50 @@ describe("controller:deliveries", () => {
       });
       expect(deliveries).toBeNull();
     });
+  });
+
+  describe("update delivery without evidence", () => {
+    it("update the status to complete", async () => {
+      const group1 = await createGroup({ name: "test-group-1" });
+      const delivery1 = await createDelivery({
+        idGroup: group1.group.id,
+        deliveryName: "test-delivery-1",
+        description: "test-description-1",
+        imageUrl: "test-image-url-1",
+      });
+      await setDeliverieToUser({
+        idUser: "1",
+        idDeliverie: delivery1.delivery.id,
+        dateDelivery: new Date("2023-04-25"),
+        status: StatusUserDelivery.withoutSending,
+        fileUrl: "test-file-url",
+      });
+      await updateDelivery({
+        deliveryId: delivery1.delivery.id,
+        hasDelivery: "false",
+      });
+      const { auth, error: authError } = await authenticateUser({
+        email: "test@delta.tec.mx",
+        password: "test-password-1",
+      });
+      if (authError) {
+        throw new Error(authError);
+      }
+      const deliveryId = delivery1.delivery.id;
+      const access = auth.accessToken;
+      const response = await request(app)
+        .post(`/deliveries/update-status-no-evidence/${deliveryId}`)
+        .set("Authorization", `Bearer ${access}`)
+        .expect(200)
+        .then((res) => {
+          const deliveryEnt = res.body.changedDelivery;
+          expect(deliveryEnt).toHaveProperty(
+            "status",
+            StatusUserDelivery.accepted,
+          );
+        });
+      return response;
+    });
+    it("refuse change status bad data", async () => {});
   });
 });

@@ -239,7 +239,7 @@ framework for Node.js and TypeScript. The route is accessed via a POST request t
 */
 deliveriesRouter.post(
   "/update-status/:id",
-  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  authMiddleware({ neededRoles: [UserRole.MANAGER || UserRole.REGULAR] }),
   updateParametersMiddleware,
   async (req, res) => {
     const { userId, statusChange } = req.body;
@@ -249,7 +249,6 @@ deliveriesRouter.post(
       deliveryId,
       statusChange,
     });
-
     res.json({ changedDelivery });
   },
 );
@@ -463,6 +462,30 @@ found, the route will return a 404 error. If there is an error during the update
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2024912660
 // * M1_S011
 */
+deliveriesRouter.post(
+  "/update-status-no-evidence/:deliveryId",
+  authMiddleware({ neededRoles: [UserRole.REGULAR] }),
+  async (req, res) => {
+    if (!req.body) {
+      res.status(400).json({ message: "No deliveryId" });
+      return;
+    }
+    const deliveryId = req.params.deliveryId;
+    if (!req.user) {
+      res.status(401).json({ message: "No user" });
+      return;
+    }
+    const userId = req.user.id;
+
+    const changedDelivery = await updateDeliveryStatus({
+      userId,
+      deliveryId,
+      statusChange: true,
+    });
+    res.json(changedDelivery);
+  },
+);
+
 deliveriesRouter.post(
   "/:id",
   authMiddleware({ neededRoles: [UserRole.MANAGER] }),

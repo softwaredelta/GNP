@@ -4,7 +4,7 @@
 
 import { Table } from "flowbite-react";
 import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUrlFile } from "../../lib/files";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
@@ -32,6 +32,7 @@ export default function RowMember({
   updateMembers,
 }: MembersCardProps): JSX.Element {
   const urlfile = useUrlFile();
+  const navigate = useNavigate();
 
   const { response, error, callback } = useAxios({
     url: `user/delete/${id}`,
@@ -146,9 +147,7 @@ export default function RowMember({
       <Table.Cell align="center">
         {rol === "regular" ? (
           <button
-            onClick={() => {
-              alert("Ver resumen");
-            }}
+            onClick={() => navigate(`/metrics/${id}`)}
             className="btn-primary"
           >
             Ver resumen
