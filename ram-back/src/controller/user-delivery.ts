@@ -103,7 +103,7 @@ userDeliveryRouter.post(
         const createdUserDelivery: UserDeliveryEnt = await createUserDelivery({
           userId: req.user.id,
           deliveryId: id,
-          status: "Aceptado",
+          status: "Enviado",
           fileUrl: filename,
           dateDelivery: new Date(),
         });
