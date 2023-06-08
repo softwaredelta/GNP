@@ -3,15 +3,19 @@
 import { useState, useEffect } from "react";
 import { Table } from "flowbite-react";
 import SalesRow from "./SalesRow";
-import { ISell } from "../../types";
+import { IAssuranceType, ISell } from "../../types";
 import { Column, usePagination, useTable } from "react-table";
 import Pagination from "../generics/Pagination";
 import SalesFilters from "./SalesFilters";
 import { NumericFormat } from "react-number-format";
+import { useFilters } from "../../hooks/useFilters";
+import { FiFilter, FiPlus } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import useAxios from "../../hooks/useAxios";
 
 export interface IListSalesProps {
   sales: ISell[];
-  updateSales: () => void;
+  updateSales: (newBody?: object) => Promise<boolean>;
 }
 
 const columns: Column<ISell>[] = [
@@ -56,6 +60,11 @@ const columns: Column<ISell>[] = [
 
 export const SalesTable = ({ sales, updateSales }: IListSalesProps) => {
   const [data, setData] = useState<ISell[]>(sales);
+  const { isFilterOpen, toggleFilter } = useFilters();
+  const { response: assuranceTypes } = useAxios<IAssuranceType[]>({
+    url: "assurance-types/all",
+    method: "GET",
+  });
   useEffect(() => {
     setData(sales);
   }, [sales]);
@@ -78,8 +87,32 @@ export const SalesTable = ({ sales, updateSales }: IListSalesProps) => {
 
   return (
     <div data-testid="sales-table" className="grid-row grid w-full px-8 pb-4">
+      <div className="flex items-center justify-center space-x-10 pb-10">
+        <Link to="/new-sale">
+          <button className="btn-primary flex w-20 items-center justify-center">
+            <span className="font-semibold"> Nueva venta </span>
+            <FiPlus size={20} className="ml-2" />
+          </button>
+        </Link>
+        <div className="w-48">
+          <button
+            onClick={toggleFilter}
+            className={`${
+              isFilterOpen ? "btn-primary" : "btn-border"
+            } flex  items-center justify-center`}
+          >
+            {!isFilterOpen ? "Mostrar filtros" : "Ocultar filtros"}{" "}
+            <FiFilter className="ml-2 inline-block" />
+          </button>
+        </div>
+      </div>
       <div>
-        <SalesFilters sales={sales} setSales={setData} />
+        {isFilterOpen && assuranceTypes && (
+          <SalesFilters
+            updateSales={updateSales}
+            assuranceTypes={assuranceTypes}
+          />
+        )}
       </div>
       <Table className="row" hoverable={true}>
         <Table.Head>
