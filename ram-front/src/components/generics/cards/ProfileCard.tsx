@@ -9,7 +9,7 @@ import { IUser } from "../../../types";
 
 interface ProfileCardProps {
   user: IUser;
-  fileChanged: (file: File) => void;
+  fileChanged?: (file: File) => void;
   isEdit: boolean;
 }
 
@@ -27,7 +27,7 @@ export default function ProfileCard({
     fileInput.onchange = (e) => {
       setPreviewImage(e as unknown as ChangeEvent<HTMLInputElement>);
       const selectedFile = (e.target as HTMLInputElement)?.files?.[0];
-      if (selectedFile) {
+      if (selectedFile && fileChanged) {
         fileChanged(selectedFile);
       }
     };
@@ -49,7 +49,7 @@ export default function ProfileCard({
                 "https://media.istockphoto.com/photos/beautiful-profile-picture-id182773387?k=6&m=182773387&s=612x612&w=0&h=kXCC5JaOAdOUE5iyd9F2YocAk2O3OEmj6scZs2-QtEk="
               }
             />
-            {isEdit && (
+            {isEdit && fileChanged && (
               <div className="absolute bottom-0 right-1">
                 <button
                   className="floating-button-primary hover:bg-orange-500"

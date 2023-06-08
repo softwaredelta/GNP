@@ -509,6 +509,10 @@ authRouter.post("/edit-link", authMiddleware(), async (req, res) => {
     res.status(401).json({ message: "NO_USER" });
     return;
   }
+  if (!id) {
+    res.status(400).json({ message: "NO_ID" });
+    return;
+  }
 
   const { link: uLink, error } = await updateLink({
     id,

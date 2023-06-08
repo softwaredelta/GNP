@@ -437,6 +437,7 @@ export async function updateLink(params: {
   if (!existingLink) {
     return { link: {} as UserLinkEnt, error: UserLinkError.NOT_FOUND };
   }
+
   return ds.manager
     .update(UserLinkEnt, params.id, { name: params.name, link: params.link })
     .then(async () => {
@@ -447,7 +448,7 @@ export async function updateLink(params: {
       else return { link: {} as UserLinkEnt, error: UserLinkError.NOT_FOUND };
     })
     .catch(() => {
-      return { error: UserLinkError.EXISTS, link: {} as UserLinkEnt };
+      return { error: UserLinkError.NOT_FOUND, link: {} as UserLinkEnt };
     });
 }
 

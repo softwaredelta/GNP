@@ -18,6 +18,7 @@ import {
 } from "typeorm";
 import {
   DATE_COLUMN,
+  IS_ACTIVE_COLUMN,
   LAST_NAME_COLUMN,
   NAME_COLUMN,
   PASSWORD_COLUMN,
@@ -26,7 +27,6 @@ import {
   UNIQUE_AGENT_KEY_COLUMN,
   URL_COLUMN,
   USERNAME_COLUMN,
-  IS_ACTIVE_COLUMN,
 } from "./columns";
 import { GroupUserEnt } from "./group-user.entity";
 import { OriginEnt } from "./origin.entity";
@@ -74,9 +74,6 @@ export class UserEnt {
   @OneToOne(() => StateEnt)
   @JoinColumn()
   state: StateEnt;
-
-  // @ManyToMany(() => RoleEnt, (role) => role.users)
-  // roles: RoleEnt[];
 
   @Column(UNIQUE_AGENT_KEY_COLUMN)
   CUA?: string;

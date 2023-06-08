@@ -20,7 +20,7 @@ export interface ISaleFormProps {
     paidDate: Date | null;
     emissionDate: Date | null;
     file: File | null | string;
-  }) => void;
+  }) => Promise<boolean>;
 }
 
 export default function SaleForm({
@@ -244,9 +244,14 @@ export default function SaleForm({
             <button
               className="btn-primary flex h-12 items-center justify-center"
               onClick={handleSubmit(
-                (form) => {
-                  handlePost({ form, emissionDate, file, paidDate });
-                  reset();
+                async (form) => {
+                  const result = await handlePost({
+                    form,
+                    emissionDate,
+                    file,
+                    paidDate,
+                  });
+                  if (result) reset();
                 },
                 (errorsFields) => {
                   Swal.fire({

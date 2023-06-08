@@ -2,7 +2,7 @@
 
 import { lazy } from "react";
 import { IRoute } from "../types";
-
+const Metrics = lazy(async () => import("../pages/Metrics"));
 const Components = lazy(async () => import("../pages/Examples"));
 const Infra = lazy(async () => import("../pages/InfraTest"));
 
@@ -21,7 +21,6 @@ const ManagerDelivery = lazy(async () => import("../pages/ManagerDelivery"));
 const ManageProspects = lazy(async () => import("../pages/ManageProspects"));
 
 const Prospects = lazy(async () => import("../pages/Prospects"));
-const Help = lazy(async () => import("../pages/TODO/Help"));
 const PlaceholderHome = lazy(async () => import("../pages/PlaceholderHome"));
 const EditGroup = lazy(async () => import("../pages/EditGroup"));
 const AddUser = lazy(async () => import("../pages/AddUser"));
@@ -33,7 +32,6 @@ const ManagerDeliveryGroup = lazy(
 const Profile = lazy(async () => import("../pages/Profile"));
 const MyProfile = lazy(async () => import("../pages/MyProfile"));
 const ViewProfile = lazy(async () => import("../pages/ViewProfile"));
-const Metrics = lazy(async () => import("../pages/Metrics"));
 
 export const CommonUserRoutes: IRoute[] = [
   {
@@ -70,10 +68,6 @@ export const RegularUserRoutes: IRoute[] = [
   {
     path: "/prospects",
     Component: () => <Prospects />,
-  },
-  {
-    path: "/help",
-    Component: () => <Help />,
   },
   {
     path: "/modify-sale/:id",
@@ -121,10 +115,6 @@ export const ManagerUserRoutes: IRoute[] = [
   {
     path: "/prospects",
     Component: () => <FunnelProspects />,
-  },
-  {
-    path: "/help",
-    Component: () => <Help />,
   },
   {
     path: "/add-user",
