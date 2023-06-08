@@ -39,9 +39,9 @@ export default function Metrics(): JSX.Element {
   let finalTotalDeliveries = 0;
   let finalNumberOfDeliveries = 0;
 
-  if (dataGroups) {
+  if (dataGroups && dataGroups.data.groups.length > 0) {
     const pos = dataGroups.data.groups.length - 1;
-    finalTotalDeliveries = dataGroups?.data.groups[pos].agentTotalDeliveries;
+    finalTotalDeliveries = dataGroups.data.groups[pos].agentTotalDeliveries;
     finalNumberOfDeliveries =
       dataGroups?.data.groups[pos].agentNumberOfDeliveries;
   }
@@ -73,12 +73,23 @@ export default function Metrics(): JSX.Element {
               Grupos
             </h1>
           </div>
-          {dataGroups && (
+          {dataGroups && dataGroups.data.groups.length > 0 ? (
             <GroupProgress
               finalNumberOfDeliveries={finalNumberOfDeliveries}
               finalTotalDeliveries={finalTotalDeliveries}
               data={dataGroups.data}
             />
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center">
+              <h1 className="mb-4 text-center text-2xl font-bold text-gray-700">
+                El agente {user?.name} {user?.lastName} no tiene grupos
+                asignados.
+              </h1>
+              <p className="text-center text-lg text-gray-500">
+                Asigne a {user?.name} en un un grupo para poder visualizar sus
+                métricas.
+              </p>
+            </div>
           )}
         </div>
       </div>
