@@ -4,7 +4,7 @@ import { RequestHandler, Router } from "express";
 import * as j from "joi";
 import multer from "multer";
 import { uploadFile } from "../app/file";
-import { createSale, updateSale } from "../app/sale";
+import { createSale, getSalesByUserId, updateSale } from "../app/sale";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
@@ -136,13 +136,13 @@ salesRouter.post(
 
     const { sale, error, reason } = await createSale({
       policyNumber,
-      paidDate,
+      paidDate: new Date(paidDate),
       yearlyFee,
       contractingClient,
       assuranceTypeId,
       userId: user.id,
       periodicity,
-      emissionDate,
+      emissionDate: new Date(emissionDate),
       insuredCostumer,
       paidFee,
       evidenceUrl,
@@ -192,17 +192,62 @@ user, it returns a 401 Unauthorized response. If there is an authenticated user,
 user's ID from the request object and uses it to query the database for all sales records associated
 with that user. The `relations` option is used to include related entities (assuranceType and user)
 in the query results. Finally, it returns the sales data in JSON format. */
-salesRouter.get("/my-sales", authMiddleware(), async (req, res) => {
+salesRouter.post("/my-sales", authMiddleware(), async (req, res) => {
   if (!req.user) {
     res.status(401).json({ message: "No user" });
     return;
   }
   const userId = req.user.id;
-  const db = await getDataSource();
-  const sales = await db.manager.find(SellEnt, {
-    relations: { assuranceType: true, user: true },
-    where: { userId },
+  const policyNumber = req.body.policyNumber || "";
+  const periodicity = req.body.periodicity || "";
+  const assuranceTypeId = req.body.assuranceTypeId || "";
+  const contractingClient = req.body.contractingClient || "";
+  const currentDate = new Date();
+  const currentDateMinusOneWeek = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate() - 8,
+  );
+  const initDate = new Date(req.body.startDate as string);
+  const startDate =
+    req.body.startDate && req.body.endDate
+      ? new Date(
+          initDate.getFullYear(),
+          initDate.getMonth(),
+          initDate.getDate() - 1,
+        )
+      : currentDateMinusOneWeek;
+  const finishDate = new Date(req.body.endDate as string);
+  const endDate =
+    req.body.endDate && req.body.startDate
+      ? new Date(
+          finishDate.getFullYear(),
+          finishDate.getMonth(),
+          finishDate.getDate() + 1,
+        )
+      : new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDate() + 1,
+        );
+
+  const status = req.body.status || "";
+
+  const { sales, error, errorReason } = await getSalesByUserId({
+    userId,
+    policyNumber,
+    periodicity,
+    assuranceTypeId,
+    contractingClient,
+    startDate,
+    endDate,
+    status,
   });
+
+  if (error) {
+    res.status(500).json({ message: error, reason: errorReason });
+    return;
+  }
 
   res.json(sales);
 });
@@ -319,12 +364,12 @@ salesRouter.post(
     const { sale, error } = await updateSale({
       id: req.params.id,
       policyNumber,
-      paidDate,
+      paidDate: new Date(paidDate),
       yearlyFee,
       contractingClient,
       assuranceTypeId,
       periodicity,
-      emissionDate,
+      emissionDate: new Date(emissionDate),
       insuredCostumer,
       paidFee,
       userId: user.id,
