@@ -64,6 +64,9 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+        {sale.user?.name} {sale.user?.lastName}
+      </Table.Cell>
+      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
         {sale.contractingClient}
       </Table.Cell>
       <Table.Cell>{sale.policyNumber}</Table.Cell>
@@ -99,8 +102,8 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       </Table.Cell>
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
-        <div className="grid grid-cols-3 items-center justify-center ">
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-110 active:scale-95">
+        <div className="grid grid-cols-3 items-center justify-center gap-6">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-110 active:scale-95">
             <FiEye
               size={20}
               className="text-gray-500"
@@ -119,14 +122,14 @@ export default function SalesRow({ sale, onUpdated }: Props) {
               </div>
             </Modal>
           )}
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
             <FiCheck
               size={20}
               className="text-green-500"
               onClick={() => handleUpdate("aceptada")}
             />
           </div>
-          <div className="mx-2 cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+          <div className="cursor-pointer pr-12 transition-all ease-in-out hover:scale-125 active:scale-95">
             <FiX
               size={20}
               className="text-red-500"

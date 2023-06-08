@@ -17,7 +17,7 @@ export const LoginScreen = ({
 }) => {
   return (
     <>
-      <div className=" grid h-screen w-screen grid-cols-1 bg-slate-50 md:grid-cols-2 ">
+      <div className=" grid h-screen w-screen select-none grid-cols-1 bg-slate-50 md:grid-cols-2 ">
         <div className="hidden flex-col items-center justify-between md:flex ">
           <div className="flex w-full items-center justify-between px-5 pt-5">
             <img className="w-48 " src={LogoGNP} alt="Logo GNP" />

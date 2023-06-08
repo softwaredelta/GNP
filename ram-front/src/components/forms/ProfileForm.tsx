@@ -112,9 +112,7 @@ export default function ProfileForm({
                 <input
                   className="input-primary w-full"
                   placeholder="Ingrese la clave de agente"
-                  {...register("CUA", {
-                    required: "El campo de clave es requerido",
-                  })}
+                  {...register("CUA")}
                 />
               </div>
               <div className="col row flex justify-center">

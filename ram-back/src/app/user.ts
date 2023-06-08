@@ -450,3 +450,40 @@ export async function updateLink(params: {
       return { error: UserLinkError.EXISTS, link: {} as UserLinkEnt };
     });
 }
+
+export async function deleteUser(params: {
+  id: string;
+}): Promise<{ user: UserEnt; error?: UserError; errorReason?: Error }> {
+  const ds = await getDataSource();
+  const existingUser = await ds.manager.findOne(UserEnt, {
+    where: { id: params.id },
+  });
+  if (!existingUser) {
+    return {
+      error: UserError.USER_NOT_FOUND,
+      user: {} as UserEnt,
+      errorReason: new Error("User not found"),
+    };
+  }
+  return ds.manager
+    .update(UserEnt, params.id, {
+      isActive: 0,
+    })
+    .then(async () => {
+      const user = await ds.manager.findOneOrFail(UserEnt, {
+        where: { id: params.id },
+      });
+      if (user) return { user };
+      else
+        return {
+          user: {} as UserEnt,
+          error: UserError.USER_NOT_FOUND,
+          errorReason: new Error("User not found"),
+        };
+    })
+    .catch((e) => ({
+      error: UserError.UNHANDLED_ERROR as UserError,
+      errorReason: e as Error,
+      user: {} as UserEnt,
+    }));
+}

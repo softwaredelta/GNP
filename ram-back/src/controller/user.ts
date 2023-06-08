@@ -13,6 +13,7 @@ import {
   resetPassword,
   addLink,
   updateLink,
+  deleteUser,
 } from "../app/user";
 import { getDataSource } from "../arch/db-client";
 import { UserEnt, UserRole } from "../entities/user.entity";
@@ -599,3 +600,37 @@ authRouter.get("/my-links/:email", authMiddleware(), async (req, res) => {
 
   res.json({ links });
 });
+
+/* The above code is defining a route for authenticating a user. It expects a POST request to the
+"/authenticate" endpoint with user parameters (email and password) in the request body. It then
+validates the user parameters and calls the "authenticateUser" function to authenticate the user. If
+there is an error during authentication, it sends a 401 Unauthorized response with an error message.
+Otherwise, it sends a JSON response with the authenticated user's information. */
+authRouter.post(
+  "/delete/:id",
+  authMiddleware({ neededRoles: [UserRole.MANAGER] }),
+  async (req, res) => {
+    const id = req.params.id;
+
+    const db = await getDataSource();
+    const FindUser = await db.manager.findOne(UserEnt, {
+      where: { id: req.params.id },
+    });
+
+    if (!FindUser) {
+      res.status(401).json({ message: "NO USER" });
+      return;
+    }
+
+    const { user, error } = await deleteUser({
+      id,
+    });
+
+    if (error) {
+      res.status(500).json({ message: error });
+      return;
+    }
+
+    res.json({ user });
+  },
+);
