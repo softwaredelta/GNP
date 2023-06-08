@@ -1,14 +1,16 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { createAssuranceType } from "../app/assuranceType";
-import { updateDelivery } from "../app/deliveries";
-import { createDelivery, createLinkDelivery } from "../app/deliveries";
+import {
+  createDelivery,
+  createLinkDelivery,
+  updateDelivery,
+} from "../app/deliveries";
 import { addUserToGroup, createGroup } from "../app/groups";
 import { createProspect } from "../app/prospect";
 import { createSale } from "../app/sale";
 import { createStatus } from "../app/status";
-import { UserError, addLink } from "../app/user";
-import { createUser } from "../app/user";
+import { UserError, addLink, createUser } from "../app/user";
 import { setUserToAllDeliveries } from "../app/user-delivery";
 import { StatusNames } from "../entities/status.entity";
 import { UserRole } from "../entities/user.entity";
