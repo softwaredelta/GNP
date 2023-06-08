@@ -47,8 +47,13 @@ export default function NewSale() {
           <SaleForm
             assuranceTypes={assuranceTypes}
             isEdit={false}
-            handlePost={({ emissionDate, file, form, paidDate }) => {
-              if (file) {
+            handlePost={async ({
+              emissionDate,
+              file,
+              form,
+              paidDate,
+            }): Promise<boolean> => {
+              if (file && callback) {
                 const formData: FormData = new FormData();
                 formData.append("file", file);
                 formData.append("policyNumber", form.policyNumber.toString());
@@ -67,9 +72,17 @@ export default function NewSale() {
                   emissionDate?.toString() as string,
                 );
                 try {
-                  callback?.(formData);
+                  const flag = await callback(formData);
+                  return flag;
                 } catch (err) {
-                  console.error(err);
+                  Swal.fire({
+                    title: "¡Error!",
+                    text: `Ocurrió un error al registrar la venta.\n
+                    ${(err as any).response.data.message}`,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                  });
+                  return false;
                 }
               } else {
                 Swal.fire({
@@ -78,6 +91,7 @@ export default function NewSale() {
                   icon: "error",
                   confirmButtonText: "OK",
                 });
+                return false;
               }
             }}
           />
