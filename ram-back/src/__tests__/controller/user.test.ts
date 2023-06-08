@@ -592,6 +592,7 @@ describe("controller:user", () => {
         .set("Authorization", `Bearer ${regularAccessToken}`)
         .send({ id: linkAdded.id, ...updatedLink })
         .expect(200);
+      console.log(res.body);
 
       const ds = await getDataSource();
       const link = await ds.manager.findOneOrFail(UserLinkEnt, {
