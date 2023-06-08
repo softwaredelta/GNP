@@ -250,10 +250,10 @@ export default function SaleForm({
                   reset();
                 },
                 (errorsFields) => {
-                  Swal.fire({
+                  .fire({
                     title: "¡Error!",
                     text: `Ocurrió un error al registrar la venta.\n
-                  ${Object.values(errorsFields).map((e) => e.message + " ")}`,
+                  ${Object.values(errorsSwalFields).map((e) => e.message + " ")}`,
                     icon: "error",
                     confirmButtonText: "OK",
                   });
