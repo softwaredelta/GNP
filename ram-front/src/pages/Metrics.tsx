@@ -4,12 +4,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams } from "react-router-dom";
 import LineGraph from "../components/graphs/LineGraph";
+import ProspectsChart from "../components/graphs/ProspectsChart";
 import GroupProgress from "../components/metrics/GroupProgress";
 import ProfileMetrics from "../components/metrics/ProfileMetrics";
 import Wrapper from "../containers/Wrapper";
 import useAxios from "../hooks/useAxios";
 import { IGroup, IProspectStatus, IUser } from "../types";
-import ProspectsChart from "./ProspectsChart";
 interface IResult {
   key: string;
   totalPaidFee: number;
@@ -140,7 +140,6 @@ export default function Metrics(): JSX.Element {
       }
       totals.push(total);
     }
-    console.log(totals);
     return totals;
   }
 
