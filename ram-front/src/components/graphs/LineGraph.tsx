@@ -45,6 +45,7 @@ export default function LineGraph({
   const options: Highcharts.Options = {
     chart: {
       type: "column",
+      backgroundColor: "transparent",
     },
     title: {
       text: "Acumulado por ramos de seguro",
