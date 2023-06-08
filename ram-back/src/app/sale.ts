@@ -2,6 +2,7 @@
 
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
+import { Between, Like } from "typeorm";
 
 export enum SaleError {
   POLICY_NUM_DUPLICATED = "POLICY_NUM_DUPLICATED",
@@ -141,4 +142,86 @@ export async function updateSale(params: {
       errorReason: e as Error,
       sale: {} as SellEnt,
     }));
+}
+
+/**
+ * This function retrieves sales data based on various search parameters and returns it as an array of
+ * SellEnt objects.
+ * @param params - The `getSalesByUserId` function takes in an object `params` with the following
+ * properties: userId of type string, policyNumber(Optional) of type string, periodicity(Optional) of
+ * type string, assuranceTypeId(Optional) of type string, contractingClient(Optional) of type string,
+ * startDate(Optional) of type Date, endDate(Optional) of type Date, status(Optional) of type string.
+ * @returns a Promise that resolves to an object with a `sales` property, which is an array of
+ * `SellEnt` objects. If an error occurs during the execution of the function, the Promise resolves to
+ * an object with an `error` property set to `SaleError.UNHANDLED` and an `errorReason` property set to
+ * the caught error.
+ */
+export async function getSalesByUserId(params: {
+  userId: string;
+  policyNumber: string;
+  periodicity: string;
+  assuranceTypeId: string;
+  contractingClient: string;
+  startDate: Date;
+  endDate: Date;
+  status: string;
+}): Promise<{ sales: SellEnt[]; error?: SaleError; errorReason?: Error }> {
+  const {
+    userId,
+    policyNumber,
+    periodicity,
+    assuranceTypeId,
+    contractingClient,
+    startDate,
+    endDate,
+    status,
+  } = params;
+  const db = await getDataSource();
+  try {
+    const sales = await db.manager.find(SellEnt, {
+      relations: {
+        assuranceType: true,
+        user: true,
+      },
+      select: {
+        id: true,
+        policyNumber: true,
+        paidDate: true,
+        yearlyFee: true,
+        contractingClient: true,
+        periodicity: true,
+        emissionDate: true,
+        insuredCostumer: true,
+        paidFee: true,
+        evidenceUrl: true,
+        status: true,
+        assuranceType: {
+          id: true,
+          name: true,
+        },
+        user: {
+          id: true,
+          name: true,
+          lastName: true,
+          password: false,
+        },
+      },
+      where: {
+        userId,
+        policyNumber: Like(`%${policyNumber}%`),
+        periodicity: Like(`%${periodicity}%`),
+        assuranceTypeId: Like(`%${assuranceTypeId}%`),
+        contractingClient: Like(`%${contractingClient}%`),
+        paidDate: Between(startDate, endDate),
+        status: Like(`%${status}%`),
+      },
+    });
+    return { sales };
+  } catch (e) {
+    return {
+      sales: [] as SellEnt[],
+      error: SaleError.UNHANDLED,
+      errorReason: e as Error,
+    };
+  }
 }
