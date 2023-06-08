@@ -91,6 +91,8 @@ export default function Examples() {
     method: "POST",
     body: { name: "Grupo novinos" },
   });
+  console.log({ response });
+  console.log({ me });
 
   if (loading) <div>loading..</div>;
 
