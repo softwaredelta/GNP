@@ -232,13 +232,12 @@ export default function SaleForm({
             <FileInput
               id="file"
               className="w-full"
-              accept=".pdf,.jpg,.png,.jpeg"
               onChange={(e: any) => {
                 if (e.target.files) {
                   setFile(e.target.files[0]);
                 } else setFile(null);
               }}
-              helperText="Sube la evidencia de la venta (PDF, JPG, PNG, JPEG)"
+              helperText="Sube la evidencia de tu venta"
             />
           </div>
           <div className="col-span-1 px-6 pt-8 md:col-span-1">
@@ -250,10 +249,10 @@ export default function SaleForm({
                   reset();
                 },
                 (errorsFields) => {
-                  .fire({
+                  Swal.fire({
                     title: "¡Error!",
                     text: `Ocurrió un error al registrar la venta.\n
-                  ${Object.values(errorsSwalFields).map((e) => e.message + " ")}`,
+                  ${Object.values(errorsFields).map((e) => e.message + " ")}`,
                     icon: "error",
                     confirmButtonText: "OK",
                   });
