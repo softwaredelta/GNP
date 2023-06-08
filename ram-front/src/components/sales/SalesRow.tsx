@@ -88,16 +88,16 @@ export default function SalesRow({ sale, updateSales }: Props) {
       </Table.Cell>
       <Table.Cell>{capitalize(sale.status)}</Table.Cell>
       <Table.Cell>
-        <div className="grid grid-cols-2 items-center justify-center ">
+        <div className="grid grid-cols-2 items-center justify-center gap-5 ">
           <FiEdit
             onClick={() => navigate(`/modify-sale/${sale.id}`)}
             size={20}
-            className="hover:scale-105 hover:fill-blue-700"
+            className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:stroke-blue-700"
           />
           <FiTrash
             onClick={handleDelete}
             size={20}
-            className="hover:scale-105 hover:fill-red-500"
+            className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:stroke-red-500"
           />
         </div>
       </Table.Cell>

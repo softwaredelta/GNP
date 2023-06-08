@@ -4,11 +4,10 @@ import { RequestHandler, Router } from "express";
 import * as j from "joi";
 import multer from "multer";
 import { uploadFile } from "../app/file";
-import { createSale, updateSale } from "../app/sale";
+import { createSale, getSalesByUserId, updateSale } from "../app/sale";
 import { getDataSource } from "../arch/db-client";
 import { SellEnt } from "../entities/sell.entity";
 import { authMiddleware } from "./user";
-import { Between, Like } from "typeorm";
 export const salesRouter = Router();
 
 const upload = multer();
@@ -137,13 +136,13 @@ salesRouter.post(
 
     const { sale, error, reason } = await createSale({
       policyNumber,
-      paidDate,
+      paidDate: new Date(paidDate),
       yearlyFee,
       contractingClient,
       assuranceTypeId,
       userId: user.id,
       periodicity,
-      emissionDate,
+      emissionDate: new Date(emissionDate),
       insuredCostumer,
       paidFee,
       evidenceUrl,
@@ -207,57 +206,48 @@ salesRouter.post("/my-sales", authMiddleware(), async (req, res) => {
   const currentDateMinusOneWeek = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
-    currentDate.getDate() - 7,
+    currentDate.getDate() - 8,
   );
+  const initDate = new Date(req.body.startDate as string);
   const startDate =
     req.body.startDate && req.body.endDate
-      ? new Date(req.body.startDate as string)
+      ? new Date(
+          initDate.getFullYear(),
+          initDate.getMonth(),
+          initDate.getDate() - 1,
+        )
       : currentDateMinusOneWeek;
+  const finishDate = new Date(req.body.endDate as string);
   const endDate =
     req.body.endDate && req.body.startDate
-      ? new Date(req.body.endDate as string)
-      : currentDate;
+      ? new Date(
+          finishDate.getFullYear(),
+          finishDate.getMonth(),
+          finishDate.getDate() + 1,
+        )
+      : new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDate() + 1,
+        );
+
   const status = req.body.status || "";
 
-  const db = await getDataSource();
-  const sales = await db.manager.find(SellEnt, {
-    relations: {
-      assuranceType: true,
-      user: true,
-    },
-    select: {
-      id: true,
-      policyNumber: true,
-      paidDate: true,
-      yearlyFee: true,
-      contractingClient: true,
-      periodicity: true,
-      emissionDate: true,
-      insuredCostumer: true,
-      paidFee: true,
-      evidenceUrl: true,
-      status: true,
-      assuranceType: {
-        id: true,
-        name: true,
-      },
-      user: {
-        id: true,
-        name: true,
-        lastName: true,
-        password: false,
-      },
-    },
-    where: {
-      userId,
-      policyNumber: Like(`%${policyNumber}%`),
-      periodicity: Like(`%${periodicity}%`),
-      assuranceTypeId: Like(`%${assuranceTypeId}%`),
-      contractingClient: Like(`%${contractingClient}%`),
-      paidDate: Between(startDate, endDate),
-      status: Like(`%${status}%`),
-    },
+  const { sales, error, errorReason } = await getSalesByUserId({
+    userId,
+    policyNumber,
+    periodicity,
+    assuranceTypeId,
+    contractingClient,
+    startDate,
+    endDate,
+    status,
   });
+
+  if (error) {
+    res.status(500).json({ message: error, reason: errorReason });
+    return;
+  }
 
   res.json(sales);
 });
@@ -374,12 +364,12 @@ salesRouter.post(
     const { sale, error } = await updateSale({
       id: req.params.id,
       policyNumber,
-      paidDate,
+      paidDate: new Date(paidDate),
       yearlyFee,
       contractingClient,
       assuranceTypeId,
       periodicity,
-      emissionDate,
+      emissionDate: new Date(emissionDate),
       insuredCostumer,
       paidFee,
       userId: user.id,
