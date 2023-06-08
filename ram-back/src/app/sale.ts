@@ -243,8 +243,8 @@ export async function getSalesByMonth(params: {
   );
   const endDate = new Date(
     new Date(params.finalDate).getFullYear(),
-    new Date(params.finalDate).getMonth(),
-    30,
+    new Date(params.finalDate).getMonth() + 1,
+    0,
   );
   const db = await getDataSource();
 

@@ -125,6 +125,19 @@ export default function Metrics(): JSX.Element {
     setLineData(invertedArray);
   }
 
+  function getTotals(totalsData: number[][]) {
+    const totals: number[] = [];
+    for (let i = 0; i < totalsData.length; i++) {
+      let total = 0;
+      for (let j = 0; j < totalsData[i].length; j++) {
+        total += totalsData[i][j];
+      }
+      totals.push(total);
+    }
+    console.log(totals);
+    return totals;
+  }
+
   useEffect(() => {
     if (dataLine) getLineGraph(dataLine, startMonth, endMonth);
     if (dataLineUpdated) getLineGraph(dataLineUpdated, startMonth, endMonth);
@@ -189,7 +202,7 @@ export default function Metrics(): JSX.Element {
           {lineData && pieData ? (
             <LineGraph
               data={lineData}
-              dataPie={pieData}
+              dataPie={getTotals(lineData)}
               firstMonth={startMonth}
               lastMonth={endMonth}
             />

@@ -640,11 +640,11 @@ export async function loadSeeds() {
     await createSale({
       policyNumber: "123456789",
       assuranceTypeId: assuranceType3.id,
-      paidDate: new Date(),
+      paidDate: new Date("2023-03-11"),
       yearlyFee: "134000",
       contractingClient: "Enrique Bonilla",
       periodicity: "Anual",
-      userId: agent3.user.id,
+      userId: agent2.user.id,
       emissionDate: new Date(),
       insuredCostumer: "Sofia Martínez",
       paidFee: "1000",
@@ -842,27 +842,6 @@ export async function loadSeeds() {
           emissionDate: new Date("2021-01-01"),
           insuredCostumer: "Prueba",
           paidFee: "3200",
-        }).then(({ sale, error }) => {
-          if (error) {
-            throw new Error(error);
-          }
-          return sale;
-        }),
-      ),
-    );
-
-    await Promise.all(
-      saleData.map((s) =>
-        createSale({
-          ...s,
-          yearlyFee: "134000",
-          contractingClient: "Enrique Bonilla",
-          periodicity: "Anual",
-          userId: agent2.user.id,
-          paidDate: new Date("2023-03-10"),
-          emissionDate: new Date("2021-01-01"),
-          insuredCostumer: "Prueba",
-          paidFee: "200",
         }).then(({ sale, error }) => {
           if (error) {
             throw new Error(error);
