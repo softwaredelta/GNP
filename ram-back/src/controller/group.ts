@@ -342,3 +342,19 @@ groupsRouter.post(
     res.status(200).send();
   },
 );
+
+/* This code defines a route handler for the HTTP GET request to the "/my-groups" endpoint of the
+groups API. The handler function retrieves all groups that the current user is a member of from the
+database and returns them as a JSON response. The route is protected by the `authMiddleware`
+middleware function, which requires the user to be authenticated to access this endpoint. If the
+user is not authenticated, a 401 response with a "No user" message is returned. If the user is
+authenticated, their user ID is extracted from the request object and passed to the `getUserGroups`
+function, which retrieves the user's groups from the database. The groups data is then sent as a
+JSON response to the client. */
+groupsRouter.get("/user-groups/:id", authMiddleware(), async (req, res) => {
+  const userId = req.params.id;
+
+  const data = await getUserGroups({ userId });
+
+  res.json({ data });
+});
