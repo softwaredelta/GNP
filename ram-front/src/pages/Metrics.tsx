@@ -177,49 +177,6 @@ export default function Metrics(): JSX.Element {
               Ventas
             </h1>
           </div>
-          {/* <div className="mt-4 grid grid-cols-3 gap-4">
-            <div>
-              <DatePicker
-                selected={startDate}
-                name="datePicker"
-                id="datePicker"
-                onChange={(date: Date) => setStartDate(date)}
-                dateFormat="MM/yyyy"
-                className="input-primary w-full"
-                placeholderText="mm/aaaa"
-                required
-              />
-            </div>
-            <div>
-              <DatePicker
-                selected={endDate}
-                name="datePicker"
-                id="datePicker"
-                onChange={(date: Date) => setEndDate(date)}
-                dateFormat="MM/yyyy"
-                className="input-primary w-full"
-                placeholderText="mm/aaaa"
-                minDate={startDate}
-                required
-              />
-            </div>
-            <div>
-              <button
-                className="btn-primary"
-                onClick={() => {
-                  callbackLine({
-                    initialDate: startDate,
-                    finalDate: endDate,
-                  });
-                  setStartMonth(new Date(startDate).getMonth());
-                  setEndMonth(new Date(endDate).getMonth());
-                }}
-              >
-                {" "}
-                Filtrar{" "}
-              </button>
-            </div>
-          </div> */}
           {lineData &&
           pieData &&
           lineData.flat().reduce((a, b) => a + b, 0) !== 0 ? (
@@ -270,7 +227,7 @@ export default function Metrics(): JSX.Element {
 
               <LineGraph
                 data={lineData}
-                dataPie={pieData}
+                dataPie={getTotals(lineData)}
                 firstMonth={startMonth}
                 lastMonth={endMonth}
               />
