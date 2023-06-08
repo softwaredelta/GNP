@@ -142,7 +142,7 @@ export default function RowMember({
         </div>
       </Table.Cell>
       <Table.Cell align="center">
-        {rol === "Agente" ? (
+        {rol === "regular" ? (
           <button
             onClick={() => {
               alert("Ver resumen");
