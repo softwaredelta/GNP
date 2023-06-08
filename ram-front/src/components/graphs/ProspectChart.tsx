@@ -30,6 +30,8 @@ export default function ProspectsChart({
         dataLabels: {
           enabled: true,
           format: "<b>{point.name}</b> ({point.y:,.0f})",
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           softConnector: true,
         },
         center: ["40%", "50%"],
@@ -68,6 +70,8 @@ export default function ProspectsChart({
                 dataLabels: {
                   inside: true,
                 },
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 center: ["50%", "50%"],
                 width: "100%",
               },
