@@ -93,7 +93,7 @@ export const SalesTable = ({ sales, updateSales }: IListSalesProps) => {
 
   return (
     <div data-testid="sales-table" className="grid-row grid w-full px-8 pb-4">
-      <div className="flex items-center justify-center space-x-10 pb-10">
+      <div className="flex items-center justify-end space-x-10 pb-10">
         <Link to="/new-sale">
           <button className="btn-primary flex w-20 items-center justify-center">
             <span className="font-semibold"> Nueva venta </span>

@@ -207,7 +207,7 @@ export async function getSalesByUserId(params: {
         },
       },
       where: {
-        userId,
+        userId: Like(`%${userId}%`),
         policyNumber: Like(`%${policyNumber}%`),
         periodicity: Like(`%${periodicity}%`),
         assuranceTypeId: Like(`%${assuranceTypeId}%`),
