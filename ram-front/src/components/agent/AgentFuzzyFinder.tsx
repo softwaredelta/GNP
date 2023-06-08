@@ -147,7 +147,7 @@ export default function AgentFuzzyFinder({
               onClick={async () => {
                 await addUser(user.id as string);
                 Swal.fire({
-                  title: "¡Agente agregado",
+                  title: "¡Agente agregado!",
                   text: "El agente se agregó correctamente al grupo",
                   icon: "success",
                   confirmButtonText: "OK",
