@@ -45,45 +45,49 @@ property with the error message. */
 //     const prospectStatusRepository =
 //       dataSource.getRepository(ProspectStatusEnt);
 
-statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
-  const AgentId = req.params.AgentId;
-  try {
-    const dataSource = await getDataSource();
-    const prospectStatusRepository =
-      dataSource.getRepository(ProspectStatusEnt);
+statusProspectRouter.get(
+  "/status-by-agents/:AgentId",
+  authMiddleware(),
+  async (req, res) => {
+    const AgentId = req.params.AgentId;
+    try {
+      const dataSource = await getDataSource();
+      const prospectStatusRepository =
+        dataSource.getRepository(ProspectStatusEnt);
 
-    const prospectStatusCounts = await prospectStatusRepository
-      .createQueryBuilder("prospectStatus")
-      .select("prospectStatus.statusId", "statusId")
-      .addSelect("status.statusName", "statusName")
-      .addSelect("COUNT(*)", "count")
-      .innerJoin("prospectStatus.prospect", "prospect")
-      .innerJoin("prospectStatus.status", "status")
-      .where("prospect.userId = :AgentId", { AgentId })
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      .groupBy("prospectStatus.statusId", "status.statusName") // Agrupar por el nombre del estado
-      .getRawMany();
+      const prospectStatusCounts = await prospectStatusRepository
+        .createQueryBuilder("prospectStatus")
+        .select("prospectStatus.statusId", "statusId")
+        .addSelect("status.statusName", "statusName")
+        .addSelect("COUNT(*)", "count")
+        .innerJoin("prospectStatus.prospect", "prospect")
+        .innerJoin("prospectStatus.status", "status")
+        .where("prospect.userId = :AgentId", { AgentId })
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        .groupBy("prospectStatus.statusId", "status.statusName") // Agrupar por el nombre del estado
+        .getRawMany();
 
-    const accumulatedCounts: { [key: string]: number } = {
-      "Nuevo prospecto": 0,
-      "Cita agendada": 0,
-      "Cita efectiva": 0,
-      "Solicitud de seguro": 0,
-      "Poliza pagada": 0,
-      Retirado: 0,
-    };
+      const accumulatedCounts: { [key: string]: number } = {
+        "Nuevo prospecto": 0,
+        "Cita agendada": 0,
+        "Cita efectiva": 0,
+        "Solicitud de seguro": 0,
+        "Poliza pagada": 0,
+        Retirado: 0,
+      };
 
-    prospectStatusCounts.forEach((count: any) => {
-      const { statusName, count: statusCount } = count;
-      accumulatedCounts[statusName] += statusCount;
-    });
+      prospectStatusCounts.forEach((count: any) => {
+        const { statusName, count: statusCount } = count;
+        accumulatedCounts[statusName] += statusCount;
+      });
 
-    res.status(200).json(accumulatedCounts);
-  } catch (e) {
-    res.status(400).json({ message: "BAD_DATA", reason: e });
-  }
-});
+      res.status(200).json(accumulatedCounts);
+    } catch (e) {
+      res.status(400).json({ message: "BAD_DATA", reason: e });
+    }
+  },
+);
 
 // statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
 //   const AgentId = req.params.AgentId;
@@ -148,46 +152,52 @@ a status code of 200 and the accumulated counts as JSON. If there is an error, t
 with a status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a
 `reason` property with the error message. */
 
-statusProspectRouter.get("/count-new-prospects/:AgentId", async (req, res) => {
-  const AgentId = req.params.AgentId;
-  try {
-    const dataSource = await getDataSource();
-    const prospectStatusRepository =
-      dataSource.getRepository(ProspectStatusEnt);
+statusProspectRouter.get(
+  "/count-new-prospects/:AgentId",
+  authMiddleware(),
+  async (req, res) => {
+    const AgentId = req.params.AgentId;
+    try {
+      const dataSource = await getDataSource();
+      const prospectStatusRepository =
+        dataSource.getRepository(ProspectStatusEnt);
 
-    const prospectStatusCounts = await prospectStatusRepository
-      .createQueryBuilder("prospectStatus")
-      .select("prospectStatus.statusId", "statusId")
-      .addSelect("status.statusName", "statusName")
-      .addSelect("COUNT(*)", "count")
-      .innerJoin("prospectStatus.prospect", "prospect")
-      .innerJoin("prospectStatus.status", "status")
-      .where("prospect.userId = :AgentId", { AgentId })
-      .andWhere((qb) => {
-        const subQuery = qb
-          .subQuery()
-          .select("prospectStatus.prospectId")
-          .from(ProspectStatusEnt, "prospectStatus")
-          .innerJoin("prospectStatus.status", "status")
-          .where("status.statusName != 'Nuevo prospecto'")
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          .groupBy("prospectStatus.prospectId", "prospectStatus.statusId")
-          .getQuery();
-        return "prospect.id NOT IN " + subQuery;
-      })
-      .groupBy("prospectStatus.statusId") // Agrupar solo por statusId
-      .getRawMany();
+      const prospectStatusCounts = await prospectStatusRepository
+        .createQueryBuilder("prospectStatus")
+        .select("prospectStatus.statusId", "statusId")
+        .addSelect("status.statusName", "statusName")
+        .addSelect("COUNT(*)", "count")
+        .innerJoin("prospectStatus.prospect", "prospect")
+        .innerJoin("prospectStatus.status", "status")
+        .where("prospect.userId = :AgentId", { AgentId })
+        .andWhere((qb) => {
+          const subQuery = qb
+            .subQuery()
+            .select("prospectStatus.prospectId")
+            .from(ProspectStatusEnt, "prospectStatus")
+            .innerJoin("prospectStatus.status", "status")
+            .where("status.statusName != 'Nuevo prospecto'")
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            .groupBy("prospectStatus.prospectId", "prospectStatus.statusId")
+            .getQuery();
+          return "prospect.id NOT IN " + subQuery;
+        })
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        .groupBy("prospectStatus.statusId", "status.statusName") // Agrupar solo por statusId
+        .getRawMany();
 
-    // Mapear los resultados agrupados por statusName
-    const prospectStatusCountsMapped = prospectStatusCounts.map((result) => ({
-      statusId: result.statusId,
-      statusName: result.statusName,
-      count: result.count,
-    }));
+      // Mapear los resultados agrupados por statusName
+      const prospectStatusCountsMapped = prospectStatusCounts.map((result) => ({
+        statusId: result.statusId,
+        statusName: result.statusName,
+        count: result.count,
+      }));
 
-    res.status(200).json(prospectStatusCountsMapped);
-  } catch (e) {
-    res.status(400).json({ message: "BAD_DATA", reason: e });
-  }
-});
+      res.status(200).json(prospectStatusCountsMapped);
+    } catch (e) {
+      res.status(400).json({ message: "BAD_DATA", reason: e });
+    }
+  },
+);
