@@ -150,7 +150,7 @@ describe("controller:sale", () => {
           .expect(201)
           .then(({ body }) => {
             expect(body).toHaveProperty("policyNumber", "123456789");
-            expect(body).toHaveProperty("status", "sin revisar");
+            expect(body).toHaveProperty("status", "Sin revisar");
             expect(body.evidenceUrl).toMatch(/\d+\.txt/);
           });
       });
@@ -181,7 +181,7 @@ describe("controller:sale", () => {
           .expect(201)
           .then(({ body }) => {
             expect(body).toHaveProperty("policyNumber", "123456789");
-            expect(body).toHaveProperty("status", "sin revisar");
+            expect(body).toHaveProperty("status", "Sin revisar");
             expect(body.evidenceUrl).toMatch(/\d+\.txt/);
           });
 

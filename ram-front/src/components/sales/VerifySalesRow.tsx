@@ -72,6 +72,7 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       <Table.Cell>{sale.policyNumber}</Table.Cell>
       <Table.Cell>
         <NumericFormat
+          value={sale.yearlyFee}
           displayType={"text"}
           thousandSeparator={true}
           decimalScale={2}
