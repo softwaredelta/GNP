@@ -65,6 +65,10 @@ export default function FunnelRow({
     url: `status-prospect/status-by-agents/${id}`,
     method: "GET",
   });
+  console.log(
+    "🚀 ~ file: FunnelRow.tsx:68 ~ prospectsStatus:",
+    prospectsStatus,
+  );
 
   const prospectsCount = prospects?.[0]?.count ?? 0;
   const citaAgendada = prospectsStatus?.["Cita agendada"] ?? 0;
