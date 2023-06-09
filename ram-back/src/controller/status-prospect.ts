@@ -38,50 +38,7 @@ into an object with the total count for each status type, and the response is se
 code of 200 and the accumulated counts as JSON. If there is an error, the response is sent with a
 status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a `reason`
 property with the error message. */
-// statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
-//   const AgentId = req.params.AgentId;
-//   try {
-//     const dataSource = await getDataSource();
-//     const prospectStatusRepository =
-//       dataSource.getRepository(ProspectStatusEnt);
 
-//     const prospectStatusCounts = await prospectStatusRepository
-//       .createQueryBuilder("prospectStatus")
-//       .select("prospectStatus.statusId", "statusId")
-//       .addSelect("status.statusName", "statusName")
-//       .addSelect("COUNT(*)", "count")
-//       .innerJoin("prospectStatus.prospect", "prospect")
-//       .innerJoin("prospectStatus.status", "status")
-//       .where("prospect.userId = :AgentId", { AgentId })
-//       .groupBy("status.statusName")
-//       .getRawMany();
-
-//     const formattedCounts = prospectStatusCounts.map((count: any) => {
-//       return {
-//         statusId: count.statusId,
-//         statusName: count.statusName,
-//         count: count.count,
-//       };
-//     });
-
-//     const accumulatedCounts: { [key: string]: number } = {
-//       "Nuevo prospecto": 0,
-//       "Cita agendada": 0,
-//       "Cita efectiva": 0,
-//       "Solicitud de seguro": 0,
-//       "Poliza pagada": 0,
-//       Retirado: 0,
-//     };
-
-//     formattedCounts.forEach((count) => {
-//       accumulatedCounts[count.statusName] += count.count;
-//     });
-
-//     res.status(200).json(accumulatedCounts);
-//   } catch (e) {
-//     res.status(400).json({ message: "BAD_DATA", reason: e });
-//   }
-// });
 statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
   const AgentId = req.params.AgentId;
   try {
