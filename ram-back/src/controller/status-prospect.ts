@@ -115,7 +115,7 @@ statusProspectRouter.get("/count-new-prospects/:AgentId", async (req, res) => {
           .getQuery();
         return "prospect.id NOT IN " + subQuery;
       })
-      .groupBy("prospectStatus.statusId") // Agrupar solo por statusId
+      .groupBy("prospectStatus.statusId")
       .getRawMany();
 
     // Mapear los resultados agrupados por statusName
