@@ -265,8 +265,6 @@ export async function getSalesByMonth(params: {
           try {
             const result = await transactionalEntityManager
               .createQueryBuilder(SellEnt, "sell")
-              .leftJoinAndSelect("sell.assuranceType", "assuranceType")
-              .leftJoinAndSelect("sell.user", "user")
               .select("SUM(sell.paidFee)", "totalPaidFee")
               .where("sell.userId = :userId", { userId: params.userId })
               .andWhere("sell.assuranceTypeId = :assuranceTypeId", {
