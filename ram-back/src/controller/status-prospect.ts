@@ -38,6 +38,12 @@ into an object with the total count for each status type, and the response is se
 code of 200 and the accumulated counts as JSON. If there is an error, the response is sent with a
 status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a `reason`
 property with the error message. */
+// statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
+//   const AgentId = req.params.AgentId;
+//   try {
+//     const dataSource = await getDataSource();
+//     const prospectStatusRepository =
+//       dataSource.getRepository(ProspectStatusEnt);
 
 // statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
 //   const AgentId = req.params.AgentId;
@@ -165,7 +171,7 @@ statusProspectRouter.get("/count-new-prospects/:AgentId", async (req, res) => {
           .getQuery();
         return "prospect.id NOT IN " + subQuery;
       })
-      .groupBy("status.statusName")
+      .groupBy("prospectStatus.statusId") // Agrupar solo por statusId
       .getRawMany();
 
     // Mapear los resultados agrupados por statusName
