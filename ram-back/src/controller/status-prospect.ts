@@ -38,6 +38,7 @@ into an object with the total count for each status type, and the response is se
 code of 200 and the accumulated counts as JSON. If there is an error, the response is sent with a
 status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a `reason`
 property with the error message. */
+
 // statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
 //   const AgentId = req.params.AgentId;
 //   try {
@@ -82,6 +83,7 @@ property with the error message. */
 //     res.status(400).json({ message: "BAD_DATA", reason: e });
 //   }
 // });
+
 statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
   const AgentId = req.params.AgentId;
   try {
