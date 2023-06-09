@@ -17,6 +17,12 @@ export default function Profile() {
   const { refresh } = useAuthentication();
 
   const { id } = useParams<{ id: string }>();
+
+  const { response: me } = useAxios<IUser>({
+    url: `user/me`,
+    method: "GET",
+  });
+
   const { response: user } = useAxios<IUser>({
     url: `user/${id}`,
     method: "GET",
@@ -79,7 +85,7 @@ export default function Profile() {
         icon: "success",
       });
       refresh(); // Refresh the user data
-      if (user.rolesString === "regular") {
+      if (user.id === me?.id) {
         navigate(`/my-profile`);
       } else {
         navigate(`/members`);
