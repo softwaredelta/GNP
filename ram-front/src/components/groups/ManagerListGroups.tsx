@@ -33,8 +33,15 @@ export function ManagerListGroups({ groups }: Props) {
           </div>
         ))
       ) : (
-        <div className="flex h-56 items-center justify-center text-xl">
-          No hay grupos registrados
+        <div className="flex h-full flex-col items-center justify-center">
+          <h1 className="mb-4 text-3xl font-bold text-gray-700">
+            No hay grupos
+          </h1>
+          <p className="text-center text-lg text-gray-500">
+            No estás registrado en ningún grupo en este momento.
+            <br />
+            Por favor, inténtelo de nuevo más tarde.
+          </p>
         </div>
       )}
     </>
