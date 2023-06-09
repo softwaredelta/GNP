@@ -239,7 +239,6 @@ authRouter.get("/me", authMiddleware(), async (req, res) => {
     where: {
       id: req.user.id,
     },
-    select: ["id", "email", "name", "lastName", "CUA", "urlPP200"],
   });
   res.json(user);
 });

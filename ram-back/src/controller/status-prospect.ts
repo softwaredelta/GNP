@@ -53,7 +53,8 @@ statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
       .innerJoin("prospectStatus.prospect", "prospect")
       .innerJoin("prospectStatus.status", "status")
       .where("prospect.userId = :AgentId", { AgentId })
-      .groupBy("prospectStatus.statusId")
+      // .groupBy("prospectStatus.statusId")
+      .groupBy("status.statusName")
       .getRawMany();
 
     const formattedCounts = prospectStatusCounts.map((count: any) => {
