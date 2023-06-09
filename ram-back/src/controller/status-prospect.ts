@@ -147,6 +147,55 @@ a status code of 200 and the accumulated counts as JSON. If there is an error, t
 with a status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a
 `reason` property with the error message. */
 
+// statusProspectRouter.get(
+//   "/count-new-prospects/:AgentId",
+//   authMiddleware(),
+//   async (req, res) => {
+//     const AgentId = req.params.AgentId;
+//     try {
+//       const dataSource = await getDataSource();
+//       const prospectStatusRepository =
+//         dataSource.getRepository(ProspectStatusEnt);
+
+//       const prospectStatusCounts = await prospectStatusRepository
+//         .createQueryBuilder("prospectStatus")
+//         .select("prospectStatus.statusId", "statusId")
+//         .addSelect("status.statusName", "statusName")
+//         .addSelect("COUNT(*)", "count")
+//         .innerJoin("prospectStatus.prospect", "prospect")
+//         .innerJoin("prospectStatus.status", "status")
+//         .where("prospect.userId = :AgentId", { AgentId })
+//         .andWhere((qb) => {
+//           const subQuery = qb
+//             .subQuery()
+//             .select("prospectStatus.prospectId")
+//             .from(ProspectStatusEnt, "prospectStatus")
+//             .innerJoin("prospectStatus.status", "status")
+//             .where("status.statusName != 'Nuevo prospecto'")
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             .groupBy("prospectStatus.prospectId", "status.statusName")
+//             .getQuery();
+//           return "prospect.id NOT IN " + subQuery;
+//         })
+//         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//         // @ts-ignore
+//         .groupBy("prospectStatus.statusId", "status.statusName") // Agrupar solo por statusId
+//         .getRawMany();
+
+//       // Mapear los resultados agrupados por statusName
+//       const prospectStatusCountsMapped = prospectStatusCounts.map((result) => ({
+//         statusId: result.statusId,
+//         statusName: result.statusName,
+//         count: result.count,
+//       }));
+
+//       res.status(200).json(prospectStatusCountsMapped);
+//     } catch (e) {
+//       res.status(400).json({ message: "BAD_DATA", reason: e });
+//     }
+//   },
+// );
 statusProspectRouter.get(
   "/count-new-prospects/:AgentId",
   authMiddleware(),
@@ -172,15 +221,12 @@ statusProspectRouter.get(
             .from(ProspectStatusEnt, "prospectStatus")
             .innerJoin("prospectStatus.status", "status")
             .where("status.statusName != 'Nuevo prospecto'")
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            .groupBy("prospectStatus.prospectId", "status.statusName")
+            .groupBy("prospectStatus.prospectId")
             .getQuery();
           return "prospect.id NOT IN " + subQuery;
         })
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        .groupBy("prospectStatus.statusId", "status.statusName") // Agrupar solo por statusId
+        .groupBy("prospectStatus.statusId")
+        .addGroupBy("status.statusName")
         .getRawMany();
 
       // Mapear los resultados agrupados por statusName
