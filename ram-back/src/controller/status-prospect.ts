@@ -167,7 +167,9 @@ statusProspectRouter.get("/count-new-prospects/:AgentId", async (req, res) => {
           .from(ProspectStatusEnt, "prospectStatus")
           .innerJoin("prospectStatus.status", "status")
           .where("status.statusName != 'Nuevo prospecto'")
-          .groupBy("prospectStatus.prospectId")
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          .groupBy("prospectStatus.prospectId", "prospectStatus.statusId")
           .getQuery();
         return "prospect.id NOT IN " + subQuery;
       })
