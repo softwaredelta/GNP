@@ -39,6 +39,51 @@ code of 200 and the accumulated counts as JSON. If there is an error, the respon
 status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a `reason`
 property with the error message. */
 
+// statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
+//   const AgentId = req.params.AgentId;
+//   try {
+//     const dataSource = await getDataSource();
+//     const prospectStatusRepository =
+//       dataSource.getRepository(ProspectStatusEnt);
+
+// statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
+//   const AgentId = req.params.AgentId;
+//   try {
+//     const dataSource = await getDataSource();
+//     const prospectStatusRepository =
+//       dataSource.getRepository(ProspectStatusEnt);
+
+//     const prospectStatusCounts = await prospectStatusRepository
+//       .createQueryBuilder("prospectStatus")
+//       .select("prospectStatus.statusId", "statusId")
+//       .addSelect("status.statusName", "statusName")
+//       .addSelect("COUNT(*)", "count")
+//       .innerJoin("prospectStatus.prospect", "prospect")
+//       .innerJoin("prospectStatus.status", "status")
+//       .where("prospect.userId = :AgentId", { AgentId })
+//       .groupBy("status.statusName") // Agrupar por el nombre del estado
+//       .getRawMany();
+
+//     const accumulatedCounts: { [key: string]: number } = {
+//       "Nuevo prospecto": 0,
+//       "Cita agendada": 0,
+//       "Cita efectiva": 0,
+//       "Solicitud de seguro": 0,
+//       "Poliza pagada": 0,
+//       Retirado: 0,
+//     };
+
+//     prospectStatusCounts.forEach((count: any) => {
+//       const { statusName, count: statusCount } = count;
+//       accumulatedCounts[statusName] += statusCount;
+//     });
+
+//     res.status(200).json(accumulatedCounts);
+//   } catch (e) {
+//     res.status(400).json({ message: "BAD_DATA", reason: e });
+//   }
+// });
+
 statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
   const AgentId = req.params.AgentId;
   try {
@@ -54,7 +99,20 @@ statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
       .innerJoin("prospectStatus.prospect", "prospect")
       .innerJoin("prospectStatus.status", "status")
       .where("prospect.userId = :AgentId", { AgentId })
-      .groupBy("status.statusName") // Agrupar por el nombre del estado
+      .andWhere((qb) => {
+        const subQuery = qb
+          .subQuery()
+          .select("prospectStatus.prospectId")
+          .from(ProspectStatusEnt, "prospectStatus")
+          .innerJoin("prospectStatus.status", "status")
+          .where("status.statusName != 'Nuevo prospecto'")
+          .groupBy("prospectStatus.prospectId")
+          .getQuery();
+        return "prospect.id NOT IN " + subQuery;
+      })
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      .groupBy("prospectStatus.statusId", "status.statusName") // Agregar "prospectStatus.statusId" a la cláusula GROUP BY
       .getRawMany();
 
     const accumulatedCounts: { [key: string]: number } = {
@@ -115,7 +173,7 @@ statusProspectRouter.get("/count-new-prospects/:AgentId", async (req, res) => {
           .getQuery();
         return "prospect.id NOT IN " + subQuery;
       })
-      .groupBy("prospectStatus.statusId")
+      .groupBy("prospectStatus.statusId") // Agrupar solo por statusId
       .getRawMany();
 
     // Mapear los resultados agrupados por statusName
