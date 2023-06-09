@@ -38,12 +38,6 @@ into an object with the total count for each status type, and the response is se
 code of 200 and the accumulated counts as JSON. If there is an error, the response is sent with a
 status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a `reason`
 property with the error message. */
-// statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
-//   const AgentId = req.params.AgentId;
-//   try {
-//     const dataSource = await getDataSource();
-//     const prospectStatusRepository =
-//       dataSource.getRepository(ProspectStatusEnt);
 
 statusProspectRouter.get(
   "/status-by-agents/:AgentId",
@@ -63,9 +57,10 @@ statusProspectRouter.get(
         .innerJoin("prospectStatus.prospect", "prospect")
         .innerJoin("prospectStatus.status", "status")
         .where("prospect.userId = :AgentId", { AgentId })
+
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        .groupBy("prospectStatus.statusId", "status.statusName") // Agrupar por el nombre del estado
+        .groupBy("prospectStatus.statusId", "status.statusName")
         .getRawMany();
 
       const accumulatedCounts: { [key: string]: number } = {
@@ -179,7 +174,7 @@ statusProspectRouter.get(
             .where("status.statusName != 'Nuevo prospecto'")
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            .groupBy("prospectStatus.prospectId", "prospectStatus.statusId")
+            .groupBy("prospectStatus.prospectId", "status.statusName")
             .getQuery();
           return "prospect.id NOT IN " + subQuery;
         })
