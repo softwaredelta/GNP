@@ -46,38 +46,6 @@ export default function VerifySales() {
             />
           )}
         </div>
-        {/* <Tabs.Group
-          aria-label="Default tabs"
-          className="px-8 py-4"
-          style="default"
-        >
-          <Tabs.Item active={true} title="Sin Revisar">
-            <div className="mt-1 flex items-center justify-center">
-              {pendingResponse && (
-                <VerifySalesTable
-                  sales={pendingResponse.sales}
-                  onUpdatedVerifySales={handleUpdate}
-                />
-              )}
-            </div>
-          </Tabs.Item>
-          <Tabs.Item title="Revisados">
-            {verifiedResponse && (
-              <VerifySalesTable
-                sales={verifiedResponse.sales}
-                onUpdatedVerifySales={handleUpdate}
-              />
-            )}
-          </Tabs.Item>
-          <Tabs.Item title="Rechazados">
-            {refusedResponse && (
-              <VerifySalesTable
-                sales={refusedResponse.sales}
-                onUpdatedVerifySales={handleUpdate}
-              />
-            )}
-          </Tabs.Item>
-        </Tabs.Group> */}
       </Wrapper>
     </>
   );
