@@ -10,7 +10,7 @@
 import { useNavigate } from "react-router-dom";
 import useSearch from "../../hooks/useSearch";
 import { IProspect, IStatus } from "../../types";
-import RowProspect from "../prospects/RowProspect";
+import RowProspect from "./RowProspect";
 
 export interface IListProspectsProps {
   prospects: IProspect[];

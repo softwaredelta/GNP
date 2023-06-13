@@ -12,7 +12,7 @@ import useAxios from "../hooks/useAxios";
 import { IGroup, IProspectStatus, IUser } from "../types";
 interface IResult {
   key: string;
-  totalPaidFee: number;
+  totalPaidFee: string;
 }
 interface IMonth {
   initialMonth: number;
@@ -95,7 +95,7 @@ export default function Metrics(): JSX.Element {
     const dataArray: number[] = [];
     for (let i = 0; i < 5; i++) {
       if (data.length > 0) {
-        dataArray.push(data[i].totalPaidFee);
+        dataArray.push(parseFloat(data[i].totalPaidFee));
       } else {
         dataArray.push(0);
       }
@@ -104,14 +104,16 @@ export default function Metrics(): JSX.Element {
   }
 
   function getLineGraph(dataLineGraph: ILineData, start: number, end: number) {
-    const dataArray = [];
+    const dataArray: number[][] = [];
     const month: number = end - start + 1;
 
     for (let i = 0; i < month; i++) {
-      const innerArray = [];
+      const innerArray: number[] = [];
       for (let j = 0; j < 5; j++) {
         if (dataLineGraph.sales[i]?.results.length > 0) {
-          innerArray.push(dataLineGraph.sales[i].results[j]?.totalPaidFee || 0);
+          innerArray.push(
+            parseFloat(dataLineGraph.sales[i].results[j]?.totalPaidFee) || 0,
+          );
         } else {
           innerArray.push(0);
         }
