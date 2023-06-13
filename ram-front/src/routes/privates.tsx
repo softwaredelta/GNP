@@ -89,6 +89,22 @@ export const RegularUserRoutes: IRoute[] = [
     path: "/profile/:id",
     Component: () => <Profile />,
   },
+  {
+    path: "/group-delivery/:id",
+    Component: () => <DeliveryGroup />,
+  },
+  {
+    path: "/my-profile",
+    Component: () => <MyProfile />,
+  },
+  {
+    path: "/prospect-history/:id",
+    Component: () => <ProspectsHistory />,
+  },
+  {
+    path: "/profile/:id",
+    Component: () => <Profile />,
+  },
 ];
 
 export const ManagerUserRoutes: IRoute[] = [

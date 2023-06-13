@@ -109,7 +109,9 @@ export default function ManagerCourses() {
             </div>
           </div>
           <div className="grid place-items-center md:grid-cols-4">
-            {groups && <ManagerListGroups groups={groups} />}
+            {groups && (
+              <ManagerListGroups groups={groups} onUpdated={updateGroups} />
+            )}
           </div>
         </div>
       </Wrapper>
