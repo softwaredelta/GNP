@@ -36,9 +36,12 @@ export async function getDataSource(): Promise<DataSource> {
   if (process.env.NODE_ENV === "test" || !process.env.NODE_ENV) {
     // test and local uses a local in-memory database
     dataSource = new DataSource({
-      type: "sqlite",
-      database: ":memory:",
-      dropSchema: true,
+      type: "postgres",
+      host: "localhost",
+      port: 5342,
+      database: "ram",
+      username: "postgres",
+      password: "",
       entities,
     });
 
