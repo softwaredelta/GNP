@@ -468,7 +468,11 @@ export async function deleteUser(params: {
   }
   return ds.manager
     .update(UserEnt, params.id, {
+<<<<<<< HEAD
       isActive: 0,
+=======
+      isActive: false,
+>>>>>>> bbb776925d909ba7a4115e4c0a344aa23492a443
     })
     .then(async () => {
       const user = await ds.manager.findOneOrFail(UserEnt, {

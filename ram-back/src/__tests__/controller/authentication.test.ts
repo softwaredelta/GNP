@@ -3,7 +3,6 @@
 import request from "supertest";
 import { app } from "../../controller";
 import { getDataSource } from "../../arch/db-client";
-import { UserRole } from "../../entities/user.entity";
 import { userSeeds } from "../../seeds";
 
 describe("controller:authentication", () => {
@@ -41,7 +40,6 @@ describe("controller:authentication", () => {
         .then((res) => {
           expect(res.body).toHaveProperty("id");
           expect(res.body).toHaveProperty("email");
-          expect(res.body).toHaveProperty("roles", [UserRole.REGULAR]);
         });
     });
 

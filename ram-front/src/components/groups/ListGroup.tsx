@@ -15,7 +15,17 @@ export interface IListGroupProps {
 export default function ListGroup({ groups }: IListGroupProps): JSX.Element {
   const fileUrl = useUrlFile();
   const navigate = useNavigate();
-  if (groups.length === 0) return <h1>No hay grupos</h1>;
+  if (groups.length === 0)
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <h1 className="mb-4 text-3xl font-bold text-gray-700">No hay grupos</h1>
+        <p className="text-center text-lg text-gray-500">
+          No estás registrado en ningún grupo en este momento.
+          <br />
+          Por favor, inténtelo de nuevo más tarde.
+        </p>
+      </div>
+    );
 
   return (
     <>
