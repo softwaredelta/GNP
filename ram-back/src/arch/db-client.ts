@@ -33,15 +33,35 @@ export async function getDataSource(): Promise<DataSource> {
     return dataSource;
   }
 
-  if (process.env.NODE_ENV === "test" || !process.env.NODE_ENV) {
-    // test and local uses a local in-memory database
+  if (process.env.NODE_ENV === "development") {
     dataSource = new DataSource({
       type: "postgres",
       host: "localhost",
-      port: 5342,
+      port: 5432,
       database: "ram",
       username: "postgres",
       password: "",
+      entities,
+    });
+    await dataSource.initialize();
+
+    await dataSource.synchronize(true);
+
+    if (!process.env.NODE_ENV) {
+      // on local development we want to initialize the database with some data
+      console.warn("Loading seeds for local development...");
+      await loadSeeds();
+    }
+
+    return dataSource;
+  }
+
+  if (process.env.NODE_ENV === "test" || !process.env.NODE_ENV) {
+    // test and local uses a local in-memory database
+    dataSource = new DataSource({
+      type: "sqlite",
+      database: ":memory:",
+      dropSchema: true,
       entities,
     });
 
