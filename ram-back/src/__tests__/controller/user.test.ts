@@ -628,4 +628,50 @@ describe("controller:user", () => {
       expect(links.length).toBeGreaterThan(0);
     });
   });
+
+  describe("Delete user", () => {
+    let user: UserEnt;
+    let managerAccessToken: string;
+    beforeEach(async () => {
+      const { user: createdUser, error } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+        imageUrl: "https://example.com/image.png",
+      });
+      expect(error).toBeUndefined();
+      user = createdUser;
+
+      await userSeeds();
+
+      const authenticationResponse = await request(app)
+        .post("/user/authenticate")
+        .send({
+          email: "manager@delta.tec.mx",
+          password: "password",
+        })
+        .then((res) => res.body);
+
+      managerAccessToken = authenticationResponse.accessToken;
+    });
+
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .get("/user/delete")
+        .query({ query: "use" })
+        .send()
+        .expect(401);
+    });
+
+    it("deletes an existing user", async () => {
+      const res = await request(app)
+        .post(`/user/delete/${user.id}`)
+        .set("Authorization", `Bearer ${managerAccessToken}`)
+        .expect(200);
+
+      expect(res.body.user).toBeDefined();
+      expect(res.body.user.id).toEqual(user.id);
+    });
+  });
 });
