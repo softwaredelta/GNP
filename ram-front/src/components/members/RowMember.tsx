@@ -18,6 +18,7 @@ export interface MembersCardProps {
   isActive: number;
   imageUrl: string;
   email: string;
+  isManager: boolean;
   updateMembers: () => void;
 }
 
@@ -29,6 +30,7 @@ export default function RowMember({
   isActive,
   imageUrl,
   email,
+  isManager,
   updateMembers,
 }: MembersCardProps): JSX.Element {
   const urlfile = useUrlFile();
@@ -97,72 +99,92 @@ export default function RowMember({
           </div>
         )}
       </Table.Cell>
-      <Table.Cell align="center">
-        {isActive === 1 ? (
-          <div className="inline-block rounded-full bg-green-400 py-1 px-2 font-bold text-white">
-            {"Activo"}
-          </div>
-        ) : (
-          <div className=" inline-block rounded-full bg-red-400  py-1  px-2 font-bold text-white">
-            {"Inactivo"}
-          </div>
-        )}
-      </Table.Cell>
-      <Table.Cell align="center">
-        <div className=" grid grid-cols-3 gap-2">
+      {isManager ? (
+        <>
+          <Table.Cell align="center">
+            {isActive === 1 ? (
+              <div className="inline-block rounded-full bg-green-400 py-1 px-2 font-bold text-white">
+                {"Activo"}
+              </div>
+            ) : (
+              <div className=" inline-block rounded-full bg-red-400  py-1  px-2 font-bold text-white">
+                {"Inactivo"}
+              </div>
+            )}
+          </Table.Cell>
+
+          <Table.Cell align="center">
+            <div className=" grid grid-cols-3 gap-2">
+              <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+                <Link to={`/view-profile/${id}`}>
+                  <FiEye
+                    size={20}
+                    className="text-gray-500 hover:stroke-gnp-blue-900"
+                  />
+                </Link>
+              </div>
+              <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+                <Link to={`/profile/${id}`}>
+                  <FiEdit
+                    color="gray"
+                    size={20}
+                    className="hover:scale-105 hover:stroke-gnp-blue-300"
+                  />
+                </Link>
+              </div>
+              {isActive === 1 ? (
+                <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+                  <button onClick={() => handleDelete()}>
+                    <FiTrash2
+                      color="gray"
+                      size={20}
+                      className="hover:scale-105 hover:stroke-red-800"
+                    />
+                  </button>
+                </div>
+              ) : (
+                <button disabled>
+                  <FiTrash2
+                    color="gray"
+                    size={20}
+                    className="cursor-not-allowed"
+                  />
+                </button>
+              )}
+            </div>
+          </Table.Cell>
+          <Table.Cell align="center">
+            {rol === "regular" ? (
+              <button
+                onClick={() => navigate(`/metrics/${id}`)}
+                className="btn-primary"
+              >
+                Ver resumen
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  alert("No disponible para gerentes");
+                }}
+                className="btn-disabled"
+              >
+                Ver resumen
+              </button>
+            )}
+          </Table.Cell>
+        </>
+      ) : (
+        <Table.Cell align="center">
           <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <Link to={`/view-profile/${id}`}>
+            <Link to={`/view-manager/${id}`}>
               <FiEye
                 size={20}
                 className="text-gray-500 hover:stroke-gnp-blue-900"
               />
             </Link>
           </div>
-          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <Link to={`/profile/${id}`}>
-              <FiEdit
-                color="gray"
-                size={20}
-                className="hover:scale-105 hover:stroke-gnp-blue-300"
-              />
-            </Link>
-          </div>
-          {isActive === 1 ? (
-            <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-              <button onClick={() => handleDelete()}>
-                <FiTrash2
-                  color="gray"
-                  size={20}
-                  className="hover:scale-105 hover:stroke-red-800"
-                />
-              </button>
-            </div>
-          ) : (
-            <button disabled>
-              <FiTrash2 color="gray" size={20} className="cursor-not-allowed" />
-            </button>
-          )}
-        </div>
-      </Table.Cell>
-      <Table.Cell align="center">
-        {rol === "regular" ? (
-          <button
-            onClick={() => navigate(`/metrics/${id}`)}
-            className="btn-primary"
-          >
-            Ver resumen
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              alert("No disponible para gerentes");
-            }}
-            className="btn-disabled"
-          >
-            Ver resumen
-          </button>
-        )}
-      </Table.Cell>
+        </Table.Cell>
+      )}
     </Table.Row>
   );
 }

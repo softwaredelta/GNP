@@ -12,11 +12,13 @@ interface ProfileCardProps {
   user: IUser;
   fileChanged?: (file: File) => void;
   isEdit: boolean;
+  isManager?: boolean;
 }
 
 export default function ProfileCard({
   user,
   isEdit,
+  isManager = true,
   fileChanged,
 }: ProfileCardProps) {
   const { setPreviewImage, imgRef } = usePreviewImage();
@@ -99,7 +101,7 @@ export default function ProfileCard({
           </Badge>
         </div>
       </div>
-      {!isEdit && (
+      {!isEdit && isManager && (
         <div className="absolute top-0 right-0">
           <button
             className="floating-button-primary"

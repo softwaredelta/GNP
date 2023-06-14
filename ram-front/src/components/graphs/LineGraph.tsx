@@ -5,6 +5,7 @@ import HighchartsReact from "highcharts-react-official";
 import { useRef } from "react";
 
 export interface ILineGraphProps {
+  dataKey: string[];
   data: number[][];
   dataPie: number[];
   start: Date;
@@ -16,6 +17,7 @@ export default function LineGraph({
   start,
   end,
   dataPie,
+  dataKey,
 }: ILineGraphProps): JSX.Element {
   function getMonthString(first: Date, last: Date): string[] {
     const monthNames: string[] = [
@@ -72,31 +74,31 @@ export default function LineGraph({
     },
     series: [
       {
-        name: "SGMM",
+        name: dataKey[0],
         type: "column",
         data: data[0],
         color: "#086fb4",
       },
       {
-        name: "VIDA",
+        name: dataKey[1],
         type: "column",
         data: data[1],
         color: "#92D14F",
       },
       {
-        name: "PYMES",
+        name: dataKey[2],
         type: "column",
         data: data[2],
         color: "#0C243E",
       },
       {
-        name: "PATRIMONIAL",
+        name: dataKey[3],
         type: "column",
         data: data[3],
         color: "#E36C06",
       },
       {
-        name: "AUTOS",
+        name: dataKey[4],
         type: "column",
         data: data[4],
         color: "#ff66cc",
@@ -106,7 +108,7 @@ export default function LineGraph({
         name: "Total",
         data: [
           {
-            name: "SGMM",
+            name: dataKey[0],
             y: dataPie[0],
             color: "#086fb4",
             dataLabels: {
@@ -120,22 +122,22 @@ export default function LineGraph({
             },
           },
           {
-            name: "VIDA",
+            name: dataKey[1],
             y: dataPie[1],
             color: "#92D14F",
           },
           {
-            name: "PYMES",
+            name: dataKey[2],
             y: dataPie[2],
             color: "#0C243E",
           },
           {
-            name: "PATRIMONIAL",
+            name: dataKey[3],
             y: dataPie[3],
             color: "#E36C06",
           },
           {
-            name: "AUTOS",
+            name: dataKey[4],
             y: dataPie[4],
             color: "#ff66cc",
           },

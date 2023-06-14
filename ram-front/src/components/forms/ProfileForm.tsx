@@ -17,6 +17,7 @@ export interface IUserFormProps {
   handleLinkEdit?: (data: ILink) => void;
   links: ILink[];
   isEdit?: boolean;
+  isManager?: boolean;
 }
 
 export default function ProfileForm({
@@ -39,6 +40,7 @@ export default function ProfileForm({
   handleLinkEdit,
   links,
   isEdit = true,
+  isManager = true,
 }: IUserFormProps) {
   const { register, handleSubmit, reset, watch } = useForm<IUser>({
     defaultValues: {
@@ -61,6 +63,7 @@ export default function ProfileForm({
               setFile(fileSelected);
             }}
             isEdit={isEdit}
+            isManager={isManager}
           />
         </div>
       </div>
@@ -220,26 +223,28 @@ export default function ProfileForm({
                     {initialUser.mobile}
                   </dd>
                 </div>
-                <div className="flex flex-col pt-3">
-                  <dt className="mb-1 text-gray-500 dark:text-gray-400 md:text-lg">
-                    PP200
-                  </dt>
-                  <dd className="text-lg font-semibold">
-                    {initialUser.urlPP200 ? (
-                      <div
-                        className="flex cursor-pointer items-center text-[#157013]  hover:text-[#2d572c]"
-                        onClick={() => {
-                          window.open(initialUser.urlPP200, "_blank");
-                        }}
-                      >
-                        <span>Link al PP200</span>
-                        <RiFileExcel2Fill className="ml-2 underline transition-all ease-in-out hover:scale-105" />
-                      </div>
-                    ) : (
-                      "No tienes ligado tu PP200"
-                    )}
-                  </dd>
-                </div>
+                {isManager && (
+                  <div className="flex flex-col pt-3">
+                    <dt className="mb-1 text-gray-500 dark:text-gray-400 md:text-lg">
+                      PP200
+                    </dt>
+                    <dd className="text-lg font-semibold">
+                      {initialUser.urlPP200 ? (
+                        <div
+                          className="flex cursor-pointer items-center text-[#157013]  hover:text-[#2d572c]"
+                          onClick={() => {
+                            window.open(initialUser.urlPP200, "_blank");
+                          }}
+                        >
+                          <span>Link al PP200</span>
+                          <RiFileExcel2Fill className="ml-2 underline transition-all ease-in-out hover:scale-105" />
+                        </div>
+                      ) : (
+                        "No tienes ligado tu PP200"
+                      )}
+                    </dd>
+                  </div>
+                )}
               </dl>
             </div>
           )}

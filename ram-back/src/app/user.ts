@@ -301,6 +301,35 @@ export async function getAllUserRol(): Promise<{
   return { userRol: users.map((user) => userToUserRol(user)) };
 }
 
+export async function getOnlyManagersUserRol(): Promise<{
+  userRol: UserRol[];
+  error?: UserError;
+}> {
+  const ds = await getDataSource();
+  const users = await ds
+    .createQueryBuilder()
+    .from(UserEnt, "UserEnt")
+    .select([
+      "UserEnt.id",
+      "UserEnt.name",
+      "UserEnt.lastName",
+      "UserEnt.isActive",
+      "UserEnt.imageUrl",
+      "UserEnt.rolesString",
+      "UserEnt.email",
+    ])
+    .where("UserEnt.rolesString LIKE :query", {
+      query: `%${UserRole.MANAGER}%`,
+    })
+    .orderBy("UserEnt.name", "ASC")
+    .getMany();
+  if (!users) {
+    return { error: UserError.USER_NOT_FOUND, userRol: [] as UserRol[] };
+  }
+
+  return { userRol: users.map((user) => userToUserRol(user)) };
+}
+
 export async function getAgentById(agentId: string): Promise<string> {
   const ds = await getDataSource();
 

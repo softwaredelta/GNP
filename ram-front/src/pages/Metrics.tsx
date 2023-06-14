@@ -30,6 +30,7 @@ export default function Metrics(): JSX.Element {
     new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1),
   );
   const [endDate, setEndDate] = useState<Date>(new Date());
+  const [assuranceTypeKey, setAssuranceTypeKey] = useState<string[]>([]);
 
   const { id } = useParams<{ id: string }>();
   const {
@@ -101,6 +102,7 @@ export default function Metrics(): JSX.Element {
 
   function getLineGraph(dataLineGraph: ILineData, start: Date, end: Date) {
     const dataArray: number[][] = [];
+    const keyArray: string[] = [];
     const startYear = start.getFullYear();
     const endYear = end.getFullYear();
     const startMonth2 = start.getMonth();
@@ -123,6 +125,10 @@ export default function Metrics(): JSX.Element {
       dataArray.push(innerArray);
     }
 
+    for (let i = 0; i < 5; i++) {
+      keyArray.push(dataLineGraph.sales[0]?.results[i]?.key || "");
+    }
+
     const invertedArray: number[][] = [];
     for (let i = 0; i < dataArray[0].length; i++) {
       invertedArray.push([]);
@@ -133,6 +139,7 @@ export default function Metrics(): JSX.Element {
     }
     getPieGraph(dataLineGraph.pieChart);
     setLineData(invertedArray);
+    setAssuranceTypeKey(keyArray);
   }
 
   function getTotals(totalsData: number[][]) {
@@ -180,9 +187,7 @@ export default function Metrics(): JSX.Element {
               Ventas
             </h1>
           </div>
-          {lineData &&
-          pieData &&
-          lineData.flat().reduce((a, b) => a + b, 0) !== 0 ? (
+          {lineData && pieData ? (
             <>
               <div className="mt-4 grid grid-cols-3 gap-4">
                 <div>
@@ -233,6 +238,7 @@ export default function Metrics(): JSX.Element {
                 dataPie={getTotals(lineData)}
                 start={startDate}
                 end={endDate}
+                dataKey={assuranceTypeKey}
               />
             </>
           ) : (
