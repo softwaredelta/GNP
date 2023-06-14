@@ -40,18 +40,15 @@ export async function getDataSource(): Promise<DataSource> {
       port: 5432,
       database: "ram",
       username: "postgres",
-      password: "",
+      password: "021201",
       entities,
     });
     await dataSource.initialize();
 
     await dataSource.synchronize(true);
 
-    if (!process.env.NODE_ENV) {
-      // on local development we want to initialize the database with some data
-      console.warn("Loading seeds for local development...");
-      await loadSeeds();
-    }
+    console.warn("Loading seeds for local development...");
+    await loadSeeds();
 
     return dataSource;
   }
