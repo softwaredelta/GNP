@@ -38,50 +38,50 @@ into an object with the total count for each status type, and the response is se
 code of 200 and the accumulated counts as JSON. If there is an error, the response is sent with a
 status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a `reason`
 property with the error message. */
-statusProspectRouter.get("/status-by-agents/:AgentId", async (req, res) => {
-  const AgentId = req.params.AgentId;
-  try {
-    const dataSource = await getDataSource();
-    const prospectStatusRepository =
-      dataSource.getRepository(ProspectStatusEnt);
 
-    const prospectStatusCounts = await prospectStatusRepository
-      .createQueryBuilder("prospectStatus")
-      .select("prospectStatus.statusId", "statusId")
-      .addSelect("status.statusName", "statusName")
-      .addSelect("COUNT(*)", "count")
-      .innerJoin("prospectStatus.prospect", "prospect")
-      .innerJoin("prospectStatus.status", "status")
-      .where("prospect.userId = :AgentId", { AgentId })
-      .groupBy("prospectStatus.statusId")
-      .getRawMany();
+statusProspectRouter.get(
+  "/status-by-agents/:AgentId",
+  authMiddleware(),
+  async (req, res) => {
+    const AgentId = req.params.AgentId;
+    try {
+      const dataSource = await getDataSource();
+      const prospectStatusRepository =
+        dataSource.getRepository(ProspectStatusEnt);
 
-    const formattedCounts = prospectStatusCounts.map((count: any) => {
-      return {
-        statusId: count.statusId,
-        statusName: count.statusName,
-        count: count.count,
+      const prospectStatusCounts = await prospectStatusRepository
+        .createQueryBuilder("prospectStatus")
+        .select("prospectStatus.statusId", "statusId")
+        .addSelect("status.statusName", "statusName")
+        .addSelect("COUNT(*)", "count")
+        .innerJoin("prospectStatus.prospect", "prospect")
+        .innerJoin("prospectStatus.status", "status")
+        .where("prospect.userId = :AgentId", { AgentId })
+
+        .groupBy("prospectStatus.statusId")
+        .addGroupBy("status.statusName")
+        .getRawMany();
+
+      const accumulatedCounts: { [key: string]: number } = {
+        "Nuevo prospecto": 0,
+        "Cita agendada": 0,
+        "Cita efectiva": 0,
+        "Solicitud de seguro": 0,
+        "Poliza pagada": 0,
+        Retirado: 0,
       };
-    });
 
-    const accumulatedCounts: { [key: string]: number } = {
-      "Nuevo prospecto": 0,
-      "Cita agendada": 0,
-      "Cita efectiva": 0,
-      "Solicitud de seguro": 0,
-      "Poliza pagada": 0,
-      Retirado: 0,
-    };
+      prospectStatusCounts.forEach((count: any) => {
+        const { statusName, count: statusCount } = count;
+        accumulatedCounts[statusName] += parseInt(statusCount);
+      });
 
-    formattedCounts.forEach((count) => {
-      accumulatedCounts[count.statusName] += count.count;
-    });
-
-    res.status(200).json(accumulatedCounts);
-  } catch (e) {
-    res.status(400).json({ message: "BAD_DATA", reason: e });
-  }
-});
+      res.status(200).json(accumulatedCounts);
+    } catch (e) {
+      res.status(400).json({ message: "BAD_DATA", reason: e });
+    }
+  },
+);
 
 /* This code defines a route for the `statusProspectRouter` object using the HTTP GET method and a URL
 parameter `:AgentId`. When a request is made to this route, it retrieves the count of new prospects
@@ -94,37 +94,50 @@ accumulated into an object with the status ID, status name, and count, and the r
 a status code of 200 and the accumulated counts as JSON. If there is an error, the response is sent
 with a status code of 400 and a JSON object with a `message` property set to "BAD_DATA" and a
 `reason` property with the error message. */
-statusProspectRouter.get("/count-new-prospects/:AgentId", async (req, res) => {
-  const AgentId = req.params.AgentId;
-  try {
-    const dataSource = await getDataSource();
-    const prospectStatusRepository =
-      dataSource.getRepository(ProspectStatusEnt);
 
-    const prospectStatusCounts = await prospectStatusRepository
-      .createQueryBuilder("prospectStatus")
-      .select("prospectStatus.statusId", "statusId")
-      .addSelect("status.statusName", "statusName")
-      .addSelect("COUNT(*)", "count")
-      .innerJoin("prospectStatus.prospect", "prospect")
-      .innerJoin("prospectStatus.status", "status")
-      .where("prospect.userId = :AgentId", { AgentId })
-      .andWhere((qb) => {
-        const subQuery = qb
-          .subQuery()
-          .select("prospectStatus.prospectId")
-          .from(ProspectStatusEnt, "prospectStatus")
-          .innerJoin("prospectStatus.status", "status")
-          .where("status.statusName != 'Nuevo prospecto'")
-          .groupBy("prospectStatus.prospectId")
-          .getQuery();
-        return "prospect.id NOT IN " + subQuery;
-      })
-      .groupBy("prospectStatus.statusId")
-      .getRawMany();
+statusProspectRouter.get(
+  "/count-new-prospects/:AgentId",
+  authMiddleware(),
+  async (req, res) => {
+    const AgentId = req.params.AgentId;
+    try {
+      const dataSource = await getDataSource();
+      const prospectStatusRepository =
+        dataSource.getRepository(ProspectStatusEnt);
 
-    res.status(200).json(prospectStatusCounts);
-  } catch (e) {
-    res.status(400).json({ message: "BAD_DATA", reason: e });
-  }
-});
+      const prospectStatusCounts = await prospectStatusRepository
+        .createQueryBuilder("prospectStatus")
+        .select("prospectStatus.statusId", "statusId")
+        .addSelect("status.statusName", "statusName")
+        .addSelect("COUNT(*)", "count")
+        .innerJoin("prospectStatus.prospect", "prospect")
+        .innerJoin("prospectStatus.status", "status")
+        .where("prospect.userId = :AgentId", { AgentId })
+        .andWhere((qb) => {
+          const subQuery = qb
+            .subQuery()
+            .select("prospectStatus.prospectId")
+            .from(ProspectStatusEnt, "prospectStatus")
+            .innerJoin("prospectStatus.status", "status")
+            .where("status.statusName != 'Nuevo prospecto'")
+            .groupBy("prospectStatus.prospectId")
+            .getQuery();
+          return "prospect.id NOT IN " + subQuery;
+        })
+        .groupBy("prospectStatus.statusId")
+        .addGroupBy("status.statusName")
+        .getRawMany();
+
+      // Mapear los resultados agrupados por statusName
+      const prospectStatusCountsMapped = prospectStatusCounts.map((result) => ({
+        statusId: result.statusId,
+        statusName: result.statusName,
+        count: result.count,
+      }));
+
+      res.status(200).json(prospectStatusCountsMapped);
+    } catch (e) {
+      res.status(400).json({ message: "BAD_DATA", reason: e });
+    }
+  },
+);
