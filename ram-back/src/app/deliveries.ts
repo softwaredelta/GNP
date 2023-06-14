@@ -54,7 +54,7 @@ export async function createDelivery(params: {
       return { delivery };
     })
     .catch((e) => ({
-      error: DeliveryError.UNHANDLED,
+      error: e,
       errorReason: e,
       delivery: {} as DeliveryEnt,
     }));
