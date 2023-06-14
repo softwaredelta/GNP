@@ -161,11 +161,7 @@ describe("controller:deliveries", () => {
         imageUrl: "test-image-url-1",
       });
       await setDeliverieToUser({
-<<<<<<< HEAD
-        idUser: "1",
-=======
         idUser: idUser,
->>>>>>> 017308871a0ebe6f9d3bd2f8cf1e2d80a367a00c
         idDeliverie: delivery1.delivery.id,
         dateDelivery: new Date("2023-04-25"),
         status: StatusUserDelivery.withoutSending,
