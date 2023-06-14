@@ -30,10 +30,6 @@ export default function Metrics(): JSX.Element {
     new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1),
   );
   const [endDate, setEndDate] = useState<Date>(new Date());
-  const [startMonth, setStartMonth] = useState<number>(
-    new Date().getMonth() - 2,
-  );
-  const [endMonth, setEndMonth] = useState<number>(new Date().getMonth());
 
   const { id } = useParams<{ id: string }>();
   const {
@@ -103,9 +99,15 @@ export default function Metrics(): JSX.Element {
     setPieData(dataArray);
   }
 
-  function getLineGraph(dataLineGraph: ILineData, start: number, end: number) {
+  function getLineGraph(dataLineGraph: ILineData, start: Date, end: Date) {
     const dataArray: number[][] = [];
-    const month: number = end - start + 1;
+    const startYear = start.getFullYear();
+    const endYear = end.getFullYear();
+    const startMonth2 = start.getMonth();
+    const endMonth2 = end.getMonth();
+    const diffYears = endYear - startYear;
+    const diffMonths = endMonth2 - startMonth2;
+    const month = diffYears * 12 + diffMonths + 1;
 
     for (let i = 0; i < month; i++) {
       const innerArray: number[] = [];
@@ -146,8 +148,8 @@ export default function Metrics(): JSX.Element {
   }
 
   useEffect(() => {
-    if (dataLine) getLineGraph(dataLine, startMonth, endMonth);
-    if (dataLineUpdated) getLineGraph(dataLineUpdated, startMonth, endMonth);
+    if (dataLine) getLineGraph(dataLine, startDate, endDate);
+    if (dataLineUpdated) getLineGraph(dataLineUpdated, startDate, endDate);
   }, [dataLine, dataLineUpdated]);
 
   if (loadingGroups || userLoading) return <h1>Loading ...</h1>;
@@ -178,9 +180,7 @@ export default function Metrics(): JSX.Element {
               Ventas
             </h1>
           </div>
-          {lineData &&
-          pieData &&
-          lineData.flat().reduce((a, b) => a + b, 0) !== 0 ? (
+          {lineData && pieData ? (
             <>
               <div className="mt-4 grid grid-cols-3 gap-4">
                 <div>
@@ -216,8 +216,8 @@ export default function Metrics(): JSX.Element {
                         initialDate: startDate,
                         finalDate: endDate,
                       });
-                      setStartMonth(new Date(startDate).getMonth());
-                      setEndMonth(new Date(endDate).getMonth());
+                      setStartDate(new Date(startDate));
+                      setEndDate(new Date(endDate));
                     }}
                   >
                     {" "}
@@ -229,8 +229,8 @@ export default function Metrics(): JSX.Element {
               <LineGraph
                 data={lineData}
                 dataPie={getTotals(lineData)}
-                firstMonth={startMonth}
-                lastMonth={endMonth}
+                start={startDate}
+                end={endDate}
               />
             </>
           ) : (
