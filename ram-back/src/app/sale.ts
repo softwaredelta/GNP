@@ -270,6 +270,7 @@ export async function getSalesByMonth(params: {
               .leftJoinAndSelect("sell.user", "user")
               .select("SUM(sell.paidFee)", "totalPaidFee")
               .where("sell.userId = :userId", { userId: params.userId })
+              .andWhere("sell.status = :status", { status: "Aceptada" })
               .andWhere("sell.assuranceTypeId = :assuranceTypeId", {
                 assuranceTypeId: query.assuranceTypeId,
               })
