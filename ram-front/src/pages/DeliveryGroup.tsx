@@ -3,7 +3,6 @@
 // * M1_S03
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=2139953787
 // * M1_S012
-import LinkDelivery from "../components/deliverables/LinkDelivery";
 import Wrapper from "../containers/Wrapper";
 import { FileInput, Toast } from "flowbite-react";
 import { useState, useEffect } from "react";
@@ -16,6 +15,7 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { useOpenFile } from "../lib/files";
 import { FiEye, FiSend } from "react-icons/fi";
+import LinkList from "../components/generics/lists/LinkList";
 
 export default function DeliveryGroup(): JSX.Element {
   const [file, setFile] = useState<File | null | string>(null);
@@ -123,11 +123,8 @@ export default function DeliveryGroup(): JSX.Element {
         <div className="grid w-full grid-cols-7 gap-12 px-14">
           <div className="col-span-4 px-8">
             <DeliveryDescription description={delivery?.description || ""} />
-            <h1 className="pt-8 text-2xl font-semibold  text-gnp-orange-500">
-              Links
-            </h1>
-            <div className="px-12 text-lg">
-              <LinkDelivery links={delivery?.deliveryLinks ?? []} />
+            <div className="w-3/4 px-12 pt-20 text-lg">
+              <LinkList links={delivery?.deliveryLinks ?? []} isEdit={false} />
             </div>
           </div>
           <div className="col-span-3 flex w-4/5 flex-col items-center pl-4">

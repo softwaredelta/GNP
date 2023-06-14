@@ -136,7 +136,7 @@ export const IS_ACTIVE_COLUMN: ColumnOptions = {
 };
 
 export const BOOLEAN_COLUMN: ColumnOptions = {
-  type: "int",
+  type: "varchar",
   nullable: true,
   default: 1,
 };
