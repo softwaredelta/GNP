@@ -4,8 +4,8 @@
  */
 
 import { DataSource } from "typeorm";
-import { adminSeeds, loadSeeds } from "../seeds";
 import { entities } from "../entities";
+import { adminSeeds, loadSeeds } from "../seeds";
 
 let dataSource: DataSource | null = null;
 
@@ -40,7 +40,7 @@ export async function getDataSource(): Promise<DataSource> {
       port: 5432,
       database: "ram",
       username: "postgres",
-      password: "Zapato25$",
+      password: "M001939@s135",
       entities,
     });
     await dataSource.initialize();

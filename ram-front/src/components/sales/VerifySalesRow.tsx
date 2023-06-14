@@ -3,7 +3,8 @@
 // * M2_S04
 
 import { Table } from "flowbite-react";
-import { FiEye, FiCheck, FiX } from "react-icons/fi";
+import { useEffect } from "react";
+import { FiCheck, FiEye, FiX } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
@@ -11,7 +12,6 @@ import useModal from "../../hooks/useModal";
 import { useOpenFile } from "../../lib/files";
 import { ISell } from "../../types";
 import Modal from "../generics/Modal";
-import { useEffect } from "react";
 
 type Props = {
   sale: ISell;
@@ -124,7 +124,7 @@ export default function SalesRow({ sale, onUpdated }: Props) {
               </div>
             </Modal>
           )}
-          {sale.status === "sin revisar" && (
+          {sale.status === "Sin revisar" && (
             <>
               <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
                 <FiCheck

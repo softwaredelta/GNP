@@ -60,11 +60,12 @@ export function UserDeliveryRow({ delivery, onUpdate }: Props) {
       numeric: "auto",
     });
 
+    const timeZoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+    const deliveryDate =
+      new Date(delivery.dateDelivery).getTime() + timeZoneOffset;
+
     let dateString = dateFormatter.format(
-      Math.floor(
-        (new Date().getTime() - new Date(delivery.dateDelivery).getTime()) /
-          (1000 * 60 * 60 * 24),
-      ),
+      Math.floor((new Date().getTime() - deliveryDate) / (1000 * 60 * 60 * 24)),
       "day",
     );
 
