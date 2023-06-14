@@ -1,6 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import { getDataSource } from "../arch/db-client";
+import { AssuranceTypeEnt } from "../entities/assurance-type.entity";
 import { SellEnt } from "../entities/sell.entity";
 import { Between, Like } from "typeorm";
 
@@ -232,6 +233,11 @@ type Result = {
   totalPaidFee: number;
 };
 
+type Query = {
+  assuranceTypeId: string;
+  resultKey: string;
+};
+
 export async function getSalesByMonth(params: {
   userId: string;
   initialDate: Date;
@@ -249,13 +255,14 @@ export async function getSalesByMonth(params: {
   );
   const db = await getDataSource();
 
-  const queries = [
-    { assuranceTypeId: 1, resultKey: "GMM" },
-    { assuranceTypeId: 2, resultKey: "Vida" },
-    { assuranceTypeId: 3, resultKey: "PYMES" },
-    { assuranceTypeId: 4, resultKey: "PATRIMONIAL" },
-    { assuranceTypeId: 5, resultKey: "AUTOS" },
-  ];
+  const queries: Query[] = [];
+  const assuranceTypes = await db.manager.find(AssuranceTypeEnt);
+  assuranceTypes.forEach((assuranceType) => {
+    queries.push({
+      assuranceTypeId: assuranceType.id,
+      resultKey: assuranceType.name,
+    });
+  });
 
   let results: Result[] = [];
 

@@ -85,6 +85,7 @@ export default function Members() {
               <TableMembers
                 members={membersResponse}
                 updateMembers={refreshMembers}
+                isManager={true}
               />
             </div>
           )}
