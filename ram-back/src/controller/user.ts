@@ -14,6 +14,7 @@ import {
   addLink,
   updateLink,
   deleteUser,
+  getOnlyManagersUserRol,
 } from "../app/user";
 import { getDataSource } from "../arch/db-client";
 import { UserEnt, UserRole } from "../entities/user.entity";
@@ -373,6 +374,14 @@ authRouter.get(
   },
 );
 
+authRouter.get(
+  "/managers",
+  authMiddleware({ neededRoles: [UserRole.REGULAR] }),
+  async (req, res) => {
+    const { userRol } = await getOnlyManagersUserRol();
+    res.json(userRol);
+  },
+);
 /* The above code is defining a GET endpoint for the authRouter that takes an ID parameter. It is using
 an authMiddleware function to authenticate the request. Once authenticated, it connects to a
 database using the getDataSource function and retrieves a user entity with the specified ID and its

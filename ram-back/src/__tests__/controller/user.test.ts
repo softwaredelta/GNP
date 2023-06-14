@@ -15,16 +15,17 @@ import { UserLinkEnt } from "../../entities/user-link.entity";
 
 describe("controller:user", () => {
   let adminAccessToken: string;
+  let idUser: string;
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.synchronize(true);
 
     await adminSeeds();
-    await createUser({
-      id: "1",
+    const { user } = await createUser({
       email: "fermin@delta.tec.mx",
       password: "L3LitoB3b3ciT0Itc",
     });
+    idUser = user.id;
 
     const { auth } = await authenticateUser({
       email: "admin@delta.tec.mx",
@@ -259,7 +260,7 @@ describe("controller:user", () => {
         email: "test-u-1@delta.tec.mx",
         password: "password",
         name: "Test User",
-        lastName: "1",
+        lastName: idUser,
       });
       await createUser({
         email: "test-u-2@delta.tec.mx",
@@ -271,7 +272,7 @@ describe("controller:user", () => {
         email: "test-u-3@delta.tec.mx",
         password: "password",
         name: "Example Person",
-        lastName: "1",
+        lastName: idUser,
       });
       await createUser({
         email: "test-u-4@delta.tec.mx",
@@ -317,7 +318,7 @@ describe("controller:user", () => {
         email: "test-u-1@delta.tec.mx",
         password: "password",
         name: "Test User",
-        lastName: "1",
+        lastName: idUser,
         imageUrl: "https://example.com/image.png",
       });
       await createUser({
@@ -331,7 +332,7 @@ describe("controller:user", () => {
         email: "test-u-3@delta.tec.mx",
         password: "password",
         name: "Example Person",
-        lastName: "1",
+        lastName: idUser,
         imageUrl: "https://example3.com/image.png",
       });
     });
@@ -369,7 +370,7 @@ describe("controller:user", () => {
         email: "test-u-1@delta.tec.mx",
         password: "password",
         name: "Test User",
-        lastName: "1",
+        lastName: idUser,
         imageUrl: "https://example.com/image.png",
       });
       expect(error).toBeUndefined();
@@ -469,7 +470,7 @@ describe("controller:user", () => {
         email: "test-u-1@delta.tec.mx",
         password: "password",
         name: "Test User",
-        lastName: "1",
+        lastName: idUser,
         imageUrl: "https://example.com/image.png",
       });
       expect(error).toBeUndefined();
@@ -528,7 +529,7 @@ describe("controller:user", () => {
     let regularAccessToken: string;
     beforeEach(async () => {
       const { link, error: errorlink } = await addLink({
-        id: "1",
+        id: idUser,
         link: "https://example.com",
         name: "Example",
       });
@@ -541,7 +542,7 @@ describe("controller:user", () => {
         name: "Test User",
         lastName: "last name",
         imageUrl: "https://example.com/image.png",
-        id: "1",
+        id: idUser,
       });
       expect(error).toBeUndefined();
       user = createdUser;
@@ -625,6 +626,52 @@ describe("controller:user", () => {
 
       expect(Array.isArray(links)).toBe(true);
       expect(links.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("Delete user", () => {
+    let user: UserEnt;
+    let managerAccessToken: string;
+    beforeEach(async () => {
+      const { user: createdUser, error } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+        imageUrl: "https://example.com/image.png",
+      });
+      expect(error).toBeUndefined();
+      user = createdUser;
+
+      await userSeeds();
+
+      const authenticationResponse = await request(app)
+        .post("/user/authenticate")
+        .send({
+          email: "manager@delta.tec.mx",
+          password: "password",
+        })
+        .then((res) => res.body);
+
+      managerAccessToken = authenticationResponse.accessToken;
+    });
+
+    it("rejects unauthenticated request", async () => {
+      return request(app)
+        .get("/user/delete")
+        .query({ query: "use" })
+        .send()
+        .expect(401);
+    });
+
+    it("deletes an existing user", async () => {
+      const res = await request(app)
+        .post(`/user/delete/${user.id}`)
+        .set("Authorization", `Bearer ${managerAccessToken}`)
+        .expect(200);
+
+      expect(res.body.user).toBeDefined();
+      expect(res.body.user.id).toEqual(user.id);
     });
   });
 });

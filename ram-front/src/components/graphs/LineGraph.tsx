@@ -5,19 +5,21 @@ import HighchartsReact from "highcharts-react-official";
 import { useRef } from "react";
 
 export interface ILineGraphProps {
+  dataKey: string[];
   data: number[][];
   dataPie: number[];
-  firstMonth: number;
-  lastMonth: number;
+  start: Date;
+  end: Date;
 }
 
 export default function LineGraph({
   data,
-  firstMonth,
-  lastMonth,
+  start,
+  end,
   dataPie,
+  dataKey,
 }: ILineGraphProps): JSX.Element {
-  function getMonthString(first: number, last: number): string[] {
+  function getMonthString(first: Date, last: Date): string[] {
     const monthNames: string[] = [
       "Enero",
       "Febrero",
@@ -34,9 +36,13 @@ export default function LineGraph({
     ];
 
     const months: string[] = [];
-    for (let i = first; i <= last; i++) {
-      const monthIndex: number = i % 12;
+    const currentMonth: Date = new Date(first);
+
+    while (currentMonth <= last) {
+      const monthIndex: number = currentMonth.getMonth();
       months.push(monthNames[monthIndex]);
+
+      currentMonth.setMonth(currentMonth.getMonth() + 1);
     }
 
     return months;
@@ -51,7 +57,7 @@ export default function LineGraph({
       text: "Acumulado por ramos de seguro",
     },
     xAxis: {
-      categories: getMonthString(firstMonth, lastMonth),
+      categories: getMonthString(start, end),
       crosshair: true,
     },
     yAxis: {
@@ -68,61 +74,72 @@ export default function LineGraph({
     },
     series: [
       {
-        name: "SGMM",
+        name: dataKey[0],
         type: "column",
         data: data[0],
+        color: "#086fb4",
       },
       {
-        name: "VIDA",
+        name: dataKey[1],
         type: "column",
         data: data[1],
+        color: "#92D14F",
       },
       {
-        name: "PYMES",
+        name: dataKey[2],
         type: "column",
         data: data[2],
+        color: "#0C243E",
       },
       {
-        name: "PATRIMONIAL",
+        name: dataKey[3],
         type: "column",
         data: data[3],
+        color: "#E36C06",
       },
       {
-        name: "AUTOS",
+        name: dataKey[4],
         type: "column",
         data: data[4],
+        color: "#ff66cc",
       },
       {
         type: "pie",
         name: "Total",
         data: [
           {
-            name: "SGMM",
+            name: dataKey[0],
             y: dataPie[0],
+            color: "#086fb4",
             dataLabels: {
               enabled: true,
               distance: -50,
               format: "${point.total}",
               style: {
                 fontSize: "15px",
+                color: "black",
               },
             },
           },
           {
-            name: "VIDA",
+            name: dataKey[1],
             y: dataPie[1],
+            color: "#92D14F",
           },
           {
-            name: "PYMES",
+            name: dataKey[2],
             y: dataPie[2],
+            color: "#0C243E",
           },
           {
-            name: "PATRIMONIAL",
+            name: dataKey[3],
             y: dataPie[3],
+            color: "#E36C06",
           },
           {
-            name: "AUTOS",
+            name: dataKey[4],
             y: dataPie[4],
+            color: "#ff66cc",
           },
         ],
         center: [400, 20],

@@ -143,7 +143,9 @@ export default function ModalPasswordReset({
                         });
                       }
                     }}
-                  ></button>
+                  >
+                    Guardar
+                  </button>
                 </div>
               </div>
             </div>

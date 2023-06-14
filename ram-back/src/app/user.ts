@@ -29,7 +29,7 @@ export interface UserRol {
   rol: string;
   name: string;
   lastName: string;
-  isActive: boolean;
+  isActive: number;
   imageUrl?: string;
   urlPP200?: string;
   CUA?: string;
@@ -173,7 +173,7 @@ export async function authenticateUser(params: {
   const user = await ds.manager.findOne(UserEnt, {
     where: {
       email: params.email,
-      isActive: true,
+      isActive: 1,
     },
     select: [
       "id",
@@ -292,6 +292,35 @@ export async function getAllUserRol(): Promise<{
       "UserEnt.rolesString",
       "UserEnt.email",
     ])
+    .orderBy("UserEnt.name", "ASC")
+    .getMany();
+  if (!users) {
+    return { error: UserError.USER_NOT_FOUND, userRol: [] as UserRol[] };
+  }
+
+  return { userRol: users.map((user) => userToUserRol(user)) };
+}
+
+export async function getOnlyManagersUserRol(): Promise<{
+  userRol: UserRol[];
+  error?: UserError;
+}> {
+  const ds = await getDataSource();
+  const users = await ds
+    .createQueryBuilder()
+    .from(UserEnt, "UserEnt")
+    .select([
+      "UserEnt.id",
+      "UserEnt.name",
+      "UserEnt.lastName",
+      "UserEnt.isActive",
+      "UserEnt.imageUrl",
+      "UserEnt.rolesString",
+      "UserEnt.email",
+    ])
+    .where("UserEnt.rolesString LIKE :query", {
+      query: `%${UserRole.MANAGER}%`,
+    })
     .orderBy("UserEnt.name", "ASC")
     .getMany();
   if (!users) {
@@ -468,7 +497,7 @@ export async function deleteUser(params: {
   }
   return ds.manager
     .update(UserEnt, params.id, {
-      isActive: false,
+      isActive: 0,
     })
     .then(async () => {
       const user = await ds.manager.findOneOrFail(UserEnt, {

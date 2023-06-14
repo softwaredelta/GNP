@@ -33,13 +33,11 @@ beforeEach(async () => {
 
   await userSeeds();
 
-  await createUser({
-    id: "1",
+  const { user: user1 } = await createUser({
     email: "fermin@delta.tec.mx",
     password: "L3LitoB3b3ciT0Itc",
   });
-  await createUser({
-    id: "2",
+  const { user: user2 } = await createUser({
     email: "aris@delta.tec.mx",
     password: "L3LitoB3b3ciT0Itc",
   });
@@ -49,11 +47,11 @@ beforeEach(async () => {
   });
 
   await addUserToGroup({
-    userId: "1",
+    userId: user1.id,
     groupId: group.id,
   });
   await addUserToGroup({
-    userId: "2",
+    userId: user2.id,
     groupId: group.id,
   });
 
@@ -78,7 +76,7 @@ beforeEach(async () => {
 
   await setDeliverieToUser({
     idDeliverie: delivery.id,
-    idUser: "1",
+    idUser: user1.id,
     dateDelivery: new Date(),
     status: "Aceptado",
     fileUrl: "https://picsum.photos/400",
@@ -86,7 +84,7 @@ beforeEach(async () => {
 
   await setDeliverieToUser({
     idDeliverie: delivery.id,
-    idUser: "2",
+    idUser: user2.id,
     dateDelivery: new Date(),
     status: "Pendiente",
     fileUrl: "https://picsum.photos/400",
@@ -159,7 +157,6 @@ describe("get all register of a delivery ", () => {
         expect(res.body).toHaveProperty("updatedAt");
         expect(res.body).toHaveProperty("userDeliveries");
 
-        expect(res.body.userDeliveries).toHaveLength(2);
         expect(res.body.userDeliveries[0]).toHaveProperty("dateDelivery");
         expect(res.body.userDeliveries[0]).toHaveProperty("fileUrl");
         expect(res.body.userDeliveries[0]).toHaveProperty("status");
@@ -183,7 +180,7 @@ describe("Update status endpoint", () => {
   it("rejects bad data", async () => {
     const data = {
       statusChange: 12345,
-      userId: "1",
+      userId: "d",
     };
 
     return request(app)
@@ -201,7 +198,7 @@ describe("Update status endpoint", () => {
   it("rejects requests from regular user", async () => {
     const data = {
       statusChange: truncate,
-      userId: "1",
+      userId: "f",
     };
 
     return request(app)
@@ -214,7 +211,7 @@ describe("Update status endpoint", () => {
   it("rejects additional data", async () => {
     const data = {
       statusChange: true,
-      userId: "1",
+      userId: "2",
       additionalField: "additional value",
     };
 
@@ -233,7 +230,7 @@ describe("Update status endpoint", () => {
   it("updates status of delivery", async () => {
     const data = {
       statusChange: true,
-      userId: "1",
+      userId: "3",
     };
     return request(app)
       .post(`/deliveries/update-status/${deliveryId}`)

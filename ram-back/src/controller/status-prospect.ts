@@ -59,7 +59,7 @@ statusProspectRouter.get(
         .where("prospect.userId = :AgentId", { AgentId })
 
         .groupBy("prospectStatus.statusId")
-        // .addGroupBy("status.statusName")
+        .addGroupBy("status.statusName")
         .getRawMany();
 
       const accumulatedCounts: { [key: string]: number } = {
@@ -73,7 +73,7 @@ statusProspectRouter.get(
 
       prospectStatusCounts.forEach((count: any) => {
         const { statusName, count: statusCount } = count;
-        accumulatedCounts[statusName] += statusCount;
+        accumulatedCounts[statusName] += parseInt(statusCount);
       });
 
       res.status(200).json(accumulatedCounts);

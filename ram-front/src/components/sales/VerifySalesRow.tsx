@@ -55,6 +55,8 @@ export default function SalesRow({ sale, onUpdated }: Props) {
     }
   }, [response]);
 
+  console.log(sale);
+
   const capitalize = (word: string): string => {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   };
@@ -64,7 +66,7 @@ export default function SalesRow({ sale, onUpdated }: Props) {
       className="bg-white dark:border-gray-700 dark:bg-gray-800"
     >
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        {`${sale.user?.name} ${sale.user?.lastName}`}
+        {sale.user?.name} {sale.user?.lastName}
       </Table.Cell>
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
         {sale.contractingClient}
@@ -106,7 +108,7 @@ export default function SalesRow({ sale, onUpdated }: Props) {
           <div className="cursor-pointer transition-all ease-in-out hover:scale-110 active:scale-95">
             <FiEye
               size={20}
-              className="text-gray-500"
+              className="text-cyan-900"
               onClick={() => openFile(sale.evidenceUrl as string)}
             />
           </div>
@@ -122,20 +124,56 @@ export default function SalesRow({ sale, onUpdated }: Props) {
               </div>
             </Modal>
           )}
-          <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
-            <FiCheck
-              size={20}
-              className="text-green-500"
-              onClick={() => handleUpdate("Aceptada")}
-            />
-          </div>
-          <div className="cursor-pointer pr-12 transition-all ease-in-out hover:scale-125 active:scale-95">
-            <FiX
-              size={20}
-              className="text-red-500"
-              onClick={() => handleUpdate("Rechazada")}
-            />
-          </div>
+          {sale.status === "Sin revisar" && (
+            <>
+              <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+                <FiCheck
+                  size={20}
+                  className="text-green-500"
+                  onClick={() => handleUpdate("Aceptada")}
+                />
+              </div>
+              <div className="cursor-pointer pr-12 transition-all ease-in-out hover:scale-125 active:scale-95">
+                <FiX
+                  size={20}
+                  className="text-red-500"
+                  onClick={() => handleUpdate("Rechazada")}
+                />
+              </div>
+            </>
+          )}
+          {sale.status === "Aceptada" && (
+            <>
+              <div className="cursor-not-allowed transition-all ease-in-out">
+                <FiCheck size={20} className="text-gray-500" />
+              </div>
+              <div className="cursor-pointer pr-12 transition-all ease-in-out hover:scale-125 active:scale-95">
+                <FiX
+                  size={20}
+                  className="text-red-500"
+                  onClick={() => handleUpdate("Rechazada")}
+                />
+              </div>
+            </>
+          )}
+          {sale.status === "Rechazada" && (
+            <>
+              <div className="cursor-pointer transition-all ease-in-out hover:scale-125 active:scale-95">
+                <FiCheck
+                  size={20}
+                  className="text-green-500"
+                  onClick={() => handleUpdate("Aceptada")}
+                />
+              </div>
+              <div className="cursor-not-allowed transition-all ease-in-out">
+                <FiX
+                  size={20}
+                  className="text-gray-500"
+                  onClick={() => handleUpdate("Rechazada")}
+                />
+              </div>
+            </>
+          )}
         </div>
       </Table.Cell>
     </Table.Row>
