@@ -29,7 +29,7 @@ export interface UserRol {
   rol: string;
   name: string;
   lastName: string;
-  isActive: boolean;
+  isActive: number;
   imageUrl?: string;
   urlPP200?: string;
   CUA?: string;
@@ -173,7 +173,7 @@ export async function authenticateUser(params: {
   const user = await ds.manager.findOne(UserEnt, {
     where: {
       email: params.email,
-      isActive: true,
+      isActive: 1,
     },
     select: [
       "id",
@@ -468,7 +468,7 @@ export async function deleteUser(params: {
   }
   return ds.manager
     .update(UserEnt, params.id, {
-      isActive: false,
+      isActive: 0,
     })
     .then(async () => {
       const user = await ds.manager.findOneOrFail(UserEnt, {

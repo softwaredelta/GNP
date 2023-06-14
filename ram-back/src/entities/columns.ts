@@ -123,11 +123,11 @@ export const ID_COLUMN = (
 export const IS_ACTIVE_COLUMN: ColumnOptions = {
   type: "int",
   nullable: false,
-  default: true,
+  default: 1,
 };
 
 export const BOOLEAN_COLUMN: ColumnOptions = {
   type: "int",
   nullable: true,
-  default: true,
+  default: 1,
 };

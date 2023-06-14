@@ -135,7 +135,7 @@ async function getS3Client(): Promise<S3Config> {
     return s3Config;
   }
 
-  if (!process.env.NODE_ENV) {
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
     console.warn("Local environment, using mocked S3");
     s3Config = makeTestS3Client();
   } else if (process.env.NODE_ENV === "test") {
