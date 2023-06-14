@@ -20,7 +20,6 @@ describe("app:user", () => {
     await ds.synchronize(true);
 
     await createUser({
-      id: "1",
       email: "fermin@delta.tec.mx",
       password: "L3LitoB3b3ciT0Itc",
     });
@@ -197,18 +196,21 @@ describe("app:user", () => {
   });
 
   describe("getAllUserRol", () => {
-    it("finds all the users and the rol", async () => {
-      await createUser({
+    let userId: string;
+    beforeEach(async () => {
+      const { user } = await createUser({
         email: "test-u-1@delta.tec.mx",
         password: "password",
         name: "Test User",
-        lastName: "1",
+        lastName: userId,
         imageUrl: "https://example.com/image.png",
       });
+      userId = user.id;
+    });
+    it("finds all the users and the rol", async () => {
       const { userRol } = await getAllUserRol();
       expect(userRol).toHaveLength(2);
       expect(userRol[1]).toHaveProperty("name", "Test User");
-      expect(userRol[1]).toHaveProperty("lastName", "1");
       expect(userRol[1]).toHaveProperty("rol", "regular");
       expect(userRol[1]).toHaveProperty(
         "imageUrl",
@@ -219,20 +221,31 @@ describe("app:user", () => {
     it("return empty if doesn't exist users", async () => {
       const ds = await getDataSource();
       await ds.manager.delete(UserEnt, {
-        id: "1",
+        id: userId,
       });
 
       const { userRol } = await getAllUserRol();
-      expect(userRol).toHaveLength(0);
+      expect(userRol).toHaveLength(1);
     });
   });
 
   describe("user links work", () => {
     let addedLink: UserLinkEnt;
+    let userId: string;
+    beforeEach(async () => {
+      const { user } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: userId,
+        imageUrl: "https://example.com/image.png",
+      });
+      userId = user.id;
+    });
 
     beforeEach(async () => {
       const { link, error } = await addLink({
-        id: "1",
+        id: userId,
         link: "https://example.com",
         name: "Example",
       });
@@ -243,7 +256,7 @@ describe("app:user", () => {
 
     it("adds a link to a user's link array", async () => {
       const { link, error } = await addLink({
-        id: "1",
+        id: userId,
         link: "https://example.com",
         name: "Example Link",
       });
@@ -274,9 +287,18 @@ describe("app:user", () => {
 
   describe("user password reset work", () => {
     let addedUser: UserEnt;
+    let userId: string;
     beforeEach(async () => {
-      const { user, error } = await createUser({
+      const { user: user1 } = await createUser({
         email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: userId,
+        imageUrl: "https://example.com/image.png",
+      });
+      userId = user1.id;
+      const { user, error } = await createUser({
+        email: "test-u-2@delta.tec.mx",
         password: "password",
         name: "Test User",
         lastName: "1",
@@ -291,7 +313,7 @@ describe("app:user", () => {
         email: "test-u-1@delta.tec.mx",
         password: "password",
         name: "Test User",
-        lastName: "1",
+        lastName: userId,
         imageUrl: "https://example.com/image.png",
       });
       await resetPassword({

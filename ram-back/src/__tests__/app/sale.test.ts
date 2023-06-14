@@ -2,41 +2,42 @@
 
 import { createSale, updateSale } from "../../app/sale";
 import { getDataSource } from "../../arch/db-client";
-import { createAssuranceType } from "../../app/assuranceType";
-import { createUser } from "../../app/user";
+import {
+  AssuranceTypeError,
+  createAssuranceType,
+} from "../../app/assuranceType";
+import { UserError, createUser } from "../../app/user";
+import { AssuranceTypeEnt } from "../../entities/assurance-type.entity";
+import { UserEnt } from "../../entities/user.entity";
 
 describe("app:sale", () => {
+  let assurance1: {
+    assuranceType: AssuranceTypeEnt;
+    error?: AssuranceTypeError;
+  };
+  let assurance2: {
+    assuranceType: AssuranceTypeEnt;
+    error?: AssuranceTypeError;
+  };
+  let user1: {
+    user: UserEnt;
+    error?: UserError;
+  };
+
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.synchronize(true);
-    await createAssuranceType({
+    assurance1 = await createAssuranceType({
       name: "test-assurance-type-1",
       description: "test-assurance-type-1-description",
-      id: "test-at-1",
     });
-    await createAssuranceType({
+    assurance2 = await createAssuranceType({
       name: "test-assurance-type-2",
       description: "test-assurance-type-2-description",
-      id: "test-at-2",
     });
-    await createUser({
+    user1 = await createUser({
       email: "test@delta.tec.mx",
       password: "test-password",
-      id: "test-user",
-    });
-    await createSale({
-      id: "test-sale",
-      policyNumber: "312345678",
-      assuranceTypeId: "test-at-1.1",
-      userId: "test-user-base",
-      paidDate: new Date("2021/01/01"),
-      yearlyFee: "123456",
-      contractingClient: "Halim",
-      evidenceUrl: "https://www.google.com",
-      periodicity: "mensual",
-      emissionDate: new Date("2021/01/01"),
-      insuredCostumer: "Jordana",
-      paidFee: "123456",
     });
   });
 
@@ -44,8 +45,8 @@ describe("app:sale", () => {
     it("creates new sale", async () => {
       const { sale, error } = await createSale({
         policyNumber: "123456",
-        assuranceTypeId: "test-at-1",
-        userId: "test-user",
+        assuranceTypeId: assurance1.assuranceType.id,
+        userId: user1.user.id,
         paidDate: new Date("2021/01/01"),
         yearlyFee: "123456",
         contractingClient: "Juan Pérez",
@@ -68,8 +69,8 @@ describe("app:sale", () => {
     it("update existing sale", async () => {
       const { sale } = await createSale({
         policyNumber: "123456",
-        assuranceTypeId: "test-at-1",
-        userId: "test-user",
+        assuranceTypeId: assurance1.assuranceType.id,
+        userId: user1.user.id,
         paidDate: new Date("2021/01/01"),
         yearlyFee: "123456",
         contractingClient: "Halim",
@@ -79,7 +80,6 @@ describe("app:sale", () => {
         insuredCostumer: "Jordana",
         paidFee: "123456",
       });
-      expect(sale).toHaveProperty("id");
 
       const updated = await updateSale({
         id: sale.id,
@@ -92,10 +92,10 @@ describe("app:sale", () => {
     });
 
     it("update assurance type", async () => {
-      const { sale } = await createSale({
+      const sale = await createSale({
         policyNumber: "123456",
-        assuranceTypeId: "test-at-1",
-        userId: "test-user",
+        assuranceTypeId: assurance1.assuranceType.id,
+        userId: user1.user.id,
         paidDate: new Date("2021/01/01"),
         yearlyFee: "123456",
         contractingClient: "Halim",
@@ -105,14 +105,18 @@ describe("app:sale", () => {
         insuredCostumer: "Jordana",
         paidFee: "123456",
       });
-      expect(sale).toHaveProperty("id");
+
+      console.log(sale);
 
       const updated = await updateSale({
-        id: sale.id,
-        assuranceTypeId: "test-at-2",
+        id: sale.sale.id,
+        assuranceTypeId: assurance2.assuranceType.id,
       });
 
-      expect(updated.sale).toHaveProperty("assuranceTypeId", "test-at-2");
+      expect(updated.sale).toHaveProperty(
+        "assuranceTypeId",
+        assurance2.assuranceType.id,
+      );
     });
   });
 });

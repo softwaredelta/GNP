@@ -40,7 +40,7 @@ export async function getDataSource(): Promise<DataSource> {
       port: 5432,
       database: "ram",
       username: "postgres",
-      password: "021201",
+      password: "Zapato25$",
       entities,
     });
     await dataSource.initialize();

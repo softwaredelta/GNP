@@ -719,9 +719,8 @@ export async function loadSeeds() {
           insuredCostumer: "Prueba",
           status: "Aceptada",
           paidFee: "1500",
-        }).then(({ sale, error, reason }) => {
+        }).then(({ sale, error }) => {
           if (error) {
-            console.log(reason);
             throw new Error(error);
           }
           return sale;
