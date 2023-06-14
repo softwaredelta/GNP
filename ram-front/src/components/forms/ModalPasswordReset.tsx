@@ -114,18 +114,30 @@ export default function ModalPasswordReset({
                     onClick={() => {
                       if (
                         passwordRef.current &&
-                        confirmationRef.current &&
-                        passwordRef.current.value.toString() ===
-                          confirmationRef.current.value.toString()
+                        passwordRef.current?.value?.length >= 8
                       ) {
-                        const password = passwordRef.current.value.toString();
-                        const confirmationPassword =
-                          confirmationRef.current?.value.toString();
-                        handlePost(confirmationPassword, password);
+                        if (
+                          passwordRef.current &&
+                          confirmationRef.current &&
+                          passwordRef.current.value.toString() ===
+                            confirmationRef.current.value.toString()
+                        ) {
+                          const password = passwordRef.current.value.toString();
+                          const confirmationPassword =
+                            confirmationRef.current?.value.toString();
+                          handlePost(confirmationPassword, password);
+                        } else {
+                          Swal.fire({
+                            title: "¡Error!",
+                            text: "Las contraseñas no coinciden",
+                            icon: "error",
+                            confirmButtonText: "OK",
+                          });
+                        }
                       } else {
                         Swal.fire({
                           title: "¡Error!",
-                          text: "Las contraseñas no coinciden",
+                          text: "La contraseña debe tener al menos 8 caracteres",
                           icon: "error",
                           confirmButtonText: "OK",
                         });

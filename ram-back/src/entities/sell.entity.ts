@@ -4,15 +4,16 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
   JoinColumn,
+  BeforeInsert,
 } from "typeorm";
 import { AssuranceTypeEnt } from "./assurance-type.entity";
 import { UserEnt } from "./user.entity";
 import {
   CUSTOM_NAME_COLUMN,
   ID_COLUMN,
+  ID_STRING_COLUMN,
   MONEY_COLUMN,
   NAME_COLUMN,
   POLICY_NUMBER_COLUMN,
@@ -20,10 +21,11 @@ import {
   REQUIRED_STRING_COLUMN,
 } from "./columns";
 import { URL_COLUMN } from "./columns";
+import { v4 } from "uuid";
 
 @Entity({ name: "sell" })
 export class SellEnt {
-  @PrimaryGeneratedColumn("uuid")
+  @Column(ID_STRING_COLUMN("id"))
   id!: string;
 
   @Column(POLICY_NUMBER_COLUMN)
@@ -77,4 +79,9 @@ export class SellEnt {
 
   @Column(URL_COLUMN)
   evidenceUrl!: string;
+
+  @BeforeInsert()
+  async addId() {
+    this.id = v4();
+  }
 }

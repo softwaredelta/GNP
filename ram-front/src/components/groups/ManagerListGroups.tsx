@@ -9,9 +9,10 @@ import CardInfoNumMembers from "../generics/cards/info/CardInfoNumMembers";
 
 interface Props {
   groups: IGroup[];
+  onUpdated: () => void;
 }
 
-export function ManagerListGroups({ groups }: Props) {
+export function ManagerListGroups({ groups, onUpdated }: Props) {
   const fileUrl = useUrlFile();
   const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ export function ManagerListGroups({ groups }: Props) {
               <Card color="blue" image={fileUrl(group.imageUrl as string)}>
                 <CardInfoNumMembers
                   color="blue"
+                  onUpdated={onUpdated}
                   nameGroup={group.name}
                   number={group.groupUsers?.length ?? 0}
                   groupId={group.id as string}
@@ -33,9 +35,7 @@ export function ManagerListGroups({ groups }: Props) {
           </div>
         ))
       ) : (
-        <div className="flex h-56 items-center justify-center text-xl">
-          No hay grupos registrados
-        </div>
+        <div>No hay grupos registrados</div>
       )}
     </>
   );

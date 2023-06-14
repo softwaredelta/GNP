@@ -42,7 +42,7 @@ export async function createSale(params: {
 }): Promise<{ sale: SellEnt; error?: SaleError; reason?: Error }> {
   const ds = await getDataSource();
   // Static values not handled yet in frontend
-  const status = params.status || "sin revisar";
+  const status = params.status || "Sin revisar";
   const evidenceUrl = params.evidenceUrl || "https://picsum.photos/400";
 
   return ds.manager
@@ -67,6 +67,7 @@ export async function createSale(params: {
       return { sale };
     })
     .catch((e) => {
+      console.log(e);
       if (e.code === "23505") {
         return { sale: {} as SellEnt, error: SaleError.POLICY_NUM_DUPLICATED };
       }
@@ -269,6 +270,7 @@ export async function getSalesByMonth(params: {
               .leftJoinAndSelect("sell.user", "user")
               .select("SUM(sell.paidFee)", "totalPaidFee")
               .where("sell.userId = :userId", { userId: params.userId })
+              .andWhere("sell.status = :status", { status: "Aceptada" })
               .andWhere("sell.assuranceTypeId = :assuranceTypeId", {
                 assuranceTypeId: query.assuranceTypeId,
               })

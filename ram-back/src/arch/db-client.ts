@@ -4,8 +4,8 @@
  */
 
 import { DataSource } from "typeorm";
-import { adminSeeds, loadSeeds } from "../seeds";
 import { entities } from "../entities";
+import { adminSeeds, loadSeeds } from "../seeds";
 
 let dataSource: DataSource | null = null;
 
@@ -28,6 +28,26 @@ export async function getDataSource(): Promise<DataSource> {
     await dataSource.synchronize(false);
 
     console.warn("Loading seeds for staging environment...");
+    await loadSeeds();
+
+    return dataSource;
+  }
+
+  if (process.env.NODE_ENV === "development") {
+    dataSource = new DataSource({
+      type: "postgres",
+      host: "localhost",
+      port: 5432,
+      database: "ram",
+      username: "postgres",
+      password: "M001939@s135",
+      entities,
+    });
+    await dataSource.initialize();
+
+    await dataSource.synchronize(true);
+
+    console.warn("Loading seeds for local development...");
     await loadSeeds();
 
     return dataSource;

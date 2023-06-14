@@ -37,8 +37,9 @@ export default function Metrics({
           </div>
           <ProgressBar
             progress={
-              ((Math.trunc(finalNumberOfDeliveries / finalTotalDeliveries) *
-                100) as number) || 0
+              Math.trunc(
+                (finalNumberOfDeliveries / finalTotalDeliveries) * 100,
+              ) || 0
             }
             color={"orange"}
             height="10"
@@ -63,9 +64,9 @@ export default function Metrics({
                 <ProgressBar
                   color={"blue"}
                   progress={
-                    ((Math.trunc(
-                      group.numberOfDeliveries / group.totalDeliveries,
-                    ) * 100) as number) || 0
+                    Math.trunc(
+                      (group.numberOfDeliveries / group.totalDeliveries) * 100,
+                    ) || 0
                   }
                 />
               </div>

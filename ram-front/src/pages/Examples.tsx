@@ -79,7 +79,7 @@ export default function Examples() {
     method: "GET",
   });
 
-  const { response, error, loading, callback } = useAxios<{
+  const { error, loading, callback } = useAxios<{
     data: {
       group: {
         id: string;
@@ -91,8 +91,6 @@ export default function Examples() {
     method: "POST",
     body: { name: "Grupo novinos" },
   });
-  console.log({ response });
-  console.log({ me });
 
   if (loading) <div>loading..</div>;
 
@@ -296,13 +294,7 @@ export default function Examples() {
       </div>
       {}
       <div className="col-span-3 w-10/12"></div>
-      <div className="col-span-3 w-10/12">
-        {/* <ProspectListHistory
-          state={"Cliente"}
-          comment={"Hola"}
-          date={new Date()}
-        /> */}
-      </div>
+      <div className="col-span-3 w-10/12"></div>
     </div>
   );
 }

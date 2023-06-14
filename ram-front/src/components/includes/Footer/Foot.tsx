@@ -5,7 +5,11 @@ import wavesRAM from "../../../assets/imgs/wavesRAM.png";
 function Foot() {
   return (
     <Footer container={false}>
-      <img className="h-60 w-full" src={wavesRAM} alt="Footer de la página " />
+      <img
+        className="h-60 w-full select-none "
+        src={wavesRAM}
+        alt="Footer de la página "
+      />
     </Footer>
   );
 }

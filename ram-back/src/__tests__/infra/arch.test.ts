@@ -8,19 +8,18 @@ import { createUser } from "../../app/user";
 describe("infra:arch", () => {
   it("should have db connection", async () => {
     const db = await getDataSource();
-    await createUser({
+    const user = await createUser({
       email: "test@delta.tec.mx",
       password: "password",
-      id: "1",
     });
 
     const found = await db.manager.findOne(UserEnt, {
       where: {
-        id: "1",
+        id: user.user.id,
       },
       select: ["id", "email", "password"],
     });
-    expect(found).toHaveProperty("id", "1");
+    expect(found).toHaveProperty("id", user.user.id);
     expect(found).toHaveProperty("email", "test@delta.tec.mx");
   });
 
