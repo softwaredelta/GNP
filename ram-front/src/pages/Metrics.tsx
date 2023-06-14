@@ -180,7 +180,9 @@ export default function Metrics(): JSX.Element {
               Ventas
             </h1>
           </div>
-          {lineData && pieData ? (
+          {lineData &&
+          pieData &&
+          lineData.flat().reduce((a, b) => a + b, 0) !== 0 ? (
             <>
               <div className="mt-4 grid grid-cols-3 gap-4">
                 <div>
