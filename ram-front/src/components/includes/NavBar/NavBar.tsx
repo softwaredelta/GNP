@@ -146,7 +146,16 @@ function NavBar({ onLogout, user, role }: Props) {
             </Navbar.Link>
           </>
         ) : (
-          <></>
+          <>
+            <Navbar.Link
+              as={Link}
+              to="/my-managers"
+              className="mx-8 text-lg text-gray-900"
+              active={isActive(/^\/members/i)}
+            >
+              Mis Gerentes
+            </Navbar.Link>
+          </>
         )}
       </Navbar.Collapse>
     </Navbar>

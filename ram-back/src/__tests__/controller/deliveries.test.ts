@@ -14,16 +14,18 @@ import { userSeeds } from "../../seeds";
 describe("controller:deliveries", () => {
   let accessToken: string;
   let managerAccessToken: string;
+  let idUser: string;
   beforeEach(async () => {
     const ds = await getDataSource();
     await ds.synchronize(true);
     await userSeeds();
 
-    const { error: userError } = await createUser({
+    const { user, error: userError } = await createUser({
       email: "test@delta.tec.mx",
       password: "test-password-1",
-      id: "1",
     });
+
+    idUser = user.id;
 
     if (userError) {
       throw new Error(userError);
@@ -85,7 +87,7 @@ describe("controller:deliveries", () => {
       });
 
       await setDeliverieToUser({
-        idUser: "1",
+        idUser: idUser,
         idDeliverie: delivery1.delivery.id,
         dateDelivery: new Date("2023-04-25"),
         status: StatusUserDelivery.withoutSending,
@@ -124,7 +126,7 @@ describe("controller:deliveries", () => {
       });
 
       await setDeliverieToUser({
-        idUser: "1",
+        idUser: idUser,
         idDeliverie: delivery1.delivery.id,
         dateDelivery: new Date("2023-04-25"),
         status: StatusUserDelivery.withoutSending,
@@ -159,7 +161,11 @@ describe("controller:deliveries", () => {
         imageUrl: "test-image-url-1",
       });
       await setDeliverieToUser({
+<<<<<<< HEAD
         idUser: "1",
+=======
+        idUser: idUser,
+>>>>>>> 017308871a0ebe6f9d3bd2f8cf1e2d80a367a00c
         idDeliverie: delivery1.delivery.id,
         dateDelivery: new Date("2023-04-25"),
         status: StatusUserDelivery.withoutSending,

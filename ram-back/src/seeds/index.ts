@@ -57,14 +57,12 @@ export async function userSeeds() {
 
   const users = await Promise.all(
     userData.map((u) =>
-      createUser({ ...u, id: u.email, password: "password" }).then(
-        ({ user, error }) => {
-          if (error) {
-            throw new Error(error);
-          }
-          return user;
-        },
-      ),
+      createUser({ ...u, password: "password" }).then(({ user, error }) => {
+        if (error) {
+          throw new Error(error);
+        }
+        return user;
+      }),
     ),
   );
 
@@ -88,7 +86,6 @@ export async function loadSeeds() {
       name: "Luis",
       lastName: "Arriola",
       password: "password",
-      id: "1",
       roles: [UserRole.MANAGER],
     });
 
@@ -97,7 +94,6 @@ export async function loadSeeds() {
       name: "Valeria",
       lastName: "Herrera",
       password: "password",
-      id: "2",
       roles: [UserRole.REGULAR],
     });
 
@@ -106,7 +102,6 @@ export async function loadSeeds() {
       name: "Francisco",
       lastName: "Herrera",
       password: "password",
-      id: "3",
       roles: [UserRole.REGULAR],
     });
 
@@ -115,7 +110,6 @@ export async function loadSeeds() {
       name: "Laura",
       lastName: "Díaz",
       password: "password",
-      id: "4",
       roles: [UserRole.MANAGER],
     });
 
@@ -124,7 +118,6 @@ export async function loadSeeds() {
       name: "Daniela",
       lastName: "Gómez",
       password: "password",
-      id: "5",
       roles: [UserRole.MANAGER],
     });
 
@@ -133,7 +126,6 @@ export async function loadSeeds() {
       name: "Armando",
       lastName: "Camargo",
       password: "password",
-      id: "6",
       roles: [UserRole.MANAGER],
     });
 
@@ -142,7 +134,6 @@ export async function loadSeeds() {
       name: "Karla",
       lastName: "Díaz",
       password: "password",
-      id: "7",
       roles: [UserRole.MANAGER],
     });
 
@@ -151,7 +142,6 @@ export async function loadSeeds() {
       name: "Martha",
       lastName: "Arriola",
       password: "password",
-      id: "8",
       roles: [UserRole.REGULAR],
     });
 
@@ -160,7 +150,6 @@ export async function loadSeeds() {
       name: "Olivia",
       lastName: "Hernández",
       password: "password",
-      id: "9",
       roles: [UserRole.MANAGER],
     });
 
@@ -169,7 +158,6 @@ export async function loadSeeds() {
       name: "Carlos",
       lastName: "Armijo",
       password: "password",
-      id: "10",
       roles: [UserRole.MANAGER],
     });
 
@@ -178,7 +166,6 @@ export async function loadSeeds() {
       name: "Miriam",
       lastName: "Contreras",
       password: "password",
-      id: "11",
       roles: [UserRole.MANAGER],
     });
 
@@ -187,7 +174,6 @@ export async function loadSeeds() {
       name: "Itzel",
       lastName: "Díaz",
       password: "password",
-      id: "12",
       roles: [UserRole.MANAGER],
     });
 
@@ -196,7 +182,6 @@ export async function loadSeeds() {
       name: "Carmen",
       lastName: "Barbosa",
       password: "password",
-      id: "13",
       roles: [UserRole.MANAGER],
     });
 
@@ -205,7 +190,6 @@ export async function loadSeeds() {
       name: "Yarely",
       lastName: "García",
       password: "password",
-      id: "14",
       roles: [UserRole.MANAGER],
     });
 
@@ -436,7 +420,7 @@ export async function loadSeeds() {
     });
 
     await addLink({
-      id: "2",
+      id: deliveryExample.delivery.id,
       name: "Link 1",
       link: "https://www.google.com",
     });
@@ -505,31 +489,26 @@ export async function loadSeeds() {
       name: "GMM",
       description:
         "El seguro de gastos médicos mayores abarca los gastos de hospitalización, cirugía, medicamentos, estudios clínicos, honorarios médicos, entre otros.",
-      id: "1",
     });
 
     const { assuranceType: assuranceType3 } = await createAssuranceType({
       name: "VIDA",
       description: "Seguro de vida",
-      id: "2",
     });
 
     const { assuranceType: assuranceType2 } = await createAssuranceType({
       name: "PYMES",
       description: "Seguros para Pequeñas y Medianas Empresas",
-      id: "3",
     });
 
     await createAssuranceType({
       name: "PATRIMONIAL",
       description: "Seguros de patrimonio",
-      id: "4",
     });
 
     await createAssuranceType({
       name: "AUTOS",
       description: "Seguros de auto",
-      id: "5",
     });
 
     // SALES
@@ -655,75 +634,75 @@ export async function loadSeeds() {
     const saleData = [
       {
         policyNumber: "100100100",
-        assuranceTypeId: "2",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100101",
-        assuranceTypeId: "2",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100102",
-        assuranceTypeId: "2",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100202",
-        assuranceTypeId: "2",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100103",
-        assuranceTypeId: "2",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100104",
-        assuranceTypeId: "2",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100105",
-        assuranceTypeId: "3",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100109",
-        assuranceTypeId: "3",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100111",
-        assuranceTypeId: "3",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100112",
-        assuranceTypeId: "1",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100113",
-        assuranceTypeId: "1",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100114",
-        assuranceTypeId: "1",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100115",
-        assuranceTypeId: "1",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100116",
-        assuranceTypeId: "1",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100117",
-        assuranceTypeId: "4",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100118",
-        assuranceTypeId: "4",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100119",
-        assuranceTypeId: "4",
+        assuranceTypeId: assuranceType.id,
       },
       {
         policyNumber: "100100120",
-        assuranceTypeId: "5",
+        assuranceTypeId: assuranceType.id,
       },
     ];
 
@@ -735,9 +714,10 @@ export async function loadSeeds() {
           yearlyFee: "134000",
           contractingClient: "Enrique Bonilla",
           periodicity: "Anual",
-          userId: "2",
+          userId: agent2.user.id,
           emissionDate: new Date("2021-01-01"),
           insuredCostumer: "Prueba",
+          status: "Aceptada",
           paidFee: "1500",
         }).then(({ sale, error }) => {
           if (error) {
@@ -780,6 +760,7 @@ export async function loadSeeds() {
           paidDate: new Date("2023-06-16"),
           emissionDate: new Date("2023-06-01"),
           insuredCostumer: "Prueba",
+          status: "Aceptada",
           paidFee: "3070",
         }).then(({ sale, error }) => {
           if (error) {
@@ -797,7 +778,7 @@ export async function loadSeeds() {
           yearlyFee: "134000",
           contractingClient: "Enrique Bonilla",
           periodicity: "Anual",
-          userId: "2",
+          userId: agent2.user.id,
           paidDate: new Date("2023-07-21"),
           emissionDate: new Date("2021-01-01"),
           insuredCostumer: "Prueba",
@@ -965,7 +946,7 @@ export async function loadSeeds() {
           yearlyFee: "134000",
           contractingClient: "Enrique Bonilla",
           periodicity: "Anual",
-          userId: "2",
+          userId: agent2.user.id,
           paidDate: new Date("2023-12-11"),
           emissionDate: new Date("2021-01-01"),
           insuredCostumer: "Prueba",

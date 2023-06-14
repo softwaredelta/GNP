@@ -6,16 +6,19 @@ import { FiEdit2 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import usePreviewImage from "../../../hooks/usePreviewImage";
 import { IUser } from "../../../types";
+import { useUrlFile } from "../../../lib/files";
 
 interface ProfileCardProps {
   user: IUser;
   fileChanged?: (file: File) => void;
   isEdit: boolean;
+  isManager?: boolean;
 }
 
 export default function ProfileCard({
   user,
   isEdit,
+  isManager = true,
   fileChanged,
 }: ProfileCardProps) {
   const { setPreviewImage, imgRef } = usePreviewImage();
@@ -35,6 +38,7 @@ export default function ProfileCard({
   };
 
   const navigate = useNavigate();
+  const fileUrl = useUrlFile();
 
   return (
     <div className="relative pt-2 pr-2">
@@ -45,7 +49,7 @@ export default function ProfileCard({
               ref={imgRef}
               className="h-44 w-44 rounded-full object-cover"
               src={
-                user.imageUrl ||
+                fileUrl(user.imageUrl as string) ||
                 "https://media.istockphoto.com/photos/beautiful-profile-picture-id182773387?k=6&m=182773387&s=612x612&w=0&h=kXCC5JaOAdOUE5iyd9F2YocAk2O3OEmj6scZs2-QtEk="
               }
             />
@@ -97,7 +101,7 @@ export default function ProfileCard({
           </Badge>
         </div>
       </div>
-      {!isEdit && (
+      {!isEdit && isManager && (
         <div className="absolute top-0 right-0">
           <button
             className="floating-button-primary"

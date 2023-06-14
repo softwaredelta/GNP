@@ -4,6 +4,7 @@
 import { useNavigate } from "react-router-dom";
 import { IUser } from "../../types";
 import ProfileCard from "../generics/cards/ProfileCard";
+import { RiFileExcel2Fill } from "react-icons/ri";
 
 interface ProfileMetricsProps {
   user: IUser;
@@ -53,9 +54,12 @@ export default function ProfileMetrics({ user }: ProfileMetricsProps) {
                       onClick={() => {
                         window.open(user.urlPP200, "_blank");
                       }}
-                    ></div>
+                    >
+                      <span>Link al PP200</span>
+                      <RiFileExcel2Fill className="ml-2 underline transition-all ease-in-out hover:scale-105" />
+                    </div>
                   ) : (
-                    "No disponible"
+                    "No hay PP200 ligado"
                   )}
                 </dd>
               </div>

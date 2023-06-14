@@ -11,11 +11,13 @@ import { useEffect, useState } from "react";
 
 export interface IListMembersProps {
   members: IMembers[];
+  isManager: boolean;
   updateMembers: () => void;
 }
 
 export default function TableMembers({
   members,
+  isManager,
   updateMembers,
 }: IListMembersProps): JSX.Element {
   const [newMembers, setData] = useState<IMembers[]>(members);
@@ -52,9 +54,15 @@ export default function TableMembers({
             <Table.HeadCell align="center">Nombre</Table.HeadCell>
             <Table.HeadCell align="center">Correo</Table.HeadCell>
             <Table.HeadCell align="center">Rol</Table.HeadCell>
-            <Table.HeadCell align="center">Estado</Table.HeadCell>
-            <Table.HeadCell align="center">Perfil</Table.HeadCell>
-            <Table.HeadCell align="center">Resumen</Table.HeadCell>
+            {isManager ? (
+              <>
+                <Table.HeadCell align="center">Estado</Table.HeadCell>
+                <Table.HeadCell align="center">Perfil</Table.HeadCell>
+                <Table.HeadCell align="center">Resumen</Table.HeadCell>
+              </>
+            ) : (
+              <Table.HeadCell align="center">Perfil</Table.HeadCell>
+            )}
           </Table.Head>
           <Table.Body className="divide-y">
             {newMembers.length === 0 && (
@@ -71,6 +79,7 @@ export default function TableMembers({
                   rol={member.rol}
                   email={member.email}
                   isActive={member.isActive}
+                  isManager={isManager}
                   updateMembers={updateMembers}
                 />
               );

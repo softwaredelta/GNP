@@ -13,11 +13,11 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import {
   DATE_COLUMN,
+  ID_STRING_COLUMN,
   IS_ACTIVE_COLUMN,
   LAST_NAME_COLUMN,
   NAME_COLUMN,
@@ -34,6 +34,7 @@ import { SellEnt } from "./sell.entity";
 import { StateEnt } from "./state.entity";
 import { UserLevelEnt } from "./user-level.entity";
 import { UserLinkEnt } from "./user-link.entity";
+import { v4 } from "uuid";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -64,7 +65,7 @@ export function capitalizeString(str: string): string {
 
 @Entity({ name: "user_ent" })
 export class UserEnt {
-  @PrimaryGeneratedColumn("uuid")
+  @Column(ID_STRING_COLUMN("id"))
   id!: string;
 
   @OneToOne(() => OriginEnt, (origin) => origin.user)
@@ -124,7 +125,7 @@ export class UserEnt {
   imageUrl?: string;
 
   @Column(IS_ACTIVE_COLUMN)
-  isActive!: boolean;
+  isActive!: number;
 
   @Column(REQUIRED_STRING_COLUMN("roles"))
   rolesString!: string;
@@ -133,6 +134,7 @@ export class UserEnt {
 
   @BeforeInsert()
   async beforeInsert() {
+    this.id = v4();
     this.email = normalizeString(this.email);
     this.name = normalizeString(this.name);
     this.lastName = normalizeString(this.lastName);

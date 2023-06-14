@@ -52,6 +52,15 @@ export const REQUIRED_STRING_COLUMN = (
   default: defaultValue,
 });
 
+export const ID_STRING_COLUMN = (name: string): ColumnOptions => ({
+  name,
+  type: "varchar",
+  length: 255,
+  primary: true,
+  unique: true,
+  nullable: true,
+});
+
 export const DESCRIPTION_COLUMN: ColumnOptions = {
   type: "varchar",
   length: 255,
@@ -123,11 +132,11 @@ export const ID_COLUMN = (
 export const IS_ACTIVE_COLUMN: ColumnOptions = {
   type: "int",
   nullable: false,
-  default: true,
+  default: 1,
 };
 
 export const BOOLEAN_COLUMN: ColumnOptions = {
-  type: "int",
+  type: "varchar",
   nullable: true,
-  default: true,
+  default: 1,
 };

@@ -9,6 +9,7 @@ import {
   resetPassword,
   addLink,
   updateLink,
+  deleteUser,
 } from "../../app/user";
 import { getDataSource } from "../../arch/db-client";
 import { UserEnt, UserRole } from "../../entities/user.entity";
@@ -20,7 +21,6 @@ describe("app:user", () => {
     await ds.synchronize(true);
 
     await createUser({
-      id: "1",
       email: "fermin@delta.tec.mx",
       password: "L3LitoB3b3ciT0Itc",
     });
@@ -197,18 +197,21 @@ describe("app:user", () => {
   });
 
   describe("getAllUserRol", () => {
-    it("finds all the users and the rol", async () => {
-      await createUser({
+    let userId: string;
+    beforeEach(async () => {
+      const { user } = await createUser({
         email: "test-u-1@delta.tec.mx",
         password: "password",
         name: "Test User",
-        lastName: "1",
+        lastName: userId,
         imageUrl: "https://example.com/image.png",
       });
+      userId = user.id;
+    });
+    it("finds all the users and the rol", async () => {
       const { userRol } = await getAllUserRol();
       expect(userRol).toHaveLength(2);
       expect(userRol[1]).toHaveProperty("name", "Test User");
-      expect(userRol[1]).toHaveProperty("lastName", "1");
       expect(userRol[1]).toHaveProperty("rol", "regular");
       expect(userRol[1]).toHaveProperty(
         "imageUrl",
@@ -219,20 +222,31 @@ describe("app:user", () => {
     it("return empty if doesn't exist users", async () => {
       const ds = await getDataSource();
       await ds.manager.delete(UserEnt, {
-        id: "1",
+        id: userId,
       });
 
       const { userRol } = await getAllUserRol();
-      expect(userRol).toHaveLength(0);
+      expect(userRol).toHaveLength(1);
     });
   });
 
   describe("user links work", () => {
     let addedLink: UserLinkEnt;
+    let userId: string;
+    beforeEach(async () => {
+      const { user } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: userId,
+        imageUrl: "https://example.com/image.png",
+      });
+      userId = user.id;
+    });
 
     beforeEach(async () => {
       const { link, error } = await addLink({
-        id: "1",
+        id: userId,
         link: "https://example.com",
         name: "Example",
       });
@@ -243,7 +257,7 @@ describe("app:user", () => {
 
     it("adds a link to a user's link array", async () => {
       const { link, error } = await addLink({
-        id: "1",
+        id: userId,
         link: "https://example.com",
         name: "Example Link",
       });
@@ -274,9 +288,18 @@ describe("app:user", () => {
 
   describe("user password reset work", () => {
     let addedUser: UserEnt;
+    let userId: string;
     beforeEach(async () => {
-      const { user, error } = await createUser({
+      const { user: user1 } = await createUser({
         email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: userId,
+        imageUrl: "https://example.com/image.png",
+      });
+      userId = user1.id;
+      const { user, error } = await createUser({
+        email: "test-u-2@delta.tec.mx",
         password: "password",
         name: "Test User",
         lastName: "1",
@@ -291,7 +314,7 @@ describe("app:user", () => {
         email: "test-u-1@delta.tec.mx",
         password: "password",
         name: "Test User",
-        lastName: "1",
+        lastName: userId,
         imageUrl: "https://example.com/image.png",
       });
       await resetPassword({
@@ -319,6 +342,40 @@ describe("app:user", () => {
       expect(auth).toHaveProperty("username", email);
       expect(auth).toHaveProperty("name", addedUser.name);
       expect(auth).toHaveProperty("lastName", addedUser.lastName);
+    });
+  });
+
+  describe("Delete user", () => {
+    let addedUser: UserEnt;
+    beforeEach(async () => {
+      const { user, error } = await createUser({
+        email: "test-u-1@delta.tec.mx",
+        password: "password",
+        name: "Test User",
+        lastName: "1",
+        imageUrl: "https://example.com/image.png",
+      });
+      expect(error).toBeUndefined();
+      addedUser = user;
+    });
+
+    it("delete user", async () => {
+      const result = await deleteUser({
+        id: addedUser.id,
+      });
+
+      expect(result.error).toBeUndefined();
+      expect(result.user).toBeDefined();
+      expect(result.user.id).toEqual(addedUser.id);
+    });
+
+    it("returns error if user is not found", async () => {
+      const userId = "non_existing_user_id";
+
+      const result = await deleteUser({ id: userId });
+
+      expect(result.user).toEqual({} as UserEnt);
+      expect(result.errorReason).toBeInstanceOf(Error);
     });
   });
 });
