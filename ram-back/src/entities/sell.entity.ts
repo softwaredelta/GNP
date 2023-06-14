@@ -4,7 +4,6 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
   JoinColumn,
 } from "typeorm";
@@ -13,6 +12,7 @@ import { UserEnt } from "./user.entity";
 import {
   CUSTOM_NAME_COLUMN,
   ID_COLUMN,
+  ID_STRING_COLUMN,
   MONEY_COLUMN,
   NAME_COLUMN,
   POLICY_NUMBER_COLUMN,
@@ -23,7 +23,7 @@ import { URL_COLUMN } from "./columns";
 
 @Entity({ name: "sell" })
 export class SellEnt {
-  @PrimaryGeneratedColumn("uuid")
+  @Column(ID_STRING_COLUMN("id"))
   id!: string;
 
   @Column(POLICY_NUMBER_COLUMN)

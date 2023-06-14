@@ -13,11 +13,11 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import {
   DATE_COLUMN,
+  ID_STRING_COLUMN,
   IS_ACTIVE_COLUMN,
   LAST_NAME_COLUMN,
   NAME_COLUMN,
@@ -64,7 +64,7 @@ export function capitalizeString(str: string): string {
 
 @Entity({ name: "user_ent" })
 export class UserEnt {
-  @PrimaryGeneratedColumn("uuid")
+  @Column(ID_STRING_COLUMN("id"))
   id!: string;
 
   @OneToOne(() => OriginEnt, (origin) => origin.user)

@@ -90,7 +90,6 @@ export default function EditDeliveryForm({
     }
 
     if (error) {
-      console.log({ error });
       Swal.fire({
         title: "¡Error!",
         text: "Ocurrió un error al modificar el entregable.",

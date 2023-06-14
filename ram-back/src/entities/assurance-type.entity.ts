@@ -5,15 +5,18 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { DESCRIPTION_COLUMN, UNIQUE_NAME_COLUMN } from "./columns";
+import {
+  DESCRIPTION_COLUMN,
+  ID_STRING_COLUMN,
+  UNIQUE_NAME_COLUMN,
+} from "./columns";
 import { GoalEnt } from "./goal.entity";
 
 @Entity({ name: "assurance_type" })
 export class AssuranceTypeEnt {
-  @PrimaryGeneratedColumn("uuid")
+  @Column(ID_STRING_COLUMN("id"))
   id!: string;
 
   @CreateDateColumn()

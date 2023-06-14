@@ -718,9 +718,8 @@ export async function loadSeeds() {
           emissionDate: new Date("2021-01-01"),
           insuredCostumer: "Prueba",
           paidFee: "1500",
-        }).then(({ sale, error, reason }) => {
+        }).then(({ sale, error }) => {
           if (error) {
-            console.log(reason);
             throw new Error(error);
           }
           return sale;

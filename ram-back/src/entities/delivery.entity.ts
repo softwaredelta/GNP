@@ -7,7 +7,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import {
@@ -15,6 +14,7 @@ import {
   ID_COLUMN,
   URL_COLUMN,
   BOOLEAN_COLUMN,
+  ID_STRING_COLUMN,
 } from "./columns";
 import { UserDeliveryEnt } from "./user-delivery.entity";
 import { GroupEnt } from "./group.entity";
@@ -22,7 +22,7 @@ import { DeliveryLinkEnt } from "./delivery-link.entity";
 
 @Entity({ name: "delivery" })
 export class DeliveryEnt {
-  @PrimaryGeneratedColumn("uuid")
+  @Column(ID_STRING_COLUMN("id"))
   id!: string;
 
   @Column(DESCRIPTION_COLUMN)

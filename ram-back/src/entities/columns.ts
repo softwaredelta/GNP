@@ -52,6 +52,15 @@ export const REQUIRED_STRING_COLUMN = (
   default: defaultValue,
 });
 
+export const ID_STRING_COLUMN = (name: string): ColumnOptions => ({
+  name,
+  type: "varchar",
+  length: 255,
+  primary: true,
+  unique: true,
+  default: "uuid_generate_v4()",
+});
+
 export const DESCRIPTION_COLUMN: ColumnOptions = {
   type: "varchar",
   length: 255,
