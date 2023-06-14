@@ -58,7 +58,7 @@ export const ID_STRING_COLUMN = (name: string): ColumnOptions => ({
   length: 255,
   primary: true,
   unique: true,
-  default: "uuid_generate_v4()",
+  nullable: true,
 });
 
 export const DESCRIPTION_COLUMN: ColumnOptions = {

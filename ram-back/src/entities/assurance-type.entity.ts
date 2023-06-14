@@ -1,6 +1,7 @@
 // (c) Delta Software 2023, rights reserved.
 
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -13,6 +14,8 @@ import {
   UNIQUE_NAME_COLUMN,
 } from "./columns";
 import { GoalEnt } from "./goal.entity";
+import { SellEnt } from "./sell.entity";
+import { v4 } from "uuid";
 
 @Entity({ name: "assurance_type" })
 export class AssuranceTypeEnt {
@@ -33,4 +36,12 @@ export class AssuranceTypeEnt {
 
   @OneToMany(() => GoalEnt, (goal) => goal.assuranceType)
   goals: GoalEnt[];
+
+  @OneToMany(() => SellEnt, (sell) => sell.assuranceType)
+  sales: SellEnt[];
+
+  @BeforeInsert()
+  async addId() {
+    this.id = v4();
+  }
 }

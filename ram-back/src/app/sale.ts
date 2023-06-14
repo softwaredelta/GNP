@@ -67,6 +67,7 @@ export async function createSale(params: {
       return { sale };
     })
     .catch((e) => {
+      console.log(e);
       if (e.code === "23505") {
         return { sale: {} as SellEnt, error: SaleError.POLICY_NUM_DUPLICATED };
       }

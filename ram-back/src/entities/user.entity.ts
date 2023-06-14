@@ -34,6 +34,7 @@ import { SellEnt } from "./sell.entity";
 import { StateEnt } from "./state.entity";
 import { UserLevelEnt } from "./user-level.entity";
 import { UserLinkEnt } from "./user-link.entity";
+import { v4 } from "uuid";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -133,6 +134,7 @@ export class UserEnt {
 
   @BeforeInsert()
   async beforeInsert() {
+    this.id = v4();
     this.email = normalizeString(this.email);
     this.name = normalizeString(this.name);
     this.lastName = normalizeString(this.lastName);

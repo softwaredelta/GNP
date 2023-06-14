@@ -6,6 +6,7 @@ import {
   ManyToOne,
   UpdateDateColumn,
   JoinColumn,
+  BeforeInsert,
 } from "typeorm";
 import { AssuranceTypeEnt } from "./assurance-type.entity";
 import { UserEnt } from "./user.entity";
@@ -20,6 +21,7 @@ import {
   REQUIRED_STRING_COLUMN,
 } from "./columns";
 import { URL_COLUMN } from "./columns";
+import { v4 } from "uuid";
 
 @Entity({ name: "sell" })
 export class SellEnt {
@@ -77,4 +79,9 @@ export class SellEnt {
 
   @Column(URL_COLUMN)
   evidenceUrl!: string;
+
+  @BeforeInsert()
+  async addId() {
+    this.id = v4();
+  }
 }
