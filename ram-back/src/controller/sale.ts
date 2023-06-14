@@ -108,9 +108,10 @@ Then, it calls the `createSale` function to create a new sale in the database wi
 data and the URL of the uploaded file. If there is an error during the creation of the sale, it
 sends an error response with the error message and reason. If the sale is created successfully, it
 sends a response with a status code of 201 and the created sale object. 
+*/
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=924979067
 // * M2_S01
-*/
+
 salesRouter.post(
   "/create",
   authMiddleware(),
@@ -234,28 +235,30 @@ salesRouter.post(
       initialDate,
       userId,
     });
-
-    let initialMonth = new Date(initialDate).getMonth();
+    const initialMonth = new Date(initialDate).getMonth();
+    const initialYear = new Date(initialDate).getFullYear();
     const finalMonth = new Date(finalDate).getMonth();
+    const finalYear = new Date(finalDate).getFullYear();
     const sales = [];
-    let i = 0;
-    for (initialMonth; initialMonth <= finalMonth; initialMonth++) {
+
+    for (
+      let month = initialMonth, year = initialYear;
+      year <= finalYear && (year !== finalYear || month <= finalMonth);
+      month++
+    ) {
+      if (month > 11) {
+        month = 0;
+        year++;
+      }
+
       const { results } = await getSalesByMonth({
-        initialDate: new Date(
-          new Date(initialDate).getFullYear(),
-          new Date(initialDate).getMonth() + i,
-          1,
-        ),
-        finalDate: new Date(
-          new Date(initialDate).getFullYear(),
-          new Date(initialDate).getMonth() + i,
-          30,
-        ),
+        initialDate: new Date(year, month, 1),
+        finalDate: new Date(year, month, 30),
         userId,
       });
-      sales.push({ initialMonth, results });
-      i++;
+      sales.push({ initialMonth: month, results });
     }
+
     res.json({ sales, pieChart });
   },
 );
@@ -369,11 +372,11 @@ middleware. When a GET request is made to this endpoint, the code retrieves a da
 and uses it to find all sales that have been approved (status: "aceptada"). The code also includes
 the related user and assuranceType entities in the query results. Finally, the code sends a JSON
 response containing the retrieved sales data. 
+*/
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
 // * M2_S04
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=224223021
 // * M2_S05
-*/
 
 salesRouter.get("/verify-sales/aproved", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
@@ -388,11 +391,12 @@ middleware. When a GET request is made to this endpoint, the code retrieves a da
 and queries the database for all sales that have a status of "rechazada" (rejected). The code then
 returns a JSON response containing the retrieved sales data, including related user and
 assuranceType information. 
+*/
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
 // * M2_S04
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=224223021
 // * M2_S05
-*/
+
 salesRouter.get("/verify-sales/refused", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sales = await db.manager.find(SellEnt, {
@@ -406,11 +410,12 @@ salesRouter.get("/verify-sales/refused", authMiddleware(), async (req, res) => {
 accessed via a POST request to "/update-status/:id", where ":id" is the ID of the sale to be
 updated. The route is protected by an authentication middleware and a middleware for validating the
 request parameters.
+*/
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=1338476890
 // * M2_S04
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=224223021
 // * M2_S05
-*/
+
 salesRouter.post(
   "/update-status/:id",
   authMiddleware(),
@@ -440,9 +445,10 @@ function. The route expects the request body to contain data for updating the sa
 policyNumber, paidDate, yearlyFee, contractingClient, assuranceTypeId, periodicity, emissionDate,
 insuredCostumer, and paidFee. The route also expects a file to be uploaded or an evidenceUrl to be
 provided in the request body. The file or evidenceUrl is used as evidence for the sale record 
+*/
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=877323064
 // * M2_S06
-*/
+
 salesRouter.post(
   "/update/:id",
   authMiddleware(),
@@ -507,9 +513,10 @@ the `findOne()` method of the entity manager. The `findOne()` method takes in th
 as the first argument, and an object as the second argument that specifies the relations to be
 loaded and the conditions for the query. In this case, it loads the `assuranceType` and `user`
 relations 
+*/
 // * Link to functional requirements: https://docs.google.com/spreadsheets/d/1ijuDjWE1UxtgRoeekSNPiPbB5AByjpyzYiSnwvLzQ4Q/edit#gid=877323064
 // * M2_S06
-*/
+
 salesRouter.get("/:id", authMiddleware(), async (req, res) => {
   const db = await getDataSource();
   const sale = await db.manager.findOne(SellEnt, {

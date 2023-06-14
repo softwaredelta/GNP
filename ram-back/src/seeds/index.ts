@@ -717,6 +717,7 @@ export async function loadSeeds() {
           userId: agent2.user.id,
           emissionDate: new Date("2021-01-01"),
           insuredCostumer: "Prueba",
+          status: "Aceptada",
           paidFee: "1500",
         }).then(({ sale, error, reason }) => {
           if (error) {
@@ -760,6 +761,7 @@ export async function loadSeeds() {
           paidDate: new Date("2023-06-16"),
           emissionDate: new Date("2023-06-01"),
           insuredCostumer: "Prueba",
+          status: "Aceptada",
           paidFee: "3070",
         }).then(({ sale, error }) => {
           if (error) {
